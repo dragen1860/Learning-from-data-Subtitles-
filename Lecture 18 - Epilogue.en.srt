@@ -1,0 +1,6496 @@
+1
+00:00:00,000 --> 00:00:00,580
+
+
+2
+00:00:00,580 --> 00:00:03,270
+ANNOUNCER: The following program
+is brought to you by Caltech.
+
+3
+00:00:03,270 --> 00:00:16,149
+
+
+4
+00:00:16,149 --> 00:00:17,399
+YASER ABU-MOSTAFA: Welcome back.
+
+5
+00:00:17,399 --> 00:00:19,570
+
+
+6
+00:00:19,570 --> 00:00:24,410
+Last time, we talked about three learning
+principles that, if you're in
+
+7
+00:00:24,410 --> 00:00:27,910
+the business of machine learning, you
+should be aware of in order to avoid
+
+8
+00:00:27,910 --> 00:00:32,299
+the very common pitfalls in
+applying machine learning.
+
+9
+00:00:32,299 --> 00:00:37,150
+The first one is Occam's razor, which
+says simpler is better-- and better in
+
+10
+00:00:37,150 --> 00:00:38,860
+terms of the performance.
+
+11
+00:00:38,860 --> 00:00:43,690
+And therefore, you should use a razor
+in order to trim the explanation of
+
+12
+00:00:43,690 --> 00:00:46,690
+the data-- the hypothesis, or the
+complexity of the hypothesis set in
+
+13
+00:00:46,690 --> 00:00:51,910
+this case-- in order to get to the bare
+minimum that is consistent with the
+
+14
+00:00:51,910 --> 00:00:53,810
+data that you have.
+
+15
+00:00:53,810 --> 00:00:59,280
+Now, in making this a specific statement
+that is justified, we had
+
+16
+00:00:59,280 --> 00:01:03,030
+simply two arguments that are
+interesting in their own right.
+
+17
+00:01:03,030 --> 00:01:08,190
+One of them is the fact that a complexity
+of an object corresponds to
+
+18
+00:01:08,190 --> 00:01:11,230
+the complexity of a class of objects.
+
+19
+00:01:11,230 --> 00:01:13,270
+So this correspondence was one.
+
+20
+00:01:13,270 --> 00:01:18,730
+The other one is that if you have
+an unlikely event, then when it does
+
+21
+00:01:18,730 --> 00:01:24,140
+happen, that is more significant than if
+it was a likely event to begin with.
+
+22
+00:01:24,140 --> 00:01:28,850
+And when we put them together, we get
+the proofs of Occam's razor under
+
+23
+00:01:28,850 --> 00:01:31,770
+different assumptions.
+
+24
+00:01:31,770 --> 00:01:36,580
+The second principle had to do with
+sampling bias, which reminds you of
+
+25
+00:01:36,580 --> 00:01:42,130
+the fact that we said that the training
+data comes from the same
+
+26
+00:01:42,130 --> 00:01:43,680
+distribution as the test data.
+
+27
+00:01:43,680 --> 00:01:47,130
+That was the basic assumption in all
+of our theoretical analysis.
+
+28
+00:01:47,130 --> 00:01:49,380
+And when it doesn't, then
+there is a bias.
+
+29
+00:01:49,380 --> 00:01:54,070
+And since your learning algorithm learns
+only from the training data, it
+
+30
+00:01:54,070 --> 00:01:57,490
+is going to inherit whatever it is
+that is in the training data as
+
+31
+00:01:57,490 --> 00:01:58,460
+a distribution.
+
+32
+00:01:58,460 --> 00:02:02,190
+And therefore, the result will
+be accordingly biased.
+
+33
+00:02:02,190 --> 00:02:08,630
+If the mismatch is nice and continuous,
+at least nonzero for all
+
+34
+00:02:08,630 --> 00:02:11,820
+the points, then there is a way to
+compensate for the sampling bias, by
+
+35
+00:02:11,820 --> 00:02:14,920
+trying to make the sample look as
+if it was coming from the other
+
+36
+00:02:14,920 --> 00:02:16,200
+distribution.
+
+37
+00:02:16,200 --> 00:02:19,930
+But if the training data doesn't
+represent a particular part of the
+
+38
+00:02:19,930 --> 00:02:22,840
+space, so that space has a probability
+0 as far as the training
+
+39
+00:02:22,840 --> 00:02:23,700
+is concerned.
+
+40
+00:02:23,700 --> 00:02:27,740
+But it has a positive probability for
+the test, then there is really nothing
+
+41
+00:02:27,740 --> 00:02:30,960
+that can be done to replicate the
+behavior of the target function over
+
+42
+00:02:30,960 --> 00:02:32,250
+that part of the space.
+
+43
+00:02:32,250 --> 00:02:36,610
+And therefore, you get something
+that is inherently biased.
+
+44
+00:02:36,610 --> 00:02:40,940
+The last principle had to do with data
+snooping, which is the most important
+
+45
+00:02:40,940 --> 00:02:43,600
+in terms of being a trap
+that you fall into.
+
+46
+00:02:43,600 --> 00:02:49,010
+And the idea here is that when you
+use a data set in the training,
+
+47
+00:02:49,010 --> 00:02:49,860
+in any capacity--
+
+48
+00:02:49,860 --> 00:02:51,260
+it could be very light capacity.
+
+49
+00:02:51,260 --> 00:02:56,770
+And we saw an example, where the only way
+the data was used was in order to
+
+50
+00:02:56,770 --> 00:03:01,490
+derive normalization constants for
+the inputs, something very light.
+
+51
+00:03:01,490 --> 00:03:04,480
+Nonetheless, the fact that you used
+the data means that you cannot
+
+52
+00:03:04,480 --> 00:03:09,470
+call it test set after that, and
+trust the performance that is
+
+53
+00:03:09,470 --> 00:03:11,930
+suggested by that data set.
+
+54
+00:03:11,930 --> 00:03:15,760
+And indeed, we took a case where we
+allowed snooping, and we ended up with
+
+55
+00:03:15,760 --> 00:03:16,890
+very optimistic view
+
+56
+00:03:16,890 --> 00:03:19,720
+when in reality, the performance
+was very poor.
+
+57
+00:03:19,720 --> 00:03:23,140
+And of course, if you go for the real
+out-of-sample, you hand the system to
+
+58
+00:03:23,140 --> 00:03:24,910
+your customer and they test it.
+
+59
+00:03:24,910 --> 00:03:26,980
+They will see the real out of
+sample, not the optimistic
+
+60
+00:03:26,980 --> 00:03:28,230
+performance that you had.
+
+61
+00:03:28,230 --> 00:03:30,830
+
+
+62
+00:03:30,830 --> 00:03:32,820
+Today's lecture is the final lecture.
+
+63
+00:03:32,820 --> 00:03:37,300
+And I am going to use it in order to
+give the big picture of machine
+
+64
+00:03:37,300 --> 00:03:39,990
+learning, and try to fit the
+stuff that we covered
+
+65
+00:03:39,990 --> 00:03:41,340
+within the big picture.
+
+66
+00:03:41,340 --> 00:03:46,480
+And then, tie up a couple of loose
+ends that are relevant to that.
+
+67
+00:03:46,480 --> 00:03:49,700
+So here is the outline.
+
+68
+00:03:49,700 --> 00:03:53,880
+First, I'm going to talk about the map
+of machine learning, because machine
+
+69
+00:03:53,880 --> 00:03:57,190
+learning is pretty diverse
+as you will see.
+
+70
+00:03:57,190 --> 00:04:01,690
+And we will see what we covered and
+how you can pursue it further, and
+
+71
+00:04:01,690 --> 00:04:05,490
+what topics I would recommend
+that you read about.
+
+72
+00:04:05,490 --> 00:04:06,720
+And then we'll take two topics--
+
+73
+00:04:06,720 --> 00:04:09,640
+I'll explain why we picked these
+two topics, and talk about
+
+74
+00:04:09,640 --> 00:04:10,500
+them in some detail.
+
+75
+00:04:10,500 --> 00:04:14,820
+Not in very technical detail like we covered
+the topics of this course, but at
+
+76
+00:04:14,820 --> 00:04:19,070
+least to give you some background about
+where these topics stand as far
+
+77
+00:04:19,070 --> 00:04:20,720
+as machine learning is concerned.
+
+78
+00:04:20,720 --> 00:04:24,630
+So that if you decide to pursue
+them, you have a head start.
+
+79
+00:04:24,630 --> 00:04:27,530
+And finally, I'm going to acknowledge
+the people who have contributed
+
+80
+00:04:27,530 --> 00:04:29,670
+greatly to this course.
+
+81
+00:04:29,670 --> 00:04:33,920
+
+
+82
+00:04:33,920 --> 00:04:37,710
+Well, when it comes to machine learning,
+it's a jungle out there.
+
+83
+00:04:37,710 --> 00:04:42,100
+And it's interesting that if you buy two
+books on machine learning, and you
+
+84
+00:04:42,100 --> 00:04:45,290
+look at them, you will feel that you
+are reading about two completely
+
+85
+00:04:45,290 --> 00:04:46,510
+different subjects.
+
+86
+00:04:46,510 --> 00:04:49,750
+If one of them is theoretical, and
+particular theory-- there are a bunch
+
+87
+00:04:49,750 --> 00:04:52,790
+of theories-- and one of them is
+practical, or one of them is
+
+88
+00:04:52,790 --> 00:04:56,090
+emphasizing a particular technique,
+they just have nothing in common.
+
+89
+00:04:56,090 --> 00:04:57,970
+Not even the jargon.
+
+90
+00:04:57,970 --> 00:05:02,850
+So if you go out on your own and just
+look at what happens in machine
+
+91
+00:05:02,850 --> 00:05:05,390
+learning, pretty much this is
+the picture you will get.
+
+92
+00:05:05,390 --> 00:05:08,900
+
+
+93
+00:05:08,900 --> 00:05:11,530
+Not a pretty picture.
+
+94
+00:05:11,530 --> 00:05:14,160
+And you can see buzzwords galore,
+
+95
+00:05:14,160 --> 00:05:18,570
+and people will get excited about one
+thing and tell you that this is God's
+
+96
+00:05:18,570 --> 00:05:19,570
+gift to humanity.
+
+97
+00:05:19,570 --> 00:05:22,530
+And the other thing-- people
+will be very opinionated.
+
+98
+00:05:22,530 --> 00:05:25,140
+It's just all over the place.
+
+99
+00:05:25,140 --> 00:05:29,920
+So I'm not going to attempt
+to be complete.
+
+100
+00:05:29,920 --> 00:05:31,720
+Because being complete here is fatal.
+
+101
+00:05:31,720 --> 00:05:34,700
+Trying to cover everything so that
+everybody is happy that you covered
+
+102
+00:05:34,700 --> 00:05:38,160
+the results they got, I don't think
+this is a good strategy.
+
+103
+00:05:38,160 --> 00:05:43,770
+I preached Occam's razor
+last time.
+
+104
+00:05:43,770 --> 00:05:45,530
+Remember Occam's razor?
+
+105
+00:05:45,530 --> 00:05:49,560
+You should have a razor, and then you
+should trim, trim, trim, until you get
+
+106
+00:05:49,560 --> 00:05:51,140
+the essential part.
+
+107
+00:05:51,140 --> 00:05:53,800
+This is pretty much what
+I tried to do here.
+
+108
+00:05:53,800 --> 00:05:57,550
+Because I believe that if you understand
+the fundamentals, inside
+
+109
+00:05:57,550 --> 00:06:03,130
+out, you can pursue things completely
+on your own from then on.
+
+110
+00:06:03,130 --> 00:06:07,400
+You are not going to be intimidated
+by grandiose statements of
+
+111
+00:06:07,400 --> 00:06:09,120
+one nature or another.
+
+112
+00:06:09,120 --> 00:06:10,770
+You will know where things
+lie, and whatnot.
+
+113
+00:06:10,770 --> 00:06:13,960
+So my task was to get the
+foundation right.
+
+114
+00:06:13,960 --> 00:06:18,930
+And in the course of doing that, I
+had to omit many, many topics.
+
+115
+00:06:18,930 --> 00:06:22,410
+So now I'm going to give you the map
+of the whole thing, what we covered
+
+116
+00:06:22,410 --> 00:06:26,090
+and what can be pursued, in
+order just to have a good
+
+117
+00:06:26,090 --> 00:06:28,060
+outlook on the situation.
+
+118
+00:06:28,060 --> 00:06:29,310
+So here is the map.
+
+119
+00:06:29,310 --> 00:06:32,950
+
+
+120
+00:06:32,950 --> 00:06:34,990
+There is theory.
+
+121
+00:06:34,990 --> 00:06:39,530
+And theory means that you mathematically
+model what happens in
+
+122
+00:06:39,530 --> 00:06:43,270
+reality, and then try to do mathematical
+derivation in order to
+
+123
+00:06:43,270 --> 00:06:45,940
+arrive at results that are
+not otherwise obvious.
+
+124
+00:06:45,940 --> 00:06:48,530
+That's what theory is in general.
+
+125
+00:06:48,530 --> 00:06:52,780
+And there are usually two aspects when
+you look at a theory: what assumptions
+
+126
+00:06:52,780 --> 00:06:58,500
+they made, and then what the deviation
+is in order to get to the results.
+
+127
+00:06:58,500 --> 00:07:01,590
+I hardly ever saw a situation
+where there's a problem
+
+128
+00:07:01,590 --> 00:07:03,080
+with the second part.
+
+129
+00:07:03,080 --> 00:07:04,700
+People are very competent
+mathematicians.
+
+130
+00:07:04,700 --> 00:07:06,960
+They are not going to make
+a mistake in derivation.
+
+131
+00:07:06,960 --> 00:07:10,410
+So the chances are, when they make
+a statement mathematically, they
+
+132
+00:07:10,410 --> 00:07:12,310
+actually mean it and they proved it.
+
+133
+00:07:12,310 --> 00:07:14,490
+So that is not our concern.
+
+134
+00:07:14,490 --> 00:07:19,210
+The biggest pitfall in theory is that
+people make assumptions that make what
+
+135
+00:07:19,210 --> 00:07:23,670
+they are solving really divorced from
+the practice that you are going to see
+
+136
+00:07:23,670 --> 00:07:25,470
+when you use machine learning.
+
+137
+00:07:25,470 --> 00:07:28,100
+And when I picked a theory,
+I picked it with a view to
+
+138
+00:07:28,100 --> 00:07:29,880
+relevance to practice.
+
+139
+00:07:29,880 --> 00:07:30,890
+I wanted to get something.
+
+140
+00:07:30,890 --> 00:07:32,210
+It has to obviously be mathematical,
+
+141
+00:07:32,210 --> 00:07:34,640
+and it has to be proved,
+and all of that.
+
+142
+00:07:34,640 --> 00:07:37,440
+But then when you see the
+result, you can use it.
+
+143
+00:07:37,440 --> 00:07:40,860
+And I will go through other alternatives
+that have succeeded in
+
+144
+00:07:40,860 --> 00:07:43,670
+that to different degrees.
+
+145
+00:07:43,670 --> 00:07:48,030
+Then there are techniques, and that is
+really the bulk of machine learning.
+
+146
+00:07:48,030 --> 00:07:51,290
+We covered some techniques, but I'm
+going to categorize techniques into
+
+147
+00:07:51,290 --> 00:07:53,340
+two sets and give you samples.
+
+148
+00:07:53,340 --> 00:07:57,530
+And then you'll understand from what we
+have done where it lies and how you
+
+149
+00:07:57,530 --> 00:07:59,930
+can pursue it further.
+
+150
+00:07:59,930 --> 00:08:02,560
+And finally, there are paradigms.
+
+151
+00:08:02,560 --> 00:08:05,780
+And paradigms mean different
+assumptions about
+
+152
+00:08:05,780 --> 00:08:06,900
+the learning situation.
+
+153
+00:08:06,900 --> 00:08:10,020
+Not mathematical assumptions, but
+different assumptions that deal with
+
+154
+00:08:10,020 --> 00:08:12,850
+different learning situations, like
+for example, supervised learning
+
+155
+00:08:12,850 --> 00:08:15,010
+versus reinforcement learning.
+
+156
+00:08:15,010 --> 00:08:17,870
+And when you make these assumptions,
+the problems you are solving are
+
+157
+00:08:17,870 --> 00:08:21,270
+sufficiently different that you end up
+with really a different body of
+
+158
+00:08:21,270 --> 00:08:22,890
+knowledge that you have to study.
+
+159
+00:08:22,890 --> 00:08:25,580
+And therefore, we call them
+different paradigms.
+
+160
+00:08:25,580 --> 00:08:27,110
+So these are basically the categories.
+
+161
+00:08:27,110 --> 00:08:29,590
+Let me start with the paradigms first,
+because it's the higher level,
+
+162
+00:08:29,590 --> 00:08:31,330
+and then go to the other ones.
+
+163
+00:08:31,330 --> 00:08:34,500
+We covered supervised learning.
+
+164
+00:08:34,500 --> 00:08:37,409
+That was almost the exclusive
+topic of the course.
+
+165
+00:08:37,409 --> 00:08:41,299
+And it is, by far, the most popular
+and the most useful
+
+166
+00:08:41,299 --> 00:08:43,058
+form of machine learning.
+
+167
+00:08:43,058 --> 00:08:46,020
+So if you cover just that, you
+are already very much ahead.
+
+168
+00:08:46,020 --> 00:08:49,350
+The other topics are interesting and
+they have applications, and they
+
+169
+00:08:49,350 --> 00:08:53,770
+should be studied, but definitely not
+in the league of supervised learning
+
+170
+00:08:53,770 --> 00:08:57,390
+in terms of impact on practice.
+
+171
+00:08:57,390 --> 00:09:00,560
+We touched on unsupervised learning
+with a single algorithm we had.
+
+172
+00:09:00,560 --> 00:09:03,340
+But we at least got the idea
+that clustering is the key.
+
+173
+00:09:03,340 --> 00:09:04,820
+And indeed, clustering is the key.
+
+174
+00:09:04,820 --> 00:09:07,120
+And with unsupervised, there are
+also variations of that.
+
+175
+00:09:07,120 --> 00:09:09,390
+There are semi-supervised.
+
+176
+00:09:09,390 --> 00:09:12,460
+Everything I say here has a bunch
+of variations already there.
+
+177
+00:09:12,460 --> 00:09:17,220
+So I'm just giving you the center
+of mass of these paradigms.
+
+178
+00:09:17,220 --> 00:09:20,320
+Then there is reinforcement learning
+that I described in the first lecture
+
+179
+00:09:20,320 --> 00:09:22,700
+very briefly, but we didn't
+cover at all.
+
+180
+00:09:22,700 --> 00:09:27,960
+And the reason is justified.
+
+181
+00:09:27,960 --> 00:09:33,000
+Because the main problem in supervised
+learning was the question of
+
+182
+00:09:33,000 --> 00:09:33,880
+information.
+
+183
+00:09:33,880 --> 00:09:36,450
+Do I have enough information in the
+data in order to get the target
+
+184
+00:09:36,450 --> 00:09:38,980
+function and generalize, right?
+
+185
+00:09:38,980 --> 00:09:40,990
+When you go to reinforcement
+learning-- remember what
+
+186
+00:09:40,990 --> 00:09:42,270
+reinforcement learning was.
+
+187
+00:09:42,270 --> 00:09:45,720
+You don't have the target
+value on the examples.
+
+188
+00:09:45,720 --> 00:09:48,640
+You just take an action,
+which is an output, not
+
+189
+00:09:48,640 --> 00:09:50,150
+necessarily the target output,
+
+190
+00:09:50,150 --> 00:09:53,070
+and then something comes to tell
+you that you did well or
+
+191
+00:09:53,070 --> 00:09:54,330
+you didn't do well.
+
+192
+00:09:54,330 --> 00:10:00,270
+So it's reinforcement of good
+actions, and elimination of bad
+
+193
+00:10:00,270 --> 00:10:04,410
+actions, that will make you eventually
+converge to a good solution.
+
+194
+00:10:04,410 --> 00:10:05,890
+And we said that it applies to games.
+
+195
+00:10:05,890 --> 00:10:09,030
+Let's say you're trying
+to learn backgammon.
+
+196
+00:10:09,030 --> 00:10:12,990
+And what you do, you just play against
+yourself, generating at will examples
+
+197
+00:10:12,990 --> 00:10:13,540
+as you want.
+
+198
+00:10:13,540 --> 00:10:14,250
+Here is a situation.
+
+199
+00:10:14,250 --> 00:10:14,880
+What do I do?
+
+200
+00:10:14,880 --> 00:10:15,960
+I'll do something.
+
+201
+00:10:15,960 --> 00:10:17,160
+I can generate that.
+
+202
+00:10:17,160 --> 00:10:20,690
+The only question is, after you do that,
+how do you take the feedback of
+
+203
+00:10:20,690 --> 00:10:24,340
+winning and losing and go back and
+adjust your strategy, such that you
+
+204
+00:10:24,340 --> 00:10:26,170
+converge to a good strategy?
+
+205
+00:10:26,170 --> 00:10:28,480
+So the issue here is completely
+different from supervised learning.
+
+206
+00:10:28,480 --> 00:10:29,680
+It's not a question of information.
+
+207
+00:10:29,680 --> 00:10:33,450
+It's the question of the algorithm that
+will take all of these tons of
+
+208
+00:10:33,450 --> 00:10:37,840
+examples that you can generate at will,
+and produce a way to converge to
+
+209
+00:10:37,840 --> 00:10:41,340
+a solution from one strategy to a better
+strategy to a better strategy.
+
+210
+00:10:41,340 --> 00:10:43,250
+So it's a completely
+different paradigm.
+
+211
+00:10:43,250 --> 00:10:49,320
+And if there's one topic in this
+entire viewgraph that I would
+
+212
+00:10:49,320 --> 00:10:53,030
+encourage you to pursue, read
+about reinforcement learning.
+
+213
+00:10:53,030 --> 00:10:54,280
+It's a very sweet subject.
+
+214
+00:10:54,280 --> 00:10:56,870
+
+
+215
+00:10:56,870 --> 00:10:58,580
+Finally, there are many paradigms--
+
+216
+00:10:58,580 --> 00:10:59,320
+active learning.
+
+217
+00:10:59,320 --> 00:11:02,570
+So active learning, it could be active
+reinforcement or active supervised.
+
+218
+00:11:02,570 --> 00:11:06,840
+Active learning means that, instead of
+someone giving you the data set, you
+
+219
+00:11:06,840 --> 00:11:09,740
+query about the value at
+a particular point.
+
+220
+00:11:09,740 --> 00:11:12,890
+So you give me the input and you ask
+for the output if it's supervised.
+
+221
+00:11:12,890 --> 00:11:15,960
+Or, you give me the input and expect
+a reward or punishment if it's
+
+222
+00:11:15,960 --> 00:11:17,430
+reinforcement learning.
+
+223
+00:11:17,430 --> 00:11:20,480
+So it's an adjustment, and there are
+some interesting results there.
+
+224
+00:11:20,480 --> 00:11:24,350
+And the other mini-paradigm
+is online learning.
+
+225
+00:11:24,350 --> 00:11:27,470
+And this is purely computational
+consideration.
+
+226
+00:11:27,470 --> 00:11:29,800
+So take any form of learning.
+
+227
+00:11:29,800 --> 00:11:33,460
+And instead of giving you the full data
+set, and allowing you to work with
+
+228
+00:11:33,460 --> 00:11:37,430
+it any way you want, I am streaming
+the data set to you.
+
+229
+00:11:37,430 --> 00:11:41,750
+So you take something and you try to
+modify your current hypothesis,
+
+230
+00:11:41,750 --> 00:11:45,540
+and then you take the other guy.
+And you cannot store everything.
+
+231
+00:11:45,540 --> 00:11:47,600
+If you could store everything,
+you have the whole data set.
+
+232
+00:11:47,600 --> 00:11:49,870
+So there are limitations on
+storage and computation.
+
+233
+00:11:49,870 --> 00:11:53,805
+And under those constraints, you ask
+yourself, how can I learn and how
+
+234
+00:11:53,805 --> 00:11:56,480
+close can I get to the optimal as
+if I had the whole data set, and
+
+235
+00:11:56,480 --> 00:11:57,240
+whatnot.
+
+236
+00:11:57,240 --> 00:11:59,910
+So, these are the most
+famous paradigms.
+
+237
+00:11:59,910 --> 00:12:01,110
+There are other paradigms.
+
+238
+00:12:01,110 --> 00:12:02,610
+I'm not trying to be exhaustive here.
+
+239
+00:12:02,610 --> 00:12:05,010
+Now, let's go for the theory.
+
+240
+00:12:05,010 --> 00:12:08,780
+The main theory in machine learning
+is the Vapnik-Chervonenkis theory.
+
+241
+00:12:08,780 --> 00:12:12,220
+And it is the one that I covered
+in great detail in this
+
+242
+00:12:12,220 --> 00:12:13,560
+course, as you realize.
+
+243
+00:12:13,560 --> 00:12:18,270
+And the reason is very
+straightforward.
+
+244
+00:12:18,270 --> 00:12:19,670
+It's relevant.
+
+245
+00:12:19,670 --> 00:12:20,500
+You do the math.
+
+246
+00:12:20,500 --> 00:12:22,970
+You go through the proofs, and then
+you get the VC dimension.
+
+247
+00:12:22,970 --> 00:12:25,140
+You equate it to the number of
+parameters in some cases.
+
+248
+00:12:25,140 --> 00:12:28,770
+And when you go to practice, even if
+you are taking bounds and treating
+
+249
+00:12:28,770 --> 00:12:32,470
+them as if they were equalities,
+that leap of faith works
+
+250
+00:12:32,470 --> 00:12:33,880
+very well in practice.
+
+251
+00:12:33,880 --> 00:12:38,430
+So it's not that the theory was
+there, and we decided that
+
+252
+00:12:38,430 --> 00:12:39,390
+this is a good one.
+
+253
+00:12:39,390 --> 00:12:42,690
+The theory was there, and then we tried
+to take wisdom from the theory and
+
+254
+00:12:42,690 --> 00:12:45,070
+apply it in practice, and it worked.
+
+255
+00:12:45,070 --> 00:12:48,210
+This is the value added by choosing
+a topic and putting it here.
+
+256
+00:12:48,210 --> 00:12:50,190
+You know that there is
+a reason why it's here.
+
+257
+00:12:50,190 --> 00:12:54,310
+And the reason here is that it is
+actually relevant to practice.
+
+258
+00:12:54,310 --> 00:12:55,820
+Then, there is bias-variance.
+
+259
+00:12:55,820 --> 00:12:57,620
+Well, bias-variance is
+a sweet little theory.
+
+260
+00:12:57,620 --> 00:13:01,340
+And it gave us some intuition
+about this.
+
+261
+00:13:01,340 --> 00:13:03,020
+And indeed, it was included.
+
+262
+00:13:03,020 --> 00:13:06,290
+It was low cost to include it,
+and it does lead to some
+
+263
+00:13:06,290 --> 00:13:09,150
+understandings, like
+the learning curves.
+
+264
+00:13:09,150 --> 00:13:12,470
+There are theories that I didn't
+describe, although they are very
+
+265
+00:13:12,470 --> 00:13:13,760
+substantial in the literature.
+
+266
+00:13:13,760 --> 00:13:16,090
+One of them is based on
+computational complexity.
+
+267
+00:13:16,090 --> 00:13:19,280
+It basically treats machine learning
+as a branch of computational
+
+268
+00:13:19,280 --> 00:13:21,980
+complexity, with an emphasis
+on asymptotic results.
+
+269
+00:13:21,980 --> 00:13:25,590
+So it's the question of can I
+do this in polynomial time or not?
+
+270
+00:13:25,590 --> 00:13:29,080
+And it's a very respectable
+body of work.
+
+271
+00:13:29,080 --> 00:13:33,830
+And the only question for including it
+or not including it is whether these
+
+272
+00:13:33,830 --> 00:13:38,510
+particular results correspond to
+something that I face in practice.
+
+273
+00:13:38,510 --> 00:13:43,140
+So when I look at it, should I do the
+computational complexity part of it,
+
+274
+00:13:43,140 --> 00:13:45,490
+or should I do the generalization
+part of it?
+
+275
+00:13:45,490 --> 00:13:48,940
+The generalization part of it won hands
+down, because it's the one that
+
+276
+00:13:48,940 --> 00:13:53,000
+is the bottleneck when I practice
+machine learning.
+
+277
+00:13:53,000 --> 00:13:56,230
+And finally, there is the famous
+Bayesian approach.
+
+278
+00:13:56,230 --> 00:13:59,870
+Now, this treats machine learning
+as a branch of probability.
+
+279
+00:13:59,870 --> 00:14:01,310
+So you have a problem.
+
+280
+00:14:01,310 --> 00:14:02,940
+We can always put a probability
+distribution.
+
+281
+00:14:02,940 --> 00:14:05,830
+And by the time you put the full joint
+probability distribution, you can
+
+282
+00:14:05,830 --> 00:14:07,670
+answer all questions.
+
+283
+00:14:07,670 --> 00:14:13,790
+And it's a very sweet theory, because
+you can ask any question you want
+
+284
+00:14:13,790 --> 00:14:17,470
+and you will find a very concrete,
+rigorous mathematical answer to that
+
+285
+00:14:17,470 --> 00:14:22,120
+question, if you have the setup of
+the joint probability distribution.
+
+286
+00:14:22,120 --> 00:14:25,020
+
+
+287
+00:14:25,020 --> 00:14:26,280
+Now, let's go for the techniques.
+
+288
+00:14:26,280 --> 00:14:27,590
+There are other theories, again.
+
+289
+00:14:27,590 --> 00:14:32,100
+I just gave you the biggest players.
+
+290
+00:14:32,100 --> 00:14:35,280
+When you look at techniques, you
+should separate models, as in
+
+291
+00:14:35,280 --> 00:14:37,850
+hypothesis sets and algorithms
+that go with them.
+
+292
+00:14:37,850 --> 00:14:39,550
+That's one category.
+
+293
+00:14:39,550 --> 00:14:43,350
+And then, the high-level methods, like
+regularization for example, that
+
+294
+00:14:43,350 --> 00:14:47,730
+doesn't restrict itself to a particular
+model, but is super-imposed
+
+295
+00:14:47,730 --> 00:14:48,960
+on anything you use.
+
+296
+00:14:48,960 --> 00:14:52,540
+So I will look at members
+of those categories.
+
+297
+00:14:52,540 --> 00:14:55,020
+So we looked at the models.
+
+298
+00:14:55,020 --> 00:14:56,250
+Linear we emphasized a lot.
+
+299
+00:14:56,250 --> 00:15:00,080
+It is not usually emphasized in regular
+machine learning courses.
+
+300
+00:15:00,080 --> 00:15:02,150
+They usually go for other models.
+
+301
+00:15:02,150 --> 00:15:04,660
+It's emphasized very much in
+statistics, for example.
+
+302
+00:15:04,660 --> 00:15:08,990
+And I find it to be very
+underrepresented in machine learning.
+
+303
+00:15:08,990 --> 00:15:10,220
+It's a very important model.
+
+304
+00:15:10,220 --> 00:15:13,090
+With a nonlinear transform, you
+can cover a lot of territory.
+
+305
+00:15:13,090 --> 00:15:18,310
+And it's very low cost, and it should
+be tried in many learning problems.
+
+306
+00:15:18,310 --> 00:15:20,150
+Then we went on to neural networks.
+
+307
+00:15:20,150 --> 00:15:22,170
+You have seen that.
+
+308
+00:15:22,170 --> 00:15:25,150
+Support vector machines, and
+the kernel methods.
+
+309
+00:15:25,150 --> 00:15:26,870
+We covered quite a bit of territory.
+
+310
+00:15:26,870 --> 00:15:30,110
+Nearest neighbors, I alluded to very
+quickly when I talked about RBF.
+
+311
+00:15:30,110 --> 00:15:32,273
+It's a very standard method.
+
+312
+00:15:32,273 --> 00:15:37,300
+Not much to say about it, except
+that it's a good benchmark.
+
+313
+00:15:37,300 --> 00:15:40,470
+If you have a data set, why don't you
+categorize everything according to the
+
+314
+00:15:40,470 --> 00:15:41,260
+nearest neighbor?
+
+315
+00:15:41,260 --> 00:15:43,350
+And this will give you a performance,
+and then you can compare
+
+316
+00:15:43,350 --> 00:15:44,740
+other methods to that.
+
+317
+00:15:44,740 --> 00:15:48,070
+It's not that difficult to implement.
+
+318
+00:15:48,070 --> 00:15:53,230
+We looked at RBF and its relation to
+many things in machine learning.
+
+319
+00:15:53,230 --> 00:15:56,622
+And then there is Gaussian processes,
+which some people are completely fond
+
+320
+00:15:56,622 --> 00:15:58,500
+of, which is great.
+
+321
+00:15:58,500 --> 00:16:01,040
+And it really has the same
+spirit of Bayesian.
+
+322
+00:16:01,040 --> 00:16:02,750
+It's a full probability distribution.
+
+323
+00:16:02,750 --> 00:16:05,840
+So a process here means
+a random process.
+
+324
+00:16:05,840 --> 00:16:07,580
+A random process is nothing
+but a random function.
+
+325
+00:16:07,580 --> 00:16:09,620
+If a random variable is
+a random number, a random
+
+326
+00:16:09,620 --> 00:16:11,030
+process is a random function.
+
+327
+00:16:11,030 --> 00:16:15,480
+So we have probability distribution over
+different functions that can come out.
+
+328
+00:16:15,480 --> 00:16:18,120
+And the assumption here is that they are
+Gaussian, which means that if you
+
+329
+00:16:18,120 --> 00:16:22,190
+take any finite number of points, the
+probability distribution of the
+
+330
+00:16:22,190 --> 00:16:25,380
+y-coordinate is jointly Gaussian
+for those guys.
+
+331
+00:16:25,380 --> 00:16:30,840
+So if you have a full description of
+that probability distribution, you can
+
+332
+00:16:30,840 --> 00:16:32,250
+solve anything you want.
+
+333
+00:16:32,250 --> 00:16:35,880
+Because you can say, if I have this data
+point, then I am conditioning on
+
+334
+00:16:35,880 --> 00:16:38,240
+that Gaussian variable
+being equal to that.
+
+335
+00:16:38,240 --> 00:16:40,830
+And I'm asking myself, what is now
+the conditional distribution
+
+336
+00:16:40,830 --> 00:16:41,570
+of the other guys?
+
+337
+00:16:41,570 --> 00:16:44,790
+And for Gaussian, this is completely
+solved and you have nice matrices to
+
+338
+00:16:44,790 --> 00:16:47,120
+just multiply out and
+get that solution.
+
+339
+00:16:47,120 --> 00:16:49,240
+So it's very good to use.
+
+340
+00:16:49,240 --> 00:16:54,040
+And if you are modeling something that
+happens to a Gaussian process, then
+
+341
+00:16:54,040 --> 00:16:58,170
+obviously you win greatly because
+you are actually matching that.
+
+342
+00:16:58,170 --> 00:17:01,200
+
+
+343
+00:17:01,200 --> 00:17:05,358
+There is SVD, which is the singular
+value decomposition, used figuratively
+
+344
+00:17:05,358 --> 00:17:05,880
+in this case.
+
+345
+00:17:05,880 --> 00:17:09,490
+This is the factor analysis we used
+in the Netflix problem, where we
+
+346
+00:17:09,490 --> 00:17:12,960
+represented the user as a bunch of
+factors, and the movie as a bunch of
+
+347
+00:17:12,960 --> 00:17:14,440
+factors, and we tried to match.
+
+348
+00:17:14,440 --> 00:17:18,450
+When you put this, you find that
+it's as if you are decomposing the
+
+349
+00:17:18,450 --> 00:17:22,170
+ratings matrix, the entire ratings
+matrix into two matrices.
+
+350
+00:17:22,170 --> 00:17:24,980
+And this would be similar to singular
+value decomposition in mathematics.
+
+351
+00:17:24,980 --> 00:17:28,108
+So we have seen part of that.
+
+352
+00:17:28,108 --> 00:17:29,600
+Finally, there is graphical models.
+
+353
+00:17:29,600 --> 00:17:35,000
+And graphical models is almost
+a different paradigm in its own right.
+
+354
+00:17:35,000 --> 00:17:36,240
+What are graphical models?
+
+355
+00:17:36,240 --> 00:17:43,260
+They are a model where the target
+is a joint probability distribution.
+
+356
+00:17:43,260 --> 00:17:45,500
+That's what you're trying to learn.
+
+357
+00:17:45,500 --> 00:17:48,640
+And the key here is that the joint
+probability distribution between
+
+358
+00:17:48,640 --> 00:17:51,920
+a very large number of variables
+becomes very difficult to manage
+
+359
+00:17:51,920 --> 00:17:55,690
+computationally, because the number of
+possibilities would be exponential in
+
+360
+00:17:55,690 --> 00:17:57,150
+the number of variables.
+
+361
+00:17:57,150 --> 00:18:01,920
+So the bulk of work in graphical models
+is trying to find a simple way,
+
+362
+00:18:01,920 --> 00:18:05,000
+or an efficient way, in order to get
+answers about that joint probability
+
+363
+00:18:05,000 --> 00:18:07,020
+distribution, and to learn it.
+
+364
+00:18:07,020 --> 00:18:09,170
+So it is mostly computational.
+
+365
+00:18:09,170 --> 00:18:11,570
+And it's based on graph algorithms.
+
+366
+00:18:11,570 --> 00:18:17,420
+And the main aspect of putting it in
+a graph is to use the properties, that
+
+367
+00:18:17,420 --> 00:18:22,330
+happen to be conditional independence,
+as a way to simplify the graph.
+
+368
+00:18:22,330 --> 00:18:27,630
+So if you look at the things I showed so
+far, probably there would be a full
+
+369
+00:18:27,630 --> 00:18:30,280
+course in graphical models, which
+is completely justified.
+
+370
+00:18:30,280 --> 00:18:34,270
+If you are in the business of modeling
+joint probability distributions, and
+
+371
+00:18:34,270 --> 00:18:37,810
+computation is a consideration,
+this is the thing to learn.
+
+372
+00:18:37,810 --> 00:18:39,210
+There is no question about that.
+
+373
+00:18:39,210 --> 00:18:43,660
+It's specialized, but it's very
+helpful in that case.
+
+374
+00:18:43,660 --> 00:18:46,630
+And the other one I mentioned was
+reinforcement learning, usually taught
+
+375
+00:18:46,630 --> 00:18:51,160
+together with active learning because
+there are a lot of commonalities.
+
+376
+00:18:51,160 --> 00:18:52,440
+Now, we go for the methods.
+
+377
+00:18:52,440 --> 00:18:55,090
+And the methods are very important,
+because they cover a lot of territory
+
+378
+00:18:55,090 --> 00:18:56,150
+regardless of the model you have.
+
+379
+00:18:56,150 --> 00:18:57,460
+We used regularization.
+
+380
+00:18:57,460 --> 00:19:01,790
+Can you think of other methods,
+at the same level, that we used?
+
+381
+00:19:01,790 --> 00:19:04,380
+Regularization and?
+
+382
+00:19:04,380 --> 00:19:05,830
+We used validation, right?
+
+383
+00:19:05,830 --> 00:19:09,170
+These were all methods overall.
+
+384
+00:19:09,170 --> 00:19:10,520
+There are things we didn't cover.
+
+385
+00:19:10,520 --> 00:19:15,980
+And one of them is aggregation, putting
+together different solutions.
+
+386
+00:19:15,980 --> 00:19:19,440
+And the last one we didn't cover
+was input processing.
+
+387
+00:19:19,440 --> 00:19:22,170
+This is something you do regardless
+of the model you are going to use.
+
+388
+00:19:22,170 --> 00:19:27,820
+And I find that input processing is best
+taught within a projects course.
+
+389
+00:19:27,820 --> 00:19:29,660
+It's a very practical matter.
+
+390
+00:19:29,660 --> 00:19:32,260
+And when you teach a projects course
+and people will have to deal
+
+391
+00:19:32,260 --> 00:19:35,130
+with the real data, it's a good thing
+to start by telling them, here is
+
+392
+00:19:35,130 --> 00:19:39,050
+the principal component analysis in
+order to normalize and de-correlate the
+
+393
+00:19:39,050 --> 00:19:39,940
+inputs, and whatnot.
+
+394
+00:19:39,940 --> 00:19:40,970
+And this is the value.
+
+395
+00:19:40,970 --> 00:19:41,850
+And then they can try it.
+
+396
+00:19:41,850 --> 00:19:45,540
+There is little intellectual
+value to input processing.
+
+397
+00:19:45,540 --> 00:19:46,470
+It's a practical matter.
+
+398
+00:19:46,470 --> 00:19:50,410
+And therefore, it is best taught when
+you are teaching a practical course.
+
+399
+00:19:50,410 --> 00:19:57,580
+Now, from all of this, I am going
+to talk about two topics today.
+
+400
+00:19:57,580 --> 00:20:02,810
+One of them is Bayesian, and
+the other one is aggregation.
+
+401
+00:20:02,810 --> 00:20:04,410
+I'm not going to talk
+about them in-depth.
+
+402
+00:20:04,410 --> 00:20:08,350
+I'm actually going to try to make
+a point, particularly about Bayesian.
+
+403
+00:20:08,350 --> 00:20:13,110
+And you say, you just told
+us about the razor.
+
+404
+00:20:13,110 --> 00:20:15,400
+And you trimmed it, and you
+got the solution right.
+
+405
+00:20:15,400 --> 00:20:19,230
+Why are you now adding up stuff
+to the minimal possible?
+
+406
+00:20:19,230 --> 00:20:22,140
+There is a good reason.
+
+407
+00:20:22,140 --> 00:20:25,290
+The Bayesian is the elephant
+in the room.
+
+408
+00:20:25,290 --> 00:20:28,530
+If I don't talk about it, you will
+hear about it a lot and you will
+
+409
+00:20:28,530 --> 00:20:30,840
+wonder, why in the world
+didn't I talk about it?
+
+410
+00:20:30,840 --> 00:20:33,480
+Looks great when you look
+at the results.
+
+411
+00:20:33,480 --> 00:20:35,650
+So I need to put it in perspective.
+
+412
+00:20:35,650 --> 00:20:36,800
+And that's what I'm going
+to try to do.
+
+413
+00:20:36,800 --> 00:20:40,640
+I'm not going to cover the
+scope of Bayesian.
+
+414
+00:20:40,640 --> 00:20:44,440
+I'm going to cover the foundations of
+the Bayesian approach, and make a point
+
+415
+00:20:44,440 --> 00:20:46,870
+about when is it valid?
+
+416
+00:20:46,870 --> 00:20:47,570
+When can you use it?
+
+417
+00:20:47,570 --> 00:20:50,520
+What are the drawbacks?
+
+418
+00:20:50,520 --> 00:20:51,810
+The other one is aggregation.
+
+419
+00:20:51,810 --> 00:20:55,300
+I would say that aggregation was the
+runner-up topic in this course.
+
+420
+00:20:55,300 --> 00:20:57,920
+I would have normally included it.
+
+421
+00:20:57,920 --> 00:21:00,630
+If I had more time and I had
+a natural position for it.
+
+422
+00:21:00,630 --> 00:21:03,880
+Because it's a fairly simple technique
+and covers a lot of territory, and has
+
+423
+00:21:03,880 --> 00:21:04,950
+been successful.
+
+424
+00:21:04,950 --> 00:21:10,180
+So I'm going to try to cover it in some
+level of detail that will make
+
+425
+00:21:10,180 --> 00:21:12,870
+you at least able to read it, and
+understand what you are reading and
+
+426
+00:21:12,870 --> 00:21:14,310
+where it lies.
+
+427
+00:21:14,310 --> 00:21:16,080
+So this is the plan.
+
+428
+00:21:16,080 --> 00:21:18,860
+With that, let's go to the two topics.
+
+429
+00:21:18,860 --> 00:21:22,670
+Bayesian learning first, and then I'm
+going to talk about aggregation methods.
+
+430
+00:21:22,670 --> 00:21:23,920
+
+
+431
+00:21:23,920 --> 00:21:25,650
+
+
+432
+00:21:25,650 --> 00:21:28,020
+Bayesian learning is
+trying to get a full
+
+433
+00:21:28,020 --> 00:21:30,500
+probabilistic approach to learning.
+
+434
+00:21:30,500 --> 00:21:35,340
+The first thing to do is to remind
+you of the learning diagram.
+
+435
+00:21:35,340 --> 00:21:38,320
+Let me magnify it a little bit.
+
+436
+00:21:38,320 --> 00:21:41,010
+We are not going to go through
+the details of it.
+
+437
+00:21:41,010 --> 00:21:44,160
+We are just going to concentrate
+on the probabilistic aspect.
+
+438
+00:21:44,160 --> 00:21:46,930
+There are many probabilistic components.
+
+439
+00:21:46,930 --> 00:21:51,710
+One of them is inherent, which is the
+fact that the target could be noisy.
+
+440
+00:21:51,710 --> 00:21:55,540
+And therefore, we model the target not
+as a function but as a probability
+
+441
+00:21:55,540 --> 00:21:56,940
+distribution.
+
+442
+00:21:56,940 --> 00:21:59,900
+Think of the case, for example,
+we dealt with as trying to
+
+443
+00:21:59,900 --> 00:22:02,430
+predict heart attacks.
+
+444
+00:22:02,430 --> 00:22:04,360
+Getting a heart attack or not
+getting a heart attack is
+
+445
+00:22:04,360 --> 00:22:05,970
+a probabilistic aspect.
+
+446
+00:22:05,970 --> 00:22:09,810
+And if we have our target as the
+probability of getting a heart attack
+
+447
+00:22:09,810 --> 00:22:13,900
+given certain conditions within
+a certain amount of time, then the
+
+448
+00:22:13,900 --> 00:22:16,580
+examples I'm going to give you don't
+give you that value of the target
+
+449
+00:22:16,580 --> 00:22:19,550
+function, but give you realizations
+from that probability distribution
+
+450
+00:22:19,550 --> 00:22:20,680
+that are noisy.
+
+451
+00:22:20,680 --> 00:22:22,740
+And therefore, I give you that
+probability distribution
+
+452
+00:22:22,740 --> 00:22:24,070
+P of y given x.
+
+453
+00:22:24,070 --> 00:22:28,970
+So that one is built-in, in terms
+of the functions or the noisy
+
+454
+00:22:28,970 --> 00:22:31,590
+functions we are trying to learn.
+
+455
+00:22:31,590 --> 00:22:34,730
+The other probability distribution
+we had was the input probability
+
+456
+00:22:34,730 --> 00:22:39,640
+distribution, and that was admittedly
+an artificial addition to the problem,
+
+457
+00:22:39,640 --> 00:22:42,800
+in order to be able to
+get the theory going.
+
+458
+00:22:42,800 --> 00:22:45,990
+And in spite of the fact that it is
+an assumption, it's a very benign
+
+459
+00:22:45,990 --> 00:22:51,240
+assumption for the very simple reason
+of the world 'unknown'. I wanted
+
+460
+00:22:51,240 --> 00:22:55,050
+a probability distribution just to get
+the machinery of probability going.
+
+461
+00:22:55,050 --> 00:22:58,300
+And I'm making no assumptions about
+the probability distribution.
+
+462
+00:22:58,300 --> 00:22:59,590
+You can pick any one you want.
+
+463
+00:22:59,590 --> 00:23:02,040
+And I don't even want to know it.
+
+464
+00:23:02,040 --> 00:23:05,300
+So this is very light
+as assumptions go.
+
+465
+00:23:05,300 --> 00:23:10,200
+Now, when it comes to the Bayesian
+approach, what you want to do is you
+
+466
+00:23:10,200 --> 00:23:14,110
+want to extend the probabilistic
+role completely.
+
+467
+00:23:14,110 --> 00:23:17,560
+So that everything is just a big joint
+probability distribution of all the
+
+468
+00:23:17,560 --> 00:23:18,890
+notions involved.
+
+469
+00:23:18,890 --> 00:23:21,830
+And if you get that going, then you
+will obviously be able to derive
+
+470
+00:23:21,830 --> 00:23:26,350
+anything, in terms of that joint
+probability distribution.
+
+471
+00:23:26,350 --> 00:23:30,050
+So when you do this, let's
+think of something.
+
+472
+00:23:30,050 --> 00:23:35,320
+In the prediction of the heart attack
+case, remember that we did use
+
+473
+00:23:35,320 --> 00:23:39,920
+probability in order to derive the
+algorithm for picking a hypothesis.
+
+474
+00:23:39,920 --> 00:23:41,540
+What did we do?
+
+475
+00:23:41,540 --> 00:23:42,680
+We said you have a data set.
+
+476
+00:23:42,680 --> 00:23:43,340
+What is the data set?
+
+477
+00:23:43,340 --> 00:23:46,710
+A bunch of patients with their
+attributes, and whether or not they got
+
+478
+00:23:46,710 --> 00:23:49,180
+a heart attack within a year of
+getting these measurements.
+
+479
+00:23:49,180 --> 00:23:51,230
+That was the data set.
+
+480
+00:23:51,230 --> 00:23:58,330
+And you were trying to say that I am
+going to pick the hypothesis that, if
+
+481
+00:23:58,330 --> 00:24:03,650
+this hypothesis truly reflected the
+probability of getting a heart attack
+
+482
+00:24:03,650 --> 00:24:08,360
+within that time frame, then the
+probability of getting that data set,
+
+483
+00:24:08,360 --> 00:24:11,260
+which actually took place,
+would be higher.
+
+484
+00:24:11,260 --> 00:24:12,350
+That was our approach.
+
+485
+00:24:12,350 --> 00:24:16,710
+And we called this the likelihood.
+
+486
+00:24:16,710 --> 00:24:17,630
+Remember?
+
+487
+00:24:17,630 --> 00:24:21,920
+So it's not we are picking the
+highest-probability hypothesis.
+
+488
+00:24:21,920 --> 00:24:25,070
+We don't have the luxury to do that, for
+a reason that will become clear.
+
+489
+00:24:25,070 --> 00:24:29,640
+We are picking the hypothesis that
+will make the data that actually
+
+490
+00:24:29,640 --> 00:24:32,230
+happened highest possible
+probability--
+
+491
+00:24:32,230 --> 00:24:33,630
+maximum likelihood.
+
+492
+00:24:33,630 --> 00:24:37,080
+So we already used the probabilistic
+approach here.
+
+493
+00:24:37,080 --> 00:24:39,920
+Now the only difference, when you go to
+the Bayesian approach, is that you
+
+494
+00:24:39,920 --> 00:24:42,710
+actually go for the real quantity.
+
+495
+00:24:42,710 --> 00:24:45,010
+The data already happened, why are
+you maximizing the probability?
+
+496
+00:24:45,010 --> 00:24:47,900
+Well, maximize the probability-- if
+what happened is likely given
+
+497
+00:24:47,900 --> 00:24:49,570
+a scenario, then
+that scenario is likely.
+
+498
+00:24:49,570 --> 00:24:51,600
+That's why you call it likelihood.
+
+499
+00:24:51,600 --> 00:24:56,800
+But a more principled approach would be
+to actually try to use the probability
+
+500
+00:24:56,800 --> 00:24:59,730
+that this is the correct hypothesis
+given the data.
+
+501
+00:24:59,730 --> 00:25:00,760
+That is the bottom line.
+
+502
+00:25:00,760 --> 00:25:01,720
+I give you the data.
+
+503
+00:25:01,720 --> 00:25:03,390
+This is given.
+
+504
+00:25:03,390 --> 00:25:04,620
+And you have a bunch of hypotheses.
+
+505
+00:25:04,620 --> 00:25:07,320
+You ask yourself, is it this hypothesis,
+or this hypothesis, or
+
+506
+00:25:07,320 --> 00:25:10,090
+this hypothesis that reflects
+the target function.
+
+507
+00:25:10,090 --> 00:25:12,690
+Well, you look for which one
+is the most probable to be,
+
+508
+00:25:12,690 --> 00:25:14,400
+and you declare that.
+
+509
+00:25:14,400 --> 00:25:16,580
+And that would be the
+Bayesian approach.
+
+510
+00:25:16,580 --> 00:25:21,810
+If you go to statistics, there is always
+a school that loves Bayesian and
+
+511
+00:25:21,810 --> 00:25:23,290
+there is a school that hates Bayesian.
+
+512
+00:25:23,290 --> 00:25:26,330
+And there is sort of an ongoing
+struggle between them.
+
+513
+00:25:26,330 --> 00:25:29,660
+And it's funny, because you think this is
+mathematics, people shouldn't have
+
+514
+00:25:29,660 --> 00:25:31,800
+just-- tastes like that.
+
+515
+00:25:31,800 --> 00:25:34,120
+But the problem is that Bayesian
+depends on something that I will
+
+516
+00:25:34,120 --> 00:25:37,930
+describe here, and the controversy
+all comes from that assumption.
+
+517
+00:25:37,930 --> 00:25:41,860
+But it came to the level in statistics
+where they describe a person, as, oh,
+
+518
+00:25:41,860 --> 00:25:46,110
+this is a Bayesian person versus
+no, I'm not a Bayesian.
+
+519
+00:25:46,110 --> 00:25:48,520
+It's almost like it was
+a religion or something.
+
+520
+00:25:48,520 --> 00:25:50,580
+But that's the reality of the field.
+
+521
+00:25:50,580 --> 00:25:54,440
+And you will understand why it evolved
+into that, when I describe the
+
+522
+00:25:54,440 --> 00:25:55,690
+components.
+
+523
+00:25:55,690 --> 00:25:57,820
+
+
+524
+00:25:57,820 --> 00:26:01,050
+The main component that raises
+the controversy is the prior.
+
+525
+00:26:01,050 --> 00:26:04,710
+So let's look at what that is.
+
+526
+00:26:04,710 --> 00:26:09,980
+We want the probability of a hypothesis
+being the correct target
+
+527
+00:26:09,980 --> 00:26:12,760
+function, given the data.
+
+528
+00:26:12,760 --> 00:26:18,660
+And if you want to compute that, and
+even if you have the model for the
+
+529
+00:26:18,660 --> 00:26:20,680
+noise and the model for the input
+probability distribution--
+
+530
+00:26:20,680 --> 00:26:23,220
+all of the stuff that we had
+in the learning diagram is
+
+531
+00:26:23,220 --> 00:26:24,770
+already taken for granted.
+
+532
+00:26:24,770 --> 00:26:27,940
+You still need one more
+probability distribution in
+
+533
+00:26:27,940 --> 00:26:29,820
+order to complete this.
+
+534
+00:26:29,820 --> 00:26:33,150
+And the way to discover it is
+just-- let's write it down.
+
+535
+00:26:33,150 --> 00:26:33,960
+This probability.
+
+536
+00:26:33,960 --> 00:26:37,550
+And you apply Bayes' rule, hence the
+word 'Bayesian', in order to get this
+
+537
+00:26:37,550 --> 00:26:40,060
+from the quantities we know.
+
+538
+00:26:40,060 --> 00:26:42,240
+So we know this one.
+
+539
+00:26:42,240 --> 00:26:45,300
+We know the probability of the data
+given that-- if this hypothesis.
+
+540
+00:26:45,300 --> 00:26:49,400
+was faithful description of how people
+got heart attack, then the probability
+
+541
+00:26:49,400 --> 00:26:50,870
+of getting that data is--
+
+542
+00:26:50,870 --> 00:26:53,680
+you just compute how much noise in
+each point, according to this
+
+543
+00:26:53,680 --> 00:26:54,130
+being f.
+
+544
+00:26:54,130 --> 00:26:57,780
+And you get it, which we got in logistic
+regression, and resulted in
+
+545
+00:26:57,780 --> 00:26:59,190
+the error measure over there.
+
+546
+00:26:59,190 --> 00:27:01,490
+So that was given.
+
+547
+00:27:01,490 --> 00:27:06,280
+The part that we need that
+is not given is this one.
+
+548
+00:27:06,280 --> 00:27:09,060
+When you multiply them, you get the
+joint probability distribution.
+
+549
+00:27:09,060 --> 00:27:13,090
+And when you divide by the probability
+of D, you get the conditional-- the
+
+550
+00:27:13,090 --> 00:27:15,850
+other direction which you want.
+
+551
+00:27:15,850 --> 00:27:18,230
+Now, there is no sweat in
+getting this.
+
+552
+00:27:18,230 --> 00:27:20,380
+Because if I have the joint probability
+distribution, I just
+
+553
+00:27:20,380 --> 00:27:23,110
+integrate out whatever I don't want,
+and I end up with the marginal.
+
+554
+00:27:23,110 --> 00:27:24,900
+So there is no difficulty in this.
+
+555
+00:27:24,900 --> 00:27:31,000
+And in fact, if your job is to just
+pick h according to this criterion,
+
+556
+00:27:31,000 --> 00:27:33,880
+then this fellow doesn't matter because
+it doesn't depend on h.
+
+557
+00:27:33,880 --> 00:27:35,900
+It scales all of them up or down.
+
+558
+00:27:35,900 --> 00:27:38,150
+So if you are picking between two
+hypotheses according to this
+
+559
+00:27:38,150 --> 00:27:41,610
+probability, you might as well forget
+about this and take the numerator as
+
+560
+00:27:41,610 --> 00:27:44,990
+your indicator, and pick the one that
+gives you the bigger numerator.
+
+561
+00:27:44,990 --> 00:27:47,110
+So you think of this as
+proportional to this.
+
+562
+00:27:47,110 --> 00:27:50,110
+And this is what I'm going to use.
+
+563
+00:27:50,110 --> 00:27:54,110
+Now, this is the mystery quantity, so
+let's put it down and describe it.
+
+564
+00:27:54,110 --> 00:27:56,720
+What does that mean?
+
+565
+00:27:56,720 --> 00:27:58,230
+It's not conditioned on anything.
+
+566
+00:27:58,230 --> 00:28:00,220
+I'm asking you, here's
+the hypothesis set.
+
+567
+00:28:00,220 --> 00:28:00,870
+It's a perceptron.
+
+568
+00:28:00,870 --> 00:28:02,920
+It has a bunch of weights.
+
+569
+00:28:02,920 --> 00:28:06,280
+Could you please tell me, what is the
+probability that this particular
+
+570
+00:28:06,280 --> 00:28:09,700
+combination of weights will actually
+give you the target function?
+
+571
+00:28:09,700 --> 00:28:12,820
+
+
+572
+00:28:12,820 --> 00:28:15,990
+How in the world are you
+going to know that?
+
+573
+00:28:15,990 --> 00:28:19,540
+So what you are doing here is assuming
+that there is a probability
+
+574
+00:28:19,540 --> 00:28:21,140
+distribution for that.
+
+575
+00:28:21,140 --> 00:28:23,800
+You're going to put a probability
+distribution over the hypothesis set,
+
+576
+00:28:23,800 --> 00:28:27,100
+the last component in the diagram that
+didn't really have a probability.
+
+577
+00:28:27,100 --> 00:28:31,070
+The probability reflecting the statement
+that this hypothesis is,
+
+578
+00:28:31,070 --> 00:28:32,860
+indeed, the target function.
+
+579
+00:28:32,860 --> 00:28:37,290
+And any discrepancy between the data
+set and the hypothesis, which is
+
+580
+00:28:37,290 --> 00:28:39,840
+supposed to be the target function,
+is attributed to the fact
+
+581
+00:28:39,840 --> 00:28:41,230
+that the data is noisy.
+
+582
+00:28:41,230 --> 00:28:43,020
+The data does not reflect
+the target function.
+
+583
+00:28:43,020 --> 00:28:46,010
+The data deviates by added noise.
+
+584
+00:28:46,010 --> 00:28:49,460
+So this one is called the prior.
+
+585
+00:28:49,460 --> 00:28:53,800
+Prior because it is your belief
+about the hypothesis set
+
+586
+00:28:53,800 --> 00:28:54,980
+before you got any data.
+
+587
+00:28:54,980 --> 00:28:56,690
+Before.
+
+588
+00:28:56,690 --> 00:29:02,590
+After you got the data, you can modify
+this and you get the probability of h
+
+589
+00:29:02,590 --> 00:29:04,230
+given the data.
+
+590
+00:29:04,230 --> 00:29:05,800
+That's now more informed.
+
+591
+00:29:05,800 --> 00:29:08,990
+You get the specific data from the
+target function, and then you are
+
+592
+00:29:08,990 --> 00:29:12,630
+going to zoom in and make a better
+choice among the hypotheses that you
+
+593
+00:29:12,630 --> 00:29:15,770
+have for which one qualifies
+as the target.
+
+594
+00:29:15,770 --> 00:29:18,600
+And this one is called the posterior.
+
+595
+00:29:18,600 --> 00:29:19,950
+It happens after the fact.
+
+596
+00:29:19,950 --> 00:29:22,510
+
+
+597
+00:29:22,510 --> 00:29:25,650
+Now, if you are given the
+prior-- let's say that I
+
+598
+00:29:25,650 --> 00:29:27,650
+actually give you a problem.
+
+599
+00:29:27,650 --> 00:29:31,970
+I don't know the target function, but
+I know quite a bit about it in terms
+
+600
+00:29:31,970 --> 00:29:33,250
+of probabilities.
+
+601
+00:29:33,250 --> 00:29:35,520
+And here is the way I'm going
+to formalize that.
+
+602
+00:29:35,520 --> 00:29:38,310
+I am going to give you a full
+probability distribution over the
+
+603
+00:29:38,310 --> 00:29:42,520
+entire hypothesis set that tells you the
+relative probability of different
+
+604
+00:29:42,520 --> 00:29:44,530
+hypotheses being the correct
+target function.
+
+605
+00:29:44,530 --> 00:29:46,390
+That's my prior.
+
+606
+00:29:46,390 --> 00:29:50,280
+If you have that, you have the joint
+probability distribution.
+
+607
+00:29:50,280 --> 00:29:52,050
+And if you have the joint probability
+distribution, you
+
+608
+00:29:52,050 --> 00:29:54,210
+can answer any question.
+
+609
+00:29:54,210 --> 00:29:56,355
+So that's a very attractive
+route to follow.
+
+610
+00:29:56,355 --> 00:29:59,460
+
+
+611
+00:29:59,460 --> 00:30:02,220
+You can get anything.
+
+612
+00:30:02,220 --> 00:30:05,240
+And because of that, it's important
+to look at the prior.
+
+613
+00:30:05,240 --> 00:30:10,170
+That is the center of the idea
+of a Bayesian approach.
+
+614
+00:30:10,170 --> 00:30:14,490
+So the main point I'm making, the only
+point I'm making in fact, in this
+
+615
+00:30:14,490 --> 00:30:18,300
+particular section, is the fact
+that prior is an assumption.
+
+616
+00:30:18,300 --> 00:30:20,840
+So before I get to that, let
+me give you an example of
+
+617
+00:30:20,840 --> 00:30:22,310
+a prior to make it concrete--
+
+618
+00:30:22,310 --> 00:30:23,760
+the one I referred to.
+
+619
+00:30:23,760 --> 00:30:26,030
+So let's say that you are
+having a perceptron.
+
+620
+00:30:26,030 --> 00:30:26,920
+So your perceptron model.
+
+621
+00:30:26,920 --> 00:30:28,360
+What is a perceptron model?
+
+622
+00:30:28,360 --> 00:30:31,000
+It's hyperplanes in some
+space, d-dimensional.
+
+623
+00:30:31,000 --> 00:30:36,390
+So I have weights w_0 up to w_d that
+tell me the slope and the offset.
+
+624
+00:30:36,390 --> 00:30:38,240
+And this will tell me what
+is the separating plane.
+
+625
+00:30:38,240 --> 00:30:40,720
+And I'm going to use this as a hypothesis
+in order to separate some
+
+626
+00:30:40,720 --> 00:30:43,270
+data points generated from a target.
+
+627
+00:30:43,270 --> 00:30:45,870
+And I'm going to assume that
+the target is there--
+
+628
+00:30:45,870 --> 00:30:49,690
+let's say, even you can take a linear
+target if you want, and added noise.
+
+629
+00:30:49,690 --> 00:30:53,920
+After you generate the points from that
+target, you flip the labels of
+
+630
+00:30:53,920 --> 00:30:55,990
+some of the guys according
+to some noise.
+
+631
+00:30:55,990 --> 00:30:59,170
+So 10% of the points are flipped, so
+this is your contribution of the
+
+632
+00:30:59,170 --> 00:31:03,190
+noise. Just to have something concrete
+in your mind to imagine.
+
+633
+00:31:03,190 --> 00:31:04,610
+So you have a perceptron.
+
+634
+00:31:04,610 --> 00:31:06,730
+h is specified by the weights.
+
+635
+00:31:06,730 --> 00:31:09,350
+Perceptron is-- you call it h
+because it's a full function.
+
+636
+00:31:09,350 --> 00:31:12,150
+But in reality, you just tell me what
+the parameters are and I know what is
+
+637
+00:31:12,150 --> 00:31:16,140
+the function, because I know what
+is the separating plane.
+
+638
+00:31:16,140 --> 00:31:18,350
+So here is a prior-- I suggest
+a possible prior.
+
+639
+00:31:18,350 --> 00:31:21,660
+The prior, now, I'm going to give
+it in terms of the weights.
+
+640
+00:31:21,660 --> 00:31:24,800
+So I'm going to tell you which weights
+are more likely than others.
+
+641
+00:31:24,800 --> 00:31:28,340
+And what I'm going to try to do, I'm
+going to try to make the assumption as
+
+642
+00:31:28,340 --> 00:31:30,390
+benign as possible.
+
+643
+00:31:30,390 --> 00:31:31,310
+Because I really don't know.
+
+644
+00:31:31,310 --> 00:31:34,500
+When I say which weights are
+more likely than others, I'm not
+
+645
+00:31:34,500 --> 00:31:36,600
+saying which weights are more
+likely to come out.
+
+646
+00:31:36,600 --> 00:31:39,680
+I'm asking, which weights are likely
+to actually reflect what the target
+
+647
+00:31:39,680 --> 00:31:42,270
+function is, the target function
+that we said was unknown.
+
+648
+00:31:42,270 --> 00:31:44,030
+So I'm making some assumptions.
+
+649
+00:31:44,030 --> 00:31:48,010
+I'm trying to reduce the level of
+crimes that I'm doing, and trying to
+
+650
+00:31:48,010 --> 00:31:52,060
+give you something that is fairly
+vague so I am not making a big
+
+651
+00:31:52,060 --> 00:31:53,480
+commitment.
+
+652
+00:31:53,480 --> 00:31:57,070
+Knowing that for the perceptrons,
+the magnitude of the
+
+653
+00:31:57,070 --> 00:31:58,120
+weights doesn't matter--
+
+654
+00:31:58,120 --> 00:32:01,560
+if you scale all the w's by any
+positive number up or down, you get
+
+655
+00:32:01,560 --> 00:32:02,630
+the same surface.
+
+656
+00:32:02,630 --> 00:32:06,180
+Because it is just classifying +1
+or -1. You care about the signal
+
+657
+00:32:06,180 --> 00:32:07,980
+being positive or negative.
+
+658
+00:32:07,980 --> 00:32:13,060
+So I'm going to take w's in a limited
+range, and I'm going to take them to be
+
+659
+00:32:13,060 --> 00:32:14,750
+uniform, independently.
+
+660
+00:32:14,750 --> 00:32:17,940
+So each weight is between -1
+and +1 independently
+
+661
+00:32:17,940 --> 00:32:19,180
+from the other weight.
+
+662
+00:32:19,180 --> 00:32:20,450
+That is my prior.
+
+663
+00:32:20,450 --> 00:32:24,620
+And my hope in putting that prior is
+that I didn't make a big assumption.
+
+664
+00:32:24,620 --> 00:32:28,020
+'hope' is the operative word here.
+
+665
+00:32:28,020 --> 00:32:29,770
+So what does that mean?
+
+666
+00:32:29,770 --> 00:32:32,300
+It means that, if I get the
+probability distribution over all the
+
+667
+00:32:32,300 --> 00:32:35,930
+weights, then I can see which weights
+contribute to a particular hypothesis.
+
+668
+00:32:35,930 --> 00:32:41,490
+And then I have the prior over
+h, which is the one I want.
+
+669
+00:32:41,490 --> 00:32:45,280
+So I have the probability
+of h, given nothing.
+
+670
+00:32:45,280 --> 00:32:50,910
+And when I am given the data, I mix
+now my prior belief about which
+
+671
+00:32:50,910 --> 00:32:53,870
+hypothesis is the target function
+according to this, which seems to be
+
+672
+00:32:53,870 --> 00:32:55,420
+completely uniform.
+
+673
+00:32:55,420 --> 00:32:59,910
+And then take the data, and the data
+will tell me that some guys are more
+
+674
+00:32:59,910 --> 00:33:00,700
+possible than others.
+
+675
+00:33:00,700 --> 00:33:05,320
+If I pick something that will require my
+interpretation of the noise to say
+
+676
+00:33:05,320 --> 00:33:08,730
+that 90% of the points had to flip in
+order for this to be the correct
+
+677
+00:33:08,730 --> 00:33:12,820
+target, then this is very unlikely
+because the flipped was only 10%.
+
+678
+00:33:12,820 --> 00:33:16,520
+And therefore, this will get demoted
+among hypotheses according to the
+
+679
+00:33:16,520 --> 00:33:19,500
+evidence coming from the data.
+
+680
+00:33:19,500 --> 00:33:23,670
+And you compute the probability of the
+data given h, and then you multiply
+
+681
+00:33:23,670 --> 00:33:28,190
+them and you get what you want,
+which is the posterior.
+
+682
+00:33:28,190 --> 00:33:30,270
+And the posterior is the product--
+at least proportional to the
+
+683
+00:33:30,270 --> 00:33:31,350
+product of the two.
+
+684
+00:33:31,350 --> 00:33:35,400
+So this is a concrete example
+if you want to apply this.
+
+685
+00:33:35,400 --> 00:33:38,460
+Now, we make the main statement
+about the prior.
+
+686
+00:33:38,460 --> 00:33:42,760
+And the main statement is that the
+prior is, indeed, an assumption.
+
+687
+00:33:42,760 --> 00:33:44,640
+Let's look at it.
+
+688
+00:33:44,640 --> 00:33:47,325
+Let me take a very simple case.
+
+689
+00:33:47,325 --> 00:33:51,570
+It doesn't have to do with learning
+in particular, to make the point.
+
+690
+00:33:51,570 --> 00:33:56,830
+Let's say that I take the most neutral
+prior to describe something unknown.
+
+691
+00:33:56,830 --> 00:33:59,550
+You have something that is unknown,
+like a target function.
+
+692
+00:33:59,550 --> 00:34:01,240
+In this case, it will be a number.
+
+693
+00:34:01,240 --> 00:34:02,650
+So I have an unknown number.
+
+694
+00:34:02,650 --> 00:34:07,740
+And all I know about it is that it's
+between -1 and +1.
+
+695
+00:34:07,740 --> 00:34:10,630
+And someone decides that it will be
+convenient to have a probability
+
+696
+00:34:10,630 --> 00:34:14,300
+distribution over x, notwithstanding
+the fact that x is not really
+
+697
+00:34:14,300 --> 00:34:14,770
+probabilistic.
+
+698
+00:34:14,770 --> 00:34:17,699
+I'm not running any experiment and
+generating x's repeatedly.
+
+699
+00:34:17,699 --> 00:34:20,590
+x is just a number sitting out
+there that I don't know.
+
+700
+00:34:20,590 --> 00:34:25,040
+I don't know, not in a probabilistic
+sense that it's a random variable.
+
+701
+00:34:25,040 --> 00:34:27,520
+I don't know-- it's
+an unknown parameter.
+
+702
+00:34:27,520 --> 00:34:31,550
+So you ask yourself, would this
+be equivalent to x being
+
+703
+00:34:31,550 --> 00:34:32,770
+random in some setting?
+
+704
+00:34:32,770 --> 00:34:34,810
+Can you model this with probability?
+
+705
+00:34:34,810 --> 00:34:37,800
+And invariably, people will tell
+you, you look at this.
+
+706
+00:34:37,800 --> 00:34:39,300
+I don't know what x is.
+
+707
+00:34:39,300 --> 00:34:43,620
+So let me model this using a uniform
+probability distribution
+
+708
+00:34:43,620 --> 00:34:45,760
+from -1 to +1.
+
+709
+00:34:45,760 --> 00:34:50,469
+On face value, this looks completely
+innocent and credible.
+
+710
+00:34:50,469 --> 00:34:52,310
+Because here you didn't
+make any commitment.
+
+711
+00:34:52,310 --> 00:34:55,730
+It is as likely to be this,
+as this, as this, as this.
+
+712
+00:34:55,730 --> 00:35:01,930
+This one is unknown, so it seems that
+you captured what the meaning is.
+
+713
+00:35:01,930 --> 00:35:03,812
+I would like to argue that it doesn't.
+
+714
+00:35:03,812 --> 00:35:07,300
+It actually makes a huge assumption.
+
+715
+00:35:07,300 --> 00:35:13,450
+Now, you are not saying
+that you don't know x.
+
+716
+00:35:13,450 --> 00:35:17,660
+You're saying that, I know that
+x came from this distribution.
+
+717
+00:35:17,660 --> 00:35:22,350
+So if you know that, here are a bunch of
+stuff that I know, that actually I
+
+718
+00:35:22,350 --> 00:35:24,510
+didn't know here.
+
+719
+00:35:24,510 --> 00:35:27,895
+If you generate a bunch of x's and take
+their average, the chances are
+
+720
+00:35:27,895 --> 00:35:30,850
+you will be around 0.
+
+721
+00:35:30,850 --> 00:35:34,310
+If you look at a bunch of x's here and
+you average, I have no clue what
+
+722
+00:35:34,310 --> 00:35:36,990
+you're going to get.
+
+723
+00:35:36,990 --> 00:35:41,170
+If you do this, I can tell you even
+not only that the average will be
+
+724
+00:35:41,170 --> 00:35:41,660
+close to 0.
+
+725
+00:35:41,660 --> 00:35:44,980
+I can tell you how close it
+is, in terms of variance.
+
+726
+00:35:44,980 --> 00:35:48,040
+Here, I could be all over the place.
+
+727
+00:35:48,040 --> 00:35:53,380
+So you realize that, innocent as this
+may be, this is a different problem
+
+728
+00:35:53,380 --> 00:35:55,500
+than this one.
+
+729
+00:35:55,500 --> 00:36:02,250
+And if you insist on modeling x as
+a probability, and you want to capture
+
+730
+00:36:02,250 --> 00:36:06,620
+the statement here exactly, without
+adding any assumptions, you can
+
+731
+00:36:06,620 --> 00:36:07,920
+definitely do that.
+
+732
+00:36:07,920 --> 00:36:12,200
+Although, it looks much less
+attractive than this one.
+
+733
+00:36:12,200 --> 00:36:13,300
+This is not equivalent.
+
+734
+00:36:13,300 --> 00:36:18,690
+And if you want the true equivalent in
+terms of probability of this fellow,
+
+735
+00:36:18,690 --> 00:36:22,080
+this is what you're going to have.
+
+736
+00:36:22,080 --> 00:36:24,260
+So here, x is unknown.
+
+737
+00:36:24,260 --> 00:36:27,750
+Here, x is random, and
+the probability
+
+738
+00:36:27,750 --> 00:36:31,790
+density function of that happens to be
+a delta function centered around
+
+739
+00:36:31,790 --> 00:36:35,940
+a point 'a' that I don't know.
+
+740
+00:36:35,940 --> 00:36:38,943
+That would be strictly modeling this.
+
+741
+00:36:38,943 --> 00:36:42,210
+This does not model it.
+
+742
+00:36:42,210 --> 00:36:46,440
+And the fact that people take the
+liberty of doing that, results in many
+
+743
+00:36:46,440 --> 00:36:52,550
+cases in really a huge building
+based on a false premise.
+
+744
+00:36:52,550 --> 00:36:54,150
+In some cases, you get away with it.
+
+745
+00:36:54,150 --> 00:36:56,320
+But in some cases, you don't.
+
+746
+00:36:56,320 --> 00:37:00,360
+So this is the key point, that when
+you put a prior, you are actually
+
+747
+00:37:00,360 --> 00:37:01,500
+making a huge assumption.
+
+748
+00:37:01,500 --> 00:37:02,750
+Think of it this way.
+
+749
+00:37:02,750 --> 00:37:05,600
+We took great pains to say, the
+target function is unknown.
+
+750
+00:37:05,600 --> 00:37:06,480
+It could be anything.
+
+751
+00:37:06,480 --> 00:37:09,035
+I'm not going to make assumptions about
+it. Because in reality, when you
+
+752
+00:37:09,035 --> 00:37:12,430
+are in machine learning, if someone
+knocks on my door and they say they
+
+753
+00:37:12,430 --> 00:37:15,340
+want to learn a function, I really
+don't know what the function is.
+
+754
+00:37:15,340 --> 00:37:18,870
+So you go to your hypothesis set, which
+you picked out of your hat.
+
+755
+00:37:18,870 --> 00:37:21,410
+I'm going to use neural networks,
+or I'm going to use linear--
+
+756
+00:37:21,410 --> 00:37:23,070
+whatever it is.
+
+757
+00:37:23,070 --> 00:37:27,380
+And then you say, now, here is the
+probability that for each of these
+
+758
+00:37:27,380 --> 00:37:31,470
+points, I'm going to specify very
+specifically the probability that this
+
+759
+00:37:31,470 --> 00:37:34,830
+is exactly the target function.
+
+760
+00:37:34,830 --> 00:37:39,830
+And people do that with great
+ease, and then build on it.
+
+761
+00:37:39,830 --> 00:37:42,750
+All I'm asking for you to realize--
+I'm not saying don't do that.
+
+762
+00:37:42,750 --> 00:37:46,610
+I'm just making the statement: realize
+that you are making an assumption.
+
+763
+00:37:46,610 --> 00:37:49,420
+And it's a big assumption.
+
+764
+00:37:49,420 --> 00:37:52,210
+So let's see the ramifications
+of that.
+
+765
+00:37:52,210 --> 00:37:56,240
+If you actually knew the prior, you
+would be in fantastic shape.
+
+766
+00:37:56,240 --> 00:37:57,750
+Why is that?
+
+767
+00:37:57,750 --> 00:38:04,250
+Because you can compute the posterior
+for every point in
+
+768
+00:38:04,250 --> 00:38:05,090
+your hypothesis set.
+
+769
+00:38:05,090 --> 00:38:09,820
+For every hypothesis, I know now what is
+the probability of it given D. Mind
+
+770
+00:38:09,820 --> 00:38:15,580
+you, this is h equals f over
+the entire space.
+
+771
+00:38:15,580 --> 00:38:17,830
+That is, this is really out-of-sample.
+
+772
+00:38:17,830 --> 00:38:21,180
+I am taking D which is in-sample, and
+I'm making a statement about the
+
+773
+00:38:21,180 --> 00:38:24,390
+probability for every hypothesis
+to be, out-of-sample.
+
+774
+00:38:24,390 --> 00:38:28,420
+I don't worry about regularization
+and VC bounds.
+
+775
+00:38:28,420 --> 00:38:30,030
+This is it.
+
+776
+00:38:30,030 --> 00:38:31,490
+You know the prior.
+
+777
+00:38:31,490 --> 00:38:32,660
+You give the data set.
+
+778
+00:38:32,660 --> 00:38:33,710
+You have a model for it.
+
+779
+00:38:33,710 --> 00:38:35,840
+You can compute this explicitly.
+
+780
+00:38:35,840 --> 00:38:37,770
+And based on this probability
+distribution, you can
+
+781
+00:38:37,770 --> 00:38:38,550
+get a bunch of stuff.
+
+782
+00:38:38,550 --> 00:38:42,920
+For example, you can pick the
+most probable hypothesis.
+
+783
+00:38:42,920 --> 00:38:46,580
+Without any dispute, this is
+the most probable hypothesis.
+
+784
+00:38:46,580 --> 00:38:47,830
+You can even go further.
+
+785
+00:38:47,830 --> 00:38:50,940
+Well, I picked a hypothesis set, and this
+is the probability that each of
+
+786
+00:38:50,940 --> 00:38:52,670
+them is the target function.
+
+787
+00:38:52,670 --> 00:38:55,840
+And now that I have the evidence from
+the data, I have a better picture of
+
+788
+00:38:55,840 --> 00:38:57,590
+it, which is the posterior.
+
+789
+00:38:57,590 --> 00:39:06,560
+I can now actually ask myself, I can
+derive the expected value of h because
+
+790
+00:39:06,560 --> 00:39:08,610
+for every h, there's a probability.
+
+791
+00:39:08,610 --> 00:39:12,570
+Instead of picking just the highest
+probability and sticking with it, why
+
+792
+00:39:12,570 --> 00:39:16,210
+don't I get the benefit of the entire
+probability distribution?
+
+793
+00:39:16,210 --> 00:39:18,750
+Well, the target function could be this
+one, could be this one, could be
+
+794
+00:39:18,750 --> 00:39:20,320
+this one, with these probabilities.
+
+795
+00:39:20,320 --> 00:39:24,020
+If you want a good estimate of the value
+of the target function at any
+
+796
+00:39:24,020 --> 00:39:29,460
+point x, why don't you take the value of
+h of x for every hypothesis in your
+
+797
+00:39:29,460 --> 00:39:34,230
+set, and put them together as expected
+value because you have the probability
+
+798
+00:39:34,230 --> 00:39:35,210
+distribution?
+
+799
+00:39:35,210 --> 00:39:38,830
+And then you get a very
+good estimate of that.
+
+800
+00:39:38,830 --> 00:39:43,840
+And you can even get an estimate
+for the error bar.
+
+801
+00:39:43,840 --> 00:39:44,960
+After you get the estimate--
+
+802
+00:39:44,960 --> 00:39:46,920
+this is my estimate for this--
+
+803
+00:39:46,920 --> 00:39:49,880
+I can tell you, what are the
+chances that I'm wrong?
+
+804
+00:39:49,880 --> 00:39:50,770
+Think of the possibilities.
+
+805
+00:39:50,770 --> 00:39:53,590
+I'm predicting the stock market.
+
+806
+00:39:53,590 --> 00:39:55,820
+And I learned using this
+Bayesian learning.
+
+807
+00:39:55,820 --> 00:39:57,510
+And I have the inputs for today.
+
+808
+00:39:57,510 --> 00:40:01,300
+And I want to predict the output, which
+is what will happen tomorrow.
+
+809
+00:40:01,300 --> 00:40:03,330
+Now, I can tell you the
+price movement.
+
+810
+00:40:03,330 --> 00:40:05,880
+What is the expected value
+of the price movement,
+
+811
+00:40:05,880 --> 00:40:08,760
+very specifically on that
+x, which I care about.
+
+812
+00:40:08,760 --> 00:40:10,830
+And I can also tell you,
+what is the error bar.
+
+813
+00:40:10,830 --> 00:40:13,660
+So if I tell you that the expected value
+is positive, and the error bar is
+
+814
+00:40:13,660 --> 00:40:16,220
+small, then the chances are
+overwhelming that I will move
+
+815
+00:40:16,220 --> 00:40:19,010
+positively, and I would be putting my
+money in going in that direction.
+
+816
+00:40:19,010 --> 00:40:21,260
+If the error bar is huge,
+then I'm not so sure.
+
+817
+00:40:21,260 --> 00:40:23,750
+And I'm not sure it's worthwhile
+betting on it.
+
+818
+00:40:23,750 --> 00:40:27,340
+That's a good situation to be in.
+
+819
+00:40:27,340 --> 00:40:30,900
+And also, you can derive anything
+you can imagine.
+
+820
+00:40:30,900 --> 00:40:32,140
+You have a joint
+probability distribution.
+
+821
+00:40:32,140 --> 00:40:36,500
+You can really put any events, and you
+just plug in and collect the points
+
+822
+00:40:36,500 --> 00:40:37,770
+that constitute that event.
+
+823
+00:40:37,770 --> 00:40:41,730
+And you get the probability, and
+you have an answer for that.
+
+824
+00:40:41,730 --> 00:40:46,010
+Now, let me make a statement
+about the approach so far.
+
+825
+00:40:46,010 --> 00:40:51,065
+We have been struggling with VC bounds,
+and loose bounds, and then we have to
+
+826
+00:40:51,065 --> 00:40:54,450
+use regularization, and we use
+a heuristic for the regularizer.
+
+827
+00:40:54,450 --> 00:40:57,640
+And then we have to the set aside
+a validation set, and we wonder about the
+
+828
+00:40:57,640 --> 00:40:58,960
+independence of the cross-validation.
+
+829
+00:40:58,960 --> 00:41:01,600
+we really have a tough life.
+
+830
+00:41:01,600 --> 00:41:05,080
+So in this approach, it looks like
+they are doing much better.
+
+831
+00:41:05,080 --> 00:41:08,160
+All they need to do is plug in the
+quantities, and they get the answer.
+
+832
+00:41:08,160 --> 00:41:09,400
+And they know that the
+answer is correct.
+
+833
+00:41:09,400 --> 00:41:11,800
+They don't worry about
+any of the stuff.
+
+834
+00:41:11,800 --> 00:41:17,590
+So the way I think about
+it is the following.
+
+835
+00:41:17,590 --> 00:41:22,790
+When you are following this ideology,
+it's as if you want to have a good
+
+836
+00:41:22,790 --> 00:41:29,000
+life, and this is your approach
+to getting the good life.
+
+837
+00:41:29,000 --> 00:41:31,800
+First, you rob a bank.
+
+838
+00:41:31,800 --> 00:41:34,750
+
+
+839
+00:41:34,750 --> 00:41:39,200
+Then, you live righteously ever after.
+
+840
+00:41:39,200 --> 00:41:41,380
+Well, you can live righteously
+ever after.
+
+841
+00:41:41,380 --> 00:41:42,850
+You can afford it.
+
+842
+00:41:42,850 --> 00:41:45,160
+The other guys are struggling
+with this and that, with
+
+843
+00:41:45,160 --> 00:41:46,890
+regularization and whatnot.
+
+844
+00:41:46,890 --> 00:41:50,190
+The problem here obviously,
+is the first step.
+
+845
+00:41:50,190 --> 00:41:54,000
+And the first step here is
+sugarcoated greatly.
+
+846
+00:41:54,000 --> 00:41:55,390
+It's a benign prior.
+
+847
+00:41:55,390 --> 00:41:56,240
+It's just uniform.
+
+848
+00:41:56,240 --> 00:41:57,450
+We didn't do anything.
+
+849
+00:41:57,450 --> 00:42:00,340
+Because obviously, it's very
+attractive afterwards.
+
+850
+00:42:00,340 --> 00:42:03,690
+But you are standing on
+very shaky ground.
+
+851
+00:42:03,690 --> 00:42:08,480
+And you should ask yourself, when
+is this actually justified?
+
+852
+00:42:08,480 --> 00:42:12,070
+If you do it in general without any
+justification, then it's a nice
+
+853
+00:42:12,070 --> 00:42:15,650
+theory built on an assumption that
+doesn't necessarily hold.
+
+854
+00:42:15,650 --> 00:42:20,890
+On the other hand, it can be very
+valuable, and it can be justified in
+
+855
+00:42:20,890 --> 00:42:22,140
+basically two cases.
+
+856
+00:42:22,140 --> 00:42:24,690
+
+
+857
+00:42:24,690 --> 00:42:26,620
+One of them is that the
+prior is valid.
+
+858
+00:42:26,620 --> 00:42:29,450
+
+
+859
+00:42:29,450 --> 00:42:33,240
+And the other one is that
+the prior is irrelevant.
+
+860
+00:42:33,240 --> 00:42:34,230
+What do I mean?
+
+861
+00:42:34,230 --> 00:42:37,890
+Prior is valid is that for some reason
+that I really don't know, you put
+
+862
+00:42:37,890 --> 00:42:41,940
+a prior and this is, indeed, the
+probability that a particular
+
+863
+00:42:41,940 --> 00:42:43,550
+hypothesis equals the target function.
+
+864
+00:42:43,550 --> 00:42:44,500
+That is a fact.
+
+865
+00:42:44,500 --> 00:42:47,650
+In which case, I concede.
+
+866
+00:42:47,650 --> 00:42:50,720
+You are doing better than me, I can
+go with all my approximations, and
+
+867
+00:42:50,720 --> 00:42:51,710
+heuristics, and this and that.
+
+868
+00:42:51,710 --> 00:42:54,720
+And I'm not going to do nearly
+as good as you do.
+
+869
+00:42:54,720 --> 00:42:57,730
+So in this case, this trumps all
+the cases if you know that the
+
+870
+00:42:57,730 --> 00:42:59,380
+assumption is valid.
+
+871
+00:42:59,380 --> 00:43:02,920
+So if there are cases where the
+assumption is valid, I highly
+
+872
+00:43:02,920 --> 00:43:05,010
+recommend that you follow
+this approach.
+
+873
+00:43:05,010 --> 00:43:08,130
+It may be computationally expensive
+because for example, when you get
+
+874
+00:43:08,130 --> 00:43:10,310
+expected value with respect to the
+posterior in a high-dimensional space,
+
+875
+00:43:10,310 --> 00:43:11,840
+that's not an easy task.
+
+876
+00:43:11,840 --> 00:43:14,840
+On the other hand, since this is the
+ultimate performance, it may be worth
+
+877
+00:43:14,840 --> 00:43:16,300
+the effort.
+
+878
+00:43:16,300 --> 00:43:18,910
+"The prior is irrelevant" is
+a more interesting aspect.
+
+879
+00:43:18,910 --> 00:43:21,090
+The idea is the following.
+
+880
+00:43:21,090 --> 00:43:25,300
+When you put a prior, if you get more
+and more data and you look at the
+
+881
+00:43:25,300 --> 00:43:29,030
+posterior, you realize that the
+posterior is affected largely by the
+
+882
+00:43:29,030 --> 00:43:31,900
+data set, and less and
+less by the prior.
+
+883
+00:43:31,900 --> 00:43:35,040
+If you start from another prior and
+another prior and another prior, as
+
+884
+00:43:35,040 --> 00:43:36,140
+long as you don't take extremes.
+
+885
+00:43:36,140 --> 00:43:37,790
+You don't put it to zero
+at certain points.
+
+886
+00:43:37,790 --> 00:43:39,890
+You just get something reasonable.
+
+887
+00:43:39,890 --> 00:43:44,340
+It basically gets factored out, as
+you get more and more data.
+
+888
+00:43:44,340 --> 00:43:47,850
+And because of that, if you have enough
+data that the prior doesn't
+
+889
+00:43:47,850 --> 00:43:51,530
+matter, then you can think of the prior
+not as a conceptual addition.
+
+890
+00:43:51,530 --> 00:43:55,050
+It's just a catalyst for
+the computation.
+
+891
+00:43:55,050 --> 00:43:59,260
+And there is a particular approach to
+this where you think, let me pick
+
+892
+00:43:59,260 --> 00:44:02,530
+a prior just because of its
+analytic properties.
+
+893
+00:44:02,530 --> 00:44:06,930
+I have no reason whatsoever to believe
+that this is a valid prior.
+
+894
+00:44:06,930 --> 00:44:09,510
+But it happens to be that when I have
+this prior, and you give me a data
+
+895
+00:44:09,510 --> 00:44:13,680
+point and I compute the posterior,
+that computation is easy.
+
+896
+00:44:13,680 --> 00:44:17,100
+These are called conjugate priors, where
+you don't have to recompute the
+
+897
+00:44:17,100 --> 00:44:18,870
+posterior for the entire function.
+
+898
+00:44:18,870 --> 00:44:22,150
+You parameterize the thing, and you find
+that all you need to do is change
+
+899
+00:44:22,150 --> 00:44:24,410
+the parameters when you
+get new data points.
+
+900
+00:44:24,410 --> 00:44:28,040
+So this is completely valid if you are
+going to do is this enough that by the
+
+901
+00:44:28,040 --> 00:44:30,960
+time you arrive, it didn't matter
+what you started with.
+
+902
+00:44:30,960 --> 00:44:34,760
+Then what you are really doing, you
+are putting a system in your
+
+903
+00:44:34,760 --> 00:44:38,040
+computation such that you arrive at
+the correct result, and it doesn't
+
+904
+00:44:38,040 --> 00:44:41,290
+matter what your assumption was.
+
+905
+00:44:41,290 --> 00:44:43,350
+That's all I'm going to say.
+
+906
+00:44:43,350 --> 00:44:47,570
+So you can take a full of course on
+Bayesian learning, and the techniques
+
+907
+00:44:47,570 --> 00:44:48,960
+are really wonderful.
+
+908
+00:44:48,960 --> 00:44:52,230
+I'm not doubting any of that.
+
+909
+00:44:52,230 --> 00:44:55,920
+Just be careful where to apply them,
+because there is an assumption, and the
+
+910
+00:44:55,920 --> 00:44:59,860
+assumption is stronger than it
+seems to the uninitiated.
+
+911
+00:44:59,860 --> 00:45:04,160
+
+
+912
+00:45:04,160 --> 00:45:07,450
+Let's move to aggregation methods.
+
+913
+00:45:07,450 --> 00:45:10,610
+So I am talking about aggregation
+methods, as I mentioned, because they
+
+914
+00:45:10,610 --> 00:45:14,680
+are really useful and they are not
+that difficult to understand.
+
+915
+00:45:14,680 --> 00:45:17,810
+So I'll give you the big picture,
+and then you can pursue different
+
+916
+00:45:17,810 --> 00:45:18,690
+algorithms.
+
+917
+00:45:18,690 --> 00:45:20,770
+So first, what is aggregation?
+
+918
+00:45:20,770 --> 00:45:24,500
+It's a method that applies
+to all models, as we said.
+
+919
+00:45:24,500 --> 00:45:28,680
+The idea here is that you combine
+different solutions.
+
+920
+00:45:28,680 --> 00:45:32,510
+Let's say that I give a homework problem
+to the class that requires you
+
+921
+00:45:32,510 --> 00:45:34,220
+to develop machine learning--
+
+922
+00:45:34,220 --> 00:45:35,700
+you develop the machine
+learning algorithm.
+
+923
+00:45:35,700 --> 00:45:37,040
+You get a final hypothesis.
+
+924
+00:45:37,040 --> 00:45:39,060
+Everyone gets a final hypothesis.
+
+925
+00:45:39,060 --> 00:45:42,050
+And now I want to get the final
+hypothesis of each of you guys and put
+
+926
+00:45:42,050 --> 00:45:44,770
+them together, and combine
+them into a solution.
+
+927
+00:45:44,770 --> 00:45:47,220
+Hopefully better, because it got
+the wisdom of everybody here.
+
+928
+00:45:47,220 --> 00:45:50,330
+That is the idea.
+
+929
+00:45:50,330 --> 00:45:52,070
+So what you have, you have
+a bunch of hypotheses.
+
+930
+00:45:52,070 --> 00:45:54,760
+I would have called them g, as
+a final hypothesis, because
+
+931
+00:45:54,760 --> 00:45:55,620
+that's what they are.
+
+932
+00:45:55,620 --> 00:45:57,490
+They are the outcome
+from full training.
+
+933
+00:45:57,490 --> 00:46:00,850
+So each of them comes from training
+on the entire D, with certain
+
+934
+00:46:00,850 --> 00:46:02,220
+specifications.
+
+935
+00:46:02,220 --> 00:46:05,900
+But I'm still calling them h. Because
+I'm using aggregation, the final
+
+936
+00:46:05,900 --> 00:46:07,780
+hypothesis will really be
+a combination of those guys.
+
+937
+00:46:07,780 --> 00:46:12,350
+So they remain the h notation,
+not the final hypothesis.
+
+938
+00:46:12,350 --> 00:46:14,270
+The picture that goes with that--
+
+939
+00:46:14,270 --> 00:46:15,560
+
+
+940
+00:46:15,560 --> 00:46:17,350
+Here is the system that you got.
+
+941
+00:46:17,350 --> 00:46:20,570
+Here is the system that the guy
+next to you got, et cetera.
+
+942
+00:46:20,570 --> 00:46:21,850
+So I have all of those guys.
+
+943
+00:46:21,850 --> 00:46:24,860
+Now I want to put them together,
+and get one solution.
+
+944
+00:46:24,860 --> 00:46:26,620
+Very easy concept to have.
+
+945
+00:46:26,620 --> 00:46:28,990
+So one example is the
+example that I gave.
+
+946
+00:46:28,990 --> 00:46:31,950
+People already solved it, and I want
+to combine the solutions.
+
+947
+00:46:31,950 --> 00:46:34,140
+Another one is interesting, and
+is particularly interesting
+
+948
+00:46:34,140 --> 00:46:36,370
+for computer vision.
+
+949
+00:46:36,370 --> 00:46:41,580
+In many cases, let's say that
+you want detect a face.
+
+950
+00:46:41,580 --> 00:46:43,990
+Now, this is a very complicated task.
+
+951
+00:46:43,990 --> 00:46:49,530
+So you could do very simple detections
+that are related to being a face.
+
+952
+00:46:49,530 --> 00:46:52,850
+You can try to detect,
+is there an eye?
+
+953
+00:46:52,850 --> 00:46:57,560
+And you will get it right 51% of
+the time, 52% of the time.
+
+954
+00:46:57,560 --> 00:46:58,870
+Is there a nose?
+
+955
+00:46:58,870 --> 00:47:00,470
+Are the positions relative
+to each other?
+
+956
+00:47:00,470 --> 00:47:01,570
+Is the lighting consistent?
+
+957
+00:47:01,570 --> 00:47:04,450
+Whatever. Just put stuff,
+and it doesn't have to
+
+958
+00:47:04,450 --> 00:47:05,340
+have that great meaning.
+
+959
+00:47:05,340 --> 00:47:09,210
+You can just have simple masks that
+look at the picture, and extract
+
+960
+00:47:09,210 --> 00:47:12,190
+a feature that you think is
+related to being a face.
+
+961
+00:47:12,190 --> 00:47:15,210
+If you take any single feature, and you
+try to decide whether this is a face
+
+962
+00:47:15,210 --> 00:47:17,790
+based on it, you will do horribly.
+
+963
+00:47:17,790 --> 00:47:20,100
+The error will be huge.
+
+964
+00:47:20,100 --> 00:47:24,150
+Now, if you put them all together and
+think of them as different ways of
+
+965
+00:47:24,150 --> 00:47:27,380
+looking at it, and then you combine them
+correctly, then the decision all
+
+966
+00:47:27,380 --> 00:47:29,260
+of a sudden is reliable.
+
+967
+00:47:29,260 --> 00:47:36,960
+This is important in computer vision
+because in computer vision, the
+
+968
+00:47:36,960 --> 00:47:38,550
+computation is a big deal.
+
+969
+00:47:38,550 --> 00:47:41,920
+You need to do things quickly, because
+you are trying to be either real-time
+
+970
+00:47:41,920 --> 00:47:43,110
+or close to real-time.
+
+971
+00:47:43,110 --> 00:47:47,240
+So using very simple features, as they're
+called in this case, and then
+
+972
+00:47:47,240 --> 00:47:51,560
+combining them, then that is
+a good application for it.
+
+973
+00:47:51,560 --> 00:47:55,300
+So let's talk about
+what is combining.
+
+974
+00:47:55,300 --> 00:47:56,270
+Well, combining is very simple.
+
+975
+00:47:56,270 --> 00:47:57,480
+There are many ways of combining.
+
+976
+00:47:57,480 --> 00:47:59,860
+The most common is that if it's
+a regression problem, these are guys
+
+977
+00:47:59,860 --> 00:48:01,456
+giving you real numbers.
+
+978
+00:48:01,456 --> 00:48:02,706
+Take an average.
+
+979
+00:48:02,706 --> 00:48:05,170
+
+
+980
+00:48:05,170 --> 00:48:08,870
+If you are doing classification,
+so everybody is deciding yes
+
+981
+00:48:08,870 --> 00:48:12,230
+or no, take a vote.
+
+982
+00:48:12,230 --> 00:48:15,370
+Could be weighted average and weighted
+vote, but that's basically
+
+983
+00:48:15,370 --> 00:48:16,140
+the essence of it.
+
+984
+00:48:16,140 --> 00:48:18,910
+And there are other ways
+of combining them.
+
+985
+00:48:18,910 --> 00:48:20,880
+Now, there are many names
+for aggregation.
+
+986
+00:48:20,880 --> 00:48:24,050
+You can see it as ensemble learning.
+Boosting is definitely one of them.
+
+987
+00:48:24,050 --> 00:48:25,660
+Mixture of experts is another.
+
+988
+00:48:25,660 --> 00:48:29,930
+There are lots of methods that
+belong to that category.
+
+989
+00:48:29,930 --> 00:48:33,670
+Now, let me make the point that it is
+different to do aggregation than to
+
+990
+00:48:33,670 --> 00:48:36,120
+just do a two-layer learning.
+
+991
+00:48:36,120 --> 00:48:38,350
+What do I mean by that?
+
+992
+00:48:38,350 --> 00:48:39,500
+If you have a two-layer model--
+
+993
+00:48:39,500 --> 00:48:41,210
+so there are a bunch of
+features followed by--
+
+994
+00:48:41,210 --> 00:48:42,950
+you have seen that already,
+like a neural network.
+
+995
+00:48:42,950 --> 00:48:46,000
+Neurons in the hidden layer feeding
+into the output, and you
+
+996
+00:48:46,000 --> 00:48:48,530
+are trying to learn.
+
+997
+00:48:48,530 --> 00:48:49,550
+The learning is joint.
+
+998
+00:48:49,550 --> 00:48:51,050
+You learn all of the units at once.
+
+999
+00:48:51,050 --> 00:48:53,680
+So you look at this--
+let me magnify it.
+
+1000
+00:48:53,680 --> 00:48:56,880
+
+
+1001
+00:48:56,880 --> 00:48:58,280
+These are your units.
+
+1002
+00:48:58,280 --> 00:49:02,570
+What your learning algorithm does, it takes the
+data and simultaneously adjusts all of
+
+1003
+00:49:02,570 --> 00:49:04,480
+these guys, in order to get
+the right solution.
+
+1004
+00:49:04,480 --> 00:49:07,130
+This could be backpropagation,
+for example.
+
+1005
+00:49:07,130 --> 00:49:10,560
+And in that case, any one of them is
+not necessarily trying to replicate
+
+1006
+00:49:10,560 --> 00:49:12,170
+the function.
+
+1007
+00:49:12,170 --> 00:49:15,140
+It's just trying to contribute
+positively to the function.
+
+1008
+00:49:15,140 --> 00:49:18,490
+So at the final layer, you could
+be taking the difference between
+
+1009
+00:49:18,490 --> 00:49:19,190
+these two units.
+
+1010
+00:49:19,190 --> 00:49:22,340
+And that is the important thing that
+affects you in the output.
+
+1011
+00:49:22,340 --> 00:49:27,420
+So the guys here are not trying to get
+it right. They are just trying to be
+
+1012
+00:49:27,420 --> 00:49:30,530
+good soldiers and good
+features in that.
+
+1013
+00:49:30,530 --> 00:49:33,360
+And the reason you do that because you
+are doing it all at once, and you are
+
+1014
+00:49:33,360 --> 00:49:34,440
+trying to minimize the error.
+
+1015
+00:49:34,440 --> 00:49:36,660
+So whatever combination
+happens, happens.
+
+1016
+00:49:36,660 --> 00:49:40,350
+So this is what we have done before.
+
+1017
+00:49:40,350 --> 00:49:45,260
+Now, in the case of aggregation,
+the units learn independently.
+
+1018
+00:49:45,260 --> 00:49:47,930
+Each one learns as if it
+was the only unit.
+
+1019
+00:49:47,930 --> 00:49:50,770
+So you are actually trying to learn
+the function, and then
+
+1020
+00:49:50,770 --> 00:49:51,810
+you combine them.
+
+1021
+00:49:51,810 --> 00:49:54,480
+So you look at this picture.
+
+1022
+00:49:54,480 --> 00:49:57,970
+And in this case, the learning algorithm
+looks at one at a time.
+
+1023
+00:49:57,970 --> 00:50:00,710
+Maybe it's different learning algorithms,
+but at least it considers one at a time,
+
+1024
+00:50:00,710 --> 00:50:02,180
+and then gets you what that is.
+
+1025
+00:50:02,180 --> 00:50:04,590
+And this guy is actually trying
+to replicate the function.
+
+1026
+00:50:04,590 --> 00:50:07,730
+And this one is also trying to replicate
+the function, et cetera.
+
+1027
+00:50:07,730 --> 00:50:10,080
+And finally, when you have all of
+these guys that are trying to
+
+1028
+00:50:10,080 --> 00:50:12,520
+replicate the function, you combine
+them and you get the output.
+
+1029
+00:50:12,520 --> 00:50:13,770
+So that is the difference.
+
+1030
+00:50:13,770 --> 00:50:17,620
+
+
+1031
+00:50:17,620 --> 00:50:19,920
+Now, there are two types
+of aggregation.
+
+1032
+00:50:19,920 --> 00:50:24,540
+And I'm going to call them certain
+names for lack of a better word.
+
+1033
+00:50:24,540 --> 00:50:27,230
+But they are really different categories,
+and I wanted to emphasize
+
+1034
+00:50:27,230 --> 00:50:29,092
+this point.
+
+1035
+00:50:29,092 --> 00:50:32,330
+One of them I call "after the fact".
+
+1036
+00:50:32,330 --> 00:50:34,060
+What does that mean?
+
+1037
+00:50:34,060 --> 00:50:35,920
+It means that you already
+have solutions.
+
+1038
+00:50:35,920 --> 00:50:39,320
+
+
+1039
+00:50:39,320 --> 00:50:41,190
+Remember the Netflix guys?
+
+1040
+00:50:41,190 --> 00:50:44,160
+So you have the crowd-sourcing, and
+you let the problem out.
+
+1041
+00:50:44,160 --> 00:50:47,440
+Everybody tries hard, and
+then gets a solution.
+
+1042
+00:50:47,440 --> 00:50:49,370
+Now you would like to combine
+these solutions.
+
+1043
+00:50:49,370 --> 00:50:51,540
+These solutions exist.
+
+1044
+00:50:51,540 --> 00:50:55,240
+They were developed with a view
+to performance individually.
+
+1045
+00:50:55,240 --> 00:50:58,240
+Nobody was thinking about
+putting them together.
+
+1046
+00:50:58,240 --> 00:51:00,120
+If you are thinking about putting them
+together, you may have other
+
+1047
+00:51:00,120 --> 00:51:00,790
+considerations.
+
+1048
+00:51:00,790 --> 00:51:04,500
+For example, you may decide, this
+is going to go into a blend, which is
+
+1049
+00:51:04,500 --> 00:51:06,550
+the word that goes with it.
+
+1050
+00:51:06,550 --> 00:51:09,730
+And therefore, I'd better get something
+that is different from what the other
+
+1051
+00:51:09,730 --> 00:51:12,530
+guys are having, in order to
+be able to contribute.
+
+1052
+00:51:12,530 --> 00:51:14,010
+So there are other considerations.
+
+1053
+00:51:14,010 --> 00:51:17,660
+But in this case, you just get the
+solutions, and then you combine them.
+
+1054
+00:51:17,660 --> 00:51:19,480
+So that's one approach.
+
+1055
+00:51:19,480 --> 00:51:23,895
+The other one, which is the
+boosting approach, is--
+
+1056
+00:51:23,895 --> 00:51:26,900
+I'm calling it "before the fact" to
+contrast-- which is the fact that you
+
+1057
+00:51:26,900 --> 00:51:30,170
+are developing the solutions with
+a view to the fact that
+
+1058
+00:51:30,170 --> 00:51:32,320
+they will be blended.
+
+1059
+00:51:32,320 --> 00:51:35,840
+So you get one guy.
+
+1060
+00:51:35,840 --> 00:51:38,390
+And then when you go to the other guy,
+you are trying to develop a guy that
+
+1061
+00:51:38,390 --> 00:51:41,520
+will blend well with the
+first guy, et cetera.
+
+1062
+00:51:41,520 --> 00:51:44,930
+So you are not trying to get it to
+perform well in its own right.
+
+1063
+00:51:44,930 --> 00:51:48,190
+You are trying to make it
+a good part of a blend.
+
+1064
+00:51:48,190 --> 00:51:52,000
+And we saw an example of that in one
+of the Q&amp;A sessions, which was
+
+1065
+00:51:52,000 --> 00:51:53,180
+a question of Bagging.
+
+1066
+00:51:53,180 --> 00:51:56,500
+Where I give you the data set, and
+let's say that I want to give the
+
+1067
+00:51:56,500 --> 00:52:01,090
+class the problem, but I want
+to combine at the end.
+
+1068
+00:52:01,090 --> 00:52:03,050
+And they are going to
+work independently.
+
+1069
+00:52:03,050 --> 00:52:06,210
+So I want to do something to make sure
+that they are fairly independent.
+
+1070
+00:52:06,210 --> 00:52:12,730
+So what I do, I re-sample D, and give
+everybody a different sample from D--
+
+1071
+00:52:12,730 --> 00:52:14,110
+a bootstrap sample.
+
+1072
+00:52:14,110 --> 00:52:17,540
+So because of that, I introduce some
+independence in the information you
+
+1073
+00:52:17,540 --> 00:52:18,320
+are getting.
+
+1074
+00:52:18,320 --> 00:52:20,940
+So when you get something, I am hoping
+then when I put them together, I will
+
+1075
+00:52:20,940 --> 00:52:22,190
+get the benefit of that independence.
+
+1076
+00:52:22,190 --> 00:52:25,850
+
+
+1077
+00:52:25,850 --> 00:52:29,220
+So in this case, this is what I am
+doing for the case of bagging.
+
+1078
+00:52:29,220 --> 00:52:32,890
+I'm actually giving everyone of
+them a different data set.
+
+1079
+00:52:32,890 --> 00:52:35,510
+But it's independent from the other
+guys, and then I'm going to combine
+
+1080
+00:52:35,510 --> 00:52:36,760
+what they have.
+
+1081
+00:52:36,760 --> 00:52:39,980
+
+
+1082
+00:52:39,980 --> 00:52:43,940
+Now, this leads to the boosting
+algorithms, which are very successful
+
+1083
+00:52:43,940 --> 00:52:45,570
+algorithms.
+
+1084
+00:52:45,570 --> 00:52:50,380
+And the idea here is that instead of
+leaving the de-correlation to chance,
+
+1085
+00:52:50,380 --> 00:52:52,480
+I'm going to enforce it.
+
+1086
+00:52:52,480 --> 00:52:56,820
+So I am building one hypothesis,
+and the next one.
+
+1087
+00:52:56,820 --> 00:53:00,330
+And I am making sure that whatever I
+am getting in the new hypothesis is
+
+1088
+00:53:00,330 --> 00:53:03,660
+novel-- was not covered
+by the previous guys.
+
+1089
+00:53:03,660 --> 00:53:07,900
+That, obviously, improves my
+chances of getting a good mix.
+
+1090
+00:53:07,900 --> 00:53:11,210
+So what you do, you create the
+hypotheses sequentially.
+
+1091
+00:53:11,210 --> 00:53:12,940
+So you do one, two, three, four.
+
+1092
+00:53:12,940 --> 00:53:17,480
+And then, given the four that you have
+so far, what is the best fifth that I
+
+1093
+00:53:17,480 --> 00:53:20,440
+can add to the mix?
+
+1094
+00:53:20,440 --> 00:53:24,440
+And you make it good by making it
+de-correlated with the other guys.
+
+1095
+00:53:24,440 --> 00:53:26,350
+So the picture here is
+rather interesting.
+
+1096
+00:53:26,350 --> 00:53:29,540
+It's not quite independent,
+but it's not as bad as doing
+
+1097
+00:53:29,540 --> 00:53:31,360
+all of them at once.
+
+1098
+00:53:31,360 --> 00:53:32,610
+What you do--
+
+1099
+00:53:32,610 --> 00:53:36,640
+you have already done those, so
+this is a recursive procedure.
+
+1100
+00:53:36,640 --> 00:53:41,340
+Now, you read off from these and
+you realize how they perform.
+
+1101
+00:53:41,340 --> 00:53:44,820
+And based on that, you do something such
+that the data set you pass onto
+
+1102
+00:53:44,820 --> 00:53:48,530
+the new guy makes it develop something
+that is fairly independent from the
+
+1103
+00:53:48,530 --> 00:53:50,340
+previous guys.
+
+1104
+00:53:50,340 --> 00:53:53,810
+And now this is frozen, and
+it contributes here.
+
+1105
+00:53:53,810 --> 00:53:56,870
+And then, this guy is trying to be
+independent of all the previous guys.
+
+1106
+00:53:56,870 --> 00:53:59,980
+So every time you have one,
+you get something new.
+
+1107
+00:53:59,980 --> 00:54:02,390
+Therefore, by the time you put them
+in the mix, you get something
+
+1108
+00:54:02,390 --> 00:54:03,620
+interesting.
+
+1109
+00:54:03,620 --> 00:54:05,630
+So this is the idea.
+
+1110
+00:54:05,630 --> 00:54:12,860
+And the way to do the independence
+is rather interesting.
+
+1111
+00:54:12,860 --> 00:54:18,550
+Let's say that so far, I have
+60% correct and 40% wrong.
+
+1112
+00:54:18,550 --> 00:54:21,310
+That's what I have achieved
+using the first few guys.
+
+1113
+00:54:21,310 --> 00:54:23,580
+So when I put them together,
+that's what I get.
+
+1114
+00:54:23,580 --> 00:54:28,210
+60% and 40% means that 60% of the
+examples I got right, if it's
+
+1115
+00:54:28,210 --> 00:54:31,770
+classification, and 40% I got wrong.
+
+1116
+00:54:31,770 --> 00:54:36,980
+So here is an idea to make the new guy
+fairly independent of those guys.
+
+1117
+00:54:36,980 --> 00:54:41,360
+Let's say that I emphasize the
+guys that I did badly on.
+
+1118
+00:54:41,360 --> 00:54:43,430
+I give them bigger weights
+in the training.
+
+1119
+00:54:43,430 --> 00:54:48,980
+And de-emphasize the guys that I got
+right, such that as far as the new
+
+1120
+00:54:48,980 --> 00:54:52,630
+distribution is concerned-- the new
+emphasis I have-- it looks that what I
+
+1121
+00:54:52,630 --> 00:54:55,160
+have so far is 50/50.
+
+1122
+00:54:55,160 --> 00:54:56,800
+It's random.
+
+1123
+00:54:56,800 --> 00:54:59,530
+So what I have is not random,
+because it deals with the
+
+1124
+00:54:59,530 --> 00:55:00,870
+training set as it is.
+
+1125
+00:55:00,870 --> 00:55:04,340
+But if I give it different weights,
+and I ask myself, what is the
+
+1126
+00:55:04,340 --> 00:55:05,540
+weighted error now?
+
+1127
+00:55:05,540 --> 00:55:09,150
+And the weighted error is 50%, it means
+that as far as the previous
+
+1128
+00:55:09,150 --> 00:55:11,740
+guys are concerned, it's as
+if it's a random guess.
+
+1129
+00:55:11,740 --> 00:55:15,250
+So if I take that distribution and learn
+on it and get something better
+
+1130
+00:55:15,250 --> 00:55:19,310
+than 50%, then the new guy I
+am getting is adding value
+
+1131
+00:55:19,310 --> 00:55:20,260
+to what I had before.
+
+1132
+00:55:20,260 --> 00:55:21,840
+This is the general principle.
+
+1133
+00:55:21,840 --> 00:55:25,700
+And when you plug in this, you get
+a very specific algorithm.
+
+1134
+00:55:25,700 --> 00:55:29,560
+You do this recursively, and you get
+not only how you emphasize the
+
+1135
+00:55:29,560 --> 00:55:31,560
+examples given the old ones.
+
+1136
+00:55:31,560 --> 00:55:36,960
+You also derive the different
+weights of the mix.
+
+1137
+00:55:36,960 --> 00:55:40,130
+So some of the guys will be successful
+in training, and some of them will not
+
+1138
+00:55:40,130 --> 00:55:40,940
+be successful.
+
+1139
+00:55:40,940 --> 00:55:43,762
+And you are going to have weights
+according to that.
+
+1140
+00:55:43,762 --> 00:55:48,470
+The most famous algorithm here, which
+is a very specific prescription for
+
+1141
+00:55:48,470 --> 00:55:51,780
+how you do the emphasis, and how you do
+the weighting, is called adaptive
+
+1142
+00:55:51,780 --> 00:55:53,240
+boosting, AdaBoost.
+
+1143
+00:55:53,240 --> 00:55:58,330
+And it is the one that is used in the
+computer vision example that I gave.
+
+1144
+00:55:58,330 --> 00:56:04,590
+And indeed, in that case, what you are
+doing, instead of working with just
+
+1145
+00:56:04,590 --> 00:56:08,760
+error trying to make it 50/50, you are
+actually working with something
+
+1146
+00:56:08,760 --> 00:56:10,760
+similar to the margin
+that we had before.
+
+1147
+00:56:10,760 --> 00:56:14,410
+Remember, when we had support vector
+machines, we weren't settling
+
+1148
+00:56:14,410 --> 00:56:15,490
+for getting it right.
+
+1149
+00:56:15,490 --> 00:56:17,810
+We want to get it right with
+a margin of safety.
+
+1150
+00:56:17,810 --> 00:56:22,250
+So the AdaBoost algorithm defines
+a cost function that has to do with
+
+1151
+00:56:22,250 --> 00:56:27,080
+violation of a margin, and then tries
+to improve that margin as you go.
+
+1152
+00:56:27,080 --> 00:56:33,190
+And the weights, both for emphasizing
+the examples and for picking the
+
+1153
+00:56:33,190 --> 00:56:35,810
+combination of the hypotheses
+you have, are with a view to
+
+1154
+00:56:35,810 --> 00:56:37,480
+maximizing that margin.
+
+1155
+00:56:37,480 --> 00:56:39,585
+And it's a very successful
+algorithm in practice.
+
+1156
+00:56:39,585 --> 00:56:43,310
+
+
+1157
+00:56:43,310 --> 00:56:44,400
+Now let me,
+
+1158
+00:56:44,400 --> 00:56:46,700
+in the final technical slide,
+
+1159
+00:56:46,700 --> 00:56:51,190
+talk about blending after the fact
+because it was applied to Netflix with
+
+1160
+00:56:51,190 --> 00:56:51,730
+great success.
+
+1161
+00:56:51,730 --> 00:56:54,170
+And I want your attention because I'm
+going to give you a puzzle.
+
+1162
+00:56:54,170 --> 00:56:56,840
+Last puzzle of the course, I guess.
+
+1163
+00:56:56,840 --> 00:56:58,580
+Here is the deal.
+
+1164
+00:56:58,580 --> 00:57:00,780
+Now, I don't have the benefit of
+de-correlation or anything.
+
+1165
+00:57:00,780 --> 00:57:01,820
+I don't have a choice.
+
+1166
+00:57:01,820 --> 00:57:03,190
+I just give the data to people.
+
+1167
+00:57:03,190 --> 00:57:04,960
+They came up with solutions.
+
+1168
+00:57:04,960 --> 00:57:06,930
+And now, we want to put them together.
+
+1169
+00:57:06,930 --> 00:57:10,270
+Think of yourself in the last month
+of Netflix, and you want to win.
+
+1170
+00:57:10,270 --> 00:57:12,780
+The other teams are getting together,
+and getting good result.
+
+1171
+00:57:12,780 --> 00:57:14,470
+So you look for other guys
+that look promising.
+
+1172
+00:57:14,470 --> 00:57:15,610
+They have good solutions.
+
+1173
+00:57:15,610 --> 00:57:16,810
+They already have the solutions.
+
+1174
+00:57:16,810 --> 00:57:20,350
+You are not going to ask them, let's redo
+the whole thing with a view to de-correlation.
+
+1175
+00:57:20,350 --> 00:57:21,540
+There is no time.
+
+1176
+00:57:21,540 --> 00:57:23,720
+So what you want to do is, you want to
+take their solutions and put them
+
+1177
+00:57:23,720 --> 00:57:25,980
+together, and get the answer.
+
+1178
+00:57:25,980 --> 00:57:28,870
+So you want this and your plan
+is, let me do this.
+
+1179
+00:57:28,870 --> 00:57:29,970
+It's a regression problem.
+
+1180
+00:57:29,970 --> 00:57:31,650
+You are trying to get a rating.
+
+1181
+00:57:31,650 --> 00:57:35,270
+And therefore, what I'm going to do, I
+am going to combine the solutions that
+
+1182
+00:57:35,270 --> 00:57:37,270
+I have, using some coefficients
+
+1183
+00:57:37,270 --> 00:57:39,940
+from t equals 1 to T.
+And now my job is to
+
+1184
+00:57:39,940 --> 00:57:42,270
+pick the alpha's optimally.
+
+1185
+00:57:42,270 --> 00:57:46,640
+The best combination for the solution,
+so that I get a good performance.
+
+1186
+00:57:46,640 --> 00:57:51,570
+Now, you can think of this as a very
+simple training at a higher level.
+
+1187
+00:57:51,570 --> 00:57:56,040
+Now, you take the solutions as if they
+were the inputs and you are trying to
+
+1188
+00:57:56,040 --> 00:57:58,180
+predict the output, which
+is the same output.
+
+1189
+00:57:58,180 --> 00:58:01,570
+So what you are going to do, you are
+going to have a principled choice of
+
+1190
+00:58:01,570 --> 00:58:07,240
+alpha's, using now not a training set,
+not a test set, not a validation set,
+
+1191
+00:58:07,240 --> 00:58:09,620
+but an aggregation set.
+
+1192
+00:58:09,620 --> 00:58:12,230
+So you set aside some points
+that were not used in the
+
+1193
+00:58:12,230 --> 00:58:14,780
+development of these guys.
+
+1194
+00:58:14,780 --> 00:58:19,140
+And then you use those just to decide,
+what are the best coefficients you
+
+1195
+00:58:19,140 --> 00:58:23,930
+have for these solutions, such that the
+error on that aggregation set is the
+
+1196
+00:58:23,930 --> 00:58:25,670
+best possible?
+
+1197
+00:58:25,670 --> 00:58:30,200
+Now if you do this, if you use mean
+squared error, what will your
+
+1198
+00:58:30,200 --> 00:58:31,860
+algorithm be for choosing alpha's?
+
+1199
+00:58:31,860 --> 00:58:34,950
+It's the good old pseudo-inverse
+again.
+
+1200
+00:58:34,950 --> 00:58:36,620
+You do this and you minimize it.
+
+1201
+00:58:36,620 --> 00:58:39,960
+Now, it's important to realize here
+that I really need a clean set.
+
+1202
+00:58:39,960 --> 00:58:45,120
+If I use the training set that these
+guys used, then the guy that got the
+
+1203
+00:58:45,120 --> 00:58:48,970
+best training error will have
+a big weight.
+
+1204
+00:58:48,970 --> 00:58:52,400
+And obviously, that's a problem
+because we know that having
+
+1205
+00:58:52,400 --> 00:58:54,290
+a small training error is
+not indicated.
+
+1206
+00:58:54,290 --> 00:58:58,860
+But if these guys are frozen and I take
+a fresh set, and then I get the
+
+1207
+00:58:58,860 --> 00:59:01,630
+combination, it's completely valid.
+
+1208
+00:59:01,630 --> 00:59:05,890
+And then I get those guys,
+and get the solution.
+
+1209
+00:59:05,890 --> 00:59:07,370
+Now comes an interesting thing.
+
+1210
+00:59:07,370 --> 00:59:10,070
+Let's say that I do this in class,
+which I actually did.
+
+1211
+00:59:10,070 --> 00:59:16,150
+There was a time we had the Netflix
+data, and people would come
+
+1212
+00:59:16,150 --> 00:59:17,990
+up with solutions with
+a view to aggregation.
+
+1213
+00:59:17,990 --> 00:59:21,500
+That's when the competition
+was still alive.
+
+1214
+00:59:21,500 --> 00:59:23,560
+So people came up with a solution.
+
+1215
+00:59:23,560 --> 00:59:25,940
+Now I want to combine them.
+
+1216
+00:59:25,940 --> 00:59:28,280
+So, imagine you work on this.
+
+1217
+00:59:28,280 --> 00:59:29,200
+You have your solution.
+
+1218
+00:59:29,200 --> 00:59:31,220
+Your solution is supposed
+to predict the rating.
+
+1219
+00:59:31,220 --> 00:59:32,760
+And the other guy is
+predicting the rating.
+
+1220
+00:59:32,760 --> 00:59:34,750
+And then I am putting them in.
+
+1221
+00:59:34,750 --> 00:59:40,400
+So you think, maybe the guy that
+has a big alpha has a good solution,
+
+1222
+00:59:40,400 --> 00:59:44,230
+because its solution is affecting
+the output a lot.
+
+1223
+00:59:44,230 --> 00:59:48,060
+Now, can you imagine what happens
+if your alpha is negative?
+
+1224
+00:59:48,060 --> 00:59:51,290
+
+
+1225
+00:59:51,290 --> 00:59:52,510
+You worked hard.
+
+1226
+00:59:52,510 --> 00:59:54,490
+You got a solution.
+
+1227
+00:59:54,490 --> 00:59:58,280
+And then when you put that solution
+together with the best solutions, the
+
+1228
+00:59:58,280 --> 01:00:01,810
+best possible outcome we can
+get is by subtracting your
+
+1229
+01:00:01,810 --> 01:00:05,680
+solution from the total.
+
+1230
+01:00:05,680 --> 01:00:07,800
+That was completely
+devastating to people.
+
+1231
+01:00:07,800 --> 01:00:12,960
+But please, don't lose your
+self-esteem because of this.
+
+1232
+01:00:12,960 --> 01:00:15,980
+The size of the weights is not the
+criterion, or the sign of the weights
+
+1233
+01:00:15,980 --> 01:00:20,540
+is not the criterion for your
+solution being valuable.
+
+1234
+01:00:20,540 --> 01:00:24,670
+Because it could be that you are so
+correlated with other solutions, that
+
+1235
+01:00:24,670 --> 01:00:27,840
+what the system is trying to do is
+trying to combine those in order to
+
+1236
+01:00:27,840 --> 01:00:31,250
+get the signal part right,
+and eliminate the noise.
+
+1237
+01:00:31,250 --> 01:00:33,805
+So depending on the noise in your
+solution, you could be negative.
+
+1238
+01:00:33,805 --> 01:00:35,670
+You are contributing to that mix.
+
+1239
+01:00:35,670 --> 01:00:39,630
+So although it looks on face value
+that negative-- oh my god.
+
+1240
+01:00:39,630 --> 01:00:42,940
+If I did nothing, I would've gotten
+a weight 0 and now I have--
+
+1241
+01:00:42,940 --> 01:00:44,380
+no, that's not the case.
+
+1242
+01:00:44,380 --> 01:00:51,510
+So the question is, how do you evaluate
+which of those solutions is
+
+1243
+01:00:51,510 --> 01:00:53,530
+the most valuable in the blend?
+
+1244
+01:00:53,530 --> 01:00:56,990
+I had that practical problem, because
+I wanted to reward people.
+
+1245
+01:00:56,990 --> 01:00:58,290
+And I don't want people--
+
+1246
+01:00:58,290 --> 01:01:01,460
+when I give this problem,
+everybody's trying to do the same
+
+1247
+01:01:01,460 --> 01:01:03,910
+thing, because it gives them
+the best performance.
+
+1248
+01:01:03,910 --> 01:01:07,190
+So I would like to reward someone who
+did something adventurous, and
+
+1249
+01:01:07,190 --> 01:01:09,180
+therefore got a different angle on it.
+
+1250
+01:01:09,180 --> 01:01:11,760
+And therefore, contributed
+to the blend.
+
+1251
+01:01:11,760 --> 01:01:14,420
+Whereas the other guys are all doing the
+same thing, everybody will get
+
+1252
+01:01:14,420 --> 01:01:16,620
+a small share so it's not a big deal.
+
+1253
+01:01:16,620 --> 01:01:19,010
+So I wanted to have an objective
+criterion for doing that.
+
+1254
+01:01:19,010 --> 01:01:22,090
+What would you do in order
+to evaluate that?
+
+1255
+01:01:22,090 --> 01:01:25,810
+
+
+1256
+01:01:25,810 --> 01:01:30,120
+By the way, this actually was used in the
+competition as well when, eventually
+
+1257
+01:01:30,120 --> 01:01:35,420
+there was one team that decided
+to have an open announcement.
+
+1258
+01:01:35,420 --> 01:01:37,150
+Anybody can join.
+
+1259
+01:01:37,150 --> 01:01:40,630
+Give us your solution, and we
+will see how useful it is.
+
+1260
+01:01:40,630 --> 01:01:44,560
+And then we'll give you stocks in the
+prize according to how much you
+
+1261
+01:01:44,560 --> 01:01:46,680
+contributed.
+
+1262
+01:01:46,680 --> 01:01:51,570
+And actually, that team ended up in
+second place, so it's not a bad idea.
+
+1263
+01:01:51,570 --> 01:01:54,680
+So the idea here is that if you really
+want to know the value of a particular
+
+1264
+01:01:54,680 --> 01:01:57,250
+hypothesis, here's what you do.
+
+1265
+01:01:57,250 --> 01:01:59,510
+You take it out.
+
+1266
+01:01:59,510 --> 01:02:02,300
+You evaluate all, without
+your solution.
+
+1267
+01:02:02,300 --> 01:02:04,080
+You get a performance.
+
+1268
+01:02:04,080 --> 01:02:08,590
+And then evaluate with your solution,
+and you get another performance.
+
+1269
+01:02:08,590 --> 01:02:12,570
+The difference is the contribution
+of your solution.
+
+1270
+01:02:12,570 --> 01:02:15,400
+So one of the ramifications of that
+is that if two people are doing
+
+1271
+01:02:15,400 --> 01:02:21,480
+identically the same thing, then
+obviously each of them is useless.
+
+1272
+01:02:21,480 --> 01:02:24,970
+Because when you take it out, the
+other guy will hold the day.
+
+1273
+01:02:24,970 --> 01:02:28,260
+But those guys who did something
+completely fringy--
+
+1274
+01:02:28,260 --> 01:02:29,570
+I ask you, what is your performance?
+
+1275
+01:02:29,570 --> 01:02:30,655
+Oh, I got 6%.
+
+1276
+01:02:30,655 --> 01:02:32,450
+Towards 10%.
+
+1277
+01:02:32,450 --> 01:02:33,820
+And what is your performance?
+
+1278
+01:02:33,820 --> 01:02:36,150
+I got only 3 and 1/2 %
+
+1279
+01:02:36,150 --> 01:02:39,130
+But then when I look at their
+contribution to the final thing, when
+
+1280
+01:02:39,130 --> 01:02:42,440
+I put them together I get a total
+performance, let's say, of 8%.
+
+1281
+01:02:42,440 --> 01:02:46,590
+If I take the 3 and 1/2 % out, the
+8% drops to 7 and 1/2 %.
+
+1282
+01:02:46,590 --> 01:02:48,640
+So they contributed half a percent.
+
+1283
+01:02:48,640 --> 01:02:52,620
+If I take the guy who had 6% and take it
+out, the 8% percent goes to 7.95%.
+
+1284
+01:02:52,620 --> 01:02:54,310
+Who cares?
+
+1285
+01:02:54,310 --> 01:02:57,190
+So this was the way in order to be
+able to reward your actual
+
+1286
+01:02:57,190 --> 01:03:00,790
+contribution to a mix.
+
+1287
+01:03:00,790 --> 01:03:06,040
+Now, there will be no Q&amp;A session
+today, but I will be happy to answer
+
+1288
+01:03:06,040 --> 01:03:07,970
+questions on the forum.
+
+1289
+01:03:07,970 --> 01:03:11,970
+What I'm going to do now, I am going to
+do acknowledgements for people who
+
+1290
+01:03:11,970 --> 01:03:16,800
+contributed to the course, before
+I close on a personal note.
+
+1291
+01:03:16,800 --> 01:03:20,590
+The first acknowledgment goes to
+my colleagues, Professor Malik
+
+1292
+01:03:20,590 --> 01:03:22,930
+Magdon-Ismail and Professor
+Hsuan-Tien Lin.
+
+1293
+01:03:22,930 --> 01:03:25,690
+
+
+1294
+01:03:25,690 --> 01:03:30,000
+All I can say is that they are as
+responsible for the content of this
+
+1295
+01:03:30,000 --> 01:03:32,370
+course as I am.
+
+1296
+01:03:32,370 --> 01:03:35,120
+Enough said.
+
+1297
+01:03:35,120 --> 01:03:37,730
+Now, I'd like to acknowledge
+the course staff.
+
+1298
+01:03:37,730 --> 01:03:39,130
+There are many people who helped.
+
+1299
+01:03:39,130 --> 01:03:41,460
+I am singling out the people
+who contributed the most.
+
+1300
+01:03:41,460 --> 01:03:44,280
+
+
+1301
+01:03:44,280 --> 01:03:49,680
+Carlos, Ron, Costis, and Doris have
+contributed to everything you can
+
+1302
+01:03:49,680 --> 01:03:51,400
+imagine about the course.
+
+1303
+01:03:51,400 --> 01:03:56,610
+From suggestions about the format, even
+getting the right slide system,
+
+1304
+01:03:56,610 --> 01:04:00,970
+designing the homework, writing the
+registration and online system from
+
+1305
+01:04:00,970 --> 01:04:03,430
+scratch, everything you can imagine.
+
+1306
+01:04:03,430 --> 01:04:06,990
+And they filled in to other tasks when
+it was needed, and they ended up
+
+1307
+01:04:06,990 --> 01:04:11,560
+working far more than
+they are paid for!
+
+1308
+01:04:11,560 --> 01:04:13,230
+So I'm really grateful to them.
+
+1309
+01:04:13,230 --> 01:04:18,220
+And the head TA, who is Carlos,
+happens to be familiar to you.
+
+1310
+01:04:18,220 --> 01:04:20,410
+You heard his voice in every lecture.
+
+1311
+01:04:20,410 --> 01:04:22,680
+He's the voice of the Q&amp;A session.
+
+1312
+01:04:22,680 --> 01:04:25,630
+And I suspect that people are curious
+to see what the guy looks like.
+
+1313
+01:04:25,630 --> 01:04:27,150
+They heard his voice.
+
+1314
+01:04:27,150 --> 01:04:29,900
+So let me ask Carlos to come
+to the podium and say hello
+
+1315
+01:04:29,900 --> 01:04:32,590
+to the online audience.
+
+1316
+01:04:32,590 --> 01:04:36,590
+[APPLAUSE]
+
+1317
+01:04:36,590 --> 01:04:38,000
+YASER ABU-MOSTAFA: So here's Carlos.
+
+1318
+01:04:38,000 --> 01:04:38,010
+
+
+1319
+01:04:38,010 --> 01:04:40,790
+CARLOS GONZALEZ: Hi! You know
+my voice. Now, you know my face.
+
+1320
+01:04:40,790 --> 01:04:43,540
+YASER ABU-MOSTAFA: OK, you are exempt
+from the Q&amp;A session today.
+
+1321
+01:04:43,540 --> 01:04:44,120
+Fair enough?
+
+1322
+01:04:44,120 --> 01:04:45,250
+Thank you so much.
+
+1323
+01:04:45,250 --> 01:04:47,150
+CARLOS GONZALEZ: It's an honor
+to work with Yaser.
+
+1324
+01:04:47,150 --> 01:04:48,440
+It's really great to work with him.
+
+1325
+01:04:48,440 --> 01:04:49,649
+So thank you, Yaser.
+
+1326
+01:04:49,649 --> 01:04:50,647
+YASER ABU-MOSTAFA: Thank you.
+
+1327
+01:04:50,647 --> 01:04:51,146
+Very good.
+
+1328
+01:04:51,146 --> 01:04:51,645
+Thank you.
+
+1329
+01:04:51,645 --> 01:04:55,140
+[APPLAUSE]
+
+1330
+01:04:55,140 --> 01:04:56,490
+YASER ABU-MOSTAFA: OK.
+
+1331
+01:04:56,490 --> 01:05:03,680
+Now, most of the people have seen this
+course, and everybody after that will
+
+1332
+01:05:03,680 --> 01:05:06,310
+see this course, through the tapes.
+
+1333
+01:05:06,310 --> 01:05:12,040
+And the medium that resulted in
+those tapes are the AMT staff.
+
+1334
+01:05:12,040 --> 01:05:14,080
+Leslie Maxfield being the director.
+
+1335
+01:05:14,080 --> 01:05:18,270
+And I would like to acknowledge
+them in very passionate terms.
+
+1336
+01:05:18,270 --> 01:05:20,030
+They have done an enormous job.
+
+1337
+01:05:20,030 --> 01:05:22,560
+It was great amount of work for them.
+
+1338
+01:05:22,560 --> 01:05:25,220
+And they are all here, obviously
+with the cameras and that.
+
+1339
+01:05:25,220 --> 01:05:28,720
+And I'm really grateful
+to their contribution.
+
+1340
+01:05:28,720 --> 01:05:34,950
+I'm also grateful to the computing
+support staff, and Rich in particular.
+
+1341
+01:05:34,950 --> 01:05:38,250
+Not only because of providing the
+infrastructure for having this course,
+
+1342
+01:05:38,250 --> 01:05:41,730
+but also for supporting the idea of the
+course very early, before we even
+
+1343
+01:05:41,730 --> 01:05:42,780
+raised the money.
+
+1344
+01:05:42,780 --> 01:05:44,340
+So we had a head start on this.
+
+1345
+01:05:44,340 --> 01:05:46,550
+And we started talking to
+people and doing that.
+
+1346
+01:05:46,550 --> 01:05:48,300
+And we weren't sure even
+that it will happen.
+
+1347
+01:05:48,300 --> 01:05:50,840
+So I appreciate the fact that there was
+confidence that this might be
+
+1348
+01:05:50,840 --> 01:05:53,600
+a good idea, in order to put
+that to begin with.
+
+1349
+01:05:53,600 --> 01:05:57,010
+
+
+1350
+01:05:57,010 --> 01:06:00,080
+Now, this course cost money.
+
+1351
+01:06:00,080 --> 01:06:04,380
+And I was insistent, and Caltech was
+insistent, that this will be
+
+1352
+01:06:04,380 --> 01:06:07,000
+perpetuity free for everyone.
+
+1353
+01:06:07,000 --> 01:06:08,550
+That was the whole idea.
+
+1354
+01:06:08,550 --> 01:06:13,030
+We wanted to give a Caltech-quality
+course to anybody who has the
+
+1355
+01:06:13,030 --> 01:06:17,840
+discipline to follow such course,
+without costing them a penny.
+
+1356
+01:06:17,840 --> 01:06:19,070
+And we succeeded in that.
+
+1357
+01:06:19,070 --> 01:06:21,990
+And in order to succeed in that,
+you actually need the money.
+
+1358
+01:06:21,990 --> 01:06:24,930
+If we didn't raise the money, this
+would not have happened.
+
+1359
+01:06:24,930 --> 01:06:27,440
+And I'd like to acknowledge the sources
+of the money, and the people
+
+1360
+01:06:27,440 --> 01:06:29,760
+who drove the money raising.
+
+1361
+01:06:29,760 --> 01:06:34,030
+The Information Science and Technology
+Initiative, the Engineering and
+
+1362
+01:06:34,030 --> 01:06:37,420
+Applied Science Division, and
+the Provost's Office.
+
+1363
+01:06:37,420 --> 01:06:40,710
+Mathieu, in particular, took the
+lead in raising the money,
+
+1364
+01:06:40,710 --> 01:06:41,645
+in getting the publicity--
+
+1365
+01:06:41,645 --> 01:06:46,310
+He just took an interest in this,
+and was incredibly invaluable in
+
+1366
+01:06:46,310 --> 01:06:47,890
+getting this going.
+
+1367
+01:06:47,890 --> 01:06:52,420
+And at the Division, both Ares and Mani
+were very helpful and supportive.
+
+1368
+01:06:52,420 --> 01:06:55,960
+And believe me, if you do something that
+intensive, you need the support
+
+1369
+01:06:55,960 --> 01:06:56,630
+of everybody.
+
+1370
+01:06:56,630 --> 01:06:58,860
+Otherwise, you lose heart
+in the middle.
+
+1371
+01:06:58,860 --> 01:07:02,190
+And that was very instrumental
+in getting this going.
+
+1372
+01:07:02,190 --> 01:07:06,740
+And at the Provost's Office, both Ed and
+Melany reached for the educational
+
+1373
+01:07:06,740 --> 01:07:09,710
+funds and got the money, so we didn't
+have to worry about it.
+
+1374
+01:07:09,710 --> 01:07:13,730
+So it's not only financial support, it's
+also moral support and confidence
+
+1375
+01:07:13,730 --> 01:07:16,420
+that this will be something good.
+
+1376
+01:07:16,420 --> 01:07:21,190
+Now, there are many people that I will
+have forgotten to acknowledge, so I'm
+
+1377
+01:07:21,190 --> 01:07:23,110
+going to give a general
+acknowledgment.
+
+1378
+01:07:23,110 --> 01:07:26,790
+And I apologize for any particular
+person that contributed and I forgot
+
+1379
+01:07:26,790 --> 01:07:31,270
+to give them their due reward.
+
+1380
+01:07:31,270 --> 01:07:35,630
+The TA's, other than the ones I
+mentioned, have contributed greatly
+
+1381
+01:07:35,630 --> 01:07:42,390
+and they took a load off my agenda by
+answering questions to the students,
+
+1382
+01:07:42,390 --> 01:07:44,760
+and taking care of the homework.
+
+1383
+01:07:44,760 --> 01:07:48,140
+And there are many staff members, at
+the division level and at the
+
+1384
+01:07:48,140 --> 01:07:51,520
+departmental level, who helped
+in all kinds of ways.
+
+1385
+01:07:51,520 --> 01:07:53,900
+The Caltech alumni were
+absolutely great.
+
+1386
+01:07:53,900 --> 01:07:57,720
+I got an incredible support from the
+Caltech alumni who are genuinely
+
+1387
+01:07:57,720 --> 01:07:59,840
+a family, spread around the world.
+
+1388
+01:07:59,840 --> 01:08:04,120
+And the Alumni Association, that helped get
+the word out, was very instrumental in
+
+1389
+01:08:04,120 --> 01:08:06,460
+getting the publicity right.
+
+1390
+01:08:06,460 --> 01:08:11,860
+And I had incredible support from
+colleagues all over the world.
+
+1391
+01:08:11,860 --> 01:08:18,100
+I usually don't like my email because
+70% is spam and 20% are scams, and
+
+1392
+01:08:18,100 --> 01:08:20,050
+then 10% are relevant.
+
+1393
+01:08:20,050 --> 01:08:24,189
+But it was worth going through all of
+this, in order to hear the wonderful
+
+1394
+01:08:24,189 --> 01:08:29,130
+words of support that I'm getting from
+the four corners of the world.
+
+1395
+01:08:29,130 --> 01:08:35,630
+Now on a personal note, allow me to
+dedicate the course to the best friend
+
+1396
+01:08:35,630 --> 01:08:37,600
+I have ever had.
+
+1397
+01:08:37,600 --> 01:08:41,890
+Well, I learned a lot from her,
+and learning is precious.
+
+1398
+01:08:41,890 --> 01:08:45,910
+And my hope is that this course
+was a positive learning
+
+1399
+01:08:45,910 --> 01:08:48,729
+experience for everyone.
+
+1400
+01:08:48,729 --> 01:08:54,170
+And in particular, I thank my Caltech
+students for really putting up with
+
+1401
+01:08:54,170 --> 01:08:58,840
+the inconvenience of cameras,
+regimented lecture format, and
+
+1402
+01:08:58,840 --> 01:09:01,890
+whatnot, in order to share
+this learning experience
+
+1403
+01:09:01,890 --> 01:09:03,500
+with the whole world.
+
+1404
+01:09:03,500 --> 01:09:04,300
+Thank you.
+
+1405
+01:09:04,300 --> 01:09:05,550
+[APPLAUSE]
+
+1406
+01:09:05,550 --> 01:09:27,734
+

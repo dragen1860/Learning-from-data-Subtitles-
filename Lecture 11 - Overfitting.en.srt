@@ -1,0 +1,8488 @@
+1
+00:00:00,000 --> 00:00:00,610
+
+
+2
+00:00:00,610 --> 00:00:03,270
+ANNOUNCER: The following program
+is brought to you by Caltech.
+
+3
+00:00:03,270 --> 00:00:15,320
+
+
+4
+00:00:15,320 --> 00:00:18,470
+YASER ABU-MOSTAFA: Welcome back.
+
+5
+00:00:18,470 --> 00:00:23,610
+Last time, we introduced neural
+networks, and we started with
+
+6
+00:00:23,610 --> 00:00:28,530
+multilayer perceptrons, and the idea
+is to combine perceptrons using
+
+7
+00:00:28,530 --> 00:00:33,030
+logical operations like OR's and AND's, in
+order to be able to implement more
+
+8
+00:00:33,030 --> 00:00:37,570
+sophisticated boundaries than the
+simple linear boundary of
+
+9
+00:00:37,570 --> 00:00:38,670
+a perceptron.
+
+10
+00:00:38,670 --> 00:00:43,840
+And we took a final example, where we
+were trying to implement a circle
+
+11
+00:00:43,840 --> 00:00:46,520
+boundary in this case, and
+we realized that we
+
+12
+00:00:46,520 --> 00:00:48,080
+can actually do this--
+
+13
+00:00:48,080 --> 00:00:49,590
+at least approximate it--
+
+14
+00:00:49,590 --> 00:00:52,330
+if we have a sufficient
+number of perceptrons.
+
+15
+00:00:52,330 --> 00:00:55,790
+And we convinced ourselves that combining
+perceptrons in a layered
+
+16
+00:00:55,790 --> 00:01:00,370
+fashion will be able to implement
+more interesting functionalities.
+
+17
+00:01:00,370 --> 00:01:04,019
+And then we faced the simple problem
+that, even for a single perceptron,
+
+18
+00:01:04,019 --> 00:01:07,900
+when the data is not linearly separable,
+the optimization--
+
+19
+00:01:07,900 --> 00:01:09,810
+finding the boundary based on data--
+
+20
+00:01:09,810 --> 00:01:11,960
+is a pretty difficult optimization
+problem.
+
+21
+00:01:11,960 --> 00:01:13,820
+It's combinatorial optimization.
+
+22
+00:01:13,820 --> 00:01:19,220
+And therefore, it is next to hopeless
+to try to do that for a network of
+
+23
+00:01:19,220 --> 00:01:20,560
+perceptrons.
+
+24
+00:01:20,560 --> 00:01:24,560
+And therefore, we introduced neural
+networks that came in as a way of
+
+25
+00:01:24,560 --> 00:01:28,740
+having a nice algorithm for multilayer
+perceptrons, by simply softening the
+
+26
+00:01:28,740 --> 00:01:30,790
+threshold.
+
+27
+00:01:30,790 --> 00:01:33,790
+Instead of having it as just going from
+-1 to +1, it would go
+
+28
+00:01:33,790 --> 00:01:37,870
+from -1 to +1 gradually
+using a sigmoid function, in
+
+29
+00:01:37,870 --> 00:01:39,720
+this case the tanh.
+
+30
+00:01:39,720 --> 00:01:42,270
+And if the signal which is
+given by this amount--
+
+31
+00:01:42,270 --> 00:01:44,770
+the usual signal that goes
+into the perceptron--
+
+32
+00:01:44,770 --> 00:01:47,020
+is large, large negative
+or large positive,
+
+33
+00:01:47,020 --> 00:01:49,080
+the tanh approximates -1 or +1.
+
+34
+00:01:49,080 --> 00:01:51,490
+So we get the decision
+function we want.
+
+35
+00:01:51,490 --> 00:01:54,970
+And if s is very small, this is almost
+linear-- tanh(s) is linear.
+
+36
+00:01:54,970 --> 00:01:58,440
+And the most important aspect about it
+is that it's differentiable-- it's a smooth
+
+37
+00:01:58,440 --> 00:02:03,530
+function, and therefore the dependency
+of the error in the output on the
+
+38
+00:02:03,530 --> 00:02:08,400
+parameters w_ij will be a well-behaved
+function, for which we can
+
+39
+00:02:08,400 --> 00:02:10,900
+apply things like gradient descent.
+
+40
+00:02:10,900 --> 00:02:13,590
+And the neural network
+looks like this.
+
+41
+00:02:13,590 --> 00:02:17,540
+It starts with the input, followed by
+a bunch of hidden layers, followed
+
+42
+00:02:17,540 --> 00:02:18,870
+by the output layer.
+
+43
+00:02:18,870 --> 00:02:22,560
+And we spent some time trying to argue
+about the function of the hidden
+
+44
+00:02:22,560 --> 00:02:27,590
+layers, and how they transform the
+inputs into a particularly useful
+
+45
+00:02:27,590 --> 00:02:30,900
+nonlinear transformation, as far as
+implementing the output is concerned,
+
+46
+00:02:30,900 --> 00:02:32,930
+and the question of interpretation.
+
+47
+00:02:32,930 --> 00:02:36,610
+And then we introduced the
+backpropagation algorithm, which is
+
+48
+00:02:36,610 --> 00:02:39,520
+applying stochastic gradient descent
+to neural networks.
+
+49
+00:02:39,520 --> 00:02:43,500
+Very simply, it decides on the direction
+along every coordinate in
+
+50
+00:02:43,500 --> 00:02:47,680
+the w space, using the very simple
+rule of gradient descent.
+
+51
+00:02:47,680 --> 00:02:49,970
+And in this case, you only
+need two quantities.
+
+52
+00:02:49,970 --> 00:02:53,550
+One of them is x_i, that was implemented
+using this formula, the
+
+53
+00:02:53,550 --> 00:02:57,960
+forward formula, so to speak, going from
+layer l minus 1 to layer l.
+
+54
+00:02:57,960 --> 00:03:00,980
+And then there is another quantity
+that we defined, which was called
+
+55
+00:03:00,980 --> 00:03:02,990
+delta, that is computed backwards.
+
+56
+00:03:02,990 --> 00:03:06,700
+You start from layer l, and then
+go to layer l minus 1.
+
+57
+00:03:06,700 --> 00:03:11,160
+And the formula is strikingly similar
+to the formula in the forward thing,
+
+58
+00:03:11,160 --> 00:03:13,000
+but instead of the nonlinearity
+being applied,
+
+59
+00:03:13,000 --> 00:03:15,100
+you multiply by something.
+
+60
+00:03:15,100 --> 00:03:19,710
+And once you get all the delta's and x's
+by a forward and a backward run,
+
+61
+00:03:19,710 --> 00:03:24,830
+then you simply can decide on the move
+in every weight, according to this very
+
+62
+00:03:24,830 --> 00:03:27,450
+simple formula that involves
+the x's and the delta's.
+
+63
+00:03:27,450 --> 00:03:31,040
+And the simplicity of the
+backpropagation algorithm, and its
+
+64
+00:03:31,040 --> 00:03:36,300
+efficiency, are the reasons why neural
+networks have become very popular as
+
+65
+00:03:36,300 --> 00:03:40,560
+a standard tool of implementing functions
+that need machine learning
+
+66
+00:03:40,560 --> 00:03:43,380
+in industry, for quite some time now.
+
+67
+00:03:43,380 --> 00:03:46,580
+Today, I'm going to start
+a completely new topic.
+
+68
+00:03:46,580 --> 00:03:50,770
+It's called overfitting, and it will
+take us three full lectures to cover
+
+69
+00:03:50,770 --> 00:03:54,110
+overfitting and the techniques
+that go with it.
+
+70
+00:03:54,110 --> 00:03:57,510
+And the techniques are very important,
+because they apply to almost any
+
+71
+00:03:57,510 --> 00:04:00,410
+machine learning problem that
+you're going to see.
+
+72
+00:04:00,410 --> 00:04:05,295
+And they are applied on top of any
+algorithm or model you use.
+
+73
+00:04:05,295 --> 00:04:08,410
+So you can use neural networks
+or linear models, et cetera.
+
+74
+00:04:08,410 --> 00:04:11,970
+But the techniques that we're going to
+use here, which are regularization and
+
+75
+00:04:11,970 --> 00:04:14,420
+validation, apply to all
+of these models.
+
+76
+00:04:14,420 --> 00:04:17,740
+So this is another layer of techniques
+for machine learning.
+
+77
+00:04:17,740 --> 00:04:21,990
+And overfitting is a very important topic.
+
+78
+00:04:21,990 --> 00:04:27,440
+It is fair to say that
+the ability to deal with overfitting is
+
+79
+00:04:27,440 --> 00:04:31,870
+what separates professionals from
+amateurs in machine learning.
+
+80
+00:04:31,870 --> 00:04:35,640
+Everybody can fit, but if you know what
+overfitting is, and how to deal
+
+81
+00:04:35,640 --> 00:04:38,510
+with it, then you have an edge that
+someone who doesn't know the
+
+82
+00:04:38,510 --> 00:04:42,440
+fundamentals would not be
+able to comprehend.
+
+83
+00:04:42,440 --> 00:04:45,140
+So the outline today is, first, we are
+going to start-- what is the notion?
+
+84
+00:04:45,140 --> 00:04:46,810
+what is overfitting?
+
+85
+00:04:46,810 --> 00:04:49,310
+And then we are going to identify
+the main culprit for
+
+86
+00:04:49,310 --> 00:04:51,550
+overfitting, which is noise.
+
+87
+00:04:51,550 --> 00:04:57,350
+And after observing some experiments, we
+will realize that noise covers more
+
+88
+00:04:57,350 --> 00:04:58,580
+territory than we thought.
+
+89
+00:04:58,580 --> 00:05:01,070
+There's actually another type of noise,
+which we are going to call
+
+90
+00:05:01,070 --> 00:05:01,970
+deterministic noise.
+
+91
+00:05:01,970 --> 00:05:05,480
+It's a novel notion that is very
+important for overfitting in machine
+
+92
+00:05:05,480 --> 00:05:08,080
+learning, and we're going to
+talk about it a little bit.
+
+93
+00:05:08,080 --> 00:05:11,080
+And then, very briefly, I'm going to
+give you a glimpse into the next two
+
+94
+00:05:11,080 --> 00:05:14,340
+lectures by telling you how
+to deal with overfitting.
+
+95
+00:05:14,340 --> 00:05:17,530
+And then we will be ready,
+
+96
+00:05:17,530 --> 00:05:20,490
+having diagnosed what the problem
+is, to go for the cures--
+
+97
+00:05:20,490 --> 00:05:24,520
+regularization next time, and validation
+the time after that.
+
+98
+00:05:24,520 --> 00:05:26,260
+OK.
+
+99
+00:05:26,260 --> 00:05:31,650
+Let's start by illustrating the
+situation where overfitting occurs.
+
+100
+00:05:31,650 --> 00:05:34,850
+So let's say we have a simple
+target function.
+
+101
+00:05:34,850 --> 00:05:35,640
+
+
+102
+00:05:35,640 --> 00:05:40,640
+Let's take it to be a 2nd-order
+target function, a parabola.
+
+103
+00:05:40,640 --> 00:05:42,550
+So my input space is the real numbers.
+
+104
+00:05:42,550 --> 00:05:44,960
+I have only a scalar input x.
+
+105
+00:05:44,960 --> 00:05:49,560
+And there's a value y, and I have
+this target that is 2nd-order.
+
+106
+00:05:49,560 --> 00:05:50,810
+
+
+107
+00:05:50,810 --> 00:05:52,710
+
+
+108
+00:05:52,710 --> 00:05:56,180
+We are going to generate five data
+points from that target, in order to
+
+109
+00:05:56,180 --> 00:05:56,820
+learn from.
+
+110
+00:05:56,820 --> 00:05:58,320
+This is an illustration.
+
+111
+00:05:58,320 --> 00:06:02,370
+Let's look at the five data points.
+
+112
+00:06:02,370 --> 00:06:06,450
+As you see, the data points look like
+they belong to the curve, but they
+
+113
+00:06:06,450 --> 00:06:08,350
+don't seem to belong perfectly
+to the curve.
+
+114
+00:06:08,350 --> 00:06:11,570
+So there must be noise, right?
+
+115
+00:06:11,570 --> 00:06:14,530
+This is a noisy case, where
+the target itself--
+
+116
+00:06:14,530 --> 00:06:17,790
+the deterministic part of the target
+is a function, and then
+
+117
+00:06:17,790 --> 00:06:18,750
+there is added noise.
+
+118
+00:06:18,750 --> 00:06:21,960
+It's not a lot of noise, obviously--
+very small amount.
+
+119
+00:06:21,960 --> 00:06:24,550
+But nonetheless, it will
+affect the outcome.
+
+120
+00:06:24,550 --> 00:06:25,100
+
+
+121
+00:06:25,100 --> 00:06:30,430
+So we do have a noisy
+target in this case.
+
+122
+00:06:30,430 --> 00:06:35,000
+Now, if I just told you that you have
+five points, which is the case you
+
+123
+00:06:35,000 --> 00:06:36,540
+face when you learn.
+
+124
+00:06:36,540 --> 00:06:39,740
+The target disappears, I have five
+points, and you want to fit them.
+
+125
+00:06:39,740 --> 00:06:40,380
+
+
+126
+00:06:40,380 --> 00:06:43,350
+Going back to your math, you realize,
+I want to fit five points.
+
+127
+00:06:43,350 --> 00:06:47,865
+Maybe I should use-- a 4th-order
+polynomial will do it, right?
+
+128
+00:06:47,865 --> 00:06:48,940
+You have five parameters.
+
+129
+00:06:48,940 --> 00:06:51,240
+So let's fit it with
+4th-order polynomial.
+
+130
+00:06:51,240 --> 00:06:51,900
+
+
+131
+00:06:51,900 --> 00:06:53,810
+This is the guy who doesn't know
+machine learning, by the way.
+
+132
+00:06:53,810 --> 00:06:54,540
+
+
+133
+00:06:54,540 --> 00:06:57,950
+So I say, I'm going to use
+the 4th-order polynomial.
+
+134
+00:06:57,950 --> 00:07:02,040
+And what will the fit look like?
+
+135
+00:07:02,040 --> 00:07:05,570
+Perfect fit, in sample.
+
+136
+00:07:05,570 --> 00:07:06,860
+
+
+137
+00:07:06,860 --> 00:07:08,920
+And you measure your quantities.
+
+138
+00:07:08,920 --> 00:07:10,680
+The first quantity is E_in.
+
+139
+00:07:10,680 --> 00:07:11,660
+Success!
+
+140
+00:07:11,660 --> 00:07:13,890
+We achieved zero training error.
+
+141
+00:07:13,890 --> 00:07:19,280
+And then when you go for the
+out-of-sample, you are comparing the red
+
+142
+00:07:19,280 --> 00:07:22,410
+curve to the blue curve, and
+the news is not good.
+
+143
+00:07:22,410 --> 00:07:24,790
+I'm not even going to calculate
+it, it's just huge.
+
+144
+00:07:24,790 --> 00:07:26,240
+
+
+145
+00:07:26,240 --> 00:07:30,050
+This is a familiar situation
+for us, and we know what the deal is.
+
+146
+00:07:30,050 --> 00:07:36,550
+The point I want to make here is that,
+when you say overfitting, overfitting
+
+147
+00:07:36,550 --> 00:07:37,725
+is a comparative term.
+
+148
+00:07:37,725 --> 00:07:40,160
+It must be that one situation
+is worse than another.
+
+149
+00:07:40,160 --> 00:07:41,660
+You went further than you should.
+
+150
+00:07:41,660 --> 00:07:42,610
+
+
+151
+00:07:42,610 --> 00:07:45,520
+And there is a distinction between
+overfitting, and just bad
+
+152
+00:07:45,520 --> 00:07:46,860
+generalization.
+
+153
+00:07:46,860 --> 00:07:49,540
+So the reason I'm calling this
+overfitting is because, if you use,
+
+154
+00:07:49,540 --> 00:07:54,160
+let's say, 3rd-order polynomial, you
+will not be able to achieve zero
+
+155
+00:07:54,160 --> 00:07:56,600
+training error, in general.
+
+156
+00:07:56,600 --> 00:07:58,410
+But you will get a better E_out.
+
+157
+00:07:58,410 --> 00:07:58,980
+
+
+158
+00:07:58,980 --> 00:08:02,490
+Therefore, the overfitting here happened
+by using the 4th-order
+
+159
+00:08:02,490 --> 00:08:04,220
+instead of the 3rd-order.
+
+160
+00:08:04,220 --> 00:08:05,380
+You went further.
+
+161
+00:08:05,380 --> 00:08:05,600
+
+
+162
+00:08:05,600 --> 00:08:06,780
+That's the key.
+
+163
+00:08:06,780 --> 00:08:12,140
+And that point is made even more clearly,
+when you talk about neural
+
+164
+00:08:12,140 --> 00:08:15,960
+networks and overfitting
+within the same model.
+
+165
+00:08:15,960 --> 00:08:18,890
+In the case of overfitting with
+3rd-order polynomial versus 4th-order
+
+166
+00:08:18,890 --> 00:08:21,150
+polynomial, you are comparing
+two models.
+
+167
+00:08:21,150 --> 00:08:24,350
+Here, I'm going to take just neural
+networks, and I'll show you how
+
+168
+00:08:24,350 --> 00:08:28,000
+overfitting can occur within
+the same model.
+
+169
+00:08:28,000 --> 00:08:29,250
+
+
+170
+00:08:29,250 --> 00:08:32,130
+So let's say we have a neural network,
+and it is fitting noisy data.
+
+171
+00:08:32,130 --> 00:08:33,460
+That's a typical situation.
+
+172
+00:08:33,460 --> 00:08:37,370
+So you run your backpropagation
+algorithm with a number of epochs, and
+
+173
+00:08:37,370 --> 00:08:41,120
+you plot what happens to E_in,
+and you get this curve.
+
+174
+00:08:41,120 --> 00:08:42,980
+
+
+175
+00:08:42,980 --> 00:08:44,140
+Can you see this curve at all?
+
+176
+00:08:44,140 --> 00:08:47,690
+Let me try to magnify it, hoping
+that it will become clearer.
+
+177
+00:08:47,690 --> 00:08:49,112
+
+
+178
+00:08:49,112 --> 00:08:50,060
+
+
+179
+00:08:50,060 --> 00:08:51,120
+A little bit better.
+
+180
+00:08:51,120 --> 00:08:51,910
+
+
+181
+00:08:51,910 --> 00:08:54,670
+This is the number of epochs.
+
+182
+00:08:54,670 --> 00:08:58,260
+You start from an initial condition,
+a random vector.
+
+183
+00:08:58,260 --> 00:09:03,990
+And then you run stochastic gradient
+descent, and evaluate the total E_in
+
+184
+00:09:03,990 --> 00:09:06,030
+at the end of every epoch,
+and you plot it.
+
+185
+00:09:06,030 --> 00:09:07,110
+And it goes down.
+
+186
+00:09:07,110 --> 00:09:08,010
+It doesn't go to zero.
+
+187
+00:09:08,010 --> 00:09:10,310
+The data is noisy.
+
+188
+00:09:10,310 --> 00:09:12,950
+You don't have enough parameters
+to fit it perfectly.
+
+189
+00:09:12,950 --> 00:09:17,360
+But this looks like a typical situation,
+where E_in goes down.
+
+190
+00:09:17,360 --> 00:09:18,620
+
+
+191
+00:09:18,620 --> 00:09:22,740
+Now, because this is an experiment, you
+have set aside a test set that you
+
+192
+00:09:22,740 --> 00:09:24,610
+did not use in training.
+
+193
+00:09:24,610 --> 00:09:27,310
+And what you are going to do, you are
+going to take this test set and
+
+194
+00:09:27,310 --> 00:09:29,260
+evaluate what happens out-of-sample.
+
+195
+00:09:29,260 --> 00:09:31,730
+Not only at the end, but as you go.
+
+196
+00:09:31,730 --> 00:09:35,910
+Just to see, as I train, am I making
+progress out-of-sample or not?
+
+197
+00:09:35,910 --> 00:09:38,560
+You're definitely making
+progress in-sample.
+
+198
+00:09:38,560 --> 00:09:41,870
+So you plot the out-of-sample,
+and this is what you get.
+
+199
+00:09:41,870 --> 00:09:44,780
+So this is estimated by a test set.
+
+200
+00:09:44,780 --> 00:09:46,030
+
+
+201
+00:09:46,030 --> 00:09:49,710
+Now, there are many things you can say
+about this curve, and one of them is,
+
+202
+00:09:49,710 --> 00:09:54,790
+in the beginning when you start
+with a random w, in spite
+
+203
+00:09:54,790 --> 00:09:57,490
+of the fact that you're using a full
+neural network, when you evaluate on
+
+204
+00:09:57,490 --> 00:09:59,990
+this point, you have only one
+hypothesis that does not
+
+205
+00:09:59,990 --> 00:10:01,100
+depend on the data set.
+
+206
+00:10:01,100 --> 00:10:03,400
+This is the random w that you got.
+
+207
+00:10:03,400 --> 00:10:07,970
+So it's not a surprise that E_in and E_out
+are about the same value here.
+
+208
+00:10:07,970 --> 00:10:08,220
+
+
+209
+00:10:08,220 --> 00:10:11,070
+Because they are floating around.
+
+210
+00:10:11,070 --> 00:10:15,490
+As you go down the road, and start
+exploring the weight space by going
+
+211
+00:10:15,490 --> 00:10:19,800
+from one iteration to the next, you're
+exploring more and more of the space
+
+212
+00:10:19,800 --> 00:10:20,730
+of weights.
+
+213
+00:10:20,730 --> 00:10:25,770
+So you are getting the benefit, or the
+harm, of having the full neural
+
+214
+00:10:25,770 --> 00:10:27,580
+network model, gradually.
+
+215
+00:10:27,580 --> 00:10:28,150
+
+
+216
+00:10:28,150 --> 00:10:30,490
+In the beginning here, you are only
+exploring a small part of
+
+217
+00:10:30,490 --> 00:10:31,970
+the space.
+
+218
+00:10:31,970 --> 00:10:34,990
+So if you can think of an effective
+VC dimension as you go, if you
+
+219
+00:10:34,990 --> 00:10:38,000
+can define that, then there is
+an effective VC dimension that is
+
+220
+00:10:38,000 --> 00:10:40,680
+growing with time until it gets--
+
+221
+00:10:40,680 --> 00:10:43,050
+after you have explored the whole
+space, or at least potentially
+
+222
+00:10:43,050 --> 00:10:45,790
+explored the whole space, if you
+had different data sets--
+
+223
+00:10:45,790 --> 00:10:51,000
+then you have the effective VC
+dimension, will be the total number of
+
+224
+00:10:51,000 --> 00:10:53,210
+free parameters in the model.
+
+225
+00:10:53,210 --> 00:10:56,290
+So the generalization error, which is
+the difference between the red and
+
+226
+00:10:56,290 --> 00:10:58,450
+green curve, is getting
+worse and worse.
+
+227
+00:10:58,450 --> 00:10:59,630
+That's not a surprise.
+
+228
+00:10:59,630 --> 00:11:00,340
+
+
+229
+00:11:00,340 --> 00:11:03,930
+But there is a point, which is
+an important point here, which happens
+
+230
+00:11:03,930 --> 00:11:04,460
+around here.
+
+231
+00:11:04,460 --> 00:11:08,080
+Let me now shrink this back, now that
+you know where the curves are.
+
+232
+00:11:08,080 --> 00:11:09,270
+
+
+233
+00:11:09,270 --> 00:11:13,570
+And let's look at where
+overfitting occurs.
+
+234
+00:11:13,570 --> 00:11:19,300
+Overfitting occurs when you knock down
+E_in, so you get a smaller E_in,
+
+235
+00:11:19,300 --> 00:11:22,260
+but E_out goes up.
+
+236
+00:11:22,260 --> 00:11:23,250
+
+
+237
+00:11:23,250 --> 00:11:27,060
+If you look at these curves, you will
+realize that this is happening
+
+238
+00:11:27,060 --> 00:11:29,370
+around here.
+
+239
+00:11:29,370 --> 00:11:33,080
+Now there is very little, in terms of the
+difference of generalization error,
+
+240
+00:11:33,080 --> 00:11:35,705
+before the blue line and
+after the blue line.
+
+241
+00:11:35,705 --> 00:11:39,470
+Yet I am making a specific distinction,
+that crossing this boundary went into
+
+242
+00:11:39,470 --> 00:11:40,110
+overfitting.
+
+243
+00:11:40,110 --> 00:11:42,020
+Why is that?
+
+244
+00:11:42,020 --> 00:11:47,540
+Because up till here, I can always
+reduce the E_in, and in spite of the
+
+245
+00:11:47,540 --> 00:11:52,870
+fact that E_out is following suit with
+very diminishing returns, it's still
+
+246
+00:11:52,870 --> 00:11:56,210
+a good idea to minimize E_in.
+
+247
+00:11:56,210 --> 00:11:59,110
+Because you are getting smaller E_out.
+
+248
+00:11:59,110 --> 00:12:02,250
+The problems happen when you cross,
+because now you think you're doing
+
+249
+00:12:02,250 --> 00:12:06,150
+well, you are reducing E_in, and you are
+actually harming the performance.
+
+250
+00:12:06,150 --> 00:12:08,590
+That's what needs to be taken care of.
+
+251
+00:12:08,590 --> 00:12:09,050
+
+
+252
+00:12:09,050 --> 00:12:10,930
+So that's where overfitting occurs.
+
+253
+00:12:10,930 --> 00:12:14,790
+In this situation, it might be a very
+good idea to be able to detect when
+
+254
+00:12:14,790 --> 00:12:20,010
+this happens, and simply stop at that
+point and report that, instead of
+
+255
+00:12:20,010 --> 00:12:22,920
+reporting the final hypothesis
+you will get after all
+
+256
+00:12:22,920 --> 00:12:24,220
+the iterations, right?
+
+257
+00:12:24,220 --> 00:12:27,610
+Because in this case, you're going to get
+this E_out instead of that E_out,
+
+258
+00:12:27,610 --> 00:12:28,650
+which is better.
+
+259
+00:12:28,650 --> 00:12:32,520
+And indeed, the algorithm that goes with
+that is called early stopping.
+
+260
+00:12:32,520 --> 00:12:33,140
+
+
+261
+00:12:33,140 --> 00:12:34,960
+And it will be based on validation.
+
+262
+00:12:34,960 --> 00:12:38,520
+And although it's based on validation,
+it really is a regularization, in
+
+263
+00:12:38,520 --> 00:12:40,210
+terms of putting the brakes.
+
+264
+00:12:40,210 --> 00:12:41,000
+
+
+265
+00:12:41,000 --> 00:12:44,380
+So now we can see the relative
+aspect of overfitting.
+
+266
+00:12:44,380 --> 00:12:47,620
+And overfitting can happen when you compare
+two things, whether the two
+
+267
+00:12:47,620 --> 00:12:52,380
+things are two different models, or two
+instances within the same model.
+
+268
+00:12:52,380 --> 00:12:57,610
+And we look at this and say that if
+there is overfitting, we'd better be
+
+269
+00:12:57,610 --> 00:13:01,580
+able to detect it, in order to stop
+earlier than we would otherwise,
+
+270
+00:13:01,580 --> 00:13:03,460
+because otherwise we will
+be harming ourselves.
+
+271
+00:13:03,460 --> 00:13:06,380
+So this is the main story.
+
+272
+00:13:06,380 --> 00:13:07,290
+
+
+273
+00:13:07,290 --> 00:13:10,380
+Now let's look at what is overfitting
+as a definition, and what
+
+274
+00:13:10,380 --> 00:13:13,690
+is the culprit for it.
+
+275
+00:13:13,690 --> 00:13:17,370
+Overfitting, as a criterion,
+is the following.
+
+276
+00:13:17,370 --> 00:13:20,396
+It's fitting the data more
+than is warranted.
+
+277
+00:13:20,396 --> 00:13:21,070
+
+
+278
+00:13:21,070 --> 00:13:22,340
+And this is a little bit strange.
+
+279
+00:13:22,340 --> 00:13:24,820
+What would be more than is warranted?
+
+280
+00:13:24,820 --> 00:13:26,170
+I mean, we are in machine learning.
+
+281
+00:13:26,170 --> 00:13:27,540
+We are the business of fitting data.
+
+282
+00:13:27,540 --> 00:13:28,490
+So I can fit the data.
+
+283
+00:13:28,490 --> 00:13:29,190
+I keep fitting it.
+
+284
+00:13:29,190 --> 00:13:32,120
+But there comes a point, where
+this is no longer good.
+
+285
+00:13:32,120 --> 00:13:32,610
+
+
+286
+00:13:32,610 --> 00:13:34,040
+Why does this happen?
+
+287
+00:13:34,040 --> 00:13:35,720
+What is the culprit?
+
+288
+00:13:35,720 --> 00:13:41,770
+The culprit, in this case, is that you're
+actually fitting the noise.
+
+289
+00:13:41,770 --> 00:13:46,170
+The data has noise in it, and you are
+trying to look at the finite sample
+
+290
+00:13:46,170 --> 00:13:48,890
+set that you got, and you're
+trying to get it right.
+
+291
+00:13:48,890 --> 00:13:53,910
+In trying to get it right, you are
+inadvertently fitting the noise.
+
+292
+00:13:53,910 --> 00:13:54,220
+
+
+293
+00:13:54,220 --> 00:13:55,400
+This is understood.
+
+294
+00:13:55,400 --> 00:13:59,930
+I can see that this is not good.
+
+295
+00:13:59,930 --> 00:14:01,880
+At least, it's not useful at all.
+
+296
+00:14:01,880 --> 00:14:05,560
+Fitting the noise, there's no pattern to
+detect in the noise, so fitting the
+
+297
+00:14:05,560 --> 00:14:07,890
+noise cannot possibly
+help me out-of-sample.
+
+298
+00:14:07,890 --> 00:14:09,270
+
+
+299
+00:14:09,270 --> 00:14:14,180
+However, if it was only just useless,
+we would be OK.
+
+300
+00:14:14,180 --> 00:14:15,530
+We wouldn't be having this lecture.
+
+301
+00:14:15,530 --> 00:14:19,300
+Because you think, I give
+the data, the data has the
+
+302
+00:14:19,300 --> 00:14:21,290
+signal and the noise.
+
+303
+00:14:21,290 --> 00:14:22,760
+I cannot distinguish between them.
+
+304
+00:14:22,760 --> 00:14:26,370
+I just get x and get y.
+y has a component which is a signal, and
+
+305
+00:14:26,370 --> 00:14:29,330
+a component which is noise, but I get just
+one number. I cannot distinguish
+
+306
+00:14:29,330 --> 00:14:30,240
+between the two.
+
+307
+00:14:30,240 --> 00:14:31,770
+And I am fitting them.
+
+308
+00:14:31,770 --> 00:14:34,450
+And now I'm going to fit the noise.
+
+309
+00:14:34,450 --> 00:14:35,660
+Let's look at it this way.
+
+310
+00:14:35,660 --> 00:14:36,820
+I'm in the business of fitting.
+
+311
+00:14:36,820 --> 00:14:38,230
+I cannot distinguish the two.
+
+312
+00:14:38,230 --> 00:14:40,940
+Fitting the noise is the
+cost of doing business.
+
+313
+00:14:40,940 --> 00:14:45,290
+If it's just useless, I wasted some
+effort, but nothing bad happened.
+
+314
+00:14:45,290 --> 00:14:45,910
+
+
+315
+00:14:45,910 --> 00:14:49,820
+The problem really is
+that it's harmful.
+
+316
+00:14:49,820 --> 00:14:52,285
+It's not a question of being useless,
+and that's a big difference.
+
+317
+00:14:52,285 --> 00:14:53,150
+
+
+318
+00:14:53,150 --> 00:14:55,240
+Because machine learning
+is machine learning.
+
+319
+00:14:55,240 --> 00:14:59,680
+If you fit the noise in-sample, the
+learning algorithm gets a pattern.
+
+320
+00:14:59,680 --> 00:15:03,640
+It imagines a pattern, and extrapolates
+that out-of-sample.
+
+321
+00:15:03,640 --> 00:15:04,100
+
+
+322
+00:15:04,100 --> 00:15:07,290
+So based on the noise, it gives you something
+out-of-sample and tells you this is
+
+323
+00:15:07,290 --> 00:15:09,780
+the pattern in the data, obviously,
+which it isn't.
+
+324
+00:15:09,780 --> 00:15:12,820
+And that will obviously worsen your
+out-of-sample, because it's taking you
+
+325
+00:15:12,820 --> 00:15:14,580
+away from the correct solution.
+
+326
+00:15:14,580 --> 00:15:15,190
+
+
+327
+00:15:15,190 --> 00:15:17,370
+So you can think of the learning
+algorithm in this case, when
+
+328
+00:15:17,370 --> 00:15:19,000
+detecting a pattern that doesn't exist,
+
+329
+00:15:19,000 --> 00:15:21,570
+the learning algorithm is hallucinating.
+
+330
+00:15:21,570 --> 00:15:24,570
+Oh, there's a great pattern, and this is
+what it looks like, and it reports
+
+331
+00:15:24,570 --> 00:15:28,350
+it, and eventually, obviously that
+imaginary thing ends up hurting the
+
+332
+00:15:28,350 --> 00:15:29,770
+performance.
+
+333
+00:15:29,770 --> 00:15:32,560
+
+
+334
+00:15:32,560 --> 00:15:34,770
+So let's look at a case study.
+
+335
+00:15:34,770 --> 00:15:39,140
+And the main reason for the case study,
+because we vaguely now understand
+
+336
+00:15:39,140 --> 00:15:42,830
+that it's a problem of the noise, so
+let's see how does the noise affect
+
+337
+00:15:42,830 --> 00:15:43,610
+the situation?
+
+338
+00:15:43,610 --> 00:15:45,330
+Can we get overfitting without noise?
+
+339
+00:15:45,330 --> 00:15:45,970
+What is the deal?
+
+340
+00:15:45,970 --> 00:15:49,690
+So I'm going to give you
+a specific case.
+
+341
+00:15:49,690 --> 00:15:51,860
+I'm going to start with
+a 10th-order target.
+
+342
+00:15:51,860 --> 00:15:53,610
+10th-order target means
+10th-order polynomial.
+
+343
+00:15:53,610 --> 00:15:58,290
+I'm always working on
+the real numbers.
+
+344
+00:15:58,290 --> 00:16:01,850
+The input is a scalar, and I'm
+defining polynomials based on that,
+
+345
+00:16:01,850 --> 00:16:04,020
+and I'm going to take
+10th-order target.
+
+346
+00:16:04,020 --> 00:16:04,780
+
+
+347
+00:16:04,780 --> 00:16:07,260
+The 10th-order target, one
+of them looks like this.
+
+348
+00:16:07,260 --> 00:16:09,740
+You choose the coefficient somehow,
+and you get something like that.
+
+349
+00:16:09,740 --> 00:16:12,010
+A fairly elaborate thing.
+
+350
+00:16:12,010 --> 00:16:19,480
+And then you generate data, and the data
+will be noisy, because we want to
+
+351
+00:16:19,480 --> 00:16:21,400
+investigate the impact of
+noise on overfitting.
+
+352
+00:16:21,400 --> 00:16:25,990
+Let's say I'm going to generate
+15 data points in this case.
+
+353
+00:16:25,990 --> 00:16:28,270
+So this is what you get.
+
+354
+00:16:28,270 --> 00:16:29,470
+Let's look at these points.
+
+355
+00:16:29,470 --> 00:16:31,980
+The noise here is not trivial
+as it was last time.
+
+356
+00:16:31,980 --> 00:16:32,690
+
+
+357
+00:16:32,690 --> 00:16:36,000
+There's a difference. Obviously,
+these are not lying on the curve.
+
+358
+00:16:36,000 --> 00:16:38,110
+So there is a noise that is
+contributing to that.
+
+359
+00:16:38,110 --> 00:16:39,360
+
+
+360
+00:16:39,360 --> 00:16:41,700
+
+
+361
+00:16:41,700 --> 00:16:43,180
+Now the other guy,
+
+362
+00:16:43,180 --> 00:16:46,270
+which is a 50th order,
+
+363
+00:16:46,270 --> 00:16:47,800
+is noiseless.
+
+364
+00:16:47,800 --> 00:16:51,050
+That is, I'm going to generate
+a 50th-order polynomial, so it's
+
+365
+00:16:51,050 --> 00:16:55,520
+obviously much more elaborate than the
+blue curve here, but I'm not going to
+
+366
+00:16:55,520 --> 00:16:56,330
+add noise to it.
+
+367
+00:16:56,330 --> 00:17:00,340
+I'm going to generate also 15 points
+from this guy, but the 15 points, as
+
+368
+00:17:00,340 --> 00:17:04,040
+you will see, perfectly
+lie on the curve.
+
+369
+00:17:04,040 --> 00:17:04,970
+This is all of them here.
+
+370
+00:17:04,970 --> 00:17:06,800
+So this is the data, this
+is the target, and the
+
+371
+00:17:06,800 --> 00:17:08,020
+data lies on the target.
+
+372
+00:17:08,020 --> 00:17:08,598
+
+
+373
+00:17:08,598 --> 00:17:09,950
+These are two interesting cases.
+
+374
+00:17:09,950 --> 00:17:13,210
+One of them is a simple
+target, so to speak.
+
+375
+00:17:13,210 --> 00:17:15,640
+Added noise, that makes it complicated.
+
+376
+00:17:15,640 --> 00:17:17,400
+This one is complicated
+in a different way.
+
+377
+00:17:17,400 --> 00:17:20,300
+It's a high-order target to begin
+with, but there is no noise.
+
+378
+00:17:20,300 --> 00:17:21,160
+
+
+379
+00:17:21,160 --> 00:17:23,848
+These are the two cases that I'm
+going to try to investigate
+
+380
+00:17:23,848 --> 00:17:25,098
+overfitting in.
+
+381
+00:17:25,098 --> 00:17:28,069
+
+
+382
+00:17:28,069 --> 00:17:30,810
+We are going to have two different
+fits for each target.
+
+383
+00:17:30,810 --> 00:17:32,680
+We are in the business of overfitting.
+
+384
+00:17:32,680 --> 00:17:34,370
+We have to have comparative models.
+
+385
+00:17:34,370 --> 00:17:36,570
+So I'm going to have two models
+to fit every case.
+
+386
+00:17:36,570 --> 00:17:36,740
+
+
+387
+00:17:36,740 --> 00:17:40,440
+And see if I get overfitting
+here, and I get it here.
+
+388
+00:17:40,440 --> 00:17:40,930
+
+
+389
+00:17:40,930 --> 00:17:44,970
+This is the first guy
+that we saw before.
+
+390
+00:17:44,970 --> 00:17:47,090
+The simple target with noise.
+
+391
+00:17:47,090 --> 00:17:52,310
+And this guy is the other one, which is
+the complex target without noise.
+
+392
+00:17:52,310 --> 00:17:53,300
+10th-order, 50th-order.
+
+393
+00:17:53,300 --> 00:17:59,140
+We'll just refer to them as a noisy
+low-order target, and a noiseless
+
+394
+00:17:59,140 --> 00:18:00,150
+high-order target.
+
+395
+00:18:00,150 --> 00:18:00,460
+
+
+396
+00:18:00,460 --> 00:18:03,240
+This is what we want to learn.
+
+397
+00:18:03,240 --> 00:18:06,380
+Now, what are we going to learn with?
+
+398
+00:18:06,380 --> 00:18:08,290
+We're going to learn with two models.
+
+399
+00:18:08,290 --> 00:18:12,770
+One of them is the same thing--
+we have a 2nd-order polynomial
+
+400
+00:18:12,770 --> 00:18:15,150
+that we're going to use to
+fit. That's our model.
+
+401
+00:18:15,150 --> 00:18:16,980
+And we're going to have
+a 10th-order polynomial
+
+402
+00:18:16,980 --> 00:18:20,340
+These are the two guys that
+we are going to use.
+
+403
+00:18:20,340 --> 00:18:21,080
+
+
+404
+00:18:21,080 --> 00:18:23,470
+Here's what happens with
+the 2nd-order fit.
+
+405
+00:18:23,470 --> 00:18:24,150
+
+
+406
+00:18:24,150 --> 00:18:26,860
+You have the data points, and you fit
+them, and it's not surprising.
+
+407
+00:18:26,860 --> 00:18:29,940
+For the 2nd order, it's a simple
+curve, and it tries to find
+
+408
+00:18:29,940 --> 00:18:31,720
+a compromise. Here we are
+applying mean squared
+
+409
+00:18:31,720 --> 00:18:33,790
+error, so this is what you get.
+
+410
+00:18:33,790 --> 00:18:34,660
+
+
+411
+00:18:34,660 --> 00:18:38,580
+Now, let's analyze the performance
+of this fellow.
+
+412
+00:18:38,580 --> 00:18:41,285
+What I'm going list here, as you see,
+I'm going to say, what is the
+
+413
+00:18:41,285 --> 00:18:44,430
+in-sample error, what is the out-of-sample
+error, for the 2nd order which
+
+414
+00:18:44,430 --> 00:18:47,490
+is already here, and the 10th order,
+which I haven't shown yet.
+
+415
+00:18:47,490 --> 00:18:48,520
+
+
+416
+00:18:48,520 --> 00:18:54,840
+The in-sample error
+in this case is 0.05.
+
+417
+00:18:54,840 --> 00:18:55,350
+
+
+418
+00:18:55,350 --> 00:18:56,140
+This is a number.
+
+419
+00:18:56,140 --> 00:18:57,400
+Obviously, it depends
+on the scale.
+
+420
+00:18:57,400 --> 00:18:58,340
+It's some number.
+
+421
+00:18:58,340 --> 00:19:01,890
+When you get the out-of-sample version,
+not surprisingly, it's
+
+422
+00:19:01,890 --> 00:19:03,730
+bigger, because this one fit the data.
+
+423
+00:19:03,730 --> 00:19:07,120
+The other one is out-of-sample,
+so it's going to be bigger.
+
+424
+00:19:07,120 --> 00:19:10,530
+But the difference is not dramatic, and
+this is the performance you get.
+
+425
+00:19:10,530 --> 00:19:11,480
+
+
+426
+00:19:11,480 --> 00:19:13,485
+Now let's apply the 10th-order fit.
+
+427
+00:19:13,485 --> 00:19:16,480
+
+
+428
+00:19:16,480 --> 00:19:17,110
+
+
+429
+00:19:17,110 --> 00:19:20,920
+You already foresee what
+a problem can exist here.
+
+430
+00:19:20,920 --> 00:19:24,370
+The red curve sees the data, tries to
+fit that, uses all the degrees of
+
+431
+00:19:24,370 --> 00:19:27,970
+freedom it has-- it has 11 of them--
+and then it gets this guy.
+
+432
+00:19:27,970 --> 00:19:31,380
+And when you look at the in-sample
+error, obviously the in-sample error
+
+433
+00:19:31,380 --> 00:19:33,060
+must be smaller than
+the in-sample error here.
+
+434
+00:19:33,060 --> 00:19:35,575
+You have more to fit and you
+fit it better, so you get
+
+435
+00:19:35,575 --> 00:19:36,640
+smaller in-sample error.
+
+436
+00:19:36,640 --> 00:19:37,330
+
+
+437
+00:19:37,330 --> 00:19:40,050
+And what is out-of-sample error?
+
+438
+00:19:40,050 --> 00:19:41,980
+Just terrible.
+
+439
+00:19:41,980 --> 00:19:42,950
+
+
+440
+00:19:42,950 --> 00:19:45,210
+So this is patently
+a case of overfitting.
+
+441
+00:19:45,210 --> 00:19:49,020
+When you went from 2nd order to
+10th order, the in-sample
+
+442
+00:19:49,020 --> 00:19:50,650
+error indeed went down.
+
+443
+00:19:50,650 --> 00:19:53,110
+The out-of-sample error went up.
+
+444
+00:19:53,110 --> 00:19:54,300
+Way up.
+
+445
+00:19:54,300 --> 00:19:55,440
+
+
+446
+00:19:55,440 --> 00:19:58,040
+So you say, this confirms
+what we have said before.
+
+447
+00:19:58,040 --> 00:19:59,530
+We are fitting the noise.
+
+448
+00:19:59,530 --> 00:20:01,670
+And you can see here that you're
+actually fitting the noise.
+
+449
+00:20:01,670 --> 00:20:04,430
+You can see the red curve is trying to
+go for these guys, and you know that
+
+450
+00:20:04,430 --> 00:20:06,410
+these guys are off the target.
+
+451
+00:20:06,410 --> 00:20:10,580
+Therefore, the red curve is bending
+particularly, in order to capture
+
+452
+00:20:10,580 --> 00:20:12,010
+something that is really noise.
+
+453
+00:20:12,010 --> 00:20:12,280
+
+
+454
+00:20:12,280 --> 00:20:13,640
+So this is the case.
+
+455
+00:20:13,640 --> 00:20:17,110
+Here it's a little bit strange, because
+here we don't have any noise.
+
+456
+00:20:17,110 --> 00:20:17,880
+
+
+457
+00:20:17,880 --> 00:20:20,400
+And we also have the same models.
+We're going to take
+
+458
+00:20:20,400 --> 00:20:21,540
+the same two models.
+
+459
+00:20:21,540 --> 00:20:24,720
+We have 2nd order and 10th
+order, fitting here.
+
+460
+00:20:24,720 --> 00:20:24,970
+
+
+461
+00:20:24,970 --> 00:20:28,080
+Let's see how they perform here.
+
+462
+00:20:28,080 --> 00:20:30,930
+Well, this is the 2nd-order fit.
+
+463
+00:20:30,930 --> 00:20:33,400
+Again, that's what you expect
+from a 2nd-order fit.
+
+464
+00:20:33,400 --> 00:20:36,620
+And you look at the in-sample error and
+out-of-sample error, and they are
+
+465
+00:20:36,620 --> 00:20:37,970
+OK-- ballpark fine.
+
+466
+00:20:37,970 --> 00:20:38,260
+
+
+467
+00:20:38,260 --> 00:20:40,890
+You get some error, and the other
+one is bigger than it.
+
+468
+00:20:40,890 --> 00:20:42,310
+
+
+469
+00:20:42,310 --> 00:20:45,630
+Now we go for the 10th order, which
+is the interesting one.
+
+470
+00:20:45,630 --> 00:20:48,030
+
+
+471
+00:20:48,030 --> 00:20:49,600
+This is the 10th order.
+
+472
+00:20:49,600 --> 00:20:54,100
+You need to remember that the 10th
+order is fitting a 50th order.
+
+473
+00:20:54,100 --> 00:20:59,100
+So it really doesn't have enough
+parameters to fit, if we had all the
+
+474
+00:20:59,100 --> 00:21:00,970
+glory of the target function
+in front of us.
+
+475
+00:21:00,970 --> 00:21:01,180
+
+
+476
+00:21:01,180 --> 00:21:03,790
+But we don't have all the glory
+of the target function. We
+
+477
+00:21:03,790 --> 00:21:04,710
+have only 15 points.
+
+478
+00:21:04,710 --> 00:21:05,270
+
+
+479
+00:21:05,270 --> 00:21:08,800
+So it does as good a job as
+possible for fitting.
+
+480
+00:21:08,800 --> 00:21:13,055
+And when we look at the in-sample error,
+definitely the in-sample error
+
+481
+00:21:13,055 --> 00:21:14,490
+is smaller than here.
+
+482
+00:21:14,490 --> 00:21:14,720
+
+
+483
+00:21:14,720 --> 00:21:15,275
+Because we have more.
+
+484
+00:21:15,275 --> 00:21:15,300
+
+
+485
+00:21:15,300 --> 00:21:16,600
+It's actually extremely small.
+
+486
+00:21:16,600 --> 00:21:17,730
+It did it really, really, well.
+
+487
+00:21:17,730 --> 00:21:19,510
+
+
+488
+00:21:19,510 --> 00:21:21,105
+And then when you go for
+the out-of-sample.
+
+489
+00:21:21,105 --> 00:21:24,620
+
+
+490
+00:21:24,620 --> 00:21:26,970
+Oh, no!
+
+491
+00:21:26,970 --> 00:21:28,190
+You see, this is squared error.
+
+492
+00:21:28,190 --> 00:21:32,240
+So these guys, when you go down
+and when you go up, kill you.
+
+493
+00:21:32,240 --> 00:21:32,840
+
+
+494
+00:21:32,840 --> 00:21:33,870
+And indeed they did.
+
+495
+00:21:33,870 --> 00:21:34,800
+
+
+496
+00:21:34,800 --> 00:21:37,220
+So this is overfitting galore.
+
+497
+00:21:37,220 --> 00:21:38,110
+
+
+498
+00:21:38,110 --> 00:21:42,780
+And now you ask yourself, you just
+told us about noise and not noise.
+
+499
+00:21:42,780 --> 00:21:44,285
+This is noiseless, right?
+
+500
+00:21:44,285 --> 00:21:44,290
+
+
+501
+00:21:44,290 --> 00:21:46,470
+Why did we get overfitting here?
+
+502
+00:21:46,470 --> 00:21:47,370
+
+
+503
+00:21:47,370 --> 00:21:50,020
+We will find out that the reason
+we are getting overfitting here,
+
+504
+00:21:50,020 --> 00:21:53,320
+because actually this guy has noise.
+
+505
+00:21:53,320 --> 00:21:55,150
+But it's not your usual noise.
+
+506
+00:21:55,150 --> 00:21:57,020
+It's another type of noise.
+
+507
+00:21:57,020 --> 00:22:01,130
+And getting that notion down is very
+important to understand the situations
+
+508
+00:22:01,130 --> 00:22:04,060
+in practice, where you are going
+to get overfitting.
+
+509
+00:22:04,060 --> 00:22:07,900
+You could be facing a completely
+noiseless, in the conventional sense,
+
+510
+00:22:07,900 --> 00:22:10,820
+situation, and yet there is overfitting,
+because you are fitting
+
+511
+00:22:10,820 --> 00:22:12,550
+another type of noise.
+
+512
+00:22:12,550 --> 00:22:14,590
+
+
+513
+00:22:14,590 --> 00:22:17,940
+So let's look at the irony
+in this example.
+
+514
+00:22:17,940 --> 00:22:19,150
+
+
+515
+00:22:19,150 --> 00:22:20,940
+Here is the first example--
+
+516
+00:22:20,940 --> 00:22:22,710
+the noisy simple target.
+
+517
+00:22:22,710 --> 00:22:23,130
+
+
+518
+00:22:23,130 --> 00:22:27,800
+So you are learning a 10th-order target,
+and the target is noisy.
+
+519
+00:22:27,800 --> 00:22:30,420
+And I'm not showing the target here, I'm
+showing the data points together
+
+520
+00:22:30,420 --> 00:22:31,420
+with the two fits.
+
+521
+00:22:31,420 --> 00:22:32,610
+
+
+522
+00:22:32,610 --> 00:22:36,960
+Now let's say that I tell you that
+the target is 10th order, and
+
+523
+00:22:36,960 --> 00:22:38,560
+you have two learners.
+
+524
+00:22:38,560 --> 00:22:40,390
+One of them is O, and
+one of them is R--
+
+525
+00:22:40,390 --> 00:22:43,260
+O for overfitting, and R is for
+restricted, as it turns out.
+
+526
+00:22:43,260 --> 00:22:44,140
+
+
+527
+00:22:44,140 --> 00:22:46,870
+And you tell them, guys, I'm not going
+to tell you what the target is,
+
+528
+00:22:46,870 --> 00:22:48,600
+because if I tell you what
+the target is, this is no
+
+529
+00:22:48,600 --> 00:22:49,600
+longer machine learning.
+
+530
+00:22:49,600 --> 00:22:50,110
+
+
+531
+00:22:50,110 --> 00:22:52,050
+But let me help you out a little bit.
+
+532
+00:22:52,050 --> 00:22:54,710
+The target is a 10th-order polynomial.
+
+533
+00:22:54,710 --> 00:22:54,920
+
+
+534
+00:22:54,920 --> 00:22:56,500
+And I'm going to give you 15 points.
+
+535
+00:22:56,500 --> 00:22:57,830
+
+
+536
+00:22:57,830 --> 00:22:58,930
+Choose your model.
+
+537
+00:22:58,930 --> 00:22:59,840
+
+
+538
+00:22:59,840 --> 00:23:00,280
+Fair enough?
+
+539
+00:23:00,280 --> 00:23:03,090
+The information given does not
+depend on the data set, so
+
+540
+00:23:03,090 --> 00:23:04,490
+it's a fair thing.
+
+541
+00:23:04,490 --> 00:23:10,650
+The first learner says, I know
+that the target is 10th order.
+
+542
+00:23:10,650 --> 00:23:15,510
+Why not pick a 10th-order model?
+
+543
+00:23:15,510 --> 00:23:16,825
+Sounds like a good idea.
+
+544
+00:23:16,825 --> 00:23:17,980
+
+
+545
+00:23:17,980 --> 00:23:23,250
+And they do this, and they get the red
+curve, and they cry and cry and cry!
+
+546
+00:23:23,250 --> 00:23:25,020
+
+
+547
+00:23:25,020 --> 00:23:30,060
+The other guy said, oh,
+it's 10th-order model?
+
+548
+00:23:30,060 --> 00:23:31,240
+Who cares?
+
+549
+00:23:31,240 --> 00:23:33,810
+How many points do you have?
+
+550
+00:23:33,810 --> 00:23:34,460
+15.
+
+551
+00:23:34,460 --> 00:23:37,090
+OK, 15.
+
+552
+00:23:37,090 --> 00:23:37,100
+
+
+553
+00:23:37,100 --> 00:23:40,470
+I am going to take a 2nd order, and I am
+actually pushing my luck, because
+
+554
+00:23:40,470 --> 00:23:44,180
+2nd order is 3 parameters, I have
+15 points, the ratio is 5.
+
+555
+00:23:44,180 --> 00:23:46,350
+Someone told us a rule of thumb
+that it should be 10.
+
+556
+00:23:46,350 --> 00:23:47,720
+I'm flirting with danger.
+
+557
+00:23:47,720 --> 00:23:51,390
+But I cannot use a line when you are
+telling me the thing is 10th order, so
+
+558
+00:23:51,390 --> 00:23:52,960
+let me try my luck with 2nd.
+
+559
+00:23:52,960 --> 00:23:53,530
+
+
+560
+00:23:53,530 --> 00:23:54,650
+That's what you do.
+
+561
+00:23:54,650 --> 00:23:55,340
+
+
+562
+00:23:55,340 --> 00:23:57,230
+And they win.
+
+563
+00:23:57,230 --> 00:23:57,530
+
+
+564
+00:23:57,530 --> 00:24:01,560
+So it's a rather interesting irony,
+because there is a thought in people's
+
+565
+00:24:01,560 --> 00:24:05,550
+mind that you try to get as much
+information about the target function,
+
+566
+00:24:05,550 --> 00:24:07,510
+and put it in the hypothesis set.
+
+567
+00:24:07,510 --> 00:24:08,020
+
+
+568
+00:24:08,020 --> 00:24:10,860
+In some sense this is true,
+for certain properties.
+
+569
+00:24:10,860 --> 00:24:11,340
+
+
+570
+00:24:11,340 --> 00:24:15,330
+But if you are matching the complexity,
+here the guy who actually
+
+571
+00:24:15,330 --> 00:24:19,440
+took the 10th-order target, and decided
+to put the information all too well
+
+572
+00:24:19,440 --> 00:24:20,150
+in the hypothesis--
+
+573
+00:24:20,150 --> 00:24:22,900
+I'm taking a 10th-order hypothesis
+
+574
+00:24:22,900 --> 00:24:25,320
+set-- lost.
+
+575
+00:24:25,320 --> 00:24:26,210
+
+
+576
+00:24:26,210 --> 00:24:30,950
+So again, we know all too well now.
+The question is, you match the data
+
+577
+00:24:30,950 --> 00:24:33,410
+resources, rather than the
+target complexity.
+
+578
+00:24:33,410 --> 00:24:35,500
+There will be other properties
+of the target function, that we
+
+579
+00:24:35,500 --> 00:24:36,530
+will take to heart.
+
+580
+00:24:36,530 --> 00:24:39,180
+Symmetry and whatnot, there are a bunch
+of hints that we can take.
+
+581
+00:24:39,180 --> 00:24:44,460
+But the question of complexity is not
+one of the things that you just apply
+
+582
+00:24:44,460 --> 00:24:46,960
+the general idea of: let me match
+the target function.
+
+583
+00:24:46,960 --> 00:24:47,810
+That's not the case.
+
+584
+00:24:47,810 --> 00:24:51,650
+In this case, you are looking at
+generalization issues, and you know
+
+585
+00:24:51,650 --> 00:24:53,810
+that generalization issues depend
+on the size and the
+
+586
+00:24:53,810 --> 00:24:55,640
+quality of the data set.
+
+587
+00:24:55,640 --> 00:24:58,130
+
+
+588
+00:24:58,130 --> 00:25:03,930
+Now, the example that I just gave you, we
+have seen it before when we introduced
+
+589
+00:25:03,930 --> 00:25:05,820
+learning curves, if you remember
+what those where.
+
+590
+00:25:05,820 --> 00:25:10,290
+Those were, yeah, I'm going to put
+how E_in and E_out change with
+
+591
+00:25:10,290 --> 00:25:13,750
+a number of examples. And I gave you
+something, and I told you that this is
+
+592
+00:25:13,750 --> 00:25:17,400
+an actual situation we'll see later,
+and this is the situation.
+
+593
+00:25:17,400 --> 00:25:24,190
+So this is the case where you take the
+2nd-order polynomial model, H_2, and
+
+594
+00:25:24,190 --> 00:25:29,160
+the inevitable error, which is the black
+line, comes now not only from
+
+595
+00:25:29,160 --> 00:25:34,920
+the limitations of the model--
+an inability for a 2nd order to replicate
+
+596
+00:25:34,920 --> 00:25:37,070
+a 10th order, which is the
+target in this case--
+
+597
+00:25:37,070 --> 00:25:39,060
+but also because there is noise added.
+
+598
+00:25:39,060 --> 00:25:41,620
+Therefore, there's an amount
+of error that is inevitable
+
+599
+00:25:41,620 --> 00:25:43,040
+because of the noise.
+
+600
+00:25:43,040 --> 00:25:44,580
+But the model is very limited.
+
+601
+00:25:44,580 --> 00:25:47,100
+The generalization is not bad,
+which is the difference
+
+602
+00:25:47,100 --> 00:25:48,370
+between the two curves.
+
+603
+00:25:48,370 --> 00:25:52,060
+And if you have more examples, the two
+curves will converge, as they always
+
+604
+00:25:52,060 --> 00:25:55,910
+do, but they converge to the inevitable
+amount of error, which is
+
+605
+00:25:55,910 --> 00:25:58,950
+dictated by the fact that you're using
+such a simple model in this case.
+
+606
+00:25:58,950 --> 00:25:59,870
+
+
+607
+00:25:59,870 --> 00:26:03,250
+And when we looked at the other case,
+also introduced in this case-- this
+
+608
+00:26:03,250 --> 00:26:05,290
+was the 10th-order fellow.
+
+609
+00:26:05,290 --> 00:26:09,340
+So the 10th-order fellow is-- you can
+fit a lot, so the in-sample error is
+
+610
+00:26:09,340 --> 00:26:10,600
+always smaller than here.
+
+611
+00:26:10,600 --> 00:26:11,810
+That is understood.
+
+612
+00:26:11,810 --> 00:26:14,300
+The out-of-sample error starts by
+being terrible, because you are
+
+613
+00:26:14,300 --> 00:26:15,170
+overfitting.
+
+614
+00:26:15,170 --> 00:26:18,790
+And then it goes down, and it converges
+to something that is better,
+
+615
+00:26:18,790 --> 00:26:23,610
+because that carries the ability
+of H_10 to approximate
+
+616
+00:26:23,610 --> 00:26:26,420
+a 10th order, which should be
+perfect, except that we have noise.
+
+617
+00:26:26,420 --> 00:26:29,450
+So all of this actually is due to
+the noise added to the examples.
+
+618
+00:26:29,450 --> 00:26:30,490
+
+
+619
+00:26:30,490 --> 00:26:33,050
+And the gray area is the interesting
+part for us.
+
+620
+00:26:33,050 --> 00:26:38,630
+Because in the gray area, the in-sample
+error for the more complex
+
+621
+00:26:38,630 --> 00:26:40,100
+model is smaller.
+
+622
+00:26:40,100 --> 00:26:43,570
+It's smaller always, but we
+are observing it in this case.
+
+623
+00:26:43,570 --> 00:26:45,940
+And the out-of-sample error is bigger.
+
+624
+00:26:45,940 --> 00:26:47,900
+That's what defines the gray area.
+
+625
+00:26:47,900 --> 00:26:50,700
+Therefore in this gray area,
+very specifically,
+
+626
+00:26:50,700 --> 00:26:51,840
+overfitting is happening.
+
+627
+00:26:51,840 --> 00:26:55,610
+If you move from the simpler model to
+the bigger model, you get better
+
+628
+00:26:55,610 --> 00:26:58,610
+in-sample error and worse
+out-of-sample error.
+
+629
+00:26:58,610 --> 00:27:01,770
+Now we realize that this guy is not going
+to lose forever. The guy who
+
+630
+00:27:01,770 --> 00:27:04,050
+chose the correct complexity is
+not going to lose forever.
+
+631
+00:27:04,050 --> 00:27:07,300
+They lost only because of the number
+of examples that was inadequate.
+
+632
+00:27:07,300 --> 00:27:11,100
+If the number of examples is adequate,
+they will win handily.
+
+633
+00:27:11,100 --> 00:27:16,360
+Like here-- if you look here, you end
+up with an out-of-sample error far
+
+634
+00:27:16,360 --> 00:27:18,090
+better than you would ever get here.
+
+635
+00:27:18,090 --> 00:27:21,400
+But now I have enough examples,
+in order to be able to do that.
+
+636
+00:27:21,400 --> 00:27:21,940
+
+
+637
+00:27:21,940 --> 00:27:23,940
+Now, we understand overfitting.
+
+638
+00:27:23,940 --> 00:27:27,570
+And we understand that overfitting will
+not happen for all the numbers of
+
+639
+00:27:27,570 --> 00:27:31,740
+examples, but for a small number of
+examples where you cannot pin down the
+
+640
+00:27:31,740 --> 00:27:36,650
+function, then you suffer from the usual
+bad generalization that we saw.
+
+641
+00:27:36,650 --> 00:27:38,660
+
+
+642
+00:27:38,660 --> 00:27:39,530
+
+
+643
+00:27:39,530 --> 00:27:43,530
+Now, we notice that we get overfitting
+even without noise, and we want to pin
+
+644
+00:27:43,530 --> 00:27:44,430
+it down a little bit.
+
+645
+00:27:44,430 --> 00:27:46,810
+So let's look at this case.
+
+646
+00:27:46,810 --> 00:27:47,310
+
+
+647
+00:27:47,310 --> 00:27:50,810
+This is the case of the 50th-order
+target, the higher-order target
+
+648
+00:27:50,810 --> 00:27:52,580
+that doesn't have any noise--
+
+649
+00:27:52,580 --> 00:27:54,140
+conventional noise, at least.
+
+650
+00:27:54,140 --> 00:27:56,180
+And these are the two fits.
+
+651
+00:27:56,180 --> 00:28:00,690
+And there's still an irony, because
+here are the two learners.
+
+652
+00:28:00,690 --> 00:28:04,120
+The first guy chose the 10th order, the
+second guy chose the 2nd order.
+
+653
+00:28:04,120 --> 00:28:04,930
+And the idea here is the following.
+
+654
+00:28:04,930 --> 00:28:07,280
+You told me that the target
+now doesn't have noise.
+
+655
+00:28:07,280 --> 00:28:07,620
+Right?
+
+656
+00:28:07,620 --> 00:28:08,230
+
+
+657
+00:28:08,230 --> 00:28:11,260
+That means I don't worry
+about overfitting.
+
+658
+00:28:11,260 --> 00:28:11,880
+Wrong.
+
+659
+00:28:11,880 --> 00:28:12,850
+But we'll know why.
+
+660
+00:28:12,850 --> 00:28:13,520
+
+
+661
+00:28:13,520 --> 00:28:17,790
+So given the choices, I'm going to try
+to get close to the 50th order,
+
+662
+00:28:17,790 --> 00:28:19,060
+because I have a better chance.
+
+663
+00:28:19,060 --> 00:28:22,520
+If I choose the 10th order, someone
+else chooses 2nd order, I'm closer
+
+664
+00:28:22,520 --> 00:28:25,610
+to the 50th, so I think
+I will perform better.
+
+665
+00:28:25,610 --> 00:28:26,580
+At least that's the concept.
+
+666
+00:28:26,580 --> 00:28:27,420
+
+
+667
+00:28:27,420 --> 00:28:32,360
+So you do this, and you know that there
+is no noise, so you decide on
+
+668
+00:28:32,360 --> 00:28:37,430
+this idea, and again you
+get bad performance.
+
+669
+00:28:37,430 --> 00:28:39,550
+And you ask yourself,
+this is not my day.
+
+670
+00:28:39,550 --> 00:28:42,680
+I tried everything, and I seem
+to be making the wise choice,
+
+671
+00:28:42,680 --> 00:28:43,620
+and I'm always losing.
+
+672
+00:28:43,620 --> 00:28:44,390
+
+
+673
+00:28:44,390 --> 00:28:47,250
+And why is this the case,
+when there is no noise?
+
+674
+00:28:47,250 --> 00:28:50,070
+And then you ask, is there
+really no noise?
+
+675
+00:28:50,070 --> 00:28:50,880
+
+
+676
+00:28:50,880 --> 00:28:54,920
+And that will lead us to defining
+that there is an actual noise in
+
+677
+00:28:54,920 --> 00:28:58,240
+this case, and we'll analyze it and
+understand what it is about.
+
+678
+00:28:58,240 --> 00:28:59,450
+
+
+679
+00:28:59,450 --> 00:29:04,580
+So I will take these two examples, and
+then make a very elaborate experiment.
+
+680
+00:29:04,580 --> 00:29:06,520
+And I will show you the results
+of that experiment.
+
+681
+00:29:06,520 --> 00:29:10,840
+I will encourage you, if you
+are interested in the subject,
+
+682
+00:29:10,840 --> 00:29:12,985
+to do simulate this experiment.
+
+683
+00:29:12,985 --> 00:29:13,800
+
+
+684
+00:29:13,800 --> 00:29:16,150
+All the parameters are given.
+
+685
+00:29:16,150 --> 00:29:20,480
+And it will give you a very good feel
+for overfitting, because now we are
+
+686
+00:29:20,480 --> 00:29:23,910
+going to look at the figure, and have no
+doubt in our mind that overfitting
+
+687
+00:29:23,910 --> 00:29:27,210
+will occur whenever you actually
+encounter a real problem.
+
+688
+00:29:27,210 --> 00:29:27,800
+
+
+689
+00:29:27,800 --> 00:29:29,660
+And therefore, you have to be careful.
+
+690
+00:29:29,660 --> 00:29:33,320
+It's not like I constructed a particular
+funny case.
+
+691
+00:29:33,320 --> 00:29:38,210
+No, if you average over a huge
+number of experiments, you will find
+
+692
+00:29:38,210 --> 00:29:40,880
+that overfitting occurs in the
+majority of the cases.
+
+693
+00:29:40,880 --> 00:29:41,240
+
+
+694
+00:29:41,240 --> 00:29:44,230
+So let's look at the detailed
+experiment.
+
+695
+00:29:44,230 --> 00:29:47,470
+I'm going to study the impact of two
+things-- the noise level, which I
+
+696
+00:29:47,470 --> 00:29:52,070
+already conceptually convinced myself
+that it's related to overfitting, and
+
+697
+00:29:52,070 --> 00:29:54,750
+the target complexity, just because
+it does seem to be related.
+
+698
+00:29:54,750 --> 00:29:58,470
+Not sure why, but it seems like when
+I took a complex target, albeit
+
+699
+00:29:58,470 --> 00:30:02,010
+noiseless, I still got overfitting,
+so let me see what the
+
+700
+00:30:02,010 --> 00:30:04,030
+target complexity does.
+
+701
+00:30:04,030 --> 00:30:05,810
+
+
+702
+00:30:05,810 --> 00:30:09,200
+We are going to take, as
+general target function--
+
+703
+00:30:09,200 --> 00:30:12,550
+I'm going to describe what it is, and
+I'm going to add noise to it.
+
+704
+00:30:12,550 --> 00:30:14,340
+The noise is a function of x.
+
+705
+00:30:14,340 --> 00:30:15,160
+
+
+706
+00:30:15,160 --> 00:30:20,490
+So I'm just getting it generically, and
+as always, we have independence
+
+707
+00:30:20,490 --> 00:30:21,420
+from one x to another.
+
+708
+00:30:21,420 --> 00:30:26,800
+In spite of the fact that the
+parameters of the noise distribution
+
+709
+00:30:26,800 --> 00:30:29,050
+depend on x-- I can have different
+noise for different
+
+710
+00:30:29,050 --> 00:30:30,260
+points in the space--
+
+711
+00:30:30,260 --> 00:30:33,150
+the realization of epsilon is
+independent from one x to another.
+
+712
+00:30:33,150 --> 00:30:35,475
+That is always the assumption.
+When we have different data points,
+
+713
+00:30:35,475 --> 00:30:36,410
+they are independent.
+
+714
+00:30:36,410 --> 00:30:37,110
+
+
+715
+00:30:37,110 --> 00:30:42,150
+So this is the thing, and I'm going to
+measure the level of noise by the
+
+716
+00:30:42,150 --> 00:30:45,680
+energy in that noise, and we're going
+to call it sigma squared.
+
+717
+00:30:45,680 --> 00:30:46,320
+
+
+718
+00:30:46,320 --> 00:30:50,040
+I'm taking the expected value
+of epsilon to be 0.
+
+719
+00:30:50,040 --> 00:30:50,320
+
+
+720
+00:30:50,320 --> 00:30:53,000
+If there were an expected value, I would
+put it in the target, so I will
+
+721
+00:30:53,000 --> 00:30:54,070
+remain with 0.
+
+722
+00:30:54,070 --> 00:30:56,500
+And then there's fluctuation around it,
+and the fluctuation either could
+
+723
+00:30:56,500 --> 00:30:58,340
+be big, large sigma
+squared, or small.
+
+724
+00:30:58,340 --> 00:30:59,985
+And I'm quantifying it
+with sigma squared.
+
+725
+00:30:59,985 --> 00:31:01,160
+
+
+726
+00:31:01,160 --> 00:31:02,970
+No particular distribution is needed.
+
+727
+00:31:02,970 --> 00:31:04,200
+You can say Gaussian,
+
+728
+00:31:04,200 --> 00:31:07,350
+and indeed I applied Gaussian
+in the experiment.
+
+729
+00:31:07,350 --> 00:31:11,150
+But for the statement, you just
+need the energy of that.
+
+730
+00:31:11,150 --> 00:31:11,690
+
+
+731
+00:31:11,690 --> 00:31:13,330
+Now let's write it down.
+
+732
+00:31:13,330 --> 00:31:17,510
+I want to make the target function
+more complex, at will.
+
+733
+00:31:17,510 --> 00:31:19,980
+So I'm going to make it
+higher-order polynomial.
+
+734
+00:31:19,980 --> 00:31:22,500
+Now I have another parameter, pretty
+much like the sigma squared.
+
+735
+00:31:22,500 --> 00:31:25,330
+I have another parameter which is
+capital Q, the order of the
+
+736
+00:31:25,330 --> 00:31:26,540
+polynomial.
+
+737
+00:31:26,540 --> 00:31:32,620
+I'm calling it Q_f, because it describes
+the target complexity of
+
+738
+00:31:32,620 --> 00:31:35,540
+f, just to remember that
+it's related to f.
+
+739
+00:31:35,540 --> 00:31:40,520
+And what I do, I define a polynomial,
+which is the sum of coefficients times
+
+740
+00:31:40,520 --> 00:31:46,080
+a power of x, from q equals 0 to Q,
+so it's indeed a Qth-order
+
+741
+00:31:46,080 --> 00:31:49,156
+polynomial, and I add the noise here.
+
+742
+00:31:49,156 --> 00:31:50,130
+
+
+743
+00:31:50,130 --> 00:31:55,580
+Now, in order to run the experiment
+right, I'm going to normalize this
+
+744
+00:31:55,580 --> 00:31:59,150
+quantity, such that the energy
+here is always 1.
+
+745
+00:31:59,150 --> 00:32:01,690
+And the reason I do that is
+because I want the sigma
+
+746
+00:32:01,690 --> 00:32:03,190
+squared to mean something.
+
+747
+00:32:03,190 --> 00:32:05,800
+The signal to noise ratio is
+always what means something.
+
+748
+00:32:05,800 --> 00:32:09,640
+So if I normalize the signal to energy
+1, then I can say sigma squared is
+
+749
+00:32:09,640 --> 00:32:11,500
+really the amount of noise.
+
+750
+00:32:11,500 --> 00:32:16,240
+And if you look at this, it is not
+easy to generate interesting
+
+751
+00:32:16,240 --> 00:32:18,270
+polynomials using this formula.
+
+752
+00:32:18,270 --> 00:32:21,950
+Because if you pick these guys at
+random-- let's say independent
+
+753
+00:32:21,950 --> 00:32:24,120
+coefficients at random, in order
+to generate a general
+
+754
+00:32:24,120 --> 00:32:28,830
+target, these guys are
+
+755
+00:32:28,830 --> 00:32:29,890
+the powers of x.
+
+756
+00:32:29,890 --> 00:32:30,070
+
+
+757
+00:32:30,070 --> 00:32:33,950
+So you start with the x, and then the
+parabola, and then the 3rd order, and
+
+758
+00:32:33,950 --> 00:32:36,260
+then the 4th order, and
+then the 5th order.
+
+759
+00:32:36,260 --> 00:32:38,260
+Very, very boring guys.
+
+760
+00:32:38,260 --> 00:32:41,180
+One of them is doing this way, and the
+other one is doing this way, and they
+
+761
+00:32:41,180 --> 00:32:42,370
+get steeper and steeper.
+
+762
+00:32:42,370 --> 00:32:43,070
+
+
+763
+00:32:43,070 --> 00:32:46,360
+So if you combine them with random
+coefficients, you will almost always
+
+764
+00:32:46,360 --> 00:32:49,360
+get something that looks this way, or
+something that looks this way.
+
+765
+00:32:49,360 --> 00:32:52,290
+And the other guys don't play a role,
+because this one dominates.
+
+766
+00:32:52,290 --> 00:32:53,030
+
+
+767
+00:32:53,030 --> 00:32:59,300
+The way to get interesting guys here
+is, instead of generating the
+
+768
+00:32:59,300 --> 00:33:05,910
+alpha_q's here as random, you go for
+a standard set of polynomials, which are
+
+769
+00:33:05,910 --> 00:33:07,800
+called Legendre polynomials.
+
+770
+00:33:07,800 --> 00:33:10,060
+Legendre polynomials are just
+polynomials with specific
+
+771
+00:33:10,060 --> 00:33:10,690
+coefficients.
+
+772
+00:33:10,690 --> 00:33:12,830
+There is nothing mysterious about them,
+except that the choice of the
+
+773
+00:33:12,830 --> 00:33:16,600
+coefficients is such that, from one
+order to the next, they're orthogonal
+
+774
+00:33:16,600 --> 00:33:17,380
+to each other.
+
+775
+00:33:17,380 --> 00:33:18,430
+
+
+776
+00:33:18,430 --> 00:33:21,940
+So it's like harmonics in
+a sinusoidal expansion.
+
+777
+00:33:21,940 --> 00:33:25,400
+If you take the 1st-order Legendre,
+then the 2nd, and the 3rd, and the
+
+778
+00:33:25,400 --> 00:33:28,330
+4th, and you take the inner product,
+you see they are 0.
+
+779
+00:33:28,330 --> 00:33:31,910
+They are orthogonal to each other, and
+you normalize them to get energy 1.
+
+780
+00:33:31,910 --> 00:33:36,000
+Because of this, if you have
+a combination of Legendre's with random
+
+781
+00:33:36,000 --> 00:33:38,670
+coefficients, then you get
+something interesting.
+
+782
+00:33:38,670 --> 00:33:38,930
+
+
+783
+00:33:38,930 --> 00:33:40,460
+All of a sudden, you get the shape.
+
+784
+00:33:40,460 --> 00:33:43,110
+And when you are done, it
+is just a polynomial.
+
+785
+00:33:43,110 --> 00:33:47,730
+All you do, you collect the guys that
+happen to be the coefficients of x,
+
+786
+00:33:47,730 --> 00:33:50,160
+the coefficients of x squared,
+coefficients of x cubed, and these
+
+787
+00:33:50,160 --> 00:33:51,510
+will be your alpha's.
+
+788
+00:33:51,510 --> 00:33:54,910
+Nothing changed in the fact
+that I'm generating a polynomial.
+
+789
+00:33:54,910 --> 00:33:58,840
+I just was generating the alpha's in
+a very elaborate way, in order to make
+
+790
+00:33:58,840 --> 00:34:00,280
+sure that I get interesting targets.
+
+791
+00:34:00,280 --> 00:34:01,160
+That's all there is to it.
+
+792
+00:34:01,160 --> 00:34:04,440
+As far as we are concerned, we generated
+guys that have this form and
+
+793
+00:34:04,440 --> 00:34:07,070
+happened to be interesting--
+representative of different
+
+794
+00:34:07,070 --> 00:34:08,150
+functionalities.
+
+795
+00:34:08,150 --> 00:34:09,520
+
+
+796
+00:34:09,520 --> 00:34:13,010
+So in this case we have the noise
+level. That's one parameter that
+
+797
+00:34:13,010 --> 00:34:14,820
+affects overfitting.
+
+798
+00:34:14,820 --> 00:34:16,500
+We have potentially--
+
+799
+00:34:16,500 --> 00:34:18,929
+the target complexity seems to
+be affecting overfitting.
+
+800
+00:34:18,929 --> 00:34:20,880
+At least we are conjecturing
+that it is.
+
+801
+00:34:20,880 --> 00:34:22,889
+And the final guy that affects
+overfitting is the
+
+802
+00:34:22,889 --> 00:34:23,989
+number of data points.
+
+803
+00:34:23,989 --> 00:34:27,400
+If I give you more data points, you are
+less susceptible to overfitting.
+
+804
+00:34:27,400 --> 00:34:30,280
+Now I'd like to understand the
+dependency between these.
+
+805
+00:34:30,280 --> 00:34:34,389
+And if we go back to the experiment we
+had, this is just one instance of
+
+806
+00:34:34,389 --> 00:34:38,909
+those, where the target complexity
+here is 10.
+
+807
+00:34:38,909 --> 00:34:42,560
+I use the 10th-order polynomial,
+so Q_f is 10.
+
+808
+00:34:42,560 --> 00:34:47,920
+The noise is whatever the distance
+between the points and the curve is.
+
+809
+00:34:47,920 --> 00:34:50,060
+That's what captures sigma squared.
+
+810
+00:34:50,060 --> 00:34:51,409
+And the data size here is 15.
+
+811
+00:34:51,409 --> 00:34:53,050
+I have 15 data points.
+
+812
+00:34:53,050 --> 00:34:54,040
+So this is one instance.
+
+813
+00:34:54,040 --> 00:34:57,550
+I'm basically generating at will random
+instances of that, in order to
+
+814
+00:34:57,550 --> 00:35:01,730
+see if the observation of
+overfitting persists.
+
+815
+00:35:01,730 --> 00:35:02,940
+
+
+816
+00:35:02,940 --> 00:35:05,540
+Now, how am I going
+to measure overfitting?
+
+817
+00:35:05,540 --> 00:35:08,960
+I'm going to define an overfit
+measure, which is a pretty simple one.
+
+818
+00:35:08,960 --> 00:35:09,590
+
+
+819
+00:35:09,590 --> 00:35:14,630
+We're fitting a data set
+from x_1, y_1 to x_N, y_N.
+
+820
+00:35:14,630 --> 00:35:17,500
+And we are using two models,
+
+821
+00:35:17,500 --> 00:35:19,320
+our usual two models.
+
+822
+00:35:19,320 --> 00:35:20,120
+Nothing changed.
+
+823
+00:35:20,120 --> 00:35:23,660
+We either use 2nd-order polynomials,
+or the 10th-order
+
+824
+00:35:23,660 --> 00:35:24,210
+polynomials.
+
+825
+00:35:24,210 --> 00:35:24,690
+
+
+826
+00:35:24,690 --> 00:35:27,265
+And if going from the 2nd-order
+polynomial to the 10th-order
+
+827
+00:35:27,265 --> 00:35:29,330
+polynomial gets us in trouble,
+then we are overfitting.
+
+828
+00:35:29,330 --> 00:35:29,890
+
+
+829
+00:35:29,890 --> 00:35:31,720
+And we would like to quantify that.
+
+830
+00:35:31,720 --> 00:35:36,670
+When you compare the out-of-sample
+errors of the two models, you have
+
+831
+00:35:36,670 --> 00:35:40,620
+a final hypothesis from H_2,
+and this is the fit--
+
+832
+00:35:40,620 --> 00:35:42,340
+the green curve that you have seen.
+
+833
+00:35:42,340 --> 00:35:46,050
+And another final hypothesis from the
+other model, which is the red curve--
+
+834
+00:35:46,050 --> 00:35:47,540
+the wiggly guy.
+
+835
+00:35:47,540 --> 00:35:51,780
+If you want to define an overfit
+measure based on the two, what you do
+
+836
+00:35:51,780 --> 00:35:56,310
+is you get the out-of-sample error for
+the more complex guy, minus
+
+837
+00:35:56,310 --> 00:35:58,620
+the out of sample error
+for the simple guy.
+
+838
+00:35:58,620 --> 00:35:59,820
+Why is this an overfit measure?
+
+839
+00:35:59,820 --> 00:36:03,995
+Because if the more complex guy is
+worse, it means its out-of-sample
+
+840
+00:36:03,995 --> 00:36:06,390
+error is bigger, and you
+get a positive number,
+
+841
+00:36:06,390 --> 00:36:08,660
+large positive if the overfitting
+is terrible.
+
+842
+00:36:08,660 --> 00:36:12,200
+And if this is negative, it means that
+actually the more complex guy is doing
+
+843
+00:36:12,200 --> 00:36:13,580
+better, so you are not overfitting.
+
+844
+00:36:13,580 --> 00:36:14,110
+
+
+845
+00:36:14,110 --> 00:36:15,780
+Zero means that they are the same.
+
+846
+00:36:15,780 --> 00:36:18,750
+So now I have a number in my mind that
+measures the level of overfitting in
+
+847
+00:36:18,750 --> 00:36:20,310
+any particular setting.
+
+848
+00:36:20,310 --> 00:36:21,230
+
+
+849
+00:36:21,230 --> 00:36:24,420
+And if you apply this to, again, the
+same case we had before, you look at
+
+850
+00:36:24,420 --> 00:36:27,210
+here, and the out-of-sample error
+for the red is terrible.
+
+851
+00:36:27,210 --> 00:36:29,930
+The out-of-sample error of green
+is nothing to be proud of,
+
+852
+00:36:29,930 --> 00:36:31,110
+but definitely better.
+
+853
+00:36:31,110 --> 00:36:33,860
+And the overfit measure in this case
+will be positive, so we have
+
+854
+00:36:33,860 --> 00:36:34,770
+overfitting.
+
+855
+00:36:34,770 --> 00:36:35,540
+
+
+856
+00:36:35,540 --> 00:36:39,010
+Now let's look at the result of
+running this for tens of millions of
+
+857
+00:36:39,010 --> 00:36:40,170
+iterations.
+
+858
+00:36:40,170 --> 00:36:40,180
+
+
+859
+00:36:40,180 --> 00:36:41,550
+Not epochs iterations.
+
+860
+00:36:41,550 --> 00:36:42,630
+Complete runs.
+
+861
+00:36:42,630 --> 00:36:45,930
+Generate the target, generate
+the data set, fit both, look
+
+862
+00:36:45,930 --> 00:36:48,460
+at the overfit measure.
+
+863
+00:36:48,460 --> 00:36:50,830
+Repeat 10 million times, for
+all kinds of parameters.
+
+864
+00:36:50,830 --> 00:36:51,390
+
+
+865
+00:36:51,390 --> 00:36:53,490
+So you get a pattern for
+what is going on.
+
+866
+00:36:53,490 --> 00:36:55,690
+This is what you get.
+
+867
+00:36:55,690 --> 00:36:57,980
+First, the impact of sigma squared.
+
+868
+00:36:57,980 --> 00:37:01,740
+I'm going to have a plot
+in which you get N,
+
+869
+00:37:01,740 --> 00:37:03,360
+the number of examples,
+
+870
+00:37:03,360 --> 00:37:06,870
+and the level of noise,
+sigma squared.
+
+871
+00:37:06,870 --> 00:37:10,235
+And on the plot, I'm going to give
+a color depending on the intensity of
+
+872
+00:37:10,235 --> 00:37:11,290
+the overfit.
+
+873
+00:37:11,290 --> 00:37:15,690
+That intensity will be depending on
+the number of points, and the level of
+
+874
+00:37:15,690 --> 00:37:17,820
+the noise that you have.
+
+875
+00:37:17,820 --> 00:37:21,160
+And this is what you get.
+
+876
+00:37:21,160 --> 00:37:21,830
+
+
+877
+00:37:21,830 --> 00:37:25,430
+First let's look at the
+color convention.
+
+878
+00:37:25,430 --> 00:37:27,090
+So 0 is green.
+
+879
+00:37:27,090 --> 00:37:29,890
+If you get redder, there's
+more overfitting.
+
+880
+00:37:29,890 --> 00:37:32,320
+If you get bluer, there
+is less overfitting.
+
+881
+00:37:32,320 --> 00:37:33,320
+
+
+882
+00:37:33,320 --> 00:37:35,520
+Now I looked at the number
+of examples, and I
+
+883
+00:37:35,520 --> 00:37:37,170
+picked interesting range.
+
+884
+00:37:37,170 --> 00:37:40,890
+If you go, this is 80,
+100, and 120 points.
+
+885
+00:37:40,890 --> 00:37:42,250
+So what happens to 40?
+
+886
+00:37:42,250 --> 00:37:43,810
+All of them are dark red.
+
+887
+00:37:43,810 --> 00:37:44,790
+Terrible overfitting.
+
+888
+00:37:44,790 --> 00:37:45,530
+
+
+889
+00:37:45,530 --> 00:37:48,650
+And if you go beyond that, you
+have enough examples now not to
+
+890
+00:37:48,650 --> 00:37:50,090
+overfit, so it's almost all blue.
+
+891
+00:37:50,090 --> 00:37:52,670
+So I'm just giving you the
+transition part of it.
+
+892
+00:37:52,670 --> 00:37:53,580
+
+
+893
+00:37:53,580 --> 00:37:54,000
+You look at it.
+
+894
+00:37:54,000 --> 00:37:55,840
+There is a noise level.
+
+895
+00:37:55,840 --> 00:37:58,630
+As I increase the noise level,
+overfitting worsens.
+
+896
+00:37:58,630 --> 00:37:59,220
+Why is that?
+
+897
+00:37:59,220 --> 00:38:01,810
+Because if I pick any number
+of examples, let's say 100.
+
+898
+00:38:01,810 --> 00:38:06,110
+If I had 100, and it had that little
+noise, I'm doing fine.
+
+899
+00:38:06,110 --> 00:38:08,000
+Doing fine in terms of
+not overfitting.
+
+900
+00:38:08,000 --> 00:38:11,780
+And as I go, I get into the red
+region, and then I get deeply into
+
+901
+00:38:11,780 --> 00:38:12,860
+the red region.
+
+902
+00:38:12,860 --> 00:38:13,390
+
+
+903
+00:38:13,390 --> 00:38:14,950
+So this tells me, indeed,
+that overfitting
+
+904
+00:38:14,950 --> 00:38:16,620
+worsens with sigma squared.
+
+905
+00:38:16,620 --> 00:38:21,790
+By the way, for all of the targets here,
+I picked a fixed complexity.
+
+906
+00:38:21,790 --> 00:38:22,190
+20.
+
+907
+00:38:22,190 --> 00:38:23,530
+20th-order polynomial.
+
+908
+00:38:23,530 --> 00:38:27,170
+I fixed it because I just wanted
+a number, and I wanted only to relate
+
+909
+00:38:27,170 --> 00:38:28,920
+the noise to the overfitting.
+
+910
+00:38:28,920 --> 00:38:30,230
+So that's what I'm doing here.
+
+911
+00:38:30,230 --> 00:38:32,580
+When I change the complexity,
+this will be the other plot.
+
+912
+00:38:32,580 --> 00:38:33,230
+
+
+913
+00:38:33,230 --> 00:38:38,220
+For this guy, we get something that
+is nice, and it's really according to
+
+914
+00:38:38,220 --> 00:38:39,310
+what we expect.
+
+915
+00:38:39,310 --> 00:38:42,630
+As you increase the number of points,
+the overfitting goes down.
+
+916
+00:38:42,630 --> 00:38:44,900
+As you increase the level of noise,
+the overfitting goes up.
+
+917
+00:38:44,900 --> 00:38:46,600
+That is what we expect.
+
+918
+00:38:46,600 --> 00:38:50,380
+Now let's go for the impact of Q_f,
+because that was the mysterious part.
+
+919
+00:38:50,380 --> 00:38:51,890
+There was no noise and we
+are getting overfitting.
+
+920
+00:38:51,890 --> 00:38:52,730
+Is this going to persist?
+
+921
+00:38:52,730 --> 00:38:54,210
+What is the deal?
+
+922
+00:38:54,210 --> 00:38:57,000
+This is what you get.
+
+923
+00:38:57,000 --> 00:38:57,970
+
+
+924
+00:38:57,970 --> 00:39:00,310
+So here, we fixed the level of noise.
+
+925
+00:39:00,310 --> 00:39:02,910
+We fixed it at sigma
+squared equals 0.1.
+
+926
+00:39:02,910 --> 00:39:07,590
+Now we are increasing the target
+complexity, from trivial to 100th-order
+
+927
+00:39:07,590 --> 00:39:08,010
+polynomial.
+
+928
+00:39:08,010 --> 00:39:09,300
+That's a pretty serious guy.
+
+929
+00:39:09,300 --> 00:39:10,430
+
+
+930
+00:39:10,430 --> 00:39:14,000
+And we are plotting the same range for
+the number of points, from 80, 100,
+
+931
+00:39:14,000 --> 00:39:15,580
+120. That's where it happens.
+
+932
+00:39:15,580 --> 00:39:19,310
+And you can see that overfitting
+occurs significantly.
+
+933
+00:39:19,310 --> 00:39:21,550
+And it worsens also with
+the target complexity.
+
+934
+00:39:21,550 --> 00:39:23,470
+Because let's say, you
+look at this guy.
+
+935
+00:39:23,470 --> 00:39:26,480
+If you look at this guy, you are here
+in the green, and gets red, and then
+
+936
+00:39:26,480 --> 00:39:27,330
+it gets darker red.
+
+937
+00:39:27,330 --> 00:39:27,530
+
+
+938
+00:39:27,530 --> 00:39:30,080
+Not as pronounced as in this case.
+
+939
+00:39:30,080 --> 00:39:33,830
+But you do get the overfitting effect
+by increasing the target complexity.
+
+940
+00:39:33,830 --> 00:39:37,620
+And when the number of examples is
+bigger, then there's less overfitting,
+
+941
+00:39:37,620 --> 00:39:38,760
+as you expect it to be.
+
+942
+00:39:38,760 --> 00:39:40,110
+But if you go high enough--
+
+943
+00:39:40,110 --> 00:39:43,235
+I guess it's getting lighter blue,
+green, yellow. Eventually,
+
+944
+00:39:43,235 --> 00:39:44,620
+it will get to red.
+
+945
+00:39:44,620 --> 00:39:48,130
+And if you look at these two guys, the
+main observation is that the red
+
+946
+00:39:48,130 --> 00:39:49,730
+region is serious.
+
+947
+00:39:49,730 --> 00:39:50,110
+
+
+948
+00:39:50,110 --> 00:39:54,760
+Overfitting is real and here to stay,
+and we have to deal with it.
+
+949
+00:39:54,760 --> 00:39:55,130
+
+
+950
+00:39:55,130 --> 00:39:59,090
+It's not like an individual
+case there.
+
+951
+00:39:59,090 --> 00:40:02,960
+Now, there are two things you can
+derive from these two figures.
+
+952
+00:40:02,960 --> 00:40:08,050
+The first thing is that there seems
+to be another factor, other than
+
+953
+00:40:08,050 --> 00:40:11,420
+conventional noise-- let's call it
+conventional noise for the moment--
+
+954
+00:40:11,420 --> 00:40:13,340
+that affects overfitting.
+
+955
+00:40:13,340 --> 00:40:15,260
+And we want to characterize that.
+
+956
+00:40:15,260 --> 00:40:17,560
+That is the first thing we derive.
+
+957
+00:40:17,560 --> 00:40:22,560
+The second thing we derive is
+a nice logo for the course!
+
+958
+00:40:22,560 --> 00:40:22,890
+
+
+959
+00:40:22,890 --> 00:40:24,140
+That's where it came from.
+
+960
+00:40:24,140 --> 00:40:25,390
+
+
+961
+00:40:25,390 --> 00:40:27,948
+
+
+962
+00:40:27,948 --> 00:40:28,860
+
+
+963
+00:40:28,860 --> 00:40:31,510
+So now let's look at noise, and
+look at the impact of noise.
+
+964
+00:40:31,510 --> 00:40:35,930
+And you can notice that noise is
+between quotation marks here, because
+
+965
+00:40:35,930 --> 00:40:40,058
+now we're going to expand our horizon
+about what constitutes noise.
+
+966
+00:40:40,058 --> 00:40:41,330
+
+
+967
+00:40:41,330 --> 00:40:43,940
+Here are the two guys.
+
+968
+00:40:43,940 --> 00:40:44,820
+
+
+969
+00:40:44,820 --> 00:40:50,780
+And in the first case, we are going
+now to call it stochastic noise.
+
+970
+00:40:50,780 --> 00:40:52,100
+
+
+971
+00:40:52,100 --> 00:40:53,550
+
+
+972
+00:40:53,550 --> 00:40:56,420
+Noise is stochastic, but obviously
+we are calling it stochastic
+
+973
+00:40:56,420 --> 00:40:57,930
+because the other guy will
+not be stochastic.
+
+974
+00:40:57,930 --> 00:40:58,630
+
+
+975
+00:40:58,630 --> 00:41:01,400
+And there's absolutely
+nothing to add here.
+
+976
+00:41:01,400 --> 00:41:02,520
+This is what we expect.
+
+977
+00:41:02,520 --> 00:41:04,450
+We're just calling it a name.
+
+978
+00:41:04,450 --> 00:41:09,330
+Now we are going to call whatever effect
+that is done by having a more
+
+979
+00:41:09,330 --> 00:41:13,370
+complex target here, we are going
+also to call it noise.
+
+980
+00:41:13,370 --> 00:41:18,430
+But it is going to be called
+deterministic noise.
+
+981
+00:41:18,430 --> 00:41:19,030
+
+
+982
+00:41:19,030 --> 00:41:20,750
+Because there is nothing
+stochastic about it.
+
+983
+00:41:20,750 --> 00:41:22,170
+There's a particular target function.
+
+984
+00:41:22,170 --> 00:41:24,850
+I just cannot capture it, so
+it looks like noise to me.
+
+985
+00:41:24,850 --> 00:41:27,730
+And we would like to understand what
+deterministic noise is about.
+
+986
+00:41:27,730 --> 00:41:28,790
+
+
+987
+00:41:28,790 --> 00:41:31,660
+However, if you look at it, and now you
+speak in terms of stochastic noise
+
+988
+00:41:31,660 --> 00:41:35,260
+and deterministic noise, and you would
+like to see what affects overfitting.
+
+989
+00:41:35,260 --> 00:41:36,430
+So, we put it in a box.
+
+990
+00:41:36,430 --> 00:41:37,210
+
+
+991
+00:41:37,210 --> 00:41:38,400
+First observation:
+
+992
+00:41:38,400 --> 00:41:44,400
+if I have more points, I
+have less overfitting.
+
+993
+00:41:44,400 --> 00:41:48,040
+If you move from here to
+here, things get bluer.
+
+994
+00:41:48,040 --> 00:41:50,530
+If you move from here to here,
+things get bluer.
+
+995
+00:41:50,530 --> 00:41:52,120
+I have less overfitting.
+
+996
+00:41:52,120 --> 00:41:53,490
+
+
+997
+00:41:53,490 --> 00:41:55,560
+Second thing:
+
+998
+00:41:55,560 --> 00:41:57,280
+if I increase the stochastic noise--
+
+999
+00:41:57,280 --> 00:42:00,020
+increase the energy in the
+stochastic noise--
+
+1000
+00:42:00,020 --> 00:42:01,710
+the overfitting goes up.
+
+1001
+00:42:01,710 --> 00:42:06,990
+Indeed, if I go from here to
+here, things get redder.
+
+1002
+00:42:06,990 --> 00:42:08,140
+
+
+1003
+00:42:08,140 --> 00:42:12,590
+And finally, with deterministic noise,
+which is vaguely associated in my mind
+
+1004
+00:42:12,590 --> 00:42:17,790
+with the increase of target complexity,
+I also increase the overfitting.
+
+1005
+00:42:17,790 --> 00:42:20,760
+If I go from here to here,
+I am getting redder.
+
+1006
+00:42:20,760 --> 00:42:21,270
+
+
+1007
+00:42:21,270 --> 00:42:24,920
+Albeit I have to travel further, and
+it's a bit more subtle, but the
+
+1008
+00:42:24,920 --> 00:42:27,940
+direction is that I get more
+overfitting as I get more
+
+1009
+00:42:27,940 --> 00:42:30,750
+deterministic noise, whatever
+that might be.
+
+1010
+00:42:30,750 --> 00:42:32,660
+
+
+1011
+00:42:32,660 --> 00:42:37,450
+So now, let's spend some time just
+analyzing what deterministic noise is,
+
+1012
+00:42:37,450 --> 00:42:42,810
+and why it affects overfitting
+the way it does.
+
+1013
+00:42:42,810 --> 00:42:44,340
+Let's start with the definition.
+
+1014
+00:42:44,340 --> 00:42:46,220
+What is it?
+
+1015
+00:42:46,220 --> 00:42:47,600
+It will be actually noise.
+
+1016
+00:42:47,600 --> 00:42:49,917
+If I tell you what is
+the stochastic noise, you
+
+1017
+00:42:49,917 --> 00:42:52,740
+will say, here's my target, and
+there is something on top of it. That
+
+1018
+00:42:52,740 --> 00:42:54,310
+is what I call stochastic noise.
+
+1019
+00:42:54,310 --> 00:42:54,870
+
+
+1020
+00:42:54,870 --> 00:42:58,220
+So the deterministic noise will be
+the same thing, except that it
+
+1021
+00:42:58,220 --> 00:42:59,330
+captures something deterministic.
+
+1022
+00:42:59,330 --> 00:43:04,700
+It's the part of the target that your
+hypothesis set cannot capture.
+
+1023
+00:43:04,700 --> 00:43:05,420
+
+
+1024
+00:43:05,420 --> 00:43:07,170
+So let's look at the picture.
+
+1025
+00:43:07,170 --> 00:43:09,330
+Here is the picture.
+
+1026
+00:43:09,330 --> 00:43:11,800
+This is your target, the blue guy.
+
+1027
+00:43:11,800 --> 00:43:16,770
+You take a hypothesis set that-- let's
+say simple, and you look for the guy
+
+1028
+00:43:16,770 --> 00:43:19,090
+that best approximates f.
+
+1029
+00:43:19,090 --> 00:43:20,380
+Not in the learning sense.
+
+1030
+00:43:20,380 --> 00:43:23,480
+You actually try very hard to find
+the best possible approximation.
+
+1031
+00:43:23,480 --> 00:43:25,960
+You're still not going to get f,
+because your hypothesis set is
+
+1032
+00:43:25,960 --> 00:43:30,610
+limited, but the best guy will be
+sitting there, and it will fail to
+
+1033
+00:43:30,610 --> 00:43:33,750
+pick certain part of the target.
+
+1034
+00:43:33,750 --> 00:43:36,740
+And that is the part we are labeling
+the deterministic noise.
+
+1035
+00:43:36,740 --> 00:43:37,640
+
+
+1036
+00:43:37,640 --> 00:43:40,600
+And if you think from an operational
+point of view, if you are that
+
+1037
+00:43:40,600 --> 00:43:43,300
+hypothesis, noise is all the same.
+
+1038
+00:43:43,300 --> 00:43:45,210
+It's something I cannot capture.
+
+1039
+00:43:45,210 --> 00:43:48,090
+Whether I couldn't capture it, because
+there's nothing to capture--
+
+1040
+00:43:48,090 --> 00:43:49,680
+as in stochastic noise--
+
+1041
+00:43:49,680 --> 00:43:53,120
+or I couldn't capture it, because I'm
+limited in capturing, and this I have
+
+1042
+00:43:53,120 --> 00:43:55,430
+to consider as out of my league.
+
+1043
+00:43:55,430 --> 00:43:57,430
+Both of them are noise, as
+far as I'm concerned.
+
+1044
+00:43:57,430 --> 00:43:58,680
+Something I cannot deal with.
+
+1045
+00:43:58,680 --> 00:44:01,270
+
+
+1046
+00:44:01,270 --> 00:44:04,180
+This is how we define it.
+
+1047
+00:44:04,180 --> 00:44:07,620
+And then we ask, why are
+we calling it noise?
+
+1048
+00:44:07,620 --> 00:44:10,040
+It's a little bit of
+a philosophical issue.
+
+1049
+00:44:10,040 --> 00:44:14,790
+But let's say that you have
+a young sibling--
+
+1050
+00:44:14,790 --> 00:44:17,900
+your kid brother--
+
+1051
+00:44:17,900 --> 00:44:18,970
+has just learned fractions.
+
+1052
+00:44:18,970 --> 00:44:22,480
+So they used to have just
+1, 2, 3, 4, 5, 6.
+
+1053
+00:44:22,480 --> 00:44:25,130
+They're not even into negative numbers,
+and they learn fractions,
+
+1054
+00:44:25,130 --> 00:44:26,050
+and now they're very excited.
+
+1055
+00:44:26,050 --> 00:44:28,660
+They realize that there's more
+to numbers than just 1, 2, 3.
+
+1056
+00:44:28,660 --> 00:44:29,550
+So you are the big brother.
+
+1057
+00:44:29,550 --> 00:44:31,530
+You are big Caltech guy.
+
+1058
+00:44:31,530 --> 00:44:32,590
+So you must know more about numbers.
+
+1059
+00:44:32,590 --> 00:44:34,740
+They come ask you, tell
+me more about numbers.
+
+1060
+00:44:34,740 --> 00:44:35,980
+
+
+1061
+00:44:35,980 --> 00:44:40,560
+Now, in your mind, you probably
+can explain to them negative numbers
+
+1062
+00:44:40,560 --> 00:44:42,140
+a little bit by deficiency.
+
+1063
+00:44:42,140 --> 00:44:45,545
+Real numbers, just intuitively
+continuous. You are not
+
+1064
+00:44:45,545 --> 00:44:46,910
+going to tell them about limits,
+or anything like that.
+
+1065
+00:44:46,910 --> 00:44:48,360
+They're too young for that.
+
+1066
+00:44:48,360 --> 00:44:52,350
+But you probably are not going to tell
+them about complex numbers, are you?
+
+1067
+00:44:52,350 --> 00:44:56,280
+Because their hypothesis set is so
+limited that complex numbers, for
+
+1068
+00:44:56,280 --> 00:44:58,470
+them, would be completely noise.
+
+1069
+00:44:58,470 --> 00:45:01,860
+And the problem with explaining something
+that people cannot capture is
+
+1070
+00:45:01,860 --> 00:45:05,620
+that they will create a pattern
+that really doesn't exist.
+
+1071
+00:45:05,620 --> 00:45:07,955
+And then you tell them complex number,
+and they really can't comprehend it,
+
+1072
+00:45:07,955 --> 00:45:09,260
+but they got the notion.
+
+1073
+00:45:09,260 --> 00:45:14,620
+So now it's the noise. They fit the
+noise, and they tell you, is 7.34521
+
+1074
+00:45:14,620 --> 00:45:15,870
+a complex number?
+
+1075
+00:45:15,870 --> 00:45:17,110
+Because in their minds--
+
+1076
+00:45:17,110 --> 00:45:18,840
+they just got on to a tangent.
+
+1077
+00:45:18,840 --> 00:45:21,940
+So you're better off just
+killing that part.
+
+1078
+00:45:21,940 --> 00:45:25,140
+And giving them a simple thing that they
+can learn, because the additional
+
+1079
+00:45:25,140 --> 00:45:26,820
+part will actually mislead them.
+
+1080
+00:45:26,820 --> 00:45:28,550
+Mislead them, as in noise.
+
+1081
+00:45:28,550 --> 00:45:29,090
+
+
+1082
+00:45:29,090 --> 00:45:32,910
+So this is our idea, that if I have
+a hypothesis set, and there is part of
+
+1083
+00:45:32,910 --> 00:45:36,330
+the target that I cannot capture,
+there's no point in trying to capture
+
+1084
+00:45:36,330 --> 00:45:39,550
+it, because when you try to capture it,
+you are detecting a false pattern
+
+1085
+00:45:39,550 --> 00:45:42,180
+that you cannot extrapolate,
+given your limitations.
+
+1086
+00:45:42,180 --> 00:45:44,760
+That's why it's called noise.
+
+1087
+00:45:44,760 --> 00:45:45,560
+
+
+1088
+00:45:45,560 --> 00:45:48,155
+Now the main differences between
+deterministic noise and stochastic
+
+1089
+00:45:48,155 --> 00:45:50,570
+noise-- both of them can be
+plotted, a realization--
+
+1090
+00:45:50,570 --> 00:45:51,420
+
+
+1091
+00:45:51,420 --> 00:45:54,560
+but the main differences are, the
+first thing is that deterministic
+
+1092
+00:45:54,560 --> 00:45:57,730
+noise depends on your hypothesis set.
+
+1093
+00:45:57,730 --> 00:46:01,600
+For the same target function, if you
+use a more sophisticated hypothesis
+
+1094
+00:46:01,600 --> 00:46:05,690
+set, the deterministic noise will be
+smaller, because you were able to
+
+1095
+00:46:05,690 --> 00:46:07,090
+capture more.
+
+1096
+00:46:07,090 --> 00:46:08,780
+
+
+1097
+00:46:08,780 --> 00:46:10,840
+Obviously, the stochastic
+noise will be the same.
+
+1098
+00:46:10,840 --> 00:46:13,830
+Nothing can capture it, so all
+hypotheses are the same.
+
+1099
+00:46:13,830 --> 00:46:16,940
+We cannot capture it, and
+therefore it's noise.
+
+1100
+00:46:16,940 --> 00:46:21,320
+The other thing is that, if I give you
+a particular point x, deterministic
+
+1101
+00:46:21,320 --> 00:46:24,300
+noise is a fixed amount, which is the
+difference between the value of the
+
+1102
+00:46:24,300 --> 00:46:27,750
+target at that point and the best
+hypothesis approximation you have.
+
+1103
+00:46:27,750 --> 00:46:28,620
+
+
+1104
+00:46:28,620 --> 00:46:32,450
+If I gave you stochastic noise, then
+you are generating this at random.
+
+1105
+00:46:32,450 --> 00:46:35,550
+And if I give you two instances
+of x, the same x,
+
+1106
+00:46:35,550 --> 00:46:38,300
+the noise will change from one
+occurrence to another, whereas here,
+
+1107
+00:46:38,300 --> 00:46:39,840
+it's the same.
+
+1108
+00:46:39,840 --> 00:46:44,220
+Nonetheless, they behave exactly the
+same for machine learning, because
+
+1109
+00:46:44,220 --> 00:46:47,950
+invariably we have a given data set.
+
+1110
+00:46:47,950 --> 00:46:50,830
+Nobody changes x's on us, and give
+us another realization of the x.
+
+1111
+00:46:50,830 --> 00:46:53,940
+We just have the x's given to
+us together with the labels.
+
+1112
+00:46:53,940 --> 00:46:54,380
+
+
+1113
+00:46:54,380 --> 00:46:56,380
+So this doesn't make
+a difference for us.
+
+1114
+00:46:56,380 --> 00:46:58,890
+And we settle on a hypothesis set.
+
+1115
+00:46:58,890 --> 00:47:03,310
+Once you settle on a hypothesis set, the
+deterministic noise is as bad as
+
+1116
+00:47:03,310 --> 00:47:04,590
+the stochastic noise.
+
+1117
+00:47:04,590 --> 00:47:07,686
+It's something that we cannot capture,
+and it depends on something that we
+
+1118
+00:47:07,686 --> 00:47:09,720
+have already fixed, so it doesn't
+depend on anything.
+
+1119
+00:47:09,720 --> 00:47:13,710
+So in a given learning situation,
+they behave the same.
+
+1120
+00:47:13,710 --> 00:47:16,380
+
+
+1121
+00:47:16,380 --> 00:47:20,830
+Now, let's see the impact
+on overfitting.
+
+1122
+00:47:20,830 --> 00:47:24,190
+This is what we have seen before.
+
+1123
+00:47:24,190 --> 00:47:27,670
+This is the case where we have
+increasing target complexity, so
+
+1124
+00:47:27,670 --> 00:47:31,290
+increasing deterministic noise in the
+terminology we just introduced, and
+
+1125
+00:47:31,290 --> 00:47:34,210
+the number of points. And red means
+overfitting, so this is how much
+
+1126
+00:47:34,210 --> 00:47:36,160
+overfitting is there.
+
+1127
+00:47:36,160 --> 00:47:42,390
+And we are looking at deterministic
+noise, as it relates to the target
+
+1128
+00:47:42,390 --> 00:47:42,810
+complexity.
+
+1129
+00:47:42,810 --> 00:47:45,810
+Because the quantitative thing
+we had is target complexity.
+
+1130
+00:47:45,810 --> 00:47:49,200
+We defined what a realization of
+deterministic noise is, but it's not
+
+1131
+00:47:49,200 --> 00:47:53,220
+clear to us what quantity we should
+measure out of deterministic noise, in
+
+1132
+00:47:53,220 --> 00:47:55,810
+order to tell us that this is the
+level of noise that results in
+
+1133
+00:47:55,810 --> 00:47:56,860
+overfitting, yet.
+
+1134
+00:47:56,860 --> 00:47:57,500
+
+
+1135
+00:47:57,500 --> 00:48:01,130
+We have the one in the case of
+stochastic noise very easily.
+
+1136
+00:48:01,130 --> 00:48:02,540
+We just take the energy of it.
+
+1137
+00:48:02,540 --> 00:48:07,490
+So here we realize that as you increase
+the target complexity, the
+
+1138
+00:48:07,490 --> 00:48:12,110
+deterministic noise increases, which is
+the overfitting phenomenon that we
+
+1139
+00:48:12,110 --> 00:48:13,510
+observe-- increases.
+
+1140
+00:48:13,510 --> 00:48:15,425
+But you'll notice there's something
+interesting here.
+
+1141
+00:48:15,425 --> 00:48:19,350
+It doesn't start until you get to 10.
+
+1142
+00:48:19,350 --> 00:48:21,420
+Because this was overfitting of what?
+
+1143
+00:48:21,420 --> 00:48:23,920
+The 10th order versus the 2nd order.
+
+1144
+00:48:23,920 --> 00:48:26,530
+So if you're going to start having
+deterministic noise, you'd better go
+
+1145
+00:48:26,530 --> 00:48:29,430
+above 10, so that there is something
+that you cannot approximate.
+
+1146
+00:48:29,430 --> 00:48:29,890
+
+
+1147
+00:48:29,890 --> 00:48:32,300
+This is the part where it's there.
+
+1148
+00:48:32,300 --> 00:48:34,050
+So here,
+
+1149
+00:48:34,050 --> 00:48:39,000
+I wouldn't say proportional, but it
+definitely increases with the target
+
+1150
+00:48:39,000 --> 00:48:43,580
+complexity, and it decreases
+with N as we expect.
+
+1151
+00:48:43,580 --> 00:48:44,830
+
+
+1152
+00:48:44,830 --> 00:48:46,580
+
+
+1153
+00:48:46,580 --> 00:48:50,100
+Now for the finite N, you suffer the
+same way you suffer from the
+
+1154
+00:48:50,100 --> 00:48:51,110
+stochastic noise.
+
+1155
+00:48:51,110 --> 00:48:51,990
+
+
+1156
+00:48:51,990 --> 00:48:55,590
+We have declared that deterministic noise
+is the part that your hypothesis set
+
+1157
+00:48:55,590 --> 00:48:56,960
+cannot capture.
+
+1158
+00:48:56,960 --> 00:48:57,790
+So what is the problem?
+
+1159
+00:48:57,790 --> 00:49:02,470
+If I cannot capture it, it won't
+hurt me, because when I try to
+
+1160
+00:49:02,470 --> 00:49:04,540
+fit, I won't capture it anyway.
+
+1161
+00:49:04,540 --> 00:49:05,370
+No.
+
+1162
+00:49:05,370 --> 00:49:08,310
+You cannot capture it in its entirety.
+
+1163
+00:49:08,310 --> 00:49:13,060
+But if I give you only a finite sample,
+then you only get few
+
+1164
+00:49:13,060 --> 00:49:18,350
+points, and you may be able to capture
+a little bit of the stochastic noise,
+
+1165
+00:49:18,350 --> 00:49:20,250
+or the deterministic
+noise in this case.
+
+1166
+00:49:20,250 --> 00:49:21,020
+
+
+1167
+00:49:21,020 --> 00:49:23,400
+Again, if I have 10 points--
+
+1168
+00:49:23,400 --> 00:49:27,440
+if you give me a million points,
+and even if there is stochastic noise,
+
+1169
+00:49:27,440 --> 00:49:30,170
+there's nothing I can do to
+capture the noise.
+
+1170
+00:49:30,170 --> 00:49:34,600
+Let me remind you of the example
+we gave in linear regression.
+
+1171
+00:49:34,600 --> 00:49:37,350
+We took linear regression and said,
+let's say that we are learning
+
+1172
+00:49:37,350 --> 00:49:38,370
+a linear function.
+
+1173
+00:49:38,370 --> 00:49:40,270
+So linear regression would
+be perfect in this case.
+
+1174
+00:49:40,270 --> 00:49:40,520
+
+
+1175
+00:49:40,520 --> 00:49:42,520
+This is the target.
+
+1176
+00:49:42,520 --> 00:49:45,400
+And then we added noise to the examples,
+so instead of getting the
+
+1177
+00:49:45,400 --> 00:49:50,000
+points perfectly on that line,
+you get points right or left.
+
+1178
+00:49:50,000 --> 00:49:52,630
+And then we tried to use linear
+regression to fit it.
+
+1179
+00:49:52,630 --> 00:49:52,980
+
+
+1180
+00:49:52,980 --> 00:49:55,710
+If you didn't have any noise,
+linear regression would be
+
+1181
+00:49:55,710 --> 00:49:57,020
+perfect in this case.
+
+1182
+00:49:57,020 --> 00:49:59,970
+Now, since there's noise, and it doesn't
+really see the line-- it only
+
+1183
+00:49:59,970 --> 00:50:05,280
+sees those guys, it eats a little bit
+into the noise, and therefore gets
+
+1184
+00:50:05,280 --> 00:50:09,840
+deviated from the target. And that is
+why you are getting worse performance
+
+1185
+00:50:09,840 --> 00:50:12,260
+than without the noise.
+
+1186
+00:50:12,260 --> 00:50:16,800
+Now, if I have 10 points, linear
+regression will have easy time eating
+
+1187
+00:50:16,800 --> 00:50:18,910
+into that, because there
+isn't much to fit.
+
+1188
+00:50:18,910 --> 00:50:22,340
+There are only 10 guys, and maybe
+there's some linear pattern there.
+
+1189
+00:50:22,340 --> 00:50:25,880
+If I get a million points, the chances
+are I won't be able to fit any of them
+
+1190
+00:50:25,880 --> 00:50:28,690
+at all, because they are noise all
+over the place, and I cannot find
+
+1191
+00:50:28,690 --> 00:50:32,000
+a compromise using my few parameters, and
+therefore I will end up really not being
+
+1192
+00:50:32,000 --> 00:50:33,100
+affected by them.
+
+1193
+00:50:33,100 --> 00:50:34,760
+In the infinite case, I
+cannot get anything.
+
+1194
+00:50:34,760 --> 00:50:37,480
+They are noise, and I cannot fit them.
+They are out of my ability.
+
+1195
+00:50:37,480 --> 00:50:37,950
+
+
+1196
+00:50:37,950 --> 00:50:41,440
+But the problem is that once you have
+a finite sample, you're given the
+
+1197
+00:50:41,440 --> 00:50:45,490
+unfortunate ability to be able to fit
+the noise, and you will indeed fit it.
+
+1198
+00:50:45,490 --> 00:50:46,670
+Whether it's stochastic--
+
+1199
+00:50:46,670 --> 00:50:50,170
+that it doesn't make sense-- or
+deterministic, that there is no point
+
+1200
+00:50:50,170 --> 00:50:53,400
+in fitting it, because you know in your
+hypothesis set, there is no way
+
+1201
+00:50:53,400 --> 00:50:55,040
+to generalize out-of-sample for it.
+
+1202
+00:50:55,040 --> 00:50:56,770
+It is out of your ability.
+
+1203
+00:50:56,770 --> 00:50:57,250
+
+
+1204
+00:50:57,250 --> 00:51:01,700
+So the problem here is that for the
+finite N, you get to try to fit the
+
+1205
+00:51:01,700 --> 00:51:05,380
+noise, both stochastic
+and deterministic.
+
+1206
+00:51:05,380 --> 00:51:07,940
+
+
+1207
+00:51:07,940 --> 00:51:12,180
+Now, let me go quickly through
+a quantitative analysis that will put
+
+1208
+00:51:12,180 --> 00:51:15,530
+deterministic noise and stochastic noise
+in the same equation, so that
+
+1209
+00:51:15,530 --> 00:51:17,600
+they become clear.
+
+1210
+00:51:17,600 --> 00:51:18,740
+Remember bias-variance?
+
+1211
+00:51:18,740 --> 00:51:19,920
+That was a few lectures ago.
+
+1212
+00:51:19,920 --> 00:51:20,850
+What was that about?
+
+1213
+00:51:20,850 --> 00:51:22,020
+
+
+1214
+00:51:22,020 --> 00:51:26,750
+We had a decomposition of the expected
+out-of-sample error into two terms.
+
+1215
+00:51:26,750 --> 00:51:31,890
+And this is the expected value of
+out-of-sample error. I remember, this is
+
+1216
+00:51:31,890 --> 00:51:35,030
+the hypothesis we get, and we
+have dependency on the data
+
+1217
+00:51:35,030 --> 00:51:36,250
+set that got us.
+
+1218
+00:51:36,250 --> 00:51:39,620
+We compare it to the target function,
+and we get the expected value with
+
+1219
+00:51:39,620 --> 00:51:40,250
+respect to those.
+
+1220
+00:51:40,250 --> 00:51:45,980
+And that ended up being a variance,
+which tells me how far I am from the
+
+1221
+00:51:45,980 --> 00:51:50,010
+centroid within the hypothesis set, and
+that means that there's a variety of
+
+1222
+00:51:50,010 --> 00:51:51,870
+things I get based on D.
+
+1223
+00:51:51,870 --> 00:51:54,960
+And the other one is how far the
+centroid is from the target, which
+
+1224
+00:51:54,960 --> 00:51:58,640
+tells me the bias of my hypothesis
+set from the target.
+
+1225
+00:51:58,640 --> 00:52:02,720
+And the leap of faith we had is that
+this quantity, which is the average
+
+1226
+00:52:02,720 --> 00:52:06,240
+hypothesis you get over all data sets,
+is about the same as the best
+
+1227
+00:52:06,240 --> 00:52:08,790
+hypothesis in the hypothesis set.
+
+1228
+00:52:08,790 --> 00:52:10,390
+
+
+1229
+00:52:10,390 --> 00:52:11,770
+So we had that.
+
+1230
+00:52:11,770 --> 00:52:16,270
+And in this case, f was noiseless
+in this analysis.
+
+1231
+00:52:16,270 --> 00:52:19,820
+Now, I'd like to add noise to the
+target, and see how this decomposition
+
+1232
+00:52:19,820 --> 00:52:23,740
+will go, because this will give us
+a very good insight into the role of
+
+1233
+00:52:23,740 --> 00:52:26,160
+stochastic noise versus
+deterministic noise.
+
+1234
+00:52:26,160 --> 00:52:27,470
+So we add noise.
+
+1235
+00:52:27,470 --> 00:52:31,420
+And we're going to plot it red, because
+we want to pay attention to
+
+1236
+00:52:31,420 --> 00:52:33,160
+it, and because we are going
+to get the expected values
+
+1237
+00:52:33,160 --> 00:52:33,850
+with respect to it.
+
+1238
+00:52:33,850 --> 00:52:38,510
+So y now is the realization,
+the target plus epsilon.
+
+1239
+00:52:38,510 --> 00:52:41,380
+And I'm going to assume that the
+expected value of the noise is 0.
+
+1240
+00:52:41,380 --> 00:52:43,630
+Again, if the expected value is
+something else, we put that in the
+
+1241
+00:52:43,630 --> 00:52:47,040
+target, and leave the part which is
+pure fluctuation outside, and call
+
+1242
+00:52:47,040 --> 00:52:47,380
+that epsilon.
+
+1243
+00:52:47,380 --> 00:52:48,210
+
+
+1244
+00:52:48,210 --> 00:52:50,210
+Now I would like to
+repeat the analysis,
+
+1245
+00:52:50,210 --> 00:52:51,520
+more quickly, obviously,
+
+1246
+00:52:51,520 --> 00:52:53,330
+with the added noise.
+
+1247
+00:52:53,330 --> 00:52:54,270
+
+
+1248
+00:52:54,270 --> 00:52:55,820
+Here is the noise term.
+
+1249
+00:52:55,820 --> 00:52:57,840
+First, this is what we started with.
+
+1250
+00:52:57,840 --> 00:52:58,670
+
+
+1251
+00:52:58,670 --> 00:53:02,690
+So I'm comparing what you get in your
+hypothesis, in a particular learning
+
+1252
+00:53:02,690 --> 00:53:04,350
+situation, to the target.
+
+1253
+00:53:04,350 --> 00:53:05,640
+But now the target is noisy.
+
+1254
+00:53:05,640 --> 00:53:08,870
+So the first thing is to replace
+this fellow by the noisy
+
+1255
+00:53:08,870 --> 00:53:10,340
+version, which is y.
+
+1256
+00:53:10,340 --> 00:53:12,270
+I know that y has f of
+x, plus the noise.
+
+1257
+00:53:12,270 --> 00:53:14,050
+That's what I'm comparing to.
+
+1258
+00:53:14,050 --> 00:53:16,980
+And now, because y depends on the
+noise, I'm not only getting the
+
+1259
+00:53:16,980 --> 00:53:20,190
+averaging with respect to the data set,
+I'm also getting the average with
+
+1260
+00:53:20,190 --> 00:53:22,240
+respect to the realization
+of the noise.
+
+1261
+00:53:22,240 --> 00:53:24,760
+So I'm getting expected value
+with respect to D and epsilon--
+
+1262
+00:53:24,760 --> 00:53:26,690
+epsilon affecting y.
+
+1263
+00:53:26,690 --> 00:53:28,170
+
+
+1264
+00:53:28,170 --> 00:53:30,290
+So you expand this, and
+
+1265
+00:53:30,290 --> 00:53:34,550
+this is just rewriting it. f of x
+plus epsilon is y, so I'm
+
+1266
+00:53:34,550 --> 00:53:36,110
+writing it this way.
+
+1267
+00:53:36,110 --> 00:53:38,950
+And we do the same thing we did before,
+but just carrying this
+
+1268
+00:53:38,950 --> 00:53:40,690
+around, until we see where it goes.
+
+1269
+00:53:40,690 --> 00:53:41,320
+
+
+1270
+00:53:41,320 --> 00:53:42,540
+So what did we do?
+
+1271
+00:53:42,540 --> 00:53:45,380
+We added and subtracted the centroid--
+
+1272
+00:53:45,380 --> 00:53:47,030
+the average hypothesis, remember--
+
+1273
+00:53:47,030 --> 00:53:50,400
+in preparation for getting squared
+terms, and cross terms.
+
+1274
+00:53:50,400 --> 00:53:55,060
+And here we have the epsilon
+added to the mix.
+
+1275
+00:53:55,060 --> 00:53:56,600
+And then we write it down.
+
+1276
+00:53:56,600 --> 00:54:00,360
+And in the first case, we get the
+squared, so we put these together and
+
+1277
+00:54:00,360 --> 00:54:01,290
+put them as squared.
+
+1278
+00:54:01,290 --> 00:54:03,840
+We take these two guys together,
+and put them as squared.
+
+1279
+00:54:03,840 --> 00:54:05,940
+And this guy by itself,
+we put it as squared.
+
+1280
+00:54:05,940 --> 00:54:08,040
+We will still have cross terms, but
+these are the ones that I'm
+
+1281
+00:54:08,040 --> 00:54:09,140
+going to focus on.
+
+1282
+00:54:09,140 --> 00:54:11,900
+And then we have more cross terms
+than we had before, because
+
+1283
+00:54:11,900 --> 00:54:12,850
+there's epsilon in it.
+
+1284
+00:54:12,850 --> 00:54:16,190
+But the good news is that, if you get
+the expected value of the cross terms,
+
+1285
+00:54:16,190 --> 00:54:17,340
+all of them will go to 0.
+
+1286
+00:54:17,340 --> 00:54:19,570
+The ones that used to go
+to 0 will go to 0.
+
+1287
+00:54:19,570 --> 00:54:22,290
+The other ones will go to 0, because the
+expected value of epsilon goes to
+
+1288
+00:54:22,290 --> 00:54:26,100
+0, and epsilon is independent of
+the other random thing here,
+
+1289
+00:54:26,100 --> 00:54:26,600
+which is the data set.
+
+1290
+00:54:26,600 --> 00:54:27,830
+Data set is generated.
+
+1291
+00:54:27,830 --> 00:54:29,150
+Its noise is generated.
+
+1292
+00:54:29,150 --> 00:54:32,690
+Epsilon is generated on the test point
+x, which is independent, and therefore
+
+1293
+00:54:32,690 --> 00:54:33,340
+you will get 0.
+
+1294
+00:54:33,340 --> 00:54:36,610
+So it's very easy to argue that this is
+0, and you will get basically the
+
+1295
+00:54:36,610 --> 00:54:40,420
+same decomposition with
+this fellow added.
+
+1296
+00:54:40,420 --> 00:54:43,150
+So let's look at it.
+
+1297
+00:54:43,150 --> 00:54:45,380
+Well, we'll see that there
+are actually two noise
+
+1298
+00:54:45,380 --> 00:54:46,400
+terms that come up.
+
+1299
+00:54:46,400 --> 00:54:49,440
+This is the variance term.
+
+1300
+00:54:49,440 --> 00:54:50,910
+
+
+1301
+00:54:50,910 --> 00:54:52,660
+Let me put it.
+
+1302
+00:54:52,660 --> 00:54:55,460
+This is the bias term.
+
+1303
+00:54:55,460 --> 00:55:00,350
+And this is the added term, which
+is just sigma squared, the
+
+1304
+00:55:00,350 --> 00:55:01,260
+energy of the noise.
+
+1305
+00:55:01,260 --> 00:55:04,490
+Let me just discuss this a little bit.
+
+1306
+00:55:04,490 --> 00:55:07,510
+We had the expected value with respect
+to D, and with respect to epsilon.
+
+1307
+00:55:07,510 --> 00:55:10,940
+And then, remember that we take the
+expected value with respect to x,
+
+1308
+00:55:10,940 --> 00:55:14,390
+average over all the space, in order to
+get just the bias and variance, rather
+
+1309
+00:55:14,390 --> 00:55:16,970
+than the bias of x-- of your
+test point.
+
+1310
+00:55:16,970 --> 00:55:18,220
+So I did that already.
+
+1311
+00:55:18,220 --> 00:55:21,480
+So every expectation is with respect to
+the data set, with respect to the
+
+1312
+00:55:21,480 --> 00:55:24,710
+input point, and with respect to the
+realization of the noisy epsilon.
+
+1313
+00:55:24,710 --> 00:55:25,410
+
+
+1314
+00:55:25,410 --> 00:55:27,950
+But I'm keeping the guys that survive,
+because the other guys--
+
+1315
+00:55:27,950 --> 00:55:28,130
+
+
+1316
+00:55:28,130 --> 00:55:31,423
+epsilon doesn't appear here, so the
+thing is constant with respect to it,
+
+1317
+00:55:31,423 --> 00:55:32,510
+so I take it out.
+
+1318
+00:55:32,510 --> 00:55:36,120
+Here, neither epsilon nor D appears
+here, so I just leave it for
+
+1319
+00:55:36,120 --> 00:55:36,700
+simplicity.
+
+1320
+00:55:36,700 --> 00:55:40,070
+And here, D doesn't appear, but epsilon
+and x appear, so I do it this way.
+
+1321
+00:55:40,070 --> 00:55:40,620
+
+
+1322
+00:55:40,620 --> 00:55:43,070
+I could put the more elaborate
+notation, but I just
+
+1323
+00:55:43,070 --> 00:55:44,870
+wanted to keep it simple.
+
+1324
+00:55:44,870 --> 00:55:45,220
+
+
+1325
+00:55:45,220 --> 00:55:46,720
+Now, look at this decomposition.
+
+1326
+00:55:46,720 --> 00:55:52,810
+We have the moving from your
+hypothesis to the centroid, from the
+
+1327
+00:55:52,810 --> 00:55:57,620
+centroid to the target proper, and then
+from the target proper to the
+
+1328
+00:55:57,620 --> 00:56:00,640
+actual output, which has
+a noise aspect to it.
+
+1329
+00:56:00,640 --> 00:56:03,890
+So it's again the same thing of trying
+to approximate something, and putting
+
+1330
+00:56:03,890 --> 00:56:05,890
+it in steps.
+
+1331
+00:56:05,890 --> 00:56:11,181
+Now if you look at the last quantity,
+that is patently the stochastic noise.
+
+1332
+00:56:11,181 --> 00:56:11,980
+
+
+1333
+00:56:11,980 --> 00:56:15,230
+The interesting thing is that there
+is another term here which is
+
+1334
+00:56:15,230 --> 00:56:17,480
+corresponding to the
+deterministic noise.
+
+1335
+00:56:17,480 --> 00:56:19,740
+And that is this fellow.
+
+1336
+00:56:19,740 --> 00:56:21,100
+That's another name for the bias.
+
+1337
+00:56:21,100 --> 00:56:22,210
+Why is that?
+
+1338
+00:56:22,210 --> 00:56:26,260
+Because our leap of faith told us
+that this guy, the average, is about the
+
+1339
+00:56:26,260 --> 00:56:27,265
+same as the best hypothesis.
+
+1340
+00:56:27,265 --> 00:56:30,900
+So we are measuring how the best
+hypothesis can approximate f.
+
+1341
+00:56:30,900 --> 00:56:34,720
+Well, this tells me the energy
+of deterministic noise.
+
+1342
+00:56:34,720 --> 00:56:36,930
+And this is why it's deterministic
+noise.
+
+1343
+00:56:36,930 --> 00:56:41,710
+And putting it this way it gives
+you the solid ground to
+
+1344
+00:56:41,710 --> 00:56:43,430
+treat them the same.
+
+1345
+00:56:43,430 --> 00:56:48,620
+Because if you increase the number of
+examples, you may get better variance.
+
+1346
+00:56:48,620 --> 00:56:48,990
+
+
+1347
+00:56:48,990 --> 00:56:51,800
+There is more examples,
+so you don't float around
+
+1348
+00:56:51,800 --> 00:56:52,460
+fitting all of them.
+
+1349
+00:56:52,460 --> 00:56:56,130
+So the red region, that used to be the
+variance, shrinks and shrinks.
+
+1350
+00:56:56,130 --> 00:56:58,100
+These guys are both inevitable.
+
+1351
+00:56:58,100 --> 00:57:01,140
+There is nothing you can do about this,
+and there's nothing you can do
+
+1352
+00:57:01,140 --> 00:57:03,350
+about this given a hypothesis set.
+
+1353
+00:57:03,350 --> 00:57:05,380
+So these are fixed.
+
+1354
+00:57:05,380 --> 00:57:08,570
+But again, in the bias-variance,
+remember the approximation was overall
+
+1355
+00:57:08,570 --> 00:57:09,250
+approximation.
+
+1356
+00:57:09,250 --> 00:57:11,800
+We took the entire target function,
+and the entire hypothesis.
+
+1357
+00:57:11,800 --> 00:57:13,960
+We didn't look at particular
+data points.
+
+1358
+00:57:13,960 --> 00:57:16,335
+We looked at approximation proper, and
+that's why these are inevitable.
+
+1359
+00:57:16,335 --> 00:57:19,690
+You tell me what the hypothesis set is,
+well, that's the best I can do.
+
+1360
+00:57:19,690 --> 00:57:22,330
+And this is the best I can do as far
+as the noise, which is just not
+
+1361
+00:57:22,330 --> 00:57:24,230
+predicting anything in the noise.
+
+1362
+00:57:24,230 --> 00:57:27,540
+Now, both the deterministic noise and
+the stochastic noise will have
+
+1363
+00:57:27,540 --> 00:57:32,930
+a finite version on the data points, and
+the algorithm will try to fit them.
+
+1364
+00:57:32,930 --> 00:57:35,340
+And that's why this guy
+gets a variety.
+
+1365
+00:57:35,340 --> 00:57:35,820
+
+
+1366
+00:57:35,820 --> 00:57:40,360
+Because depending on the particular fit of
+those, you will get one or another.
+
+1367
+00:57:40,360 --> 00:57:46,820
+So these guys affect the variance, by
+making the fit more susceptible to
+
+1368
+00:57:46,820 --> 00:57:48,260
+going in more places.
+
+1369
+00:57:48,260 --> 00:57:51,770
+Depending on what happens, I will go
+this way and that way-- not because
+
+1370
+00:57:51,770 --> 00:57:55,270
+it's indicated by the target function
+I want to learn, but just because
+
+1371
+00:57:55,270 --> 00:57:58,790
+there is a noise present in the sample
+that I am blindly following, because I
+
+1372
+00:57:58,790 --> 00:58:01,570
+can't distinguish noise from signal,
+and therefore I end up with more
+
+1373
+00:58:01,570 --> 00:58:05,640
+variety, and I end up with worse
+variance and overfit.
+
+1374
+00:58:05,640 --> 00:58:07,450
+
+
+1375
+00:58:07,450 --> 00:58:12,250
+Now very briefly, I'm going
+to give you a lead into
+
+1376
+00:58:12,250 --> 00:58:14,110
+the next two lectures.
+
+1377
+00:58:14,110 --> 00:58:18,680
+We understand what overfitting is, and we
+understand that it's due to noise.
+
+1378
+00:58:18,680 --> 00:58:22,910
+And we understand that noise is in the
+eye of the beholder, so to speak.
+
+1379
+00:58:22,910 --> 00:58:26,610
+There is stochastic noise, but there's
+another noise which is not really
+
+1380
+00:58:26,610 --> 00:58:29,000
+noise, but depends on which
+hypothesis looks at it.
+
+1381
+00:58:29,000 --> 00:58:32,000
+It looks like noise to some, and not
+look like noise to other, and we call
+
+1382
+00:58:32,000 --> 00:58:33,220
+that deterministic noise.
+
+1383
+00:58:33,220 --> 00:58:36,000
+And we saw experimentally that
+it affects overfitting.
+
+1384
+00:58:36,000 --> 00:58:37,330
+So how do we deal with overfitting?
+
+1385
+00:58:37,330 --> 00:58:39,050
+What does it mean to deal
+with overfitting?
+
+1386
+00:58:39,050 --> 00:58:40,420
+We want to avoid it.
+
+1387
+00:58:40,420 --> 00:58:44,120
+We don't want to spend more energy
+fitting, and get worse out-of-sample
+
+1388
+00:58:44,120 --> 00:58:47,190
+error, whether by choice of a model,
+or by actually optimizing within
+
+1389
+00:58:47,190 --> 00:58:49,440
+a model, like we did with
+neural networks.
+
+1390
+00:58:49,440 --> 00:58:50,070
+
+
+1391
+00:58:50,070 --> 00:58:52,420
+There are two cures.
+
+1392
+00:58:52,420 --> 00:58:59,260
+One of them is called regularization,
+and that is best described as putting
+
+1393
+00:58:59,260 --> 00:59:00,470
+the brakes.
+
+1394
+00:59:00,470 --> 00:59:00,790
+
+
+1395
+00:59:00,790 --> 00:59:04,500
+So overfitting-- you are going,
+going, going, going,
+
+1396
+00:59:04,500 --> 00:59:06,090
+and you hurt yourself.
+
+1397
+00:59:06,090 --> 00:59:07,870
+So all I'm doing here is, I'm
+just making sure that you
+
+1398
+00:59:07,870 --> 00:59:08,880
+don't go all the way.
+
+1399
+00:59:08,880 --> 00:59:09,130
+
+
+1400
+00:59:09,130 --> 00:59:11,790
+And when you do that, I'm going
+to avoid overfitting this way.
+
+1401
+00:59:11,790 --> 00:59:13,330
+
+
+1402
+00:59:13,330 --> 00:59:16,140
+The other one is called validation.
+
+1403
+00:59:16,140 --> 00:59:16,410
+
+
+1404
+00:59:16,410 --> 00:59:20,140
+What is the cure in this
+case for overfitting?
+
+1405
+00:59:20,140 --> 00:59:23,820
+You check the bottom line, and make
+sure that you don't overfit.
+
+1406
+00:59:23,820 --> 00:59:25,340
+It's a different philosophy.
+
+1407
+00:59:25,340 --> 00:59:25,880
+
+
+1408
+00:59:25,880 --> 00:59:29,490
+That is, the reason I'm overfitting is
+because I'm going for E_in, and I'm
+
+1409
+00:59:29,490 --> 00:59:31,080
+minimizing it, and I'm
+going all the way.
+
+1410
+00:59:31,080 --> 00:59:32,260
+I say, no, wait a minute.
+
+1411
+00:59:32,260 --> 00:59:32,630
+
+
+1412
+00:59:32,630 --> 00:59:34,800
+E_in is not a very good indication
+for what happens.
+
+1413
+00:59:34,800 --> 00:59:37,700
+Maybe there's another way to be able to
+tell what is actually happening out
+
+1414
+00:59:37,700 --> 00:59:41,170
+of sample, and therefore avoid
+overfitting, because you can check on
+
+1415
+00:59:41,170 --> 00:59:43,300
+what is happening in the real
+quantity you care about.
+
+1416
+00:59:43,300 --> 00:59:43,590
+
+
+1417
+00:59:43,590 --> 00:59:45,260
+So these are the two approaches.
+
+1418
+00:59:45,260 --> 00:59:47,690
+I'll give you just an appetizer--
+
+1419
+00:59:47,690 --> 00:59:52,080
+a very short appetizer for putting
+the brakes-- the regularization part,
+
+1420
+00:59:52,080 --> 00:59:53,880
+which is the subject of next lecture.
+
+1421
+00:59:53,880 --> 00:59:55,480
+
+
+1422
+00:59:55,480 --> 00:59:56,810
+Remember this curve?
+
+1423
+00:59:56,810 --> 00:59:58,540
+That's what we started with.
+
+1424
+00:59:58,540 --> 01:00:02,450
+We had the five points, we had the
+4th-order polynomial, we fit, and we
+
+1425
+01:00:02,450 --> 01:00:04,330
+ended up in trouble.
+
+1426
+01:00:04,330 --> 01:00:08,290
+And we can describe this as free fit,
+
+1427
+01:00:08,290 --> 01:00:10,170
+that is, fit all you can.
+
+1428
+01:00:10,170 --> 01:00:13,210
+So fit all you can, five points, I'll
+take 4th-order polynomial, go for it,
+
+1429
+01:00:13,210 --> 01:00:14,580
+I get this, and that's what happens.
+
+1430
+01:00:14,580 --> 01:00:15,380
+
+
+1431
+01:00:15,380 --> 01:00:19,570
+Now, putting the brakes means that
+you're going to not allow yourself to
+
+1432
+01:00:19,570 --> 01:00:24,770
+go all the way, and you are going
+to have a restrained fit.
+
+1433
+01:00:24,770 --> 01:00:25,490
+
+
+1434
+01:00:25,490 --> 01:00:29,040
+The reason I'm showing this is
+because it's fairly dramatic.
+
+1435
+01:00:29,040 --> 01:00:30,866
+You will think that I need--
+
+1436
+01:00:30,866 --> 01:00:35,120
+this curve is so incredibly bad that
+you think you really need to do
+
+1437
+01:00:35,120 --> 01:00:36,870
+something dramatic in
+order to avoid that.
+
+1438
+01:00:36,870 --> 01:00:40,840
+But here, what I'm going to do, I'm just
+going to make you fit, and I'm
+
+1439
+01:00:40,840 --> 01:00:43,250
+actually going to make you fit
+using a 4th-order polynomial.
+
+1440
+01:00:43,250 --> 01:00:45,130
+I'll give you that privilege.
+
+1441
+01:00:45,130 --> 01:00:46,050
+
+
+1442
+01:00:46,050 --> 01:00:49,560
+But I'm going to prevent you from
+fitting the points perfectly.
+
+1443
+01:00:49,560 --> 01:00:51,500
+I'm going to put some
+friction in it,
+
+1444
+01:00:51,500 --> 01:00:53,610
+such that you cannot get
+exactly to the points.
+
+1445
+01:00:53,610 --> 01:00:54,420
+
+
+1446
+01:00:54,420 --> 01:00:56,980
+And the amount of brake I'm
+going to put here is so
+
+1447
+01:00:56,980 --> 01:00:58,430
+minimal, it's laughable.
+
+1448
+01:00:58,430 --> 01:01:02,720
+When you go for your car service, they
+measure the brake, and they tell you,
+
+1449
+01:01:02,720 --> 01:01:05,670
+oh, the brake is 70%, et cetera,
+and then when it gets to
+
+1450
+01:01:05,670 --> 01:01:08,040
+40%, they tell you you need to
+do something about the brake.
+
+1451
+01:01:08,040 --> 01:01:09,950
+The brake's here are about 1%.
+
+1452
+01:01:09,950 --> 01:01:10,430
+
+
+1453
+01:01:10,430 --> 01:01:13,530
+So if this was a car, you would be
+braking here, and you would be
+
+1454
+01:01:13,530 --> 01:01:14,580
+stopping in Glendale!
+
+1455
+01:01:14,580 --> 01:01:14,810
+
+
+1456
+01:01:14,810 --> 01:01:17,150
+It's like completely ridiculous.
+
+1457
+01:01:17,150 --> 01:01:20,990
+But that little amount of brake
+will result in this.
+
+1458
+01:01:20,990 --> 01:01:24,140
+
+
+1459
+01:01:24,140 --> 01:01:25,910
+Totally dramatic.
+
+1460
+01:01:25,910 --> 01:01:27,520
+Fantastic fit.
+
+1461
+01:01:27,520 --> 01:01:31,200
+The red curve is a 4th-order polynomial,
+but we didn't allow it to
+
+1462
+01:01:31,200 --> 01:01:32,020
+fit all the way.
+
+1463
+01:01:32,020 --> 01:01:34,840
+And you can see that it's not fitting
+all the way, because it really is not
+
+1464
+01:01:34,840 --> 01:01:36,080
+getting the points right.
+
+1465
+01:01:36,080 --> 01:01:37,980
+It's getting there, but not exactly.
+
+1466
+01:01:37,980 --> 01:01:38,800
+
+
+1467
+01:01:38,800 --> 01:01:41,960
+So we don't have to do much to
+prevent the overfitting.
+
+1468
+01:01:41,960 --> 01:01:42,570
+
+
+1469
+01:01:42,570 --> 01:01:45,320
+But we need to understand what
+is regularization, and how to
+
+1470
+01:01:45,320 --> 01:01:46,360
+choose it, et cetera.
+
+1471
+01:01:46,360 --> 01:01:47,880
+And this we'll talk about next time.
+
+1472
+01:01:47,880 --> 01:01:50,250
+And then the time after that, we're
+going to talk about validation, which
+
+1473
+01:01:50,250 --> 01:01:51,780
+is the other prescription.
+
+1474
+01:01:51,780 --> 01:01:55,050
+I will stop here, and we will take
+questions after a short break.
+
+1475
+01:01:55,050 --> 01:01:58,170
+
+
+1476
+01:01:58,170 --> 01:02:04,060
+Let's start the Q&amp;A, and we'll start
+with a question in house.
+
+1477
+01:02:04,060 --> 01:02:09,160
+STUDENT: So on previous lecture we
+spoke about stochastic gradient
+
+1478
+01:02:09,160 --> 01:02:17,090
+descent, and we say that we should
+choose point by point, and move in
+
+1479
+01:02:17,090 --> 01:02:20,450
+the direction of gradient
+of error in this point.
+
+1480
+01:02:20,450 --> 01:02:22,230
+PROFESSOR: Negative
+of the gradient, yes.
+
+1481
+01:02:22,230 --> 01:02:26,450
+STUDENT: So the question is,
+how important is it to
+
+1482
+01:02:26,450 --> 01:02:28,660
+choose points randomly?
+
+1483
+01:02:28,660 --> 01:02:32,310
+I mean, we can choose them just
+
+1484
+01:02:32,310 --> 01:02:32,320
+
+
+1485
+01:02:32,320 --> 01:02:34,850
+from the list-- first point,
+second point, and so on?
+
+1486
+01:02:34,850 --> 01:02:35,990
+PROFESSOR: Yeah.
+
+1487
+01:02:35,990 --> 01:02:42,800
+Depending on the runs, it could be no
+difference at all, or it could be
+
+1488
+01:02:42,800 --> 01:02:43,620
+a real difference.
+
+1489
+01:02:43,620 --> 01:02:46,280
+And the best way to think of
+randomization in this case is that
+
+1490
+01:02:46,280 --> 01:02:48,140
+it's an insurance policy.
+
+1491
+01:02:48,140 --> 01:02:53,360
+There's something about the pattern
+that is detrimental in
+
+1492
+01:02:53,360 --> 01:02:54,840
+a particular case.
+
+1493
+01:02:54,840 --> 01:02:57,690
+You are always safe by picking the
+points at random, because there's no
+
+1494
+01:02:57,690 --> 01:03:00,140
+chance that the random thing will
+have a pattern eventually, if
+
+1495
+01:03:00,140 --> 01:03:01,135
+you keep doing it.
+
+1496
+01:03:01,135 --> 01:03:01,470
+
+
+1497
+01:03:01,470 --> 01:03:05,980
+So in many cases, you just run
+through examples 1 through N, 1
+
+1498
+01:03:05,980 --> 01:03:08,480
+through N. 1 through N,
+and you will be fine.
+
+1499
+01:03:08,480 --> 01:03:10,520
+Some cases, you take
+a random permutation.
+
+1500
+01:03:10,520 --> 01:03:15,600
+Some cases even, you stay true to
+picking the point at random, and
+
+1501
+01:03:15,600 --> 01:03:19,560
+you hope that the representation of
+a point will be the same, in the long run.
+
+1502
+01:03:19,560 --> 01:03:20,330
+
+
+1503
+01:03:20,330 --> 01:03:20,750
+
+
+1504
+01:03:20,750 --> 01:03:25,130
+In my own experience, there is little
+difference in a typical case.
+
+1505
+01:03:25,130 --> 01:03:28,000
+Every now and then, there's
+a funny case.
+
+1506
+01:03:28,000 --> 01:03:32,050
+And therefore, you are safer using
+the stochastic presentation--
+
+1507
+01:03:32,050 --> 01:03:33,840
+the random presentation
+of the examples--
+
+1508
+01:03:33,840 --> 01:03:36,340
+in order to be able not to fall
+into the trap in those cases.
+
+1509
+01:03:36,340 --> 01:03:40,444
+
+
+1510
+01:03:40,444 --> 01:03:40,900
+Yeah.
+
+1511
+01:03:40,900 --> 01:03:44,390
+There's another question in house.
+
+1512
+01:03:44,390 --> 01:03:45,505
+STUDENT: Hi, Professor.
+
+1513
+01:03:45,505 --> 01:03:46,960
+I have a question about slide 4.
+
+1514
+01:03:46,960 --> 01:03:50,440
+It's about neural networks.
+
+1515
+01:03:50,440 --> 01:03:54,940
+I don't understand-- how do you draw the
+out-of-sample error on that plot?
+
+1516
+01:03:54,940 --> 01:03:56,430
+PROFESSOR: OK.
+
+1517
+01:03:56,430 --> 01:03:56,440
+
+
+1518
+01:03:56,440 --> 01:03:59,990
+In general, you cannot, obviously,
+draw the out-of-sample error.
+
+1519
+01:03:59,990 --> 01:04:00,000
+
+
+1520
+01:04:00,000 --> 01:04:01,580
+If you could draw it, you
+will just pick it.
+
+1521
+01:04:01,580 --> 01:04:02,090
+
+
+1522
+01:04:02,090 --> 01:04:06,480
+This is a case where, I give you
+a data set, and you decide to set
+
+1523
+01:04:06,480 --> 01:04:11,290
+aside part of the data
+set for testing.
+
+1524
+01:04:11,290 --> 01:04:13,910
+So you are not involving it
+at all in the training.
+
+1525
+01:04:13,910 --> 01:04:14,570
+
+
+1526
+01:04:14,570 --> 01:04:18,620
+And what you do, you go about your
+training, and at the end of every
+
+1527
+01:04:18,620 --> 01:04:21,900
+epoch, when you evaluate the in-sample
+error on the entire batch, which is
+
+1528
+01:04:21,900 --> 01:04:25,440
+the green curve here, you also evaluate,
+for that set of weights--
+
+1529
+01:04:25,440 --> 01:04:28,790
+the frozen weights at the end of the
+epoch-- you evaluate that on the test
+
+1530
+01:04:28,790 --> 01:04:30,720
+set, and you get a point.
+
+1531
+01:04:30,720 --> 01:04:34,770
+And because that point is not involved
+in the training, it becomes
+
+1532
+01:04:34,770 --> 01:04:37,830
+an out-of-sample point, and that
+gets the red point.
+
+1533
+01:04:37,830 --> 01:04:38,720
+And you go down.
+
+1534
+01:04:38,720 --> 01:04:39,370
+
+
+1535
+01:04:39,370 --> 01:04:43,130
+Now, there's an interesting tricky point
+here, because if you decide at
+
+1536
+01:04:43,130 --> 01:04:43,810
+some point to
+
+1537
+01:04:43,810 --> 01:04:46,210
+maybe, I look at the red curve.
+
+1538
+01:04:46,210 --> 01:04:49,140
+Now I am going to stop where
+the red curve is minimum.
+
+1539
+01:04:49,140 --> 01:04:49,960
+STUDENT: Yes.
+
+1540
+01:04:49,960 --> 01:04:50,880
+PROFESSOR: OK?
+
+1541
+01:04:50,880 --> 01:04:56,470
+Now at that point, the set that used to
+be a test set is no longer a test
+
+1542
+01:04:56,470 --> 01:04:59,170
+set, because now it has just
+been involved in
+
+1543
+01:04:59,170 --> 01:05:01,660
+a decision regarding training.
+
+1544
+01:05:01,660 --> 01:05:02,770
+
+
+1545
+01:05:02,770 --> 01:05:06,570
+Becomes slightly contaminated, becomes
+a validation set, which we're going to
+
+1546
+01:05:06,570 --> 01:05:07,870
+talk about when we talk
+about validation.
+
+1547
+01:05:07,870 --> 01:05:09,310
+but that is really the premise.
+
+1548
+01:05:09,310 --> 01:05:11,200
+STUDENT: OK.
+
+1549
+01:05:11,200 --> 01:05:13,600
+
+
+1550
+01:05:13,600 --> 01:05:14,190
+I understand.
+
+1551
+01:05:14,190 --> 01:05:16,590
+Also, can I--
+
+1552
+01:05:16,590 --> 01:05:17,570
+slide 16?
+
+1553
+01:05:17,570 --> 01:05:18,600
+PROFESSOR: Slide 16.
+
+1554
+01:05:18,600 --> 01:05:18,980
+
+
+1555
+01:05:18,980 --> 01:05:21,046
+
+
+1556
+01:05:21,046 --> 01:05:25,280
+STUDENT: I didn't follow that. Why the
+two noises are the same, for the same
+
+1557
+01:05:25,280 --> 01:05:27,170
+learning problem.
+
+1558
+01:05:27,170 --> 01:05:31,150
+PROFESSOR: They're the same
+in the sense that
+
+1559
+01:05:31,150 --> 01:05:34,370
+they are part of the outputs that I'm
+
+1560
+01:05:34,370 --> 01:05:37,140
+being given, or that I'm
+trying to predict.
+
+1561
+01:05:37,140 --> 01:05:41,140
+And that part, I cannot predict
+regardless of what I do.
+
+1562
+01:05:41,140 --> 01:05:43,140
+In the case of stochastic
+noise, it's obvious.
+
+1563
+01:05:43,140 --> 01:05:46,030
+There's nothing to predict there,
+so whatever I do, I miss it.
+
+1564
+01:05:46,030 --> 01:05:47,130
+
+
+1565
+01:05:47,130 --> 01:05:49,900
+In the case here, it's particular to
+the hypothesis set that I have.
+
+1566
+01:05:49,900 --> 01:05:55,210
+So I take a hypothesis set, and look
+in a non-learning scenario, look at
+
+1567
+01:05:55,210 --> 01:05:57,315
+the target function and choose
+your best scenario.
+
+1568
+01:05:57,315 --> 01:05:57,930
+
+
+1569
+01:05:57,930 --> 01:06:01,010
+You choose, this is my best hypothesis,
+which we called here h star.
+
+1570
+01:06:01,010 --> 01:06:02,000
+
+
+1571
+01:06:02,000 --> 01:06:07,000
+If you look at the difference
+between h star and f,
+
+1572
+01:06:07,000 --> 01:06:09,890
+the difference is a part which I cannot
+capture, because the best I
+
+1573
+01:06:09,890 --> 01:06:11,220
+could do is h star.
+
+1574
+01:06:11,220 --> 01:06:14,560
+So the remaining part is what I'm
+referring to as deterministic noise,
+
+1575
+01:06:14,560 --> 01:06:18,760
+and it is beyond my ability
+given my hypothesis set.
+
+1576
+01:06:18,760 --> 01:06:22,140
+So that's why they are the same-- the
+same in the sense of unreachable as
+
+1577
+01:06:22,140 --> 01:06:24,480
+far as my resources are concerned.
+
+1578
+01:06:24,480 --> 01:06:25,470
+STUDENT: OK.
+
+1579
+01:06:25,470 --> 01:06:31,790
+In a real problem, do we know the
+complexity of the target function?
+
+1580
+01:06:31,790 --> 01:06:33,530
+PROFESSOR: In general, no.
+
+1581
+01:06:33,530 --> 01:06:37,300
+We also don't know the particulars of the
+noise. We know that the problem is noisy, but
+
+1582
+01:06:37,300 --> 01:06:38,690
+we cannot identify the noise.
+
+1583
+01:06:38,690 --> 01:06:40,870
+We cannot, in most cases,
+even measure the noise.
+
+1584
+01:06:40,870 --> 01:06:41,380
+
+
+1585
+01:06:41,380 --> 01:06:45,750
+So the purpose here is to understand
+that, even in the case of a noiseless
+
+1586
+01:06:45,750 --> 01:06:48,250
+target in the conventional
+sense, there is
+
+1587
+01:06:48,250 --> 01:06:50,180
+something that we can identify--
+
+1588
+01:06:50,180 --> 01:06:51,840
+conceptually identify--
+
+1589
+01:06:51,840 --> 01:06:54,280
+that does affect the overfitting.
+
+1590
+01:06:54,280 --> 01:06:57,530
+And even if we don't know the
+particulars of it, we will have to put
+
+1591
+01:06:57,530 --> 01:07:00,280
+in place the guards, in order
+to avoid overfitting.
+
+1592
+01:07:00,280 --> 01:07:02,460
+That was the goal here,
+rather than try to--
+
+1593
+01:07:02,460 --> 01:07:02,800
+
+
+1594
+01:07:02,800 --> 01:07:03,020
+
+
+1595
+01:07:03,020 --> 01:07:06,340
+Any time you see the target function
+drawn, you should immediately have
+
+1596
+01:07:06,340 --> 01:07:09,470
+an alarm bell that this is conceptual,
+because you never actually see the
+
+1597
+01:07:09,470 --> 01:07:11,780
+target function in a real
+learning situation.
+
+1598
+01:07:11,780 --> 01:07:12,027
+STUDENT: Oh.
+
+1599
+01:07:12,027 --> 01:07:14,470
+So, that's why the two
+noises are equal, then.
+
+1600
+01:07:14,470 --> 01:07:17,100
+Because we don't know the target
+function, so we don't know which part
+
+1601
+01:07:17,100 --> 01:07:17,880
+is deterministic.
+
+1602
+01:07:17,880 --> 01:07:19,070
+PROFESSOR: Yeah.
+
+1603
+01:07:19,070 --> 01:07:22,070
+If I knew the target,
+and if I knew the noise,
+
+1604
+01:07:22,070 --> 01:07:24,420
+then the situation would be good, but
+then I don't need machine learning.
+
+1605
+01:07:24,420 --> 01:07:25,340
+I already have that.
+
+1606
+01:07:25,340 --> 01:07:27,590
+STUDENT: Thank you.
+
+1607
+01:07:27,590 --> 01:07:29,845
+PROFESSOR: So we go for the
+questions from the outside?
+
+1608
+01:07:29,845 --> 01:07:31,720
+MODERATOR: Yeah.
+Quick conceptual question.
+
+1609
+01:07:31,720 --> 01:07:31,730
+
+
+1610
+01:07:31,730 --> 01:07:36,510
+Is it OK to say that the deterministic
+noise is the part of reality that is
+
+1611
+01:07:36,510 --> 01:07:38,690
+too complex to be modeled?
+
+1612
+01:07:38,690 --> 01:07:41,140
+PROFESSOR: It is definitely
+part of the reality--
+
+1613
+01:07:41,140 --> 01:07:41,970
+that part.
+
+1614
+01:07:41,970 --> 01:07:47,290
+And basically, it's our failure to model
+it is what made it noise, as far
+
+1615
+01:07:47,290 --> 01:07:48,260
+as we are concerned.
+
+1616
+01:07:48,260 --> 01:07:48,910
+
+
+1617
+01:07:48,910 --> 01:07:52,250
+So obviously you can, in some sense,
+model it by going to a bigger
+
+1618
+01:07:52,250 --> 01:07:53,130
+hypothesis set.
+
+1619
+01:07:53,130 --> 01:07:56,650
+The bigger hypothesis set will have
+a closer h star to the target, and
+
+1620
+01:07:56,650 --> 01:07:58,380
+therefore the difference
+will be small.
+
+1621
+01:07:58,380 --> 01:08:01,660
+But the situation pertains to the case
+where you already chose the hypothesis
+
+1622
+01:08:01,660 --> 01:08:05,190
+set according to prescriptions of
+VC dimension, number of examples, and
+
+1623
+01:08:05,190 --> 01:08:06,400
+other considerations.
+
+1624
+01:08:06,400 --> 01:08:10,600
+And given that hypothesis set, you
+already concede that even if the
+
+1625
+01:08:10,600 --> 01:08:14,850
+target is noiseless, there is part of
+it which behaves as noise, as far as
+
+1626
+01:08:14,850 --> 01:08:15,720
+I'm concerned.
+
+1627
+01:08:15,720 --> 01:08:18,368
+And I will have to treat it as such, when
+I consider overfitting and the
+
+1628
+01:08:18,368 --> 01:08:19,618
+other considerations.
+
+1629
+01:08:19,618 --> 01:08:21,450
+
+
+1630
+01:08:21,450 --> 01:08:26,140
+MODERATOR: Also, is it fair to say that
+over-training will cause overfitting?
+
+1631
+01:08:26,140 --> 01:08:29,420
+PROFESSOR: I think they
+probably are synonymous.
+
+1632
+01:08:29,420 --> 01:08:31,770
+Overfitting is relative.
+
+1633
+01:08:31,770 --> 01:08:35,770
+Over-training will be relative within
+the same model, if I try to give it
+
+1634
+01:08:35,770 --> 01:08:36,359
+a definition.
+
+1635
+01:08:36,359 --> 01:08:38,620
+That you over-train, so you already
+settled on the model, and you're
+
+1636
+01:08:38,620 --> 01:08:39,760
+over-training it.
+
+1637
+01:08:39,760 --> 01:08:41,960
+The case of neural network
+would be over-training.
+
+1638
+01:08:41,960 --> 01:08:45,130
+The case of choosing the 3rd-order
+polynomial versus the 4th-order
+
+1639
+01:08:45,130 --> 01:08:47,640
+polynomial will not really be
+over-training, but it will be
+
+1640
+01:08:47,640 --> 01:08:48,109
+overfitting.
+
+1641
+01:08:48,109 --> 01:08:50,560
+It's all technicalities, but
+just to answer the question.
+
+1642
+01:08:50,560 --> 01:08:53,120
+
+
+1643
+01:08:53,120 --> 01:08:56,430
+MODERATOR: Practically, when
+you implement
+
+1644
+01:08:56,430 --> 01:08:58,319
+these algorithms, and there's also some
+
+1645
+01:08:58,319 --> 01:09:03,270
+approximation, maybe due to the
+floating-point number or something.
+
+1646
+01:09:03,270 --> 01:09:06,460
+So is this another source of error?
+
+1647
+01:09:06,460 --> 01:09:07,740
+Does it produce overfitting?
+
+1648
+01:09:07,740 --> 01:09:08,700
+Or is it--
+
+1649
+01:09:08,700 --> 01:09:09,479
+PROFESSOR: It's--
+
+1650
+01:09:09,479 --> 01:09:09,790
+
+
+1651
+01:09:09,790 --> 01:09:11,510
+Formally speaking, yes,
+it's another source.
+
+1652
+01:09:11,510 --> 01:09:14,140
+But it is so minute with respect
+to the other guys,
+
+1653
+01:09:14,140 --> 01:09:16,970
+that it's never mentioned.
+
+1654
+01:09:16,970 --> 01:09:20,950
+We have another in-house question.
+
+1655
+01:09:20,950 --> 01:09:26,180
+STUDENT: A couple of lectures ago, we
+spoke about 3rd linear model, which
+
+1656
+01:09:26,180 --> 01:09:27,649
+is logistic regression.
+
+1657
+01:09:27,649 --> 01:09:30,760
+
+
+1658
+01:09:30,760 --> 01:09:32,130
+PROFESSOR: You said
+the 3rd linear model?
+
+1659
+01:09:32,130 --> 01:09:32,540
+STUDENT: Yes.
+
+1660
+01:09:32,540 --> 01:09:32,986
+
+
+1661
+01:09:32,986 --> 01:09:34,770
+
+
+1662
+01:09:34,770 --> 01:09:41,080
+So the question is, is it true
+that initially I have data which
+
+1663
+01:09:41,080 --> 01:09:42,609
+is completely linearly separable?
+
+1664
+01:09:42,609 --> 01:09:46,399
+So the points marked--
+
+1665
+01:09:46,399 --> 01:09:51,670
+some points are marked -1, and some
+are +1, and there is a plane
+
+1666
+01:09:51,670 --> 01:09:53,710
+which separates them.
+
+1667
+01:09:53,710 --> 01:09:59,240
+Is it true that applying this learning
+model, you're never stuck in a local
+
+1668
+01:09:59,240 --> 01:10:03,590
+minimum and get 0 in-sample error?
+
+1669
+01:10:03,590 --> 01:10:04,400
+PROFESSOR: OK.
+
+1670
+01:10:04,400 --> 01:10:06,820
+This is a very specific question
+about logistic regression.
+
+1671
+01:10:06,820 --> 01:10:10,690
+If the thing is completely clean, then
+you obviously can get closer and
+
+1672
+01:10:10,690 --> 01:10:13,700
+closer to having the probability
+being perfect, by having
+
+1673
+01:10:13,700 --> 01:10:15,500
+bigger and bigger weights.
+
+1674
+01:10:15,500 --> 01:10:16,640
+So there is a minimum.
+
+1675
+01:10:16,640 --> 01:10:17,940
+And again, it's a unique minimum.
+
+1676
+01:10:17,940 --> 01:10:20,610
+Except that the minimum is
+at infinity, in terms of
+
+1677
+01:10:20,610 --> 01:10:21,550
+the size of the weight.
+
+1678
+01:10:21,550 --> 01:10:25,110
+But this doesn't bother you, because you
+are really going to stop at some
+
+1679
+01:10:25,110 --> 01:10:28,680
+point when the gradient is small,
+according to your specification.
+
+1680
+01:10:28,680 --> 01:10:30,315
+And you can specify this
+any way you want.
+
+1681
+01:10:30,315 --> 01:10:31,080
+
+
+1682
+01:10:31,080 --> 01:10:36,900
+So the goal is not necessarily
+to arrive at the minimum.
+
+1683
+01:10:36,900 --> 01:10:39,440
+Which hardly ever happens, even if
+the thing is not at infinity.
+
+1684
+01:10:39,440 --> 01:10:43,180
+But get close enough, in the sense that
+the value is close to the minimum, and
+
+1685
+01:10:43,180 --> 01:10:45,250
+therefore you achieve the small
+error that you want.
+
+1686
+01:10:45,250 --> 01:10:47,854
+
+
+1687
+01:10:47,854 --> 01:10:49,600
+MODERATOR: Can you resolve again
+
+1688
+01:10:49,600 --> 01:10:52,980
+the contradiction of when
+you increase the
+
+1689
+01:10:52,980 --> 01:10:56,900
+complexity of the model, you should be
+reducing your bias, and hence your
+
+1690
+01:10:56,900 --> 01:10:58,530
+deterministic noise?
+
+1691
+01:10:58,530 --> 01:11:03,040
+So here we had an example
+when we had H--
+
+1692
+01:11:03,040 --> 01:11:09,240
+well, H_10 had more
+error than H_2.
+
+1693
+01:11:09,240 --> 01:11:15,580
+PROFESSOR: H_10 had total error
+more than H_2.
+
+1694
+01:11:15,580 --> 01:11:15,590
+
+
+1695
+01:11:15,590 --> 01:11:17,310
+If we were doing the
+approximation game,
+
+1696
+01:11:17,310 --> 01:11:18,570
+H_10 would be better.
+
+1697
+01:11:18,570 --> 01:11:19,030
+
+
+1698
+01:11:19,030 --> 01:11:25,670
+We had three terms in the bias-variance.
+If we were only going by
+
+1699
+01:11:25,670 --> 01:11:29,700
+these two, then there is no question
+that the bigger model, H_10,
+
+1700
+01:11:29,700 --> 01:11:29,980
+will win.
+
+1701
+01:11:29,980 --> 01:11:35,220
+Because this is for all, and this one
+will be better for H_10 than H_2,
+
+1702
+01:11:35,220 --> 01:11:38,740
+because H_10 is closer to the target
+we want, and therefore we will be
+
+1703
+01:11:38,740 --> 01:11:40,190
+making smaller error.
+
+1704
+01:11:40,190 --> 01:11:42,920
+This is not the source of the
+problem of overfitting.
+
+1705
+01:11:42,920 --> 01:11:43,390
+
+
+1706
+01:11:43,390 --> 01:11:47,310
+This is just identifying terms in the
+bias-variance decomposition,
+
+1707
+01:11:47,310 --> 01:11:49,630
+bias-variance-noise decomposition
+in this case,
+
+1708
+01:11:49,630 --> 01:11:51,950
+that correspond to the different
+types of noise.
+
+1709
+01:11:51,950 --> 01:11:54,870
+The problem of overfitting
+happens here.
+
+1710
+01:11:54,870 --> 01:11:55,310
+
+
+1711
+01:11:55,310 --> 01:11:59,340
+And that happens because of
+the finite-sample version of both.
+
+1712
+01:11:59,340 --> 01:11:59,580
+
+
+1713
+01:11:59,580 --> 01:12:03,800
+That is, I get N points in which there
+is a contribution of noise coming from
+
+1714
+01:12:03,800 --> 01:12:06,840
+the stochastic and coming
+from the deterministic.
+
+1715
+01:12:06,840 --> 01:12:07,500
+
+
+1716
+01:12:07,500 --> 01:12:11,700
+On those points, the algorithm will try
+to fit that noise, in spite of the
+
+1717
+01:12:11,700 --> 01:12:14,590
+fact that if it knew, it wouldn't,
+because it knows that
+
+1718
+01:12:14,590 --> 01:12:16,100
+they're out of reach.
+
+1719
+01:12:16,100 --> 01:12:19,880
+But it gets a finite sample, and it can
+use its resources to try to fit
+
+1720
+01:12:19,880 --> 01:12:23,370
+part of that noise, and that is
+what is causing overfitting.
+
+1721
+01:12:23,370 --> 01:12:28,590
+And that ends up being harmful, and so
+harmful in the H_10 case, that the
+
+1722
+01:12:28,590 --> 01:12:33,090
+harm offsets the fact that I'm closer
+to the target function.
+
+1723
+01:12:33,090 --> 01:12:34,680
+That doesn't help me very much.
+
+1724
+01:12:34,680 --> 01:12:36,920
+Because,
+
+1725
+01:12:36,920 --> 01:12:38,270
+same thing we said before,
+
+1726
+01:12:38,270 --> 01:12:40,820
+
+
+1727
+01:12:40,820 --> 01:12:42,760
+Let's say there's H_10.
+
+1728
+01:12:42,760 --> 01:12:44,610
+And the target function
+is sitting here.
+
+1729
+01:12:44,610 --> 01:12:45,210
+
+
+1730
+01:12:45,210 --> 01:12:50,505
+That doesn't do me much good if my
+algorithm, and the distraction of the
+
+1731
+01:12:50,505 --> 01:12:52,970
+noise, leads me to go
+in that direction.
+
+1732
+01:12:52,970 --> 01:12:56,290
+I will be further from the target
+function than another guy who, only
+
+1733
+01:12:56,290 --> 01:13:00,120
+working with this, remained in the
+confines and ended up being closer to
+
+1734
+01:13:00,120 --> 01:13:01,100
+the target function.
+
+1735
+01:13:01,100 --> 01:13:06,690
+It's a question of the variance term
+that results in overfitting, not
+
+1736
+01:13:06,690 --> 01:13:12,390
+this guy, in spite of the fact that
+these guys contain both types of noise
+
+1737
+01:13:12,390 --> 01:13:13,560
+contributing to their value.
+
+1738
+01:13:13,560 --> 01:13:14,850
+But their value is static.
+
+1739
+01:13:14,850 --> 01:13:17,140
+It doesn't change with N, and
+it has nothing to do with
+
+1740
+01:13:17,140 --> 01:13:18,390
+the overfitting aspect.
+
+1741
+01:13:18,390 --> 01:13:22,950
+
+
+1742
+01:13:22,950 --> 01:13:28,600
+MODERATOR: In the case of polynomial
+fitting, a way to avoid the
+
+1743
+01:13:28,600 --> 01:13:33,180
+overfitting could be to
+use piecewise linear--
+
+1744
+01:13:33,180 --> 01:13:35,010
+
+
+1745
+01:13:35,010 --> 01:13:37,320
+piecewise linear functions
+around each point.
+
+1746
+01:13:37,320 --> 01:13:39,470
+So it is a method of regularization?
+
+1747
+01:13:39,470 --> 01:13:40,260
+Or is it--
+
+1748
+01:13:40,260 --> 01:13:41,270
+PROFESSOR: OK.
+
+1749
+01:13:41,270 --> 01:13:43,200
+Depends on the number of degrees
+of freedom you have.
+
+1750
+01:13:43,200 --> 01:13:46,310
+You can have piecewise linear,
+which is really horrible.
+
+1751
+01:13:46,310 --> 01:13:47,920
+It's like something you can't tell.
+
+1752
+01:13:47,920 --> 01:13:49,470
+It depends on how many pieces.
+
+1753
+01:13:49,470 --> 01:13:52,060
+If you have as many pieces as there
+are points, you can see what the
+
+1754
+01:13:52,060 --> 01:13:52,850
+problem is.
+
+1755
+01:13:52,850 --> 01:13:55,800
+So it really is, what is the
+VC dimension of your model?
+
+1756
+01:13:55,800 --> 01:13:56,200
+
+
+1757
+01:13:56,200 --> 01:14:00,070
+And I can take it-- if it's piecewise
+linear, and I have only four
+
+1758
+01:14:00,070 --> 01:14:03,540
+parameters, then I don't worry too much
+that it's piecewise linear.
+
+1759
+01:14:03,540 --> 01:14:06,580
+I only worry about the four
+parameters aspect of it.
+
+1760
+01:14:06,580 --> 01:14:10,180
+10th-order polynomial was bad because
+of the 11 parameters, not because of
+
+1761
+01:14:10,180 --> 01:14:11,130
+other factor.
+
+1762
+01:14:11,130 --> 01:14:19,675
+But anything you do to restrict your
+model, in terms of the fitting, can be
+
+1763
+01:14:19,675 --> 01:14:20,710
+called regularization.
+
+1764
+01:14:20,710 --> 01:14:23,830
+And there are some good methods and
+bad methods, but they are all
+
+1765
+01:14:23,830 --> 01:14:25,910
+regularization, in terms
+of putting the brakes.
+
+1766
+01:14:25,910 --> 01:14:32,270
+
+
+1767
+01:14:32,270 --> 01:14:36,240
+MODERATOR: Some practical question is,
+how do you usually get the profile
+
+1768
+01:14:36,240 --> 01:14:39,140
+of the out-of-sample error?
+
+1769
+01:14:39,140 --> 01:14:41,010
+Do you sacrifice points, or--
+
+1770
+01:14:41,010 --> 01:14:42,000
+PROFESSOR: OK.
+
+1771
+01:14:42,000 --> 01:14:43,520
+This is obviously a good question.
+
+1772
+01:14:43,520 --> 01:14:46,850
+When we talk about validation--
+validation has an impact on
+
+1773
+01:14:46,850 --> 01:14:47,400
+overfitting.
+
+1774
+01:14:47,400 --> 01:14:48,940
+It's used to do that.
+
+1775
+01:14:48,940 --> 01:14:51,090
+But it's also used in model
+selection in general.
+
+1776
+01:14:51,090 --> 01:14:51,880
+
+
+1777
+01:14:51,880 --> 01:14:56,540
+And because of that, it's very tempting
+to say, I'm going to use
+
+1778
+01:14:56,540 --> 01:14:58,780
+validation, and I'm going to set
+aside a number of points.
+
+1779
+01:14:58,780 --> 01:15:01,700
+But obviously, the problem is that when
+you set aside a number of points, you
+
+1780
+01:15:01,700 --> 01:15:05,360
+deprive yourself from a resource that
+you could have used for training, in
+
+1781
+01:15:05,360 --> 01:15:07,480
+order to arrive at a better hypothesis.
+
+1782
+01:15:07,480 --> 01:15:10,070
+So there's a tradeoff, and we'll
+discuss that tradeoff in very
+
+1783
+01:15:10,070 --> 01:15:13,105
+specific terms, and find ways
+to go around it, like
+
+1784
+01:15:13,105 --> 01:15:14,200
+cross-validation.
+
+1785
+01:15:14,200 --> 01:15:17,660
+But this will be the subject of the
+lecture on validation, coming up soon.
+
+1786
+01:15:17,660 --> 01:15:22,950
+
+
+1787
+01:15:22,950 --> 01:15:29,090
+MODERATOR: In the example of the color
+plots, here the order of the
+
+1788
+01:15:29,090 --> 01:15:35,112
+polynomial is a good indication
+of the VC dimension, right?
+
+1789
+01:15:35,112 --> 01:15:36,280
+PROFESSOR: These are the plots.
+
+1790
+01:15:36,280 --> 01:15:36,290
+
+
+1791
+01:15:36,290 --> 01:15:36,990
+What is the question?
+
+1792
+01:15:36,990 --> 01:15:41,800
+MODERATOR: Here, Q_f is directly related
+to the VC dimension, right?
+
+1793
+01:15:41,800 --> 01:15:49,350
+PROFESSOR: The target complexity
+has nothing to do with the VC dimension.
+
+1794
+01:15:49,350 --> 01:15:49,360
+
+
+1795
+01:15:49,360 --> 01:15:50,830
+It's the target.
+
+1796
+01:15:50,830 --> 01:15:51,740
+
+
+1797
+01:15:51,740 --> 01:15:53,860
+I'm talking about different targets.
+
+1798
+01:15:53,860 --> 01:15:54,550
+
+
+1799
+01:15:54,550 --> 01:15:57,580
+The VC dimension has to do only with
+the two fellows we are using.
+
+1800
+01:15:57,580 --> 01:16:02,530
+We are using H_2 and H_10, 2nd-order
+polynomials and 10th-order polynomials.
+
+1801
+01:16:02,530 --> 01:16:05,760
+So if we take the degrees of freedom
+as being a VC dimension, they will
+
+1802
+01:16:05,760 --> 01:16:07,310
+have different VC dimension.
+
+1803
+01:16:07,310 --> 01:16:10,430
+And the discrepancy in the VC dimension,
+given the same number of
+
+1804
+01:16:10,430 --> 01:16:12,790
+examples, is the reason why we
+have discrepancy in the
+
+1805
+01:16:12,790 --> 01:16:13,950
+out-of-sample error.
+
+1806
+01:16:13,950 --> 01:16:16,310
+But you also have a discrepancy
+in the in-sample error.
+
+1807
+01:16:16,310 --> 01:16:19,640
+And the case of overfitting is such that
+the in-sample error is moving in
+
+1808
+01:16:19,640 --> 01:16:22,140
+one direction, and the out-of-sample
+moving in another direction.
+
+1809
+01:16:22,140 --> 01:16:26,470
+So the only relevant thing in this plot
+to the VC dimension is the fact
+
+1810
+01:16:26,470 --> 01:16:29,090
+that the two models have different
+VC dimensions,
+
+1811
+01:16:29,090 --> 01:16:30,340
+H_2 and H_10.
+
+1812
+01:16:30,340 --> 01:16:33,680
+
+
+1813
+01:16:33,680 --> 01:16:39,310
+MODERATOR: I guess you never
+really have a measure on the target
+
+1814
+01:16:39,310 --> 01:16:41,976
+complexity, like in practice?
+
+1815
+01:16:41,976 --> 01:16:42,340
+PROFESSOR: Correct.
+
+1816
+01:16:42,340 --> 01:16:44,180
+This was an illustration.
+
+1817
+01:16:44,180 --> 01:16:47,820
+And even in the case of the illustration,
+when we had explicitly
+
+1818
+01:16:47,820 --> 01:16:52,380
+a definition of the target complexity, it
+wasn't completely clear how to map
+
+1819
+01:16:52,380 --> 01:16:57,320
+this into energy of deterministic
+noise, a counterpart for
+
+1820
+01:16:57,320 --> 01:16:58,250
+sigma squared here.
+
+1821
+01:16:58,250 --> 01:17:00,510
+This is completely clean.
+
+1822
+01:17:00,510 --> 01:17:04,190
+And as you can see, because of that,
+the plot is very regular.
+
+1823
+01:17:04,190 --> 01:17:07,410
+Here, first we define this in
+a particular case, in order to be able to
+
+1824
+01:17:07,410 --> 01:17:08,950
+run an experiment.
+
+1825
+01:17:08,950 --> 01:17:12,000
+Second, in terms of that, it's not clear
+what is-- can you tell me what
+
+1826
+01:17:12,000 --> 01:17:14,170
+is the energy of the deterministic
+noise here?
+
+1827
+01:17:14,170 --> 01:17:16,830
+There's quite a bit of normalization
+that was done.
+
+1828
+01:17:16,830 --> 01:17:19,510
+So when we normalize the target
+in order to make sigma squared
+
+1829
+01:17:19,510 --> 01:17:25,880
+meaningful, we sacrifice the fact--
+the target now is sandwiched between
+
+1830
+01:17:25,880 --> 01:17:27,700
+limited range.
+
+1831
+01:17:27,700 --> 01:17:31,950
+And therefore the amount of energy, of
+whatever the deterministic noise is,
+
+1832
+01:17:31,950 --> 01:17:35,650
+will be limited, regardless of
+how complex is the target is.
+
+1833
+01:17:35,650 --> 01:17:40,070
+So there is a compromise we had
+to do, in order to be able
+
+1834
+01:17:40,070 --> 01:17:41,690
+to find these plots.
+
+1835
+01:17:41,690 --> 01:17:45,860
+However, the moral of the story here
+is that there's something about the
+
+1836
+01:17:45,860 --> 01:17:50,620
+target complexity that behaved in the
+same way, as far as overfitting is
+
+1837
+01:17:50,620 --> 01:17:52,980
+concerned, as noise.
+
+1838
+01:17:52,980 --> 01:17:55,240
+And we identified it as
+deterministic noise.
+
+1839
+01:17:55,240 --> 01:17:57,090
+We didn't quantify it further.
+
+1840
+01:17:57,090 --> 01:17:58,220
+And it will be--
+
+1841
+01:17:58,220 --> 01:17:59,250
+It's possible to quantify it.
+
+1842
+01:17:59,250 --> 01:18:01,890
+You can get the energy for this
+and that, and you can do it.
+
+1843
+01:18:01,890 --> 01:18:04,030
+But these are research topics.
+
+1844
+01:18:04,030 --> 01:18:06,380
+As far as we are concerned, in a real
+situation, we won't be able to
+
+1845
+01:18:06,380 --> 01:18:12,740
+identify either the stochastic noise
+or the deterministic noise.
+
+1846
+01:18:12,740 --> 01:18:14,070
+We just know they're there.
+
+1847
+01:18:14,070 --> 01:18:15,880
+We know the impact of overfitting.
+
+1848
+01:18:15,880 --> 01:18:19,050
+And we will be able to find methods
+in order to be able to cure the
+
+1849
+01:18:19,050 --> 01:18:23,260
+overfitting, without knowing all of the
+specifics that we could possibly know
+
+1850
+01:18:23,260 --> 01:18:25,650
+about the noise involved.
+
+1851
+01:18:25,650 --> 01:18:29,200
+MODERATOR: Do you ever measure the--
+
+1852
+01:18:29,200 --> 01:18:35,430
+is there some similar kind of measure
+of the model complexity,
+
+1853
+01:18:35,430 --> 01:18:36,770
+of the target function?
+
+1854
+01:18:36,770 --> 01:18:38,900
+Do you ever use a VC dimension
+for that?
+
+1855
+01:18:38,900 --> 01:18:41,640
+
+
+1856
+01:18:41,640 --> 01:18:42,380
+PROFESSOR: Not explicitly.
+
+1857
+01:18:42,380 --> 01:18:45,140
+One can apply it. You say what
+is the model that would
+
+1858
+01:18:45,140 --> 01:18:47,200
+include the target function?
+
+1859
+01:18:47,200 --> 01:18:51,950
+And then, based on the inclusion of the
+target function, you can say that
+
+1860
+01:18:51,950 --> 01:18:55,430
+this is the complexity of that model.
+
+1861
+01:18:55,430 --> 01:19:01,430
+The analysis we use is such that the
+complexity of the target function
+
+1862
+01:19:01,430 --> 01:19:06,280
+doesn't come in, in terms
+of the VC analysis.
+
+1863
+01:19:06,280 --> 01:19:07,930
+But there are other methods.
+
+1864
+01:19:07,930 --> 01:19:09,420
+There are other approaches,
+
+1865
+01:19:09,420 --> 01:19:13,160
+other than the VC analysis, where
+the target complexity matters.
+
+1866
+01:19:13,160 --> 01:19:17,930
+So I didn't particularly spend time
+trying to capture the complexity of
+
+1867
+01:19:17,930 --> 01:19:21,040
+the target function until this moment,
+where the complexity of the target
+
+1868
+01:19:21,040 --> 01:19:25,160
+function could translate to something
+in the bias-variance decomposition, and
+
+1869
+01:19:25,160 --> 01:19:28,385
+that has an impact on overfitting
+and generalization.
+
+1870
+01:19:28,385 --> 01:19:31,170
+
+
+1871
+01:19:31,170 --> 01:19:32,760
+MODERATOR: I think that's it.
+
+1872
+01:19:32,760 --> 01:19:32,770
+
+
+1873
+01:19:32,770 --> 01:19:35,460
+PROFESSOR: We will see you on Thursday.
+
+1874
+01:19:35,460 --> 01:19:35,470
+
+
+1875
+01:19:35,470 --> 01:19:48,722
+

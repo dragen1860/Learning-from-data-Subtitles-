@@ -1,0 +1,7334 @@
+1
+00:00:00,000 --> 00:00:00,580
+
+
+2
+00:00:00,580 --> 00:00:03,275
+ANNOUNCER: The following program
+is brought to you by Caltech.
+
+3
+00:00:03,275 --> 00:00:15,330
+
+
+4
+00:00:15,330 --> 00:00:18,150
+YASER ABU-MOSTAFA: Welcome back.
+
+5
+00:00:18,150 --> 00:00:23,880
+Last time, we talked about kernel
+methods, which is a generalization of
+
+6
+00:00:23,880 --> 00:00:31,800
+the basic SVM algorithm to accommodate
+feature spaces Z, which
+
+7
+00:00:31,800 --> 00:00:38,560
+are possibly infinite and which we
+don't have to explicitly know, or
+
+8
+00:00:38,560 --> 00:00:43,880
+transform our inputs to, in order to be
+able to carry out the support
+
+9
+00:00:43,880 --> 00:00:45,470
+vector machinery.
+
+10
+00:00:45,470 --> 00:00:50,320
+And the idea was to define a kernel
+that captures the inner product in
+
+11
+00:00:50,320 --> 00:00:51,650
+that space.
+
+12
+00:00:51,650 --> 00:00:57,290
+And if you can compute that kernel, the
+generalized inner product for the
+
+13
+00:00:57,290 --> 00:01:01,080
+Z space, this is the only operation
+you need in order to carry the
+
+14
+00:01:01,080 --> 00:01:05,300
+algorithm, and in order to interpret
+the solution after you get it.
+
+15
+00:01:05,300 --> 00:01:10,510
+And we took an example, which is the
+RBF kernel, suitable since we are
+
+16
+00:01:10,510 --> 00:01:13,510
+going to talk about RBF's, radial
+basis functions, today.
+
+17
+00:01:13,510 --> 00:01:17,050
+And the kernel is very simple
+to compute in terms of x.
+
+18
+00:01:17,050 --> 00:01:18,460
+It's not that difficult.
+
+19
+00:01:18,460 --> 00:01:23,150
+However, it corresponds to an infinite
+dimensional space, Z space.
+
+20
+00:01:23,150 --> 00:01:28,200
+And therefore, by doing this, it's as
+if we transform every point in this
+
+21
+00:01:28,200 --> 00:01:32,500
+space, which is two-dimensional, into
+an infinite-dimensional space, carry
+
+22
+00:01:32,500 --> 00:01:35,940
+out the SVM there, and then interpret
+the solution back here.
+
+23
+00:01:35,940 --> 00:01:40,120
+And this would be the separating surface
+that corresponds to a plane,
+
+24
+00:01:40,120 --> 00:01:44,010
+so to speak, in that infinite
+dimensional space.
+
+25
+00:01:44,010 --> 00:01:50,190
+So with this, we went into another way
+to generalize SVM, not by having
+
+26
+00:01:50,190 --> 00:01:54,190
+a nonlinear transform in this case, but
+by having an allowance for errors.
+
+27
+00:01:54,190 --> 00:01:57,530
+Errors in this case would be
+violations of the margin.
+
+28
+00:01:57,530 --> 00:02:00,480
+The margin is the currency
+we use in SVM.
+
+29
+00:02:00,480 --> 00:02:05,640
+And we added a term to the objective
+function that allows us to violate the
+
+30
+00:02:05,640 --> 00:02:09,258
+margin for different points, according
+to the variable xi.
+
+31
+00:02:09,258 --> 00:02:13,590
+And we have a total violation,
+which is this summation.
+
+32
+00:02:13,590 --> 00:02:18,060
+And then we have a degree to which
+we allow those violations.
+
+33
+00:02:18,060 --> 00:02:21,580
+If C is huge, then we don't really
+allow the violations.
+
+34
+00:02:21,580 --> 00:02:25,150
+And if C goes to infinity, we are
+back to the hard-margin case.
+
+35
+00:02:25,150 --> 00:02:28,070
+And if C is very small, then we are
+more tolerant and would allow
+
+36
+00:02:28,070 --> 00:02:29,130
+violations.
+
+37
+00:02:29,130 --> 00:02:33,110
+And in that case, we might allow some
+violations here and there, and then
+
+38
+00:02:33,110 --> 00:02:38,060
+have a smaller w, which means a bigger
+margin, a bigger yellow region that is
+
+39
+00:02:38,060 --> 00:02:39,970
+violated by those guys.
+
+40
+00:02:39,970 --> 00:02:44,310
+Think of it as-- it gives us another
+degree of freedom in our design.
+
+41
+00:02:44,310 --> 00:02:49,380
+And it might be the case that in some
+data sets, there are a couple of
+
+42
+00:02:49,380 --> 00:02:53,740
+outliers where it doesn't make sense
+to shrink the margin just to
+
+43
+00:02:53,740 --> 00:02:59,280
+accommodate them, or by going to
+a higher-dimensional space with
+
+44
+00:02:59,280 --> 00:03:05,852
+a nonlinear transformation to go around
+that point and, therefore, generate so
+
+45
+00:03:05,852 --> 00:03:07,060
+many support vectors.
+
+46
+00:03:07,060 --> 00:03:10,130
+And therefore, it might be a good idea
+to ignore them, and ignoring them
+
+47
+00:03:10,130 --> 00:03:12,830
+meaning that we are going to commit
+a violation of the margin.
+
+48
+00:03:12,830 --> 00:03:14,200
+Could be an outright error.
+
+49
+00:03:14,200 --> 00:03:17,270
+Could be just a violation of the margin
+where we are here, but we haven't
+
+50
+00:03:17,270 --> 00:03:19,360
+crossed the boundary, so to speak.
+
+51
+00:03:19,360 --> 00:03:25,920
+And therefore, this gives us another
+way of achieving the better
+
+52
+00:03:25,920 --> 00:03:29,750
+generalization by allowing some in-sample
+error, or margin error in this
+
+53
+00:03:29,750 --> 00:03:37,660
+case, at the benefit of getting better
+generalization prospects.
+
+54
+00:03:37,660 --> 00:03:42,460
+Now the good news here is that,
+in spite of this significant
+
+55
+00:03:42,460 --> 00:03:45,500
+modification of the statement of the
+problem, the solution was identical to
+
+56
+00:03:45,500 --> 00:03:46,210
+what we had before.
+
+57
+00:03:46,210 --> 00:03:49,540
+We are applying quadratic programming,
+with the same objective, the same
+
+58
+00:03:49,540 --> 00:03:52,980
+equality constraint, and almost the
+same inequality constraint.
+
+59
+00:03:52,980 --> 00:03:55,360
+The only difference is that it
+used to be, alpha_n could be
+
+60
+00:03:55,360 --> 00:03:56,410
+as big as it wants.
+
+61
+00:03:56,410 --> 00:04:00,300
+Now it is limited by C.
+And when you pass this to quadratic
+
+62
+00:04:00,300 --> 00:04:02,390
+programming, you will
+get your solution.
+
+63
+00:04:02,390 --> 00:04:04,310
+Now C being a parameter--
+
+64
+00:04:04,310 --> 00:04:06,450
+and it is not clear how to choose it.
+
+65
+00:04:06,450 --> 00:04:08,720
+There is a compromise
+that I just described.
+
+66
+00:04:08,720 --> 00:04:15,230
+The best way to pick C, and it is the
+way used in practice, is to use
+
+67
+00:04:15,230 --> 00:04:16,870
+cross-validation to choose it.
+
+68
+00:04:16,870 --> 00:04:20,300
+So you apply different values of C, you
+run this and see what is the
+
+69
+00:04:20,300 --> 00:04:24,160
+out-of-sample error estimate, using your
+cross-validation, and then pick the C
+
+70
+00:04:24,160 --> 00:04:25,420
+that minimizes that.
+
+71
+00:04:25,420 --> 00:04:30,730
+And that is the way you will
+choose the parameter C.
+
+72
+00:04:30,730 --> 00:04:39,240
+So that ends the basic part of SVM, the
+hard margin, the soft margin, and
+
+73
+00:04:39,240 --> 00:04:43,200
+the nonlinear transforms together
+with the kernel version of them.
+
+74
+00:04:43,200 --> 00:04:47,900
+Together they are a technique really
+that is superb for classification.
+
+75
+00:04:47,900 --> 00:04:53,240
+And it is, by the choice of many people,
+the model of choice when it
+
+76
+00:04:53,240 --> 00:04:54,700
+comes to classification.
+
+77
+00:04:54,700 --> 00:04:56,380
+Very small overhead.
+
+78
+00:04:56,380 --> 00:04:59,170
+There is a particular criterion that
+makes it better than just choosing
+
+79
+00:04:59,170 --> 00:05:00,790
+a random separating plane.
+
+80
+00:05:00,790 --> 00:05:05,640
+And therefore, it does reflect on
+the out-of-sample performance.
+
+81
+00:05:05,640 --> 00:05:09,150
+Today's topic is a new model, which
+is radial basis functions.
+
+82
+00:05:09,150 --> 00:05:13,080
+Not so new, because we had a version of
+it under SVM and we'll be able to
+
+83
+00:05:13,080 --> 00:05:14,160
+relate to it.
+
+84
+00:05:14,160 --> 00:05:17,150
+But it's an interesting model
+in its own right.
+
+85
+00:05:17,150 --> 00:05:21,500
+It captures a particular understanding
+of the input space that
+
+86
+00:05:21,500 --> 00:05:23,130
+we will talk about.
+
+87
+00:05:23,130 --> 00:05:28,620
+But the most important aspect that the
+radial basis functions provide for us
+
+88
+00:05:28,620 --> 00:05:32,900
+is the fact that they relate to so many
+facets of machine learning that
+
+89
+00:05:32,900 --> 00:05:36,750
+we have already touched on, and other
+aspects that we didn't touch on in
+
+90
+00:05:36,750 --> 00:05:40,220
+pattern recognition, that it's worthwhile
+to understand the model and
+
+91
+00:05:40,220 --> 00:05:41,800
+see how it relates.
+
+92
+00:05:41,800 --> 00:05:44,100
+It almost serves as a glue
+between so many different
+
+93
+00:05:44,100 --> 00:05:45,860
+topics in machine learning.
+
+94
+00:05:45,860 --> 00:05:50,820
+And this is one of the important aspects
+of studying the subject.
+
+95
+00:05:50,820 --> 00:05:56,950
+So the outline here-- it's not like I'm
+going to go through one item then
+
+96
+00:05:56,950 --> 00:05:58,730
+the next according to this outline.
+
+97
+00:05:58,730 --> 00:05:59,450
+What I'm going to do--
+
+98
+00:05:59,450 --> 00:06:03,760
+I'm going to define the model, define
+the algorithms, and so on, as I would
+
+99
+00:06:03,760 --> 00:06:05,500
+describe any model.
+
+100
+00:06:05,500 --> 00:06:09,210
+In the course of doing that, I will be
+able, at different stages, to relate
+
+101
+00:06:09,210 --> 00:06:15,430
+RBF to, in the first case, nearest
+neighbors, which is a standard model
+
+102
+00:06:15,430 --> 00:06:16,790
+in pattern recognition.
+
+103
+00:06:16,790 --> 00:06:19,810
+We will be able to relate it to neural
+networks, which we have already
+
+104
+00:06:19,810 --> 00:06:21,060
+studied, to kernel methods
+
+105
+00:06:21,060 --> 00:06:23,940
+obviously-- it should relate
+to the RBF kernel.
+
+106
+00:06:23,940 --> 00:06:25,010
+And it will.
+
+107
+00:06:25,010 --> 00:06:27,790
+And finally, it will relate to
+regularization, which is actually the
+
+108
+00:06:27,790 --> 00:06:32,950
+origin, in function approximation,
+for the study of RBF's.
+
+109
+00:06:32,950 --> 00:06:41,390
+So let's first describe the basic
+radial basis function model.
+
+110
+00:06:41,390 --> 00:06:47,165
+The idea here is that every point in
+your data set will influence the value
+
+111
+00:06:47,165 --> 00:06:50,820
+of the hypothesis at every point x.
+
+112
+00:06:50,820 --> 00:06:52,200
+Well, that's nothing new.
+
+113
+00:06:52,200 --> 00:06:54,750
+That's what happens when you
+are doing machine learning.
+
+114
+00:06:54,750 --> 00:06:56,120
+You learn from the data.
+
+115
+00:06:56,120 --> 00:06:57,280
+And you choose a hypothesis.
+
+116
+00:06:57,280 --> 00:07:00,270
+So obviously, that hypothesis
+will be affected by the data.
+
+117
+00:07:00,270 --> 00:07:02,380
+But here, it's affected
+in a particular way.
+
+118
+00:07:02,380 --> 00:07:06,850
+It's affected through the distance.
+
+119
+00:07:06,850 --> 00:07:12,060
+So a point in the data set will affect
+the nearby points, more than it affects
+
+120
+00:07:12,060 --> 00:07:13,700
+the far-away points.
+
+121
+00:07:13,700 --> 00:07:17,770
+That is the key component that makes
+it a radial basis function.
+
+122
+00:07:17,770 --> 00:07:21,010
+Let's look at a picture here.
+
+123
+00:07:21,010 --> 00:07:28,770
+Imagine that the center of this bump
+happens to be the data point.
+
+124
+00:07:28,770 --> 00:07:30,110
+So this is x_n.
+
+125
+00:07:30,110 --> 00:07:34,110
+And this shows you the influence
+of x_n on the neighboring
+
+126
+00:07:34,110 --> 00:07:35,810
+points in the space.
+
+127
+00:07:35,810 --> 00:07:38,320
+So it's most influential nearby.
+
+128
+00:07:38,320 --> 00:07:40,430
+And then the influence
+goes by and dies.
+
+129
+00:07:40,430 --> 00:07:44,020
+And the fact that this is symmetric
+around, means that it's function only of
+
+130
+00:07:44,020 --> 00:07:47,400
+the distance, which is the
+condition we have here.
+
+131
+00:07:47,400 --> 00:07:51,340
+So let me give you, concretely, the
+standard form of a radial basis
+
+132
+00:07:51,340 --> 00:07:54,170
+function model.
+
+133
+00:07:54,170 --> 00:07:58,110
+It starts from h of x being--
+
+134
+00:07:58,110 --> 00:08:01,940
+and here are the components
+that build it.
+
+135
+00:08:01,940 --> 00:08:04,890
+As promised, it depends
+on the distance.
+
+136
+00:08:04,890 --> 00:08:08,680
+And it depends on the distance such
+that the closer you are to x_n, the
+
+137
+00:08:08,680 --> 00:08:11,520
+bigger the influence is, as
+seen in this picture.
+
+138
+00:08:11,520 --> 00:08:14,500
+So if you take the norm
+of x minus x_n squared.
+
+139
+00:08:14,500 --> 00:08:19,940
+And you take minus-- gamma is a positive
+parameter, fixed for the moment, you will
+
+140
+00:08:19,940 --> 00:08:22,330
+see that this exponential really
+reflects that picture.
+
+141
+00:08:22,330 --> 00:08:23,840
+The further you are away, you go down.
+
+142
+00:08:23,840 --> 00:08:26,270
+And you go down as a Gaussian.
+
+143
+00:08:26,270 --> 00:08:30,930
+So this is the contribution to the
+point x, at which we are evaluating
+
+144
+00:08:30,930 --> 00:08:37,150
+the function, according to the data
+point x_n, from the data set.
+
+145
+00:08:37,150 --> 00:08:41,010
+Now we get an influence from every
+point in the data set.
+
+146
+00:08:41,010 --> 00:08:47,110
+And those influences will have
+a parameter that reflects the value, as
+
+147
+00:08:47,110 --> 00:08:50,510
+we will see in a moment,
+of the target here.
+
+148
+00:08:50,510 --> 00:08:52,180
+So it will be affected by y_n.
+
+149
+00:08:52,180 --> 00:08:55,770
+That's the influence-- is having
+the value y_n propagate.
+
+150
+00:08:55,770 --> 00:08:57,270
+So I'm not going to put it as y_n here.
+
+151
+00:08:57,270 --> 00:09:00,730
+I'm just going to put it generically
+as a weight to be determined.
+
+152
+00:09:00,730 --> 00:09:03,430
+And we'll find that it's very
+much correlated to y_n.
+
+153
+00:09:03,430 --> 00:09:07,480
+And then we will sum up all of these
+influences, from all the data points,
+
+154
+00:09:07,480 --> 00:09:09,080
+and you have your model.
+
+155
+00:09:09,080 --> 00:09:13,170
+So this is the standard model
+for radial basis functions.
+
+156
+00:09:13,170 --> 00:09:18,830
+Now let me, in terms of this slide,
+describe why it is called
+
+157
+00:09:18,830 --> 00:09:20,080
+radial, basis function.
+
+158
+00:09:20,080 --> 00:09:22,360
+
+
+159
+00:09:22,360 --> 00:09:27,610
+It's radial because of this.
+
+160
+00:09:27,610 --> 00:09:31,490
+And it's basis function
+because of this.
+
+161
+00:09:31,490 --> 00:09:32,760
+This is your building block.
+
+162
+00:09:32,760 --> 00:09:35,510
+You could use another basis function.
+
+163
+00:09:35,510 --> 00:09:39,200
+So you could have another shape, that
+is also symmetric in center, and has
+
+164
+00:09:39,200 --> 00:09:40,560
+the influence in a different way.
+
+165
+00:09:40,560 --> 00:09:43,160
+And we will see an example later on.
+
+166
+00:09:43,160 --> 00:09:46,660
+But this is basically the model
+in its simplest form, and its
+
+167
+00:09:46,660 --> 00:09:47,780
+most popular form.
+
+168
+00:09:47,780 --> 00:09:49,780
+Most people will use
+a Gaussian like this.
+
+169
+00:09:49,780 --> 00:09:52,650
+And this will be the functional
+form for the hypothesis.
+
+170
+00:09:52,650 --> 00:09:55,190
+
+
+171
+00:09:55,190 --> 00:09:56,510
+Now we have the model.
+
+172
+00:09:56,510 --> 00:10:00,050
+The next question we normally ask is
+what is the learning algorithm?
+
+173
+00:10:00,050 --> 00:10:03,170
+So what is a learning algorithm
+in general?
+
+174
+00:10:03,170 --> 00:10:04,410
+You want to find the parameters.
+
+175
+00:10:04,410 --> 00:10:07,310
+And we call the parameters
+w_1 up to w_N.
+
+176
+00:10:07,310 --> 00:10:09,890
+And they have this functional form.
+
+177
+00:10:09,890 --> 00:10:12,720
+So I put them in purple now, because
+they are the variables.
+
+178
+00:10:12,720 --> 00:10:14,590
+Everything else is fixed.
+
+179
+00:10:14,590 --> 00:10:18,836
+And we would like to find the w_n's
+that minimize some sort of error.
+
+180
+00:10:18,836 --> 00:10:21,830
+
+
+181
+00:10:21,830 --> 00:10:26,580
+We base that error on the
+training data, obviously.
+
+182
+00:10:26,580 --> 00:10:31,910
+So what I'm going to do now, I'm going
+to evaluate the hypothesis on the data
+
+183
+00:10:31,910 --> 00:10:36,600
+points, and try to make them match target
+value on those points-- try to
+
+184
+00:10:36,600 --> 00:10:38,140
+make them match y.
+
+185
+00:10:38,140 --> 00:10:43,870
+As I said, w_n won't be exactly y_n,
+but it will be affected by it.
+
+186
+00:10:43,870 --> 00:10:47,740
+Now there is an interesting point of
+notation, because the points appear
+
+187
+00:10:47,740 --> 00:10:49,440
+explicitly in the model.
+
+188
+00:10:49,440 --> 00:10:53,890
+x_n is the n-th training input.
+
+189
+00:10:53,890 --> 00:10:58,490
+And now I'm going to evaluate this on
+a training point, in order to evaluate
+
+190
+00:10:58,490 --> 00:11:00,350
+the in-sample error.
+
+191
+00:11:00,350 --> 00:11:03,920
+So because of this, there will
+be an interesting notation.
+
+192
+00:11:03,920 --> 00:11:08,590
+When we, let's say, ask ambitiously to
+have the in-sample error being 0.
+
+193
+00:11:08,590 --> 00:11:12,020
+I want to be exactly right
+on the data points.
+
+194
+00:11:12,020 --> 00:11:14,620
+I should expect that I will
+be able to do that.
+
+195
+00:11:14,620 --> 00:11:15,470
+Why?
+
+196
+00:11:15,470 --> 00:11:20,410
+Because really I have quite a number
+of parameters here, don't I?
+
+197
+00:11:20,410 --> 00:11:23,770
+I have N data points.
+
+198
+00:11:23,770 --> 00:11:28,320
+And I'm trying to learn
+N parameters.
+
+199
+00:11:28,320 --> 00:11:32,730
+Notwithstanding the generalization
+ramifications of that statement, it
+
+200
+00:11:32,730 --> 00:11:36,100
+should be easy to get parameters
+that really knock down the
+
+201
+00:11:36,100 --> 00:11:38,750
+in-sample error to 0.
+
+202
+00:11:38,750 --> 00:11:42,700
+So in doing that, what I'm going to do,
+I'm going to apply this to every
+
+203
+00:11:42,700 --> 00:11:47,990
+point x_n, and ask that the output of
+the hypothesis be equal to y_n.
+
+204
+00:11:47,990 --> 00:11:49,260
+No error at all.
+
+205
+00:11:49,260 --> 00:11:52,090
+So indeed, the in-sample
+error will be 0.
+
+206
+00:11:52,090 --> 00:11:55,680
+Let's substitute in
+the equation here.
+
+207
+00:11:55,680 --> 00:12:01,720
+And this is true for all n up to
+N, and here is what you have.
+
+208
+00:12:01,720 --> 00:12:04,170
+First, you realize that I changed
+the name of the dummy
+
+209
+00:12:04,170 --> 00:12:05,680
+variable, the index here.
+
+210
+00:12:05,680 --> 00:12:07,760
+I changed it from n to m.
+
+211
+00:12:07,760 --> 00:12:10,070
+And this goes with x_m here.
+
+212
+00:12:10,070 --> 00:12:13,060
+The reason I did that, because I'm
+going to evaluate this on x_n.
+
+213
+00:12:13,060 --> 00:12:16,270
+And obviously, you shouldn't have
+recycling of the dummy
+
+214
+00:12:16,270 --> 00:12:18,360
+variable as a genuine variable.
+
+215
+00:12:18,360 --> 00:12:23,680
+So in this case, you want this quantity,
+which will in this case be
+
+216
+00:12:23,680 --> 00:12:27,590
+the evaluation of h at the point x_n.
+
+217
+00:12:27,590 --> 00:12:30,710
+You want this to be equal to y_n.
+
+218
+00:12:30,710 --> 00:12:31,420
+That's the condition.
+
+219
+00:12:31,420 --> 00:12:35,890
+And you want this to be true for
+n equals 1 to N. Not that
+
+220
+00:12:35,890 --> 00:12:36,760
+difficult to solve.
+
+221
+00:12:36,760 --> 00:12:38,010
+So let's go for the solution.
+
+222
+00:12:38,010 --> 00:12:40,840
+
+
+223
+00:12:40,840 --> 00:12:42,170
+These are the equations.
+
+224
+00:12:42,170 --> 00:12:45,670
+And we ask ourselves: how many equations
+and how many unknowns?
+
+225
+00:12:45,670 --> 00:12:49,770
+Well, I have N data points.
+
+226
+00:12:49,770 --> 00:12:51,790
+I'm listing N of these equations.
+
+227
+00:12:51,790 --> 00:12:54,930
+So indeed, I have N equations.
+
+228
+00:12:54,930 --> 00:12:56,580
+How many unknowns do I have?
+
+229
+00:12:56,580 --> 00:12:57,890
+Well, what are the unknowns?
+
+230
+00:12:57,890 --> 00:13:00,470
+The unknowns are the w's.
+
+231
+00:13:00,470 --> 00:13:04,160
+And I happen to have N unknowns.
+
+232
+00:13:04,160 --> 00:13:05,910
+That's familiar territory.
+
+233
+00:13:05,910 --> 00:13:08,790
+All I need to do is just solve it.
+
+234
+00:13:08,790 --> 00:13:11,930
+Let's put it in matrix form,
+which will make it easy.
+
+235
+00:13:11,930 --> 00:13:18,380
+Here is the matrix form, with all
+the coefficients for n and m.
+
+236
+00:13:18,380 --> 00:13:21,160
+You can see that this
+goes from 1 to N.
+
+237
+00:13:21,160 --> 00:13:23,720
+And the second guy goes from 1 to N.
+
+238
+00:13:23,720 --> 00:13:25,300
+These are the coefficients.
+
+239
+00:13:25,300 --> 00:13:28,750
+You multiply this by a vector of w's.
+
+240
+00:13:28,750 --> 00:13:33,440
+So I'm putting all the N equations
+at once, as in matrix form.
+
+241
+00:13:33,440 --> 00:13:39,840
+And I'm asking this to be equal
+to the vector of y's.
+
+242
+00:13:39,840 --> 00:13:41,470
+Let's call the matrices something.
+
+243
+00:13:41,470 --> 00:13:43,910
+This matrix I'm going to call phi.
+
+244
+00:13:43,910 --> 00:13:47,270
+And I am recycling the notation phi.
+
+245
+00:13:47,270 --> 00:13:49,260
+phi used to be the nonlinear
+transformation.
+
+246
+00:13:49,260 --> 00:13:52,150
+And this is indeed a nonlinear
+transformation of sorts.
+
+247
+00:13:52,150 --> 00:13:53,790
+Slight difference that we'll discuss.
+
+248
+00:13:53,790 --> 00:13:55,710
+But we can call it phi.
+
+249
+00:13:55,710 --> 00:13:59,340
+And then these guys will be called
+the standard name, the vector w
+
+250
+00:13:59,340 --> 00:14:00,900
+and the vector y.
+
+251
+00:14:00,900 --> 00:14:02,610
+What is the solution for this?
+
+252
+00:14:02,610 --> 00:14:08,220
+All you ask for, in order to guarantee
+a solution, is that phi be invertible,
+
+253
+00:14:08,220 --> 00:14:13,710
+that under these conditions, the
+solution is very simply just: w equals
+
+254
+00:14:13,710 --> 00:14:16,590
+the inverse of phi times y.
+
+255
+00:14:16,590 --> 00:14:22,930
+In that case, you interpret your
+solution as exact interpolation,
+
+256
+00:14:22,930 --> 00:14:28,110
+because what you are really doing is, on
+the points that you know the value,
+
+257
+00:14:28,110 --> 00:14:33,670
+which are the training points, you
+are getting the value exactly.
+
+258
+00:14:33,670 --> 00:14:35,610
+That's what you solved for.
+
+259
+00:14:35,610 --> 00:14:40,950
+And now the kernel, which is the Gaussian
+in this case, what it does is
+
+260
+00:14:40,950 --> 00:14:46,370
+interpolate between the points to give
+you the value on the other x's.
+
+261
+00:14:46,370 --> 00:14:50,330
+And it's exact, because you get it
+exactly right on those points.
+
+262
+00:14:50,330 --> 00:14:53,710
+
+
+263
+00:14:53,710 --> 00:14:57,450
+Now let's look at the effect of gamma.
+
+264
+00:14:57,450 --> 00:15:00,180
+There was a gamma, a parameter,
+that I considered fixed
+
+265
+00:15:00,180 --> 00:15:01,660
+from the very beginning.
+
+266
+00:15:01,660 --> 00:15:02,750
+This guy--
+
+267
+00:15:02,750 --> 00:15:05,110
+so I'm highlighting it in red.
+
+268
+00:15:05,110 --> 00:15:08,830
+When I give you a value of
+gamma, you carry out the
+
+269
+00:15:08,830 --> 00:15:11,080
+machinery that I just described.
+
+270
+00:15:11,080 --> 00:15:15,080
+But you suspect that gamma
+will affect the outcome.
+
+271
+00:15:15,080 --> 00:15:16,910
+And indeed, it will.
+
+272
+00:15:16,910 --> 00:15:20,010
+Let's look at two situations.
+
+273
+00:15:20,010 --> 00:15:21,970
+Let's say that gamma is small.
+
+274
+00:15:21,970 --> 00:15:24,260
+What happens when gamma is small?
+
+275
+00:15:24,260 --> 00:15:31,090
+What happens is that this Gaussian
+is wide, going this way.
+
+276
+00:15:31,090 --> 00:15:35,970
+If gamma was large, then I
+would be going this way.
+
+277
+00:15:35,970 --> 00:15:39,650
+Now depending obviously on where the
+points are, how sparse they are, it
+
+278
+00:15:39,650 --> 00:15:43,230
+makes a big difference whether you are
+interpolating with something that goes
+
+279
+00:15:43,230 --> 00:15:45,840
+this way, or something
+that goes this way.
+
+280
+00:15:45,840 --> 00:15:47,390
+And it's reflected in this picture.
+
+281
+00:15:47,390 --> 00:15:49,380
+Let's say you take this case.
+
+282
+00:15:49,380 --> 00:15:52,030
+And I have three points
+just for illustration.
+
+283
+00:15:52,030 --> 00:15:58,130
+The total contribution of the three
+interpolations passes exactly through
+
+284
+00:15:58,130 --> 00:16:02,130
+the points, because this is what I solved
+for. That's what I insisted on.
+
+285
+00:16:02,130 --> 00:16:07,930
+But the small gray ones here
+are the contribution
+
+286
+00:16:07,930 --> 00:16:09,230
+according to each of them.
+
+287
+00:16:09,230 --> 00:16:13,790
+So this would be w_1, w_2, w_3
+if these are the points.
+
+288
+00:16:13,790 --> 00:16:17,890
+And when you add w_1 times the Gaussian,
+plus w_2 times the Gaussian, et cetera.
+
+289
+00:16:17,890 --> 00:16:22,540
+You get a curve that gives you
+exactly the y_1, y_2, and y_3.
+
+290
+00:16:22,540 --> 00:16:27,950
+Now because of the width, there
+is an interpolation here that is
+
+291
+00:16:27,950 --> 00:16:29,380
+successful.
+
+292
+00:16:29,380 --> 00:16:34,490
+Between two points, you can
+see that there is a meaningful
+
+293
+00:16:34,490 --> 00:16:37,170
+interpolation.
+
+294
+00:16:37,170 --> 00:16:44,040
+If you go for a large gamma,
+this is what you get.
+
+295
+00:16:44,040 --> 00:16:46,140
+Now the Gaussians are still there.
+
+296
+00:16:46,140 --> 00:16:47,500
+You may see them faintly.
+
+297
+00:16:47,500 --> 00:16:50,340
+But they die out very quickly.
+
+298
+00:16:50,340 --> 00:16:53,260
+And therefore, in spite of the fact
+that you are still satisfying your
+
+299
+00:16:53,260 --> 00:16:56,330
+equations, because that's what you solved
+for, the interpolation here is
+
+300
+00:16:56,330 --> 00:16:59,610
+very poor because the influence of this
+point dies out, and the influence
+
+301
+00:16:59,610 --> 00:17:00,590
+of this point dies out.
+
+302
+00:17:00,590 --> 00:17:03,430
+So in between, you just get nothing.
+
+303
+00:17:03,430 --> 00:17:05,810
+So clearly, gamma matters.
+
+304
+00:17:05,810 --> 00:17:10,390
+And you probably, in your mind, think
+that gamma matters also in relation to
+
+305
+00:17:10,390 --> 00:17:12,810
+the distance between the points,
+because that's what the
+
+306
+00:17:12,810 --> 00:17:13,839
+interpolation is.
+
+307
+00:17:13,839 --> 00:17:16,520
+And we will discuss the choice
+of gamma towards the end.
+
+308
+00:17:16,520 --> 00:17:19,680
+After we settle all the other
+parameters, we will go and visit gamma
+
+309
+00:17:19,680 --> 00:17:21,650
+and see how we can choose it wisely.
+
+310
+00:17:21,650 --> 00:17:24,569
+
+
+311
+00:17:24,569 --> 00:17:28,040
+With this in mind, we have a model.
+
+312
+00:17:28,040 --> 00:17:31,790
+But that model, if you look at
+it, is a regression model.
+
+313
+00:17:31,790 --> 00:17:34,800
+I consider the output
+to be real-valued.
+
+314
+00:17:34,800 --> 00:17:38,230
+And I match the real-valued output
+to the target output, which
+
+315
+00:17:38,230 --> 00:17:40,170
+is also real-valued.
+
+316
+00:17:40,170 --> 00:17:43,880
+Often, we will use RBF's
+for classification.
+
+317
+00:17:43,880 --> 00:17:48,890
+When you look at h of x, which used
+to be regression this way-- it gives
+
+318
+00:17:48,890 --> 00:17:50,670
+you a real number.
+
+319
+00:17:50,670 --> 00:17:55,805
+Now we are going to take, as usual, the
+sign of this quantity, +1 or
+
+320
+00:17:55,805 --> 00:17:59,470
+-1, and interpret the output
+as a yes/no decision.
+
+321
+00:17:59,470 --> 00:18:03,470
+And we would like to ask ourselves: how
+do we learn the w's under these
+
+322
+00:18:03,470 --> 00:18:05,070
+conditions?
+
+323
+00:18:05,070 --> 00:18:09,930
+That shouldn't be a very alien situation
+to you, because you have seen
+
+324
+00:18:09,930 --> 00:18:14,420
+before linear regression used
+for classification.
+
+325
+00:18:14,420 --> 00:18:17,320
+That is pretty much what we
+are going to do here.
+
+326
+00:18:17,320 --> 00:18:21,820
+We are going to focus on the inner part,
+which is the signal before we
+
+327
+00:18:21,820 --> 00:18:23,280
+take the sign.
+
+328
+00:18:23,280 --> 00:18:28,770
+And we are going to try to make the
+signal itself match the +1,-1
+
+329
+00:18:28,770 --> 00:18:33,410
+target, like we did when we used linear
+regression for classification.
+
+330
+00:18:33,410 --> 00:18:37,160
+And after we are done, since we are
+trying hard to make it
+
+331
+00:18:37,160 --> 00:18:39,700
++1 or -1,
+
+332
+00:18:39,700 --> 00:18:42,000
+and if we are successful--
+we get exact solution,
+
+333
+00:18:42,000 --> 00:18:44,910
+then obviously the sign of it will
+be +1 or -1 if you're
+
+334
+00:18:44,910 --> 00:18:45,640
+successful.
+
+335
+00:18:45,640 --> 00:18:50,390
+If you are not successful, and there is
+an error, as will happen in other
+
+336
+00:18:50,390 --> 00:18:54,680
+cases, then at least since you try to
+make it close to +1, and you try
+
+337
+00:18:54,680 --> 00:18:58,030
+to make the other one close to -1,
+you would think that the sign, at
+
+338
+00:18:58,030 --> 00:19:02,130
+least, will agree with
++1 or -1.
+
+339
+00:19:02,130 --> 00:19:07,280
+So the signal here is what used to
+be the whole hypothesis value.
+
+340
+00:19:07,280 --> 00:19:11,270
+And what you're trying to do, you are
+trying to minimize the mean squared
+
+341
+00:19:11,270 --> 00:19:16,060
+error between that signal and
+y, knowing that y actually--
+
+342
+00:19:16,060 --> 00:19:20,690
+on the training set-- knowing that
+y is only +1 or -1.
+
+343
+00:19:20,690 --> 00:19:22,070
+So you solve for that.
+
+344
+00:19:22,070 --> 00:19:26,720
+And then when you get s, you report
+the sign of that s as your value.
+
+345
+00:19:26,720 --> 00:19:31,900
+So we are ready to use the solution we
+had before in case we are using RBF's
+
+346
+00:19:31,900 --> 00:19:33,150
+for classification.
+
+347
+00:19:33,150 --> 00:19:36,410
+
+
+348
+00:19:36,410 --> 00:19:43,570
+Now we come to the observation that
+the radial basis functions are related
+
+349
+00:19:43,570 --> 00:19:44,550
+to other models.
+
+350
+00:19:44,550 --> 00:19:46,680
+And I'm going to start with
+a model that we didn't cover.
+
+351
+00:19:46,680 --> 00:19:49,880
+It's extremely simple to
+cover in five minutes.
+
+352
+00:19:49,880 --> 00:19:54,090
+And it shows an aspect of radial basis
+functions that is important.
+
+353
+00:19:54,090 --> 00:19:56,080
+This is the nearest-neighbor method.
+
+354
+00:19:56,080 --> 00:19:58,040
+So let's look at it.
+
+355
+00:19:58,040 --> 00:20:01,050
+The idea of nearest neighbor is
+that I give you a data set.
+
+356
+00:20:01,050 --> 00:20:03,580
+And each data point has a value y_n.
+
+357
+00:20:03,580 --> 00:20:05,870
+Could be a label, if you're talking
+about classification,
+
+358
+00:20:05,870 --> 00:20:07,870
+could be a real value.
+
+359
+00:20:07,870 --> 00:20:12,340
+And what you do for classifying other
+points, or assigning values to other
+
+360
+00:20:12,340 --> 00:20:13,910
+points, is very simple.
+
+361
+00:20:13,910 --> 00:20:18,953
+You look at the closest point within
+that training set, to the point that
+
+362
+00:20:18,953 --> 00:20:19,570
+you are considering.
+
+363
+00:20:19,570 --> 00:20:20,680
+So you have x.
+
+364
+00:20:20,680 --> 00:20:25,630
+You look at what is x_n in the
+training set that is closest to me,
+
+365
+00:20:25,630 --> 00:20:27,770
+in Euclidean distance.
+
+366
+00:20:27,770 --> 00:20:33,140
+And then you inherit the label, or
+the value, that that point has.
+
+367
+00:20:33,140 --> 00:20:34,710
+Very simplistic.
+
+368
+00:20:34,710 --> 00:20:38,430
+Here is a case of classification.
+
+369
+00:20:38,430 --> 00:20:45,870
+The data set are the red pluses
+and the blue circles.
+
+370
+00:20:45,870 --> 00:20:49,080
+And what I am doing is that I am
+applying this rule of classifying
+
+371
+00:20:49,080 --> 00:20:55,060
+every point on this plane, which
+is X, the input space,
+
+372
+00:20:55,060 --> 00:20:59,790
+according to the label of the nearest
+point within the training set.
+
+373
+00:20:59,790 --> 00:21:02,970
+As you can see, if I take a point
+here, this is the closest.
+
+374
+00:21:02,970 --> 00:21:04,490
+That's why this is pink.
+
+375
+00:21:04,490 --> 00:21:06,200
+And here it's still the closest.
+
+376
+00:21:06,200 --> 00:21:09,150
+Once I'm here, this guy
+becomes the closest.
+
+377
+00:21:09,150 --> 00:21:11,070
+And therefore, it gets blue.
+
+378
+00:21:11,070 --> 00:21:14,100
+So you end up, as a result of
+that, as if you are breaking
+
+379
+00:21:14,100 --> 00:21:16,350
+the plane into cells.
+
+380
+00:21:16,350 --> 00:21:20,200
+Each of them has the label of a point
+in the training set that happens
+
+381
+00:21:20,200 --> 00:21:21,340
+to be in the cell.
+
+382
+00:21:21,340 --> 00:21:25,960
+And this tessellation of the plane,
+into these cells, describes the
+
+383
+00:21:25,960 --> 00:21:28,660
+boundary for your decisions.
+
+384
+00:21:28,660 --> 00:21:32,160
+This is the nearest-neighbor method.
+
+385
+00:21:32,160 --> 00:21:35,260
+Now, if you want to implement this
+using radial basis functions,
+
+386
+00:21:35,260 --> 00:21:37,130
+there is a way to implement it.
+
+387
+00:21:37,130 --> 00:21:41,410
+It's not exactly this, but it has
+a similar effect, where you basically are
+
+388
+00:21:41,410 --> 00:21:44,250
+trying to take an influence
+of a nearby point.
+
+389
+00:21:44,250 --> 00:21:46,150
+And that is the only thing
+you're considering.
+
+390
+00:21:46,150 --> 00:21:48,050
+You are not considering other points.
+
+391
+00:21:48,050 --> 00:21:51,100
+So let's say you take the basis
+function, in this case,
+
+392
+00:21:51,100 --> 00:21:54,460
+to look like this.
+
+393
+00:21:54,460 --> 00:21:55,900
+Instead of a Gaussian,
+
+394
+00:21:55,900 --> 00:21:57,140
+it's a cylinder.
+
+395
+00:21:57,140 --> 00:21:59,550
+It's still symmetric--
+depends on the radius.
+
+396
+00:21:59,550 --> 00:22:01,850
+But the dependency is very simple.
+
+397
+00:22:01,850 --> 00:22:03,430
+I am constant.
+
+398
+00:22:03,430 --> 00:22:05,320
+And then I go to 0.
+
+399
+00:22:05,320 --> 00:22:06,890
+So it's very abrupt.
+
+400
+00:22:06,890 --> 00:22:09,220
+In that case, I am not
+exactly getting this.
+
+401
+00:22:09,220 --> 00:22:13,370
+But what I'm getting is a cylinder
+around every one of those guys that
+
+402
+00:22:13,370 --> 00:22:17,570
+inherits the value of that point.
+
+403
+00:22:17,570 --> 00:22:20,370
+And obviously, there is the question of
+overlaps and whatnot, and that is
+
+404
+00:22:20,370 --> 00:22:22,940
+what makes a difference from here.
+
+405
+00:22:22,940 --> 00:22:26,340
+In both of those cases,
+it's fairly brittle.
+
+406
+00:22:26,340 --> 00:22:27,830
+You go from here to here.
+
+407
+00:22:27,830 --> 00:22:29,880
+You immediately change values.
+
+408
+00:22:29,880 --> 00:22:32,910
+And if there are points in between, you
+keep changing from blue, to red,
+
+409
+00:22:32,910 --> 00:22:34,300
+to blue, and so on.
+
+410
+00:22:34,300 --> 00:22:36,980
+In this case, it's even more
+brittle, and so on.
+
+411
+00:22:36,980 --> 00:22:43,200
+So in order to make it less abrupt, the
+nearest neighbor is modified to
+
+412
+00:22:43,200 --> 00:22:47,620
+becoming K nearest neighbors, that is,
+instead of taking the value of the
+
+413
+00:22:47,620 --> 00:22:51,480
+closest point, you look for, let's say,
+for the three closest points, or
+
+414
+00:22:51,480 --> 00:22:56,690
+the five closest points, or the seven
+closest points, and then take a vote.
+
+415
+00:22:56,690 --> 00:23:00,060
+If most of them are +1, you
+consider yourself +1.
+
+416
+00:23:00,060 --> 00:23:02,560
+That helps even things
+out a little bit.
+
+417
+00:23:02,560 --> 00:23:06,150
+So an isolated guy in the middle,
+that doesn't belong, gets
+
+418
+00:23:06,150 --> 00:23:08,260
+filtered out by this.
+
+419
+00:23:08,260 --> 00:23:10,640
+This is a standard way
+of smoothing, so to
+
+420
+00:23:10,640 --> 00:23:12,190
+speak, the surface here.
+
+421
+00:23:12,190 --> 00:23:15,350
+It will still be very abrupt going
+from one point to another, but at
+
+422
+00:23:15,350 --> 00:23:19,080
+least the number of fluctuations
+will go down.
+
+423
+00:23:19,080 --> 00:23:22,260
+The way you smoothen the radial basis
+function is, instead of using
+
+424
+00:23:22,260 --> 00:23:24,280
+a cylinder, you use a Gaussian.
+
+425
+00:23:24,280 --> 00:23:26,900
+So now it's not like I have an influence,
+I have an influence, I have an influence,
+
+426
+00:23:26,900 --> 00:23:28,210
+I don't have any influence.
+
+427
+00:23:28,210 --> 00:23:31,310
+No, you have an influence, you have
+less influence, you have even less
+
+428
+00:23:31,310 --> 00:23:34,690
+influence, and eventually you have
+effectively no influence because the
+
+429
+00:23:34,690 --> 00:23:37,010
+Gaussian went to 0.
+
+430
+00:23:37,010 --> 00:23:40,320
+And in both of those cases, you can
+consider the model, whether it's nearest
+
+431
+00:23:40,320 --> 00:23:42,790
+neighbor or K nearest neighbors,
+or a radial basis function
+
+432
+00:23:42,790 --> 00:23:45,020
+with different bases.
+
+433
+00:23:45,020 --> 00:23:49,640
+You can consider it as
+a similarity-based method.
+
+434
+00:23:49,640 --> 00:23:54,330
+You are classifying points according to
+how similar they are to points in
+
+435
+00:23:54,330 --> 00:23:55,850
+the training set.
+
+436
+00:23:55,850 --> 00:24:00,110
+And the particular form of applying
+the similarity is what defines the
+
+437
+00:24:00,110 --> 00:24:03,480
+algorithm, whether it's this way or
+that way, whether it's abrupt or
+
+438
+00:24:03,480 --> 00:24:04,730
+smooth, and whatnot.
+
+439
+00:24:04,730 --> 00:24:08,830
+
+
+440
+00:24:08,830 --> 00:24:14,580
+Now let's look at the model we had,
+which is the exact-interpolation model
+
+441
+00:24:14,580 --> 00:24:19,410
+and modify it a little bit, in order to
+deal with a problem that you probably
+
+442
+00:24:19,410 --> 00:24:22,960
+already noticed, which
+is the following.
+
+443
+00:24:22,960 --> 00:24:27,380
+In the model, we have
+N parameters, w--
+
+444
+00:24:27,380 --> 00:24:29,675
+should be w_1 up to w_N.
+
+445
+00:24:29,675 --> 00:24:34,470
+
+
+446
+00:24:34,470 --> 00:24:39,250
+And it is based on
+N data points.
+
+447
+00:24:39,250 --> 00:24:40,040
+I have N parameters.
+
+448
+00:24:40,040 --> 00:24:42,690
+I have N data points.
+
+449
+00:24:42,690 --> 00:24:50,490
+We have alarm bells that calls for a red
+color, because right now, you usually
+
+450
+00:24:50,490 --> 00:24:54,130
+have the generalization in your mind
+related to the ratio between data
+
+451
+00:24:54,130 --> 00:24:57,550
+points and parameters, parameters being
+more or less a VC dimension.
+
+452
+00:24:57,550 --> 00:25:00,720
+And therefore, in this case, it's
+pretty hopeless to generalize.
+
+453
+00:25:00,720 --> 00:25:03,670
+It's not as hopeless as in other cases,
+because the Gaussian is a pretty
+
+454
+00:25:03,670 --> 00:25:05,210
+friendly guy.
+
+455
+00:25:05,210 --> 00:25:09,110
+Nonetheless, you might consider the
+idea that I'm going to use
+
+456
+00:25:09,110 --> 00:25:13,080
+radial basis functions, so I'm
+going to have an influence,
+
+457
+00:25:13,080 --> 00:25:14,610
+symmetric and all of that.
+
+458
+00:25:14,610 --> 00:25:17,850
+But I don't want to have every
+point have its own influence.
+
+459
+00:25:17,850 --> 00:25:21,250
+What I'm going to do, I'm going to elect
+a number of important centers
+
+460
+00:25:21,250 --> 00:25:26,300
+for the data, have these as my centers,
+and have them influence the
+
+461
+00:25:26,300 --> 00:25:29,090
+neighborhood around them.
+
+462
+00:25:29,090 --> 00:25:33,300
+So what you do, you take K,
+which is the number of centers in this
+
+463
+00:25:33,300 --> 00:25:36,460
+case, and hopefully it's much smaller
+than N. so that the generalization
+
+464
+00:25:36,460 --> 00:25:39,500
+worry is mitigated.
+
+465
+00:25:39,500 --> 00:25:41,740
+And you define the centers--
+
+466
+00:25:41,740 --> 00:25:43,060
+these are vectors,
+
+467
+00:25:43,060 --> 00:25:50,120
+mu_1 up to mu_K, as the centers of
+the radial basis functions, instead of
+
+468
+00:25:50,120 --> 00:25:54,800
+having x_1 up to x_N, the data points
+themselves, being the centers.
+
+469
+00:25:54,800 --> 00:25:58,490
+Now those guys live in the same
+space, let's say in
+
+470
+00:25:58,490 --> 00:25:59,820
+a d-dimensional Euclidean space.
+
+471
+00:25:59,820 --> 00:26:04,250
+These are exactly in the same space,
+except that they are not data points.
+
+472
+00:26:04,250 --> 00:26:05,980
+They are not necessarily data points.
+
+473
+00:26:05,980 --> 00:26:10,120
+We may have elected some of them as
+being important points, or we may have
+
+474
+00:26:10,120 --> 00:26:13,100
+elected points that are simply
+representative, and don't coincide with
+
+475
+00:26:13,100 --> 00:26:14,140
+any of those points.
+
+476
+00:26:14,140 --> 00:26:18,590
+Generically, there will
+be mu_1 up to mu_K.
+
+477
+00:26:18,590 --> 00:26:22,020
+And in that case, the functional form
+of the radial basis function changes
+
+478
+00:26:22,020 --> 00:26:25,040
+form, and it becomes this.
+
+479
+00:26:25,040 --> 00:26:26,040
+Let's look at it.
+
+480
+00:26:26,040 --> 00:26:30,160
+Used to be that we are counting
+from 1 to N, now from 1 to K.
+
+481
+00:26:30,160 --> 00:26:31,090
+And we have w.
+
+482
+00:26:31,090 --> 00:26:33,750
+So indeed, we have fewer parameters.
+
+483
+00:26:33,750 --> 00:26:39,460
+And now we are comparing the x that we
+are evaluating at, not with every point,
+
+484
+00:26:39,460 --> 00:26:42,380
+but with every center.
+
+485
+00:26:42,380 --> 00:26:46,120
+And according to the distance from that
+center, the influence of that
+
+486
+00:26:46,120 --> 00:26:49,750
+particular center, which is captured
+by w_k is contributed.
+
+487
+00:26:49,750 --> 00:26:52,920
+And you take the contribution of all
+the centers, and you get the value.
+
+488
+00:26:52,920 --> 00:26:56,430
+Exactly the same thing we did before
+except, with this modification, that we
+
+489
+00:26:56,430 --> 00:26:59,570
+are using centers instead of points.
+
+490
+00:26:59,570 --> 00:27:05,920
+So the parameters here now are
+interesting, because I have w_k's
+
+491
+00:27:05,920 --> 00:27:06,550
+are parameters.
+
+492
+00:27:06,550 --> 00:27:10,380
+And I'm supposedly going through this
+entire exercise because I didn't like
+
+493
+00:27:10,380 --> 00:27:11,670
+having N parameters.
+
+494
+00:27:11,670 --> 00:27:12,930
+I want only K parameters.
+
+495
+00:27:12,930 --> 00:27:15,720
+But look what we did.
+
+496
+00:27:15,720 --> 00:27:18,580
+mu_k's now are parameters, right?
+
+497
+00:27:18,580 --> 00:27:20,660
+I don't know what they are.
+
+498
+00:27:20,660 --> 00:27:23,360
+And I have K of them.
+
+499
+00:27:23,360 --> 00:27:26,970
+That's not a worry, because I already
+said that K is much smaller than N.
+
+500
+00:27:26,970 --> 00:27:31,100
+But each of them is a d-dimensional
+vector, isn't it?
+
+501
+00:27:31,100 --> 00:27:33,560
+So that's a lot of parameters.
+
+502
+00:27:33,560 --> 00:27:37,630
+If I have to estimate those, et
+cetera, I haven't done a lot of
+
+503
+00:27:37,630 --> 00:27:39,570
+progress in this exercise.
+
+504
+00:27:39,570 --> 00:27:42,830
+But it turns out that I will be able,
+through a very simple algorithm, to
+
+505
+00:27:42,830 --> 00:27:47,120
+estimate those without touching the
+outputs of the training set, so
+
+506
+00:27:47,120 --> 00:27:48,530
+without contaminating the data.
+
+507
+00:27:48,530 --> 00:27:49,780
+That's the key.
+
+508
+00:27:49,780 --> 00:27:52,040
+
+
+509
+00:27:52,040 --> 00:27:55,280
+Two questions. How do I choose the
+centers, which is an interesting
+
+510
+00:27:55,280 --> 00:27:58,600
+question, because I have to choose it
+now-- if I want to maintain that the
+
+511
+00:27:58,600 --> 00:27:59,750
+number of parameters here is small--
+
+512
+00:27:59,750 --> 00:28:05,720
+I have to choose it without really
+consulting the y_n's, the values of the
+
+513
+00:28:05,720 --> 00:28:08,770
+the output at the training set.
+
+514
+00:28:08,770 --> 00:28:14,570
+And the other question is
+how to choose the weights.
+
+515
+00:28:14,570 --> 00:28:18,060
+Choosing the weights shouldn't be that
+different from what we did before. It will
+
+516
+00:28:18,060 --> 00:28:20,800
+be a minor modification, because it
+has the same functional form.
+
+517
+00:28:20,800 --> 00:28:22,400
+This one is the interesting part,
+
+518
+00:28:22,400 --> 00:28:25,280
+at least the novel part.
+
+519
+00:28:25,280 --> 00:28:29,520
+So let's talk about choosing
+the centers.
+
+520
+00:28:29,520 --> 00:28:33,850
+What we are going to do, we are going
+to choose the centers as
+
+521
+00:28:33,850 --> 00:28:36,500
+representative of the data inputs.
+
+522
+00:28:36,500 --> 00:28:38,230
+I have N points.
+
+523
+00:28:38,230 --> 00:28:39,880
+They are here, here, and here.
+
+524
+00:28:39,880 --> 00:28:44,860
+And the whole idea is that I don't
+want to assign a radial basis function
+
+525
+00:28:44,860 --> 00:28:47,260
+for each of them.
+
+526
+00:28:47,260 --> 00:28:49,950
+And therefore, what I'm going to do, I'm
+going to have a representative.
+
+527
+00:28:49,950 --> 00:28:53,490
+It would be nice, for every group of
+points that are nearby, to have
+
+528
+00:28:53,490 --> 00:28:57,890
+a center near to them, so that
+it captures this cluster.
+
+529
+00:28:57,890 --> 00:29:01,200
+This is the idea.
+
+530
+00:29:01,200 --> 00:29:10,630
+So you are now going to take x_n, and
+take a center which is the closest to
+
+531
+00:29:10,630 --> 00:29:13,140
+it, and assign that point to it.
+
+532
+00:29:13,140 --> 00:29:14,600
+Here is the idea.
+
+533
+00:29:14,600 --> 00:29:17,720
+I have the points spread around.
+
+534
+00:29:17,720 --> 00:29:20,300
+I am going to select centers.
+
+535
+00:29:20,300 --> 00:29:22,650
+Not clear how do I choose the centers.
+
+536
+00:29:22,650 --> 00:29:26,580
+But once you choose them, I'm going to
+consider the neighborhood of the
+
+537
+00:29:26,580 --> 00:29:31,130
+center within the data set, the
+x_n's, as being the cluster
+
+538
+00:29:31,130 --> 00:29:33,370
+that has that center.
+
+539
+00:29:33,370 --> 00:29:37,910
+If I do that, then those points are
+represented by that center, and
+
+540
+00:29:37,910 --> 00:29:43,060
+therefore, I can say that their
+influence will be propagated through
+
+541
+00:29:43,060 --> 00:29:46,960
+the entire space by the radial
+basis function that is
+
+542
+00:29:46,960 --> 00:29:48,370
+centered around this one.
+
+543
+00:29:48,370 --> 00:29:50,920
+
+
+544
+00:29:50,920 --> 00:29:53,360
+So let's do this.
+
+545
+00:29:53,360 --> 00:29:59,030
+It's called K-means clustering, because
+the center for the points will end up
+
+546
+00:29:59,030 --> 00:30:01,610
+being the mean of the points,
+as we'll see in a moment.
+
+547
+00:30:01,610 --> 00:30:05,210
+And here is the formalization.
+
+548
+00:30:05,210 --> 00:30:11,930
+You split the data points, x_1 up to
+x_n, into groups-- clusters, so to
+
+549
+00:30:11,930 --> 00:30:14,670
+speak-- hopefully points that
+are close to each other.
+
+550
+00:30:14,670 --> 00:30:17,080
+And you call these S_1 up to S_K.
+
+551
+00:30:17,080 --> 00:30:22,600
+Each cluster will have 
+a center that goes with it.
+
+552
+00:30:22,600 --> 00:30:27,170
+And what you minimize, in order to make
+this a good clustering, and these
+
+553
+00:30:27,170 --> 00:30:30,960
+good representative centers, is
+to try to make the points
+
+554
+00:30:30,960 --> 00:30:33,430
+close to their centers.
+
+555
+00:30:33,430 --> 00:30:36,150
+So you take this for every
+point you have.
+
+556
+00:30:36,150 --> 00:30:40,290
+But you sum up over the
+points in the cluster.
+
+557
+00:30:40,290 --> 00:30:43,720
+So you take the points in the cluster,
+whose center is this guy.
+
+558
+00:30:43,720 --> 00:30:48,780
+And you try to minimize the mean squared
+error there, mean squared error
+
+559
+00:30:48,780 --> 00:30:50,740
+in terms of Euclidean distance.
+
+560
+00:30:50,740 --> 00:30:55,240
+So this takes care of one
+cluster, S_k.
+
+561
+00:30:55,240 --> 00:30:58,280
+You want this to be small
+over all the data.
+
+562
+00:30:58,280 --> 00:31:02,240
+So what you do is you sum this
+up over all the clusters.
+
+563
+00:31:02,240 --> 00:31:06,060
+That becomes your objective
+function in clustering.
+
+564
+00:31:06,060 --> 00:31:10,300
+Someone gives you K. That is,
+the choice of the actual number of
+
+565
+00:31:10,300 --> 00:31:11,770
+clusters is a different issue.
+
+566
+00:31:11,770 --> 00:31:14,050
+But let's say K is 9.
+
+567
+00:31:14,050 --> 00:31:16,070
+I give you 9 clusters.
+
+568
+00:31:16,070 --> 00:31:22,630
+Then, I'm asking you to find the mu's,
+and the break-up of the points into
+
+569
+00:31:22,630 --> 00:31:27,470
+the S_k's, such that this value
+assumes its minimum.
+
+570
+00:31:27,470 --> 00:31:31,120
+If you succeed in that, then I can
+claim that this is good clustering,
+
+571
+00:31:31,120 --> 00:31:34,950
+and these are good representatives
+of the clusters.
+
+572
+00:31:34,950 --> 00:31:39,800
+Now I have some good news,
+and some bad news.
+
+573
+00:31:39,800 --> 00:31:45,850
+The good news is that, finally, we
+have unsupervised learning.
+
+574
+00:31:45,850 --> 00:31:49,770
+I did this without any reference
+to the label y_n.
+
+575
+00:31:49,770 --> 00:31:54,440
+I am taking the inputs, and producing
+some organization of them, as we
+
+576
+00:31:54,440 --> 00:32:00,260
+discussed the main goal of
+unsupervised learning is.
+
+577
+00:32:00,260 --> 00:32:02,480
+So we are happy about that.
+
+578
+00:32:02,480 --> 00:32:04,840
+Now the bad news.
+
+579
+00:32:04,840 --> 00:32:08,180
+The bad news is that the problem,
+as I stated it, is
+
+580
+00:32:08,180 --> 00:32:10,330
+NP-hard in general.
+
+581
+00:32:10,330 --> 00:32:14,150
+It's a nice unsupervised problem,
+but not so nice.
+
+582
+00:32:14,150 --> 00:32:17,930
+It's intractable, if you want
+to get the absolute minimum.
+
+583
+00:32:17,930 --> 00:32:20,220
+So our goal now is to go around it.
+
+584
+00:32:20,220 --> 00:32:25,280
+That sort of problem being NP-hard
+never discouraged us.
+
+585
+00:32:25,280 --> 00:32:27,160
+Remember, with neural networks,
+
+586
+00:32:27,160 --> 00:32:30,830
+we said that the absolute minimum of
+that error in the general case--
+
+587
+00:32:30,830 --> 00:32:32,240
+finding it would be NP-hard.
+
+588
+00:32:32,240 --> 00:32:35,660
+And we ended up with saying we will
+find some heuristic, which was
+
+589
+00:32:35,660 --> 00:32:36,750
+gradient descent in this case.
+
+590
+00:32:36,750 --> 00:32:38,180
+That led to backpropagation.
+
+591
+00:32:38,180 --> 00:32:40,880
+We'll start with a random configuration
+and then descend.
+
+592
+00:32:40,880 --> 00:32:45,010
+And we'll get, not to the global minimum,
+the finding of which is NP-hard,
+
+593
+00:32:45,010 --> 00:32:47,620
+but a local minimum, hopefully
+a decent local minimum.
+
+594
+00:32:47,620 --> 00:32:51,530
+We'll do exactly the same thing here.
+
+595
+00:32:51,530 --> 00:32:56,100
+Here is the iterative algorithm for
+solving this problem, the K-means.
+
+596
+00:32:56,100 --> 00:32:58,150
+And it's called Lloyd's algorithm.
+
+597
+00:32:58,150 --> 00:33:01,440
+It is extremely simple, to the level
+where the contrast between this
+
+598
+00:33:01,440 --> 00:33:05,080
+algorithm-- not only in the
+specification of it, but how quickly it
+
+599
+00:33:05,080 --> 00:33:08,880
+converges-- and the fact that finding
+the global minimums of NP-hard, is
+
+600
+00:33:08,880 --> 00:33:10,780
+rather mind-boggling.
+
+601
+00:33:10,780 --> 00:33:12,770
+So here is the algorithm.
+
+602
+00:33:12,770 --> 00:33:16,910
+What you do is you iteratively
+minimize this quantity.
+
+603
+00:33:16,910 --> 00:33:21,510
+You start with some configuration,
+and get a better configuration.
+
+604
+00:33:21,510 --> 00:33:26,910
+And as you see, I have now two guys in
+purple, which are my parameters here.
+
+605
+00:33:26,910 --> 00:33:29,170
+mu's are parameters by definition.
+
+606
+00:33:29,170 --> 00:33:30,630
+I am trying to find what they are.
+
+607
+00:33:30,630 --> 00:33:33,980
+But also the sets S_k, the
+clusters, are parameters.
+
+608
+00:33:33,980 --> 00:33:36,060
+I want to know which
+guys go into them.
+
+609
+00:33:36,060 --> 00:33:38,240
+These are the two things
+that I'm determining.
+
+610
+00:33:38,240 --> 00:33:43,280
+So the way this algorithm does it is that
+it fixes one of them, and tries to
+
+611
+00:33:43,280 --> 00:33:44,520
+minimize the other.
+
+612
+00:33:44,520 --> 00:33:47,960
+It tells you for this particular
+membership of the clusters, could you
+
+613
+00:33:47,960 --> 00:33:50,470
+find the optimal centers?
+
+614
+00:33:50,470 --> 00:33:52,170
+Now that you found the
+optimal centers--
+
+615
+00:33:52,170 --> 00:33:55,730
+forget about the clustering that
+resulted in that-- these are centers,
+
+616
+00:33:55,730 --> 00:33:59,420
+could you find the best clustering
+for those centers? And keep
+
+617
+00:33:59,420 --> 00:34:01,700
+repeating back and forth.
+
+618
+00:34:01,700 --> 00:34:03,900
+Let's look at the steps.
+
+619
+00:34:03,900 --> 00:34:05,770
+You are minimizing this
+with respect to both,
+
+620
+00:34:05,770 --> 00:34:07,640
+so you take one at a time.
+
+621
+00:34:07,640 --> 00:34:11,704
+Now you update the value of mu.
+
+622
+00:34:11,704 --> 00:34:14,380
+How do you do that?
+
+623
+00:34:14,380 --> 00:34:17,030
+You take the fixed clustering that
+you have-- so you have already
+
+624
+00:34:17,030 --> 00:34:20,190
+a clustering that is inherited
+from the last iteration.
+
+625
+00:34:20,190 --> 00:34:22,510
+What you do is you take the
+mean of that cluster.
+
+626
+00:34:22,510 --> 00:34:24,760
+You take the points that belong
+to that cluster.
+
+627
+00:34:24,760 --> 00:34:27,550
+You add them up and divide
+by their number.
+
+628
+00:34:27,550 --> 00:34:30,750
+Now in our mind, you know that this must
+be pretty good in minimizing the
+
+629
+00:34:30,750 --> 00:34:36,719
+mean squared error, because the squared
+error to the mean is the smallest
+
+630
+00:34:36,719 --> 00:34:40,290
+of the squared errors to any point.
+That happens to be the closest to the
+
+631
+00:34:40,290 --> 00:34:44,090
+points collectively, in terms
+of mean squared value.
+
+632
+00:34:44,090 --> 00:34:49,810
+So if I do that, I know that this is
+a good representative, if this was the
+
+633
+00:34:49,810 --> 00:34:52,429
+real cluster.
+
+634
+00:34:52,429 --> 00:34:53,440
+So that's the first step.
+
+635
+00:34:53,440 --> 00:34:55,580
+Now I have new mu_k's.
+
+636
+00:34:55,580 --> 00:34:57,620
+So you freeze the mu_k's.
+
+637
+00:34:57,620 --> 00:35:01,690
+And you completely forget about
+the clustering you had before.
+
+638
+00:35:01,690 --> 00:35:03,900
+Now you are creating new clusters.
+
+639
+00:35:03,900 --> 00:35:06,390
+And the idea is the following.
+
+640
+00:35:06,390 --> 00:35:11,920
+You take every point, and you measure
+the distance between it and mu_k, the
+
+641
+00:35:11,920 --> 00:35:13,460
+newly acquired mu_k.
+
+642
+00:35:13,460 --> 00:35:17,910
+And you ask yourself: is the closest
+of the mu's that I have?
+
+643
+00:35:17,910 --> 00:35:21,640
+So you compare this with
+all of the other guys.
+
+644
+00:35:21,640 --> 00:35:24,680
+And if it happens to be smaller,
+then you declare that this
+
+645
+00:35:24,680 --> 00:35:28,500
+x_n belongs to S_k.
+
+646
+00:35:28,500 --> 00:35:32,180
+You do this for all the points, and
+you create a full clustering.
+
+647
+00:35:32,180 --> 00:35:36,380
+Now, if you look at this step, we argued
+that this reduces the error.
+
+648
+00:35:36,380 --> 00:35:41,060
+It has to, because you picked the mean
+for every one of them, and that will
+
+649
+00:35:41,060 --> 00:35:44,040
+definitely not increase the error.
+
+650
+00:35:44,040 --> 00:35:48,450
+This will also decrease the error,
+because the worst that it can do is
+
+651
+00:35:48,450 --> 00:35:51,570
+take a point from one cluster
+and put it in another.
+
+652
+00:35:51,570 --> 00:35:54,010
+But in doing that, what did it do?
+
+653
+00:35:54,010 --> 00:35:56,010
+It picked the one that is closest.
+
+654
+00:35:56,010 --> 00:35:59,610
+So the term that used to be here is
+now smaller, because it went to the
+
+655
+00:35:59,610 --> 00:36:00,800
+closer guy.
+
+656
+00:36:00,800 --> 00:36:02,750
+So this one reduces the value.
+
+657
+00:36:02,750 --> 00:36:04,090
+This one reduces the value.
+
+658
+00:36:04,090 --> 00:36:07,620
+You go back and forth, and the
+quantity is going down.
+
+659
+00:36:07,620 --> 00:36:10,840
+Are we ever going to converge?
+
+660
+00:36:10,840 --> 00:36:16,180
+Yes, we have to. Because by structure,
+we are only dealing with a finite
+
+661
+00:36:16,180 --> 00:36:17,880
+number of points.
+
+662
+00:36:17,880 --> 00:36:22,720
+And there are a finite number of
+possible values for the mu's, given
+
+663
+00:36:22,720 --> 00:36:27,240
+the algorithm, because they have to be
+the average of points from those.
+
+664
+00:36:27,240 --> 00:36:29,180
+So I have 100 points.
+
+665
+00:36:29,180 --> 00:36:32,570
+There will be a finite,
+but tremendously big,
+
+666
+00:36:32,570 --> 00:36:34,780
+number of possible values.
+
+667
+00:36:34,780 --> 00:36:35,760
+But it's finite.
+
+668
+00:36:35,760 --> 00:36:37,390
+All I care about, it's a finite number.
+
+669
+00:36:37,390 --> 00:36:40,100
+And as long as it's finite,
+and I'm going down, I will
+
+670
+00:36:40,100 --> 00:36:41,840
+definitely hit a minimum.
+
+671
+00:36:41,840 --> 00:36:45,190
+It will not be the case that it's
+a continuous thing, and I'm doing half,
+
+672
+00:36:45,190 --> 00:36:48,880
+and then half again, and half
+of half, and never arrive.
+
+673
+00:36:48,880 --> 00:36:51,050
+Here, you will arrive perfectly
+at a point.
+
+674
+00:36:51,050 --> 00:36:53,620
+
+
+675
+00:36:53,620 --> 00:36:58,400
+The catch is that you're converging to
+good, old-fashioned local minimum.
+
+676
+00:36:58,400 --> 00:37:02,030
+Depending on your initial configuration,
+you will end up with
+
+677
+00:37:02,030 --> 00:37:04,260
+one local minimum or another.
+
+678
+00:37:04,260 --> 00:37:08,180
+But again, exactly the same situation
+as we had with neural networks.
+
+679
+00:37:08,180 --> 00:37:11,870
+We did converge to a local minimum
+with backpropagation, right?
+
+680
+00:37:11,870 --> 00:37:14,620
+And that minimum depended
+on the initial weights.
+
+681
+00:37:14,620 --> 00:37:18,260
+Here, it will depend on the initial
+centers, or the initial clustering,
+
+682
+00:37:18,260 --> 00:37:20,780
+whichever way you want to begin.
+
+683
+00:37:20,780 --> 00:37:25,770
+And the way you do it is, try
+different starting points.
+
+684
+00:37:25,770 --> 00:37:27,570
+And you get different solutions.
+
+685
+00:37:27,570 --> 00:37:30,680
+And you can evaluate which one is better
+because you can definitely
+
+686
+00:37:30,680 --> 00:37:34,170
+evaluate this objective function for
+all of them, and pick one out of
+
+687
+00:37:34,170 --> 00:37:35,110
+a number of runs.
+
+688
+00:37:35,110 --> 00:37:37,210
+That usually works very nicely.
+
+689
+00:37:37,210 --> 00:37:38,820
+It's not going to give
+you the global one.
+
+690
+00:37:38,820 --> 00:37:41,730
+But it's going to give you a very decent
+clustering, and very decent
+
+691
+00:37:41,730 --> 00:37:42,980
+representative mu's.
+
+692
+00:37:42,980 --> 00:37:46,360
+
+
+693
+00:37:46,360 --> 00:37:48,710
+Now, let's look at Lloyd's
+algorithm in action.
+
+694
+00:37:48,710 --> 00:37:51,330
+And I'm going to take the problem
+that I showed you last time
+
+695
+00:37:51,330 --> 00:37:53,670
+for the RBF kernel.
+
+696
+00:37:53,670 --> 00:37:55,590
+This is the one we're going to
+carry through, because we can
+
+697
+00:37:55,590 --> 00:37:56,850
+relate to it now.
+
+698
+00:37:56,850 --> 00:38:01,390
+And let's see how the algorithm works.
+
+699
+00:38:01,390 --> 00:38:04,740
+The first step in the algorithm,
+give me the data points.
+
+700
+00:38:04,740 --> 00:38:06,130
+OK, thank you.
+
+701
+00:38:06,130 --> 00:38:07,400
+Here are the data points.
+
+702
+00:38:07,400 --> 00:38:09,800
+If you remember, this was the target.
+
+703
+00:38:09,800 --> 00:38:12,590
+The target was slightly nonlinear.
+
+704
+00:38:12,590 --> 00:38:14,670
+We had -1 and +1.
+
+705
+00:38:14,670 --> 00:38:16,090
+And we have them with this color.
+
+706
+00:38:16,090 --> 00:38:20,010
+And that is the data we have.
+
+707
+00:38:20,010 --> 00:38:25,500
+First thing, I only want the inputs.
+
+708
+00:38:25,500 --> 00:38:27,260
+I don't see the labels.
+
+709
+00:38:27,260 --> 00:38:29,980
+And I don't see the target function.
+
+710
+00:38:29,980 --> 00:38:32,070
+You probably don't see the
+target function anyway.
+
+711
+00:38:32,070 --> 00:38:32,960
+It's so faint!
+
+712
+00:38:32,960 --> 00:38:36,160
+But really, you don't see it at all.
+
+713
+00:38:36,160 --> 00:38:40,780
+So I'm going now to take away the
+target function and the labels.
+
+714
+00:38:40,780 --> 00:38:43,810
+I'm only going to keep the
+position of the inputs.
+
+715
+00:38:43,810 --> 00:38:46,680
+So this is what you get.
+
+716
+00:38:46,680 --> 00:38:48,860
+Looks more formidable now, right?
+
+717
+00:38:48,860 --> 00:38:51,080
+I have no idea what the function is.
+
+718
+00:38:51,080 --> 00:38:53,100
+But now we realize one
+interesting point.
+
+719
+00:38:53,100 --> 00:38:57,080
+I'm going to cluster those, without
+any benefit of the label.
+
+720
+00:38:57,080 --> 00:39:02,070
+So I could have clusters that belong
+to one category, +1 or -1.
+
+721
+00:39:02,070 --> 00:39:05,010
+And I could, as well, have clusters
+that happen to be on the boundary,
+
+722
+00:39:05,010 --> 00:39:07,580
+half of them are +1, or
+half of them -1.
+
+723
+00:39:07,580 --> 00:39:10,590
+That's the price you pay when you
+do unsupervised learning.
+
+724
+00:39:10,590 --> 00:39:14,530
+You are trying to get similarity, but
+the similarity is as far as the inputs
+
+725
+00:39:14,530 --> 00:39:17,060
+are concerned, not as far
+as the behavior with the
+
+726
+00:39:17,060 --> 00:39:18,770
+target function is concerned.
+
+727
+00:39:18,770 --> 00:39:21,420
+That is key.
+
+728
+00:39:21,420 --> 00:39:22,800
+So I have the points.
+
+729
+00:39:22,800 --> 00:39:24,610
+What do I do next?
+
+730
+00:39:24,610 --> 00:39:26,410
+You need to initialize the centers.
+
+731
+00:39:26,410 --> 00:39:27,880
+There are many ways of doing this.
+
+732
+00:39:27,880 --> 00:39:29,430
+There are a number of methods.
+
+733
+00:39:29,430 --> 00:39:30,730
+I'm going to keep it simple here.
+
+734
+00:39:30,730 --> 00:39:33,020
+And I'm going to initialize
+the centers at random.
+
+735
+00:39:33,020 --> 00:39:35,090
+So I'm just going to pick 9 points.
+
+736
+00:39:35,090 --> 00:39:37,150
+And I'm picking 9
+for a good reason.
+
+737
+00:39:37,150 --> 00:39:40,230
+Remember last lecture when we did
+the support vector machines.
+
+738
+00:39:40,230 --> 00:39:42,830
+We ended up with 9 support vectors.
+
+739
+00:39:42,830 --> 00:39:44,840
+And I want to be able to compare them.
+
+740
+00:39:44,840 --> 00:39:49,530
+So I'm fixing the number, in order to be
+able to compare them head to head.
+
+741
+00:39:49,530 --> 00:39:52,050
+So here are my initial centers.
+
+742
+00:39:52,050 --> 00:39:53,310
+Totally random.
+
+743
+00:39:53,310 --> 00:39:57,080
+Looks like a terribly stupid thing to
+have three centers near each other, and
+
+744
+00:39:57,080 --> 00:40:02,570
+have this entire area empty. But let's
+hope that Lloyd's algorithm will place
+
+745
+00:40:02,570 --> 00:40:03,945
+them a little bit more strategically.
+
+746
+00:40:03,945 --> 00:40:08,640
+
+
+747
+00:40:08,640 --> 00:40:09,790
+Now you iterate.
+
+748
+00:40:09,790 --> 00:40:12,800
+So now I would like you
+to stare at this.
+
+749
+00:40:12,800 --> 00:40:14,770
+I will even make it bigger.
+
+750
+00:40:14,770 --> 00:40:19,000
+
+
+751
+00:40:19,000 --> 00:40:21,530
+Stare at it, because I'm going
+to do a full iteration now.
+
+752
+00:40:21,530 --> 00:40:25,890
+I am going to do re-clustering, and
+re-evaluation of the mu, and then show
+
+753
+00:40:25,890 --> 00:40:27,390
+you the new mu.
+
+754
+00:40:27,390 --> 00:40:28,920
+One step at a time.
+
+755
+00:40:28,920 --> 00:40:30,210
+This is the first step.
+
+756
+00:40:30,210 --> 00:40:32,250
+Keep your eyes on the screen.
+
+757
+00:40:32,250 --> 00:40:37,040
+
+
+758
+00:40:37,040 --> 00:40:37,940
+They moved a little bit.
+
+759
+00:40:37,940 --> 00:40:41,400
+And I am pleased to find that those
+guys, that used to be crowded, are now
+
+760
+00:40:41,400 --> 00:40:42,800
+serving different guys.
+
+761
+00:40:42,800 --> 00:40:45,090
+They are moving away.
+
+762
+00:40:45,090 --> 00:40:48,120
+Second iteration.
+
+763
+00:40:48,120 --> 00:40:51,560
+I have to say, this is
+not one iteration.
+
+764
+00:40:51,560 --> 00:40:52,870
+These are a number of iterations.
+
+765
+00:40:52,870 --> 00:40:56,520
+But I'm sampling it at a certain rate,
+in order not to completely bore you.
+
+766
+00:40:56,520 --> 00:40:59,050
+It would be-- clicking through
+the end of the lecture.
+
+767
+00:40:59,050 --> 00:41:00,500
+And then we would have the clustering
+at the end of the
+
+768
+00:41:00,500 --> 00:41:02,970
+lecture, and nothing else!
+
+769
+00:41:02,970 --> 00:41:04,350
+So next iteration.
+
+770
+00:41:04,350 --> 00:41:05,600
+Look at the screen.
+
+771
+00:41:05,600 --> 00:41:07,640
+
+
+772
+00:41:07,640 --> 00:41:11,200
+The movement is becoming smaller.
+
+773
+00:41:11,200 --> 00:41:12,450
+Third iteration.
+
+774
+00:41:12,450 --> 00:41:14,465
+
+
+775
+00:41:14,465 --> 00:41:14,910
+Uh.
+
+776
+00:41:14,910 --> 00:41:17,550
+Just a touch.
+
+777
+00:41:17,550 --> 00:41:19,170
+Fourth.
+
+778
+00:41:19,170 --> 00:41:20,710
+Nothing happened.
+
+779
+00:41:20,710 --> 00:41:23,990
+I actually flipped the slide.
+
+780
+00:41:23,990 --> 00:41:26,120
+Nothing happened.
+
+781
+00:41:26,120 --> 00:41:28,470
+Nothing happened.
+
+782
+00:41:28,470 --> 00:41:30,880
+So we have converged.
+
+783
+00:41:30,880 --> 00:41:34,030
+And these are your mu's.
+
+784
+00:41:34,030 --> 00:41:36,610
+And it does converge very quickly.
+
+785
+00:41:36,610 --> 00:41:39,460
+And you can see now the
+centers make sense.
+
+786
+00:41:39,460 --> 00:41:41,450
+These guys have a center.
+
+787
+00:41:41,450 --> 00:41:43,460
+These guys have a center.
+
+788
+00:41:43,460 --> 00:41:45,820
+These guys, and so on.
+
+789
+00:41:45,820 --> 00:41:50,140
+I guess since it started here, it got
+stuck here and is just serving two
+
+790
+00:41:50,140 --> 00:41:51,500
+points, or something like that.
+
+791
+00:41:51,500 --> 00:41:54,390
+But more or less, it's
+a reasonable clustering.
+
+792
+00:41:54,390 --> 00:41:56,990
+Notwithstanding the fact that
+there was no natural
+
+793
+00:41:56,990 --> 00:41:58,190
+clustering for the points.
+
+794
+00:41:58,190 --> 00:42:01,500
+It's not like I generated these
+guys from 9 centers.
+
+795
+00:42:01,500 --> 00:42:03,580
+These were generated uniformly.
+
+796
+00:42:03,580 --> 00:42:05,280
+So the clustering is incidental.
+
+797
+00:42:05,280 --> 00:42:08,930
+But nonetheless, the clustering
+here makes sense.
+
+798
+00:42:08,930 --> 00:42:12,520
+Now this is a clustering, right?
+
+799
+00:42:12,520 --> 00:42:13,770
+Surprise!
+
+800
+00:42:13,770 --> 00:42:16,190
+
+
+801
+00:42:16,190 --> 00:42:17,700
+We have to go back to this.
+
+802
+00:42:17,700 --> 00:42:21,470
+And now, you look at the clustering
+and see what happens.
+
+803
+00:42:21,470 --> 00:42:25,560
+This guy takes points from
+both +1 and -1.
+
+804
+00:42:25,560 --> 00:42:28,650
+They look very similar to it, because
+it only depended on x's.
+
+805
+00:42:28,650 --> 00:42:31,740
+Many of them are deep inside and,
+indeed, deal with points
+
+806
+00:42:31,740 --> 00:42:32,900
+that are the same.
+
+807
+00:42:32,900 --> 00:42:36,730
+The reason I'm making an issue of this,
+because the way the center will serve,
+
+808
+00:42:36,730 --> 00:42:39,380
+as a center of influence for
+affecting the value of the
+
+809
+00:42:39,380 --> 00:42:41,460
+hypothesis. It will get a w_k,
+
+810
+00:42:41,460 --> 00:42:46,010
+and then it will propagate that w_k
+according to the distance from itself.
+
+811
+00:42:46,010 --> 00:42:49,560
+So now the guys that happen to be the
+center of positive and negative
+
+812
+00:42:49,560 --> 00:42:51,980
+points will cause me a problem,
+because what do I propagate?
+
+813
+00:42:51,980 --> 00:42:54,380
+The +1 or the -1?
+
+814
+00:42:54,380 --> 00:42:59,180
+But indeed, that is the price you pay
+when you use unsupervised learning.
+
+815
+00:42:59,180 --> 00:43:02,280
+So this is Lloyd's algorithm
+in action.
+
+816
+00:43:02,280 --> 00:43:05,010
+Now I'm going to do something
+interesting.
+
+817
+00:43:05,010 --> 00:43:10,030
+We had 9 points that are centers of
+unsupervised learning, in order to be
+
+818
+00:43:10,030 --> 00:43:14,050
+able to carry out the influence of
+radial basis functions using the
+
+819
+00:43:14,050 --> 00:43:15,130
+algorithm we will have.
+
+820
+00:43:15,130 --> 00:43:16,790
+That's number one.
+
+821
+00:43:16,790 --> 00:43:21,140
+Last lecture, we had 
+also 9 guys.
+
+822
+00:43:21,140 --> 00:43:23,250
+They were support vectors.
+
+823
+00:43:23,250 --> 00:43:26,820
+They were representative
+of the data points.
+
+824
+00:43:26,820 --> 00:43:30,720
+And since the 9 points were
+representative of the data points, and
+
+825
+00:43:30,720 --> 00:43:33,690
+the 9 centers here are representative
+of the data points, it
+
+826
+00:43:33,690 --> 00:43:37,810
+might be illustrative to put them next
+to each other, to understand what is
+
+827
+00:43:37,810 --> 00:43:41,290
+common, what is different, where
+did they come from, and so on.
+
+828
+00:43:41,290 --> 00:43:45,620
+Let's start with the RBF centers.
+
+829
+00:43:45,620 --> 00:43:46,260
+Here they are.
+
+830
+00:43:46,260 --> 00:43:51,300
+And I put them on the data that is
+labeled, not that I got them from the
+
+831
+00:43:51,300 --> 00:43:54,710
+labeled data, but just to have the
+same picture right and left.
+
+832
+00:43:54,710 --> 00:43:56,020
+So these are where the centers are.
+
+833
+00:43:56,020 --> 00:43:57,740
+Everybody sees them clearly.
+
+834
+00:43:57,740 --> 00:43:59,930
+Now let me remind you of what
+the support vectors from
+
+835
+00:43:59,930 --> 00:44:02,030
+last time looked like.
+
+836
+00:44:02,030 --> 00:44:05,460
+Here are the support vectors.
+
+837
+00:44:05,460 --> 00:44:09,115
+Very interesting, indeed.
+
+838
+00:44:09,115 --> 00:44:11,990
+The support vectors obviously
+are here, all around here.
+
+839
+00:44:11,990 --> 00:44:16,120
+They had no interest whatsoever in
+representing clusters of points.
+
+840
+00:44:16,120 --> 00:44:19,270
+That was not their job.
+
+841
+00:44:19,270 --> 00:44:22,300
+Here these guys have absolutely
+nothing to do with
+
+842
+00:44:22,300 --> 00:44:23,400
+the separating plane.
+
+843
+00:44:23,400 --> 00:44:26,440
+They didn't even know that there
+was separating surface.
+
+844
+00:44:26,440 --> 00:44:28,330
+They just looked at the data.
+
+845
+00:44:28,330 --> 00:44:31,410
+And you basically get what
+you set out to do.
+
+846
+00:44:31,410 --> 00:44:35,320
+Here you were representing
+the data inputs.
+
+847
+00:44:35,320 --> 00:44:38,280
+And you've got a representation
+of the data inputs.
+
+848
+00:44:38,280 --> 00:44:41,600
+Here you were trying to capture
+the separating surface.
+
+849
+00:44:41,600 --> 00:44:42,860
+That's what support vectors do.
+
+850
+00:44:42,860 --> 00:44:45,050
+They support the separating surface.
+
+851
+00:44:45,050 --> 00:44:47,570
+And this is what you got.
+
+852
+00:44:47,570 --> 00:44:49,550
+These guys are generic centers.
+
+853
+00:44:49,550 --> 00:44:51,030
+They are all black.
+
+854
+00:44:51,030 --> 00:44:54,520
+These guys, there are some blue and
+some red, because they are support
+
+855
+00:44:54,520 --> 00:44:59,420
+vectors that come with a label,
+because of the value y_n.
+
+856
+00:44:59,420 --> 00:45:01,300
+So some of them are on this side.
+
+857
+00:45:01,300 --> 00:45:04,460
+Some of them are on this side.
+
+858
+00:45:04,460 --> 00:45:07,960
+And indeed, they serve completely
+different purposes.
+
+859
+00:45:07,960 --> 00:45:13,700
+And it's rather remarkable that we get
+two solutions using the same kernel,
+
+860
+00:45:13,700 --> 00:45:18,080
+which is RBF kernel, using such
+an incredibly different diversity of
+
+861
+00:45:18,080 --> 00:45:19,230
+approaches.
+
+862
+00:45:19,230 --> 00:45:23,540
+This was just to show you the
+difference between when you do the
+
+863
+00:45:23,540 --> 00:45:29,230
+choice of important points in
+an unsupervised way, and here patently in
+
+864
+00:45:29,230 --> 00:45:29,980
+a supervised way.
+
+865
+00:45:29,980 --> 00:45:32,930
+Choosing the support vectors was
+very much dependent on the
+
+866
+00:45:32,930 --> 00:45:34,440
+value of the target.
+
+867
+00:45:34,440 --> 00:45:38,080
+The other thing you need to notice is
+that the support vectors have to be
+
+868
+00:45:38,080 --> 00:45:41,330
+points from the data.
+
+869
+00:45:41,330 --> 00:45:43,892
+The mu's here are not points
+from the data.
+
+870
+00:45:43,892 --> 00:45:45,640
+They are average of those points.
+
+871
+00:45:45,640 --> 00:45:47,070
+But they end up anywhere.
+
+872
+00:45:47,070 --> 00:45:51,100
+So if you actually look, for example,
+at these three points.
+
+873
+00:45:51,100 --> 00:45:52,180
+You go here.
+
+874
+00:45:52,180 --> 00:45:55,710
+And one of them became a center, one
+of them became a support vector.
+
+875
+00:45:55,710 --> 00:45:58,690
+On the other hand, this point
+doesn't exist here.
+
+876
+00:45:58,690 --> 00:46:01,760
+It just is a center that happens
+to be anywhere in the plane.
+
+877
+00:46:01,760 --> 00:46:04,580
+
+
+878
+00:46:04,580 --> 00:46:07,190
+So now we have the centers.
+
+879
+00:46:07,190 --> 00:46:08,780
+I will give you the data.
+
+880
+00:46:08,780 --> 00:46:11,650
+I tell you K equals 9.
+
+881
+00:46:11,650 --> 00:46:13,410
+You go and you do your
+Lloyd's algorithm.
+
+882
+00:46:13,410 --> 00:46:16,240
+And you come up with the centers,
+and half the problem of the
+
+883
+00:46:16,240 --> 00:46:17,680
+choice is now solved.
+
+884
+00:46:17,680 --> 00:46:21,310
+And it's the big half, because the
+centers are vectors of d dimensions.
+
+885
+00:46:21,310 --> 00:46:24,020
+And now I found the centers, without
+even touching the labels.
+
+886
+00:46:24,020 --> 00:46:25,400
+I didn't touch y_n.
+
+887
+00:46:25,400 --> 00:46:27,360
+So I know that I didn't
+contaminate anything.
+
+888
+00:46:27,360 --> 00:46:31,470
+And indeed, I have only the weights,
+which happen to be K weights,
+
+889
+00:46:31,470 --> 00:46:33,280
+to determine using the labels.
+
+890
+00:46:33,280 --> 00:46:37,900
+And therefore, I have good
+hopes for generalization.
+
+891
+00:46:37,900 --> 00:46:40,730
+Now I look at here. I froze it--
+
+892
+00:46:40,730 --> 00:46:42,550
+it became black now, because
+it has been chosen.
+
+893
+00:46:42,550 --> 00:46:44,570
+And now I'm only trying
+to choose these guys,
+
+894
+00:46:44,570 --> 00:46:47,430
+w_k. This is y_n.
+
+895
+00:46:47,430 --> 00:46:48,900
+And I ask myself the same question.
+
+896
+00:46:48,900 --> 00:46:52,200
+I want this to be true for all
+the data points if I can.
+
+897
+00:46:52,200 --> 00:46:55,360
+And I ask myself: how many equations,
+how many unknowns?
+
+898
+00:46:55,360 --> 00:46:57,120
+I end up with N equations.
+
+899
+00:46:57,120 --> 00:46:57,560
+Same thing.
+
+900
+00:46:57,560 --> 00:46:59,630
+I want this to be true for
+all the data points.
+
+901
+00:46:59,630 --> 00:47:00,780
+I have N data points.
+
+902
+00:47:00,780 --> 00:47:02,130
+So I have N equations.
+
+903
+00:47:02,130 --> 00:47:03,780
+How many unknowns?
+
+904
+00:47:03,780 --> 00:47:05,810
+The unknowns are the w's.
+
+905
+00:47:05,810 --> 00:47:07,850
+And I have K of them.
+
+906
+00:47:07,850 --> 00:47:14,260
+And oops, K is less than N. I have
+more equations than unknowns.
+
+907
+00:47:14,260 --> 00:47:15,800
+So something has to give.
+
+908
+00:47:15,800 --> 00:47:21,050
+And this fellow is the
+one that has to give.
+
+909
+00:47:21,050 --> 00:47:22,750
+That's all I can hope for.
+
+910
+00:47:22,750 --> 00:47:26,130
+I'm going to get it close, in a mean
+squared sense, as we have done before.
+
+911
+00:47:26,130 --> 00:47:28,920
+
+
+912
+00:47:28,920 --> 00:47:31,420
+I don't think you'll be surprised
+by anything in this slide.
+
+913
+00:47:31,420 --> 00:47:32,910
+You have seen this before.
+
+914
+00:47:32,910 --> 00:47:34,910
+So let's do it.
+
+915
+00:47:34,910 --> 00:47:36,480
+This is the matrix phi now.
+
+916
+00:47:36,480 --> 00:47:38,790
+It's a new phi.
+
+917
+00:47:38,790 --> 00:47:43,780
+It has K columns and N rows.
+
+918
+00:47:43,780 --> 00:47:49,620
+So according to our criteria that K is
+smaller than N, this is a tall matrix.
+
+919
+00:47:49,620 --> 00:47:54,830
+You multiply it by w, which
+are K weights.
+
+920
+00:47:54,830 --> 00:47:59,120
+And you should get approximately y.
+
+921
+00:47:59,120 --> 00:47:59,990
+Can you solve this?
+
+922
+00:47:59,990 --> 00:48:02,780
+Yes, we have done this before
+in linear regression.
+
+923
+00:48:02,780 --> 00:48:08,090
+All you need is to make sure that
+phi transposed phi is invertible.
+
+924
+00:48:08,090 --> 00:48:12,410
+And under those conditions, you
+have one-step solution, which
+
+925
+00:48:12,410 --> 00:48:14,060
+is the pseudo-inverse.
+
+926
+00:48:14,060 --> 00:48:16,910
+You take phi transposed phi to the -1,
+times phi transposed y.
+
+927
+00:48:16,910 --> 00:48:19,830
+And that will give you the value of
+w that minimizes the mean squared
+
+928
+00:48:19,830 --> 00:48:22,870
+difference between these guys.
+
+929
+00:48:22,870 --> 00:48:26,370
+So you have the pseudo-inverse,
+instead of the exact interpolation.
+
+930
+00:48:26,370 --> 00:48:29,120
+And in this case, you are not guaranteed
+that you will get the
+
+931
+00:48:29,120 --> 00:48:31,790
+correct value at every data point.
+
+932
+00:48:31,790 --> 00:48:33,860
+So you are going to be making
+an in-sample error.
+
+933
+00:48:33,860 --> 00:48:35,840
+But we know that this
+is not a bad thing.
+
+934
+00:48:35,840 --> 00:48:38,860
+On the other hand, we are only
+determining K weights.
+
+935
+00:48:38,860 --> 00:48:40,430
+So the chances of generalization
+are good.
+
+936
+00:48:40,430 --> 00:48:43,510
+
+
+937
+00:48:43,510 --> 00:48:47,320
+Now, I would like to take this, and
+put it as a graphical network.
+
+938
+00:48:47,320 --> 00:48:50,390
+And this will help me relate
+it to neural networks.
+
+939
+00:48:50,390 --> 00:48:51,500
+This is the second link.
+
+940
+00:48:51,500 --> 00:48:55,730
+We already related RBF to nearest
+neighbor methods, similarity methods.
+
+941
+00:48:55,730 --> 00:48:57,870
+Now we are going to relate
+it to neural networks.
+
+942
+00:48:57,870 --> 00:49:01,650
+Let me first put the diagram.
+
+943
+00:49:01,650 --> 00:49:03,270
+Here's my illustration of it.
+
+944
+00:49:03,270 --> 00:49:04,710
+I have x.
+
+945
+00:49:04,710 --> 00:49:12,860
+I am computing the radial aspect, the
+distance from mu_1 up to mu_K, and then
+
+946
+00:49:12,860 --> 00:49:16,680
+handing it to a nonlinearity, in this
+case the Gaussian nonlinearity.
+
+947
+00:49:16,680 --> 00:49:18,940
+You can have other basis functions.
+
+948
+00:49:18,940 --> 00:49:20,260
+Like we had the cylinder in one case.
+
+949
+00:49:20,260 --> 00:49:21,590
+But cylinder is a bit extreme.
+
+950
+00:49:21,590 --> 00:49:23,640
+But there are other functions.
+
+951
+00:49:23,640 --> 00:49:30,240
+You get features that are combined
+with weights, in order to
+
+952
+00:49:30,240 --> 00:49:32,750
+give you the output.
+
+953
+00:49:32,750 --> 00:49:37,270
+Now this one could be just passing the
+sum if you're doing regression, could
+
+954
+00:49:37,270 --> 00:49:39,830
+be hard threshold if you're doing
+classification, could
+
+955
+00:49:39,830 --> 00:49:41,460
+be something else.
+
+956
+00:49:41,460 --> 00:49:45,740
+But what I care about is that this
+configuration looks familiar to us.
+
+957
+00:49:45,740 --> 00:49:46,930
+It's layers.
+
+958
+00:49:46,930 --> 00:49:48,400
+I select features.
+
+959
+00:49:48,400 --> 00:49:49,720
+And then I go to output.
+
+960
+00:49:49,720 --> 00:49:52,430
+Let's look at the features.
+
+961
+00:49:52,430 --> 00:49:57,290
+The features are these fellows, right?
+
+962
+00:49:57,290 --> 00:50:05,390
+Now if you look at these features, they
+depend on D-- mu, in general, are
+
+963
+00:50:05,390 --> 00:50:06,680
+parameters.
+
+964
+00:50:06,680 --> 00:50:09,900
+If I didn't have this slick Lloyd's
+algorithm, and K-means, and
+
+965
+00:50:09,900 --> 00:50:14,010
+unsupervised thing, I need to determine
+what these guys are.
+
+966
+00:50:14,010 --> 00:50:19,610
+And once you determine them, the value
+of the feature depends on the data set.
+
+967
+00:50:19,610 --> 00:50:22,400
+And when the value of the feature
+depends on the data set,
+
+968
+00:50:22,400 --> 00:50:23,350
+all bets are off.
+
+969
+00:50:23,350 --> 00:50:28,610
+It's no longer a linear model, pretty
+much like a neural network doing the
+
+970
+00:50:28,610 --> 00:50:31,520
+first layer, extracting the features.
+
+971
+00:50:31,520 --> 00:50:36,560
+Now the good thing is that, because we
+used only the inputs in order to
+
+972
+00:50:36,560 --> 00:50:40,280
+compute mu, it's almost linear.
+
+973
+00:50:40,280 --> 00:50:44,470
+We've got the benefit of the
+pseudo-inverse because in this case,
+
+974
+00:50:44,470 --> 00:50:49,550
+we didn't have to go back and adjust mu
+because you don't like the value of
+
+975
+00:50:49,550 --> 00:50:50,180
+the output.
+
+976
+00:50:50,180 --> 00:50:52,450
+These were frozen forever
+based on inputs.
+
+977
+00:50:52,450 --> 00:50:54,260
+And then, we only had to get the w's.
+
+978
+00:50:54,260 --> 00:50:57,370
+And the w's now look like multiplicative
+factors, in which case
+
+979
+00:50:57,370 --> 00:50:58,820
+it's linear on those w's.
+
+980
+00:50:58,820 --> 00:51:00,070
+And we get the solution.
+
+981
+00:51:00,070 --> 00:51:02,810
+
+
+982
+00:51:02,810 --> 00:51:07,780
+Now in radial basis functions, there
+is often a bias term added.
+
+983
+00:51:07,780 --> 00:51:08,840
+You don't only get those.
+
+984
+00:51:08,840 --> 00:51:11,030
+You get either w_0 or b.
+
+985
+00:51:11,030 --> 00:51:13,200
+And it enters the final layer.
+
+986
+00:51:13,200 --> 00:51:17,840
+So you just add another weight that
+is, this time, multiplied by 1.
+
+987
+00:51:17,840 --> 00:51:19,720
+And everything remains the same.
+
+988
+00:51:19,720 --> 00:51:22,760
+The phi matrix has another
+column because of this.
+
+989
+00:51:22,760 --> 00:51:27,000
+And you just do the machinery
+you had before.
+
+990
+00:51:27,000 --> 00:51:28,840
+Now let's compare it
+to neural networks.
+
+991
+00:51:28,840 --> 00:51:32,020
+Here is the RBF network.
+
+992
+00:51:32,020 --> 00:51:33,750
+We just saw it.
+
+993
+00:51:33,750 --> 00:51:36,240
+And I pointed x in red.
+
+994
+00:51:36,240 --> 00:51:41,100
+This is what gets passed to this, gets
+the features, and gets you the output.
+
+995
+00:51:41,100 --> 00:51:46,670
+And here is a neural network that
+is comparable in structure.
+
+996
+00:51:46,670 --> 00:51:47,640
+So you start with the input.
+
+997
+00:51:47,640 --> 00:51:49,730
+You start with the input.
+
+998
+00:51:49,730 --> 00:51:51,910
+Now you compute features.
+
+999
+00:51:51,910 --> 00:51:53,640
+And here you do.
+
+1000
+00:51:53,640 --> 00:51:55,670
+And the features here depend
+on the distance.
+
+1001
+00:51:55,670 --> 00:52:00,030
+And they are such that, when the distance
+is large, the influence dies.
+
+1002
+00:52:00,030 --> 00:52:04,820
+So if you look at this value, and this
+value is huge, you know that this
+
+1003
+00:52:04,820 --> 00:52:08,720
+feature will have 0 contribution.
+
+1004
+00:52:08,720 --> 00:52:14,960
+Here this guy, big or small, is
+going to go through a sigmoid.
+
+1005
+00:52:14,960 --> 00:52:18,000
+So it could be huge, small, negative.
+
+1006
+00:52:18,000 --> 00:52:19,690
+And it goes through this.
+
+1007
+00:52:19,690 --> 00:52:22,480
+So it always has a contribution.
+
+1008
+00:52:22,480 --> 00:52:28,540
+So one interpretation is that, what
+radial basis function networks do, is
+
+1009
+00:52:28,540 --> 00:52:33,250
+look at local regions in the space and
+worry about them, without worrying
+
+1010
+00:52:33,250 --> 00:52:35,510
+about the far-away points.
+
+1011
+00:52:35,510 --> 00:52:37,680
+I have a function that
+is in this space.
+
+1012
+00:52:37,680 --> 00:52:40,130
+I look at this part, and
+I want to learn it.
+
+1013
+00:52:40,130 --> 00:52:42,280
+So I get a basis function
+that captures it, or
+
+1014
+00:52:42,280 --> 00:52:43,720
+a couple of them, et cetera.
+
+1015
+00:52:43,720 --> 00:52:47,270
+And I know that by the time I go to
+another part of the space, whatever I
+
+1016
+00:52:47,270 --> 00:52:51,380
+have done here is not going to
+interfere, whereas in the other case
+
+1017
+00:52:51,380 --> 00:52:55,240
+of neural networks, it did interfere
+very, very much.
+
+1018
+00:52:55,240 --> 00:52:58,670
+And the way you actually got something
+interesting, is making sure that the
+
+1019
+00:52:58,670 --> 00:53:02,790
+combinations of the guys you
+got give you what you want.
+
+1020
+00:53:02,790 --> 00:53:05,970
+But it's not local as
+it is in this case.
+
+1021
+00:53:05,970 --> 00:53:08,190
+So this is the first observation.
+
+1022
+00:53:08,190 --> 00:53:13,790
+The second observation is that here,
+the nonlinearity we call phi.
+
+1023
+00:53:13,790 --> 00:53:16,340
+The corresponding nonlinearity
+here is theta.
+
+1024
+00:53:16,340 --> 00:53:19,170
+And then you combine with
+the w's, and you get h.
+
+1025
+00:53:19,170 --> 00:53:22,230
+So very much the same, except
+the way you extract
+
+1026
+00:53:22,230 --> 00:53:24,040
+features here is different.
+
+1027
+00:53:24,040 --> 00:53:31,590
+And w here was full-fledged parameter
+that depended on the labels.
+
+1028
+00:53:31,590 --> 00:53:34,800
+We use backpropagation
+in order to get those.
+
+1029
+00:53:34,800 --> 00:53:38,530
+So these are learned features,
+which makes it completely
+
+1030
+00:53:38,530 --> 00:53:39,990
+not a linear model.
+
+1031
+00:53:39,990 --> 00:53:44,220
+This one, if we learned mu's based on
+their effect on the output, which would
+
+1032
+00:53:44,220 --> 00:53:47,120
+be a pretty hairy algorithm,
+that would be the case.
+
+1033
+00:53:47,120 --> 00:53:48,020
+But we didn't.
+
+1034
+00:53:48,020 --> 00:53:50,520
+And therefore, this is almost
+linear in this part.
+
+1035
+00:53:50,520 --> 00:53:53,160
+And this is why we got
+this part fixed.
+
+1036
+00:53:53,160 --> 00:53:56,560
+And then we got this one using
+the pseudo inverse.
+
+1037
+00:53:56,560 --> 00:54:00,030
+One last thing, this is
+a two-layer network.
+
+1038
+00:54:00,030 --> 00:54:02,350
+And this is a two-layer network.
+
+1039
+00:54:02,350 --> 00:54:08,380
+And pretty much any two-layer network, of
+this type of structure, lends itself
+
+1040
+00:54:08,380 --> 00:54:10,990
+to being a support vector machine.
+
+1041
+00:54:10,990 --> 00:54:13,400
+The first layer takes
+care of the kernel.
+
+1042
+00:54:13,400 --> 00:54:16,590
+And the second one is the linear
+combination that is built-in in
+
+1043
+00:54:16,590 --> 00:54:18,190
+support vector machines.
+
+1044
+00:54:18,190 --> 00:54:21,050
+So you can solve a support vector
+machine by choosing a kernel.
+
+1045
+00:54:21,050 --> 00:54:24,380
+And you can picture in your mind that
+I have one of those, where the first
+
+1046
+00:54:24,380 --> 00:54:25,850
+part is getting the kernel.
+
+1047
+00:54:25,850 --> 00:54:29,720
+And the second part is getting
+the linear part.
+
+1048
+00:54:29,720 --> 00:54:32,890
+And indeed, you can implement
+neural networks using
+
+1049
+00:54:32,890 --> 00:54:33,850
+support vector machines.
+
+1050
+00:54:33,850 --> 00:54:37,190
+There is a neural-network kernel
+for support vector machines.
+
+1051
+00:54:37,190 --> 00:54:41,510
+But it deals only with two layers, as you
+see here, not multiple layers as
+
+1052
+00:54:41,510 --> 00:54:45,240
+the general neural network would do.
+
+1053
+00:54:45,240 --> 00:54:52,300
+Now, the final parameter to choose here
+was gamma, the width of the Gaussian.
+
+1054
+00:54:52,300 --> 00:54:56,710
+And we now treat it as
+a genuine parameter.
+
+1055
+00:54:56,710 --> 00:54:59,670
+So we want to learn it.
+
+1056
+00:54:59,670 --> 00:55:02,580
+And because of that, it turned purple.
+
+1057
+00:55:02,580 --> 00:55:06,830
+So now mu is fixed, according
+to Lloyd.
+
+1058
+00:55:06,830 --> 00:55:09,780
+Now I have parameters w_1 up to w_K.
+
+1059
+00:55:09,780 --> 00:55:11,700
+And then I have also gamma.
+
+1060
+00:55:11,700 --> 00:55:14,510
+And you can see this is actually pretty
+important because, as you saw,
+
+1061
+00:55:14,510 --> 00:55:17,840
+that if we choose it wrong, the
+interpolation becomes very poor.
+
+1062
+00:55:17,840 --> 00:55:21,910
+And it does depend on the spacing
+in the data set.
+
+1063
+00:55:21,910 --> 00:55:25,720
+So it might be a good idea to choose
+gamma in order to also minimize
+
+1064
+00:55:25,720 --> 00:55:28,760
+the in-sample error--
+get good performance.
+
+1065
+00:55:28,760 --> 00:55:31,420
+So of course, I could do that--
+
+1066
+00:55:31,420 --> 00:55:33,465
+and I could do it for
+w for all I care--
+
+1067
+00:55:33,465 --> 00:55:37,020
+I could do it for all the parameters,
+because here is the value.
+
+1068
+00:55:37,020 --> 00:55:38,430
+I am minimizing mean squared error.
+
+1069
+00:55:38,430 --> 00:55:41,790
+So I'm going to compare this with
+the value of the y_n
+
+1070
+00:55:41,790 --> 00:55:43,390
+when I plug-in x_n.
+
+1071
+00:55:43,390 --> 00:55:45,900
+And I get an in-sample error,
+which is mean squared.
+
+1072
+00:55:45,900 --> 00:55:51,620
+I can always find parameters that
+minimize that, using gradient descent,
+
+1073
+00:55:51,620 --> 00:55:53,260
+the most general one.
+
+1074
+00:55:53,260 --> 00:55:57,750
+Start with random values, and then
+descend, and then you get a solution.
+
+1075
+00:55:57,750 --> 00:56:01,590
+However, it would be a shame to do that,
+because these guys have such
+
+1076
+00:56:01,590 --> 00:56:04,020
+a simple algorithm that goes with them.
+
+1077
+00:56:04,020 --> 00:56:06,180
+If gamma is fixed, this is a snap.
+
+1078
+00:56:06,180 --> 00:56:08,710
+You do the pseudo-inverse, and
+you get exactly that.
+
+1079
+00:56:08,710 --> 00:56:13,720
+So it is a good idea to separate that
+for this one. It's inside the
+
+1080
+00:56:13,720 --> 00:56:14,840
+exponential, and this and that.
+
+1081
+00:56:14,840 --> 00:56:16,930
+I don't think I have any hope
+of finding a short cut.
+
+1082
+00:56:16,930 --> 00:56:19,670
+I probably will have to do gradient
+descent for this guy.
+
+1083
+00:56:19,670 --> 00:56:21,780
+But I might as well do gradient
+descent for this guy,
+
+1084
+00:56:21,780 --> 00:56:23,380
+not for these guys.
+
+1085
+00:56:23,380 --> 00:56:27,990
+And the way this is done is
+by an iterative approach.
+
+1086
+00:56:27,990 --> 00:56:31,370
+You fix one, and solve for the others.
+
+1087
+00:56:31,370 --> 00:56:33,790
+This seems to be the theme
+of the lecture.
+
+1088
+00:56:33,790 --> 00:56:36,760
+And in this case, it is a pretty
+famous algorithm--
+
+1089
+00:56:36,760 --> 00:56:38,550
+a variation of that algorithm.
+
+1090
+00:56:38,550 --> 00:56:42,260
+The algorithm is called EM,
+Expectation-Maximization.
+
+1091
+00:56:42,260 --> 00:56:46,970
+And it is used for solving the case
+of mixture of Gaussians, which we
+
+1092
+00:56:46,970 --> 00:56:49,270
+actually have, except that we are
+not calling them probabilities.
+
+1093
+00:56:49,270 --> 00:56:53,020
+We are calling them bases that
+are implementing a target.
+
+1094
+00:56:53,020 --> 00:56:55,970
+So here is the idea.
+
+1095
+00:56:55,970 --> 00:56:58,400
+Fix gamma.
+
+1096
+00:56:58,400 --> 00:56:59,340
+That we have done before.
+
+1097
+00:56:59,340 --> 00:57:01,620
+We have been fixing gamma all through.
+
+1098
+00:57:01,620 --> 00:57:06,490
+If you want to solve for w based on
+fixing gamma, you just solve for it
+
+1099
+00:57:06,490 --> 00:57:08,480
+using the pseudo-inverse.
+
+1100
+00:57:08,480 --> 00:57:09,730
+Now we have w's.
+
+1101
+00:57:09,730 --> 00:57:12,370
+
+
+1102
+00:57:12,370 --> 00:57:13,160
+Now you fix them.
+
+1103
+00:57:13,160 --> 00:57:15,380
+They are frozen.
+
+1104
+00:57:15,380 --> 00:57:18,480
+And you minimize the error, the squared
+error, with respect to gamma,
+
+1105
+00:57:18,480 --> 00:57:19,500
+one parameter.
+
+1106
+00:57:19,500 --> 00:57:22,640
+It would be pretty easy to gradient
+descent with respect to one parameter.
+
+1107
+00:57:22,640 --> 00:57:23,950
+You find the minimum.
+
+1108
+00:57:23,950 --> 00:57:24,990
+You find gamma.
+
+1109
+00:57:24,990 --> 00:57:26,330
+Freeze it.
+
+1110
+00:57:26,330 --> 00:57:29,920
+And now, go back to step one
+and find the new w's that go
+
+1111
+00:57:29,920 --> 00:57:31,270
+with the new gamma.
+
+1112
+00:57:31,270 --> 00:57:34,280
+Back and forth, converges
+very, very quickly.
+
+1113
+00:57:34,280 --> 00:57:38,610
+And then you will get a combination
+of both w's and gamma.
+
+1114
+00:57:38,610 --> 00:57:44,070
+And because it is so simple, you might
+be even encouraged to say: why do
+
+1115
+00:57:44,070 --> 00:57:46,380
+we have one gamma?
+
+1116
+00:57:46,380 --> 00:57:47,680
+I have data sets.
+
+1117
+00:57:47,680 --> 00:57:51,140
+It could be that these data points are
+close to each other, and one data point
+
+1118
+00:57:51,140 --> 00:57:53,240
+is far away.
+
+1119
+00:57:53,240 --> 00:57:58,280
+Now if I have a center here that has to
+reach out further, and a center here
+
+1120
+00:57:58,280 --> 00:58:01,310
+that doesn't have to reach out, it looks
+like a good idea to have different
+
+1121
+00:58:01,310 --> 00:58:02,940
+gammas for those guys.
+
+1122
+00:58:02,940 --> 00:58:04,000
+Granted.
+
+1123
+00:58:04,000 --> 00:58:08,670
+And since this is so simple, all you
+need to do is now is have K
+
+1124
+00:58:08,670 --> 00:58:12,120
+parameters, gamma_k, so you doubled
+the number of parameters.
+
+1125
+00:58:12,120 --> 00:58:14,760
+But the number of parameters
+is small to begin with.
+
+1126
+00:58:14,760 --> 00:58:16,830
+And now you do the first step exactly.
+
+1127
+00:58:16,830 --> 00:58:19,440
+You fix the vector gamma,
+and you get these guys.
+
+1128
+00:58:19,440 --> 00:58:22,260
+And now we are doing gradient descent
+in a K-dimensional space.
+
+1129
+00:58:22,260 --> 00:58:23,230
+We have done that before.
+
+1130
+00:58:23,230 --> 00:58:24,030
+It's not a big deal.
+
+1131
+00:58:24,030 --> 00:58:26,080
+You find the minimum with respect
+to those, freeze them,
+
+1132
+00:58:26,080 --> 00:58:27,360
+and go back and forth.
+
+1133
+00:58:27,360 --> 00:58:30,710
+And in that case, you adjust the width
+of the Gaussian according to the
+
+1134
+00:58:30,710 --> 00:58:32,020
+region you are in the space.
+
+1135
+00:58:32,020 --> 00:58:34,970
+
+
+1136
+00:58:34,970 --> 00:58:39,770
+Now very quickly, I'm going to go
+through two aspects of RBF, one of
+
+1137
+00:58:39,770 --> 00:58:42,990
+them relating it to kernel methods,
+which we already have seen the
+
+1138
+00:58:42,990 --> 00:58:43,920
+beginning of.
+
+1139
+00:58:43,920 --> 00:58:45,290
+We have used it as a kernel.
+
+1140
+00:58:45,290 --> 00:58:47,040
+So we would like to compare
+the performance.
+
+1141
+00:58:47,040 --> 00:58:49,540
+And then, I will relate
+it to regularization.
+
+1142
+00:58:49,540 --> 00:58:53,780
+It's interesting that RBF's, as I
+described them-- like intuitive, local,
+
+1143
+00:58:53,780 --> 00:58:58,840
+influence, all of that-- you will find
+in a moment that they are completely
+
+1144
+00:58:58,840 --> 00:58:59,960
+based on regularization.
+
+1145
+00:58:59,960 --> 00:59:05,010
+And that's how they arose in the first
+place in function approximation.
+
+1146
+00:59:05,010 --> 00:59:10,350
+So let's do the RBF versus
+its kernel version.
+
+1147
+00:59:10,350 --> 00:59:14,660
+Last lecture we had a kernel,
+which is the RBF kernel.
+
+1148
+00:59:14,660 --> 00:59:17,460
+And we had a solution with
+9 support vectors.
+
+1149
+00:59:17,460 --> 00:59:23,490
+And therefore, we ended up with
+a solution that implements this.
+
+1150
+00:59:23,490 --> 00:59:26,730
+Let's look at it.
+
+1151
+00:59:26,730 --> 00:59:29,940
+I am getting a sign that's a built-in
+part of support vector machines.
+
+1152
+00:59:29,940 --> 00:59:31,770
+They are for classification.
+
+1153
+00:59:31,770 --> 00:59:38,780
+I had this guy after I expanded the z
+transposed z, in terms of the kernel.
+
+1154
+00:59:38,780 --> 00:59:41,010
+So I am summing up over only
+the support vector.
+
+1155
+00:59:41,010 --> 00:59:43,380
+There are 9 of them.
+
+1156
+00:59:43,380 --> 00:59:47,320
+This becomes my parameter, the weight.
+
+1157
+00:59:47,320 --> 00:59:51,220
+It happens to have the
+sign of the label.
+
+1158
+00:59:51,220 --> 00:59:55,740
+That makes sense because if I want to
+see the influence of x_n, it might as
+
+1159
+00:59:55,740 --> 00:59:59,780
+well be that the influence of x_n
+agrees with the label of x_n.
+
+1160
+00:59:59,780 --> 01:00:00,420
+That's how I want it.
+
+1161
+01:00:00,420 --> 01:00:03,180
+If it's +1, I want the
++1 to propagate.
+
+1162
+01:00:03,180 --> 01:00:07,340
+So because the alphas are non-negative
+by design, they get their sign from
+
+1163
+01:00:07,340 --> 01:00:09,300
+the label of the point.
+
+1164
+01:00:09,300 --> 01:00:12,770
+And now the centers are points
+from the data set.
+
+1165
+01:00:12,770 --> 01:00:14,590
+They happen to be
+the support vectors.
+
+1166
+01:00:14,590 --> 01:00:16,310
+And I have a bias there.
+
+1167
+01:00:16,310 --> 01:00:17,810
+So that's the solution we have.
+
+1168
+01:00:17,810 --> 01:00:19,570
+What did we have here?
+
+1169
+01:00:19,570 --> 01:00:25,750
+We had the straight RBF implementation,
+with 9 centers.
+
+1170
+01:00:25,750 --> 01:00:28,790
+I am putting the sign in blue, because
+this is not an integral part.
+
+1171
+01:00:28,790 --> 01:00:30,130
+I could have done a regression part.
+
+1172
+01:00:30,130 --> 01:00:32,890
+But since I'm comparing here, I'm going
+to take the sign and consider
+
+1173
+01:00:32,890 --> 01:00:34,290
+this a classification.
+
+1174
+01:00:34,290 --> 01:00:37,620
+I also added a bias, also in blue, because
+this is not an integral part.
+
+1175
+01:00:37,620 --> 01:00:42,280
+But I'm adding it in order to
+be exactly comparable here.
+
+1176
+01:00:42,280 --> 01:00:43,810
+So the number of terms here is 9.
+
+1177
+01:00:43,810 --> 01:00:44,940
+The number of terms here is 9.
+
+1178
+01:00:44,940 --> 01:00:45,660
+I'm adding a bias.
+
+1179
+01:00:45,660 --> 01:00:46,940
+I'm adding a bias.
+
+1180
+01:00:46,940 --> 01:00:51,680
+Now the parameter here is called w,
+which takes place of this guy.
+
+1181
+01:00:51,680 --> 01:00:54,540
+And the centers here are general
+centers, mu_k's.
+
+1182
+01:00:54,540 --> 01:00:57,690
+These do not have to be points from
+the data set, indeed they
+
+1183
+01:00:57,690 --> 01:00:59,240
+most likely are not.
+
+1184
+01:00:59,240 --> 01:01:00,490
+And they play the role here.
+
+1185
+01:01:00,490 --> 01:01:02,210
+So these are the two guys.
+
+1186
+01:01:02,210 --> 01:01:05,410
+How do they perform?
+
+1187
+01:01:05,410 --> 01:01:06,670
+That's the bottom line.
+
+1188
+01:01:06,670 --> 01:01:07,280
+Can you imagine?
+
+1189
+01:01:07,280 --> 01:01:09,500
+This is exactly the same
+model in front of me.
+
+1190
+01:01:09,500 --> 01:01:13,260
+And in one of them I did what?
+
+1191
+01:01:13,260 --> 01:01:16,800
+Unsupervised learning of centers,
+followed by a pseudo-inverse.
+
+1192
+01:01:16,800 --> 01:01:19,450
+And I used linear regression
+for classification.
+
+1193
+01:01:19,450 --> 01:01:20,510
+That's one route.
+
+1194
+01:01:20,510 --> 01:01:22,590
+What did I do here?
+
+1195
+01:01:22,590 --> 01:01:24,400
+Maximize the margin,
+
+1196
+01:01:24,400 --> 01:01:28,810
+equate with a kernel, and
+pass to quadratic
+
+1197
+01:01:28,810 --> 01:01:29,680
+programming.
+
+1198
+01:01:29,680 --> 01:01:31,840
+Completely different routes.
+
+1199
+01:01:31,840 --> 01:01:34,060
+And finally, I have a function
+that is comparable.
+
+1200
+01:01:34,060 --> 01:01:36,190
+So let's see how they perform.
+
+1201
+01:01:36,190 --> 01:01:41,970
+Just to be fair to the poor straight RBF
+implementation, the data doesn't
+
+1202
+01:01:41,970 --> 01:01:43,570
+cluster normally.
+
+1203
+01:01:43,570 --> 01:01:46,580
+And I chose the 9 because
+I got 9 here.
+
+1204
+01:01:46,580 --> 01:01:49,940
+So the SVM has the home
+advantage here.
+
+1205
+01:01:49,940 --> 01:01:50,765
+This is just a comparison.
+
+1206
+01:01:50,765 --> 01:01:54,320
+I didn't optimize the number of
+things, I didn't do anything.
+
+1207
+01:01:54,320 --> 01:01:58,060
+So if this guy ends up performing
+better, OK, it's better.
+
+1208
+01:01:58,060 --> 01:01:58,960
+SVM is good.
+
+1209
+01:01:58,960 --> 01:02:02,720
+But it really has a little
+bit of unfair advantage in this
+
+1210
+01:02:02,720 --> 01:02:03,740
+comparison.
+
+1211
+01:02:03,740 --> 01:02:05,230
+But let's look at what we have.
+
+1212
+01:02:05,230 --> 01:02:06,720
+This is the data.
+
+1213
+01:02:06,720 --> 01:02:10,120
+Let me magnify it, so that
+you can see the surface.
+
+1214
+01:02:10,120 --> 01:02:14,910
+
+
+1215
+01:02:14,910 --> 01:02:19,120
+Now let's start with
+the regular RBF.
+
+1216
+01:02:19,120 --> 01:02:22,190
+Both of them are RBF, but
+this is the regular RBF.
+
+1217
+01:02:22,190 --> 01:02:26,380
+This is the surface you get after you
+do everything I said, the Lloyd,
+
+1218
+01:02:26,380 --> 01:02:28,700
+and the pseudo-inverse, and whatnot.
+
+1219
+01:02:28,700 --> 01:02:32,940
+And the first thing you realize is that
+the in-sample error is not zero.
+
+1220
+01:02:32,940 --> 01:02:33,830
+There are points that
+are misclassified.
+
+1221
+01:02:33,830 --> 01:02:34,910
+Not a surprise.
+
+1222
+01:02:34,910 --> 01:02:36,360
+I had only K centers.
+
+1223
+01:02:36,360 --> 01:02:38,620
+And I'm trying to minimize
+mean squared error.
+
+1224
+01:02:38,620 --> 01:02:42,300
+It is possible that some points,
+close to the boundary, will go one way
+
+1225
+01:02:42,300 --> 01:02:42,796
+or the other.
+
+1226
+01:02:42,796 --> 01:02:45,820
+I'm interpreting the signal as being
+closer to +1 or -1.
+
+1227
+01:02:45,820 --> 01:02:46,820
+Sometimes it will cross.
+
+1228
+01:02:46,820 --> 01:02:47,750
+And that's what I get.
+
+1229
+01:02:47,750 --> 01:02:50,480
+This is the guy that I get.
+
+1230
+01:02:50,480 --> 01:02:52,850
+Here is the guy that I got
+last time from the SVM.
+
+1231
+01:02:52,850 --> 01:02:56,100
+
+
+1232
+01:02:56,100 --> 01:02:58,760
+Rather interesting.
+
+1233
+01:02:58,760 --> 01:03:03,180
+First, it's better-- because I have the
+benefit of looking at the green, the
+
+1234
+01:03:03,180 --> 01:03:04,820
+faint green line, which is the target.
+
+1235
+01:03:04,820 --> 01:03:07,700
+And I am definitely closer to the green
+one, in spite of the fact that I
+
+1236
+01:03:07,700 --> 01:03:10,010
+never used it explicitly
+in the computation.
+
+1237
+01:03:10,010 --> 01:03:12,730
+I used only the data, the
+same data for both.
+
+1238
+01:03:12,730 --> 01:03:14,480
+But this tracks it better.
+
+1239
+01:03:14,480 --> 01:03:18,650
+It does zero in-sample error.
+
+1240
+01:03:18,650 --> 01:03:21,170
+It's fairly close to this guy.
+
+1241
+01:03:21,170 --> 01:03:24,030
+So here are two solutions coming
+from two different worlds,
+
+1242
+01:03:24,030 --> 01:03:25,260
+using the same kernel.
+
+1243
+01:03:25,260 --> 01:03:28,760
+And I think by the time you have done
+a number of problems using these two
+
+1244
+01:03:28,760 --> 01:03:30,740
+approaches, you have it cold.
+
+1245
+01:03:30,740 --> 01:03:32,230
+You know exactly what is going on.
+
+1246
+01:03:32,230 --> 01:03:34,860
+You know the ramifications of doing
+unsupervised learning, and what you
+
+1247
+01:03:34,860 --> 01:03:38,230
+miss out by choosing the centers without
+knowing the label, versus the
+
+1248
+01:03:38,230 --> 01:03:39,950
+advantage of support vectors.
+
+1249
+01:03:39,950 --> 01:03:42,600
+
+
+1250
+01:03:42,600 --> 01:03:46,950
+The final items that I promised
+was RBF versus regularization.
+
+1251
+01:03:46,950 --> 01:03:55,590
+It turns out that you can derive RBF's
+entirely based on regularization.
+
+1252
+01:03:55,590 --> 01:03:57,460
+You are not talking about
+influence of a point.
+
+1253
+01:03:57,460 --> 01:03:59,040
+You are not talking about anything.
+
+1254
+01:03:59,040 --> 01:04:01,620
+Here is the formulation from
+function approximation
+
+1255
+01:04:01,620 --> 01:04:03,360
+that resulted in that.
+
+1256
+01:04:03,360 --> 01:04:06,350
+And that is why people consider RBF's to
+be very principled, and they have
+
+1257
+01:04:06,350 --> 01:04:07,520
+a merit.
+
+1258
+01:04:07,520 --> 01:04:09,450
+It is modulo assumptions, as always.
+
+1259
+01:04:09,450 --> 01:04:12,060
+And we will see what the
+assumptions are.
+
+1260
+01:04:12,060 --> 01:04:16,330
+Let's say that you have
+a one-dimensional function.
+
+1261
+01:04:16,330 --> 01:04:17,770
+So you have a function.
+
+1262
+01:04:17,770 --> 01:04:21,040
+And you have a bunch of points,
+the data points.
+
+1263
+01:04:21,040 --> 01:04:25,800
+And what you are doing now is you are
+trying to interpolate and extrapolate
+
+1264
+01:04:25,800 --> 01:04:28,930
+between these points, in order to get the
+whole function, which is what you
+
+1265
+01:04:28,930 --> 01:04:31,150
+do in function approximation-- what you
+do in machine learning if your
+
+1266
+01:04:31,150 --> 01:04:33,610
+function happens to be one-dimensional.
+
+1267
+01:04:33,610 --> 01:04:35,140
+What do you do in this case?
+
+1268
+01:04:35,140 --> 01:04:36,880
+There are usually two terms.
+
+1269
+01:04:36,880 --> 01:04:39,200
+One of them you try to minimize
+the in-sample error.
+
+1270
+01:04:39,200 --> 01:04:41,860
+And the other one is regularization, to
+make sure that your function is not
+
+1271
+01:04:41,860 --> 01:04:43,070
+crazy outside.
+
+1272
+01:04:43,070 --> 01:04:44,300
+That's what we do.
+
+1273
+01:04:44,300 --> 01:04:46,300
+So look at the in-sample error.
+
+1274
+01:04:46,300 --> 01:04:49,330
+That's what you do with the in-sample
+error, notwithstanding the 1 over
+
+1275
+01:04:49,330 --> 01:04:51,800
+N, which I took out
+to simplify the form.
+
+1276
+01:04:51,800 --> 01:04:56,710
+You take the value of your hypothesis,
+compare it with the value y, the
+
+1277
+01:04:56,710 --> 01:05:01,360
+target value, squared, and this
+is your error in sample.
+
+1278
+01:05:01,360 --> 01:05:05,420
+Now we are going to add
+a smoothness constraint.
+
+1279
+01:05:05,420 --> 01:05:10,810
+And in this approach, the smoothness
+constraint is always taken, almost
+
+1280
+01:05:10,810 --> 01:05:16,840
+always taken, as a constraint
+on the derivatives.
+
+1281
+01:05:16,840 --> 01:05:22,410
+If I have a function, and I tell you
+that the second derivative is very
+
+1282
+01:05:22,410 --> 01:05:25,180
+large, what does this mean?
+
+1283
+01:05:25,180 --> 01:05:27,500
+It means--
+
+1284
+01:05:27,500 --> 01:05:27,719
+So you do--
+
+1285
+01:05:27,719 --> 01:05:28,090
+
+
+1286
+01:05:28,090 --> 01:05:30,550
+That's not smooth.
+
+1287
+01:05:30,550 --> 01:05:33,040
+And if I go to the third derivative, it
+will be the rate of change of
+
+1288
+01:05:33,040 --> 01:05:34,030
+that, and so on.
+
+1289
+01:05:34,030 --> 01:05:35,990
+So I can go for derivatives
+in general.
+
+1290
+01:05:35,990 --> 01:05:40,010
+And if you can tell me that the
+derivatives are not very large in
+
+1291
+01:05:40,010 --> 01:05:43,830
+general, that corresponds, in
+my mind, to smoothness.
+
+1292
+01:05:43,830 --> 01:05:47,910
+The way they formulated the
+smoothness is by taking, generically,
+
+1293
+01:05:47,910 --> 01:05:52,200
+the k-th derivative of your hypothesis,
+hypothesis now is
+
+1294
+01:05:52,200 --> 01:05:53,300
+a function of x.
+
+1295
+01:05:53,300 --> 01:05:54,550
+I can differentiate it.
+
+1296
+01:05:54,550 --> 01:05:57,180
+I can differentiate it k times, assuming
+that it's parametrized in
+
+1297
+01:05:57,180 --> 01:05:59,400
+a way that is analytic.
+
+1298
+01:05:59,400 --> 01:06:02,390
+And now I'm squaring it, because
+I'm only interested in the
+
+1299
+01:06:02,390 --> 01:06:04,600
+magnitude of it.
+
+1300
+01:06:04,600 --> 01:06:08,500
+And what I'm going to do, I'm going to
+integrate this from minus infinity to
+
+1301
+01:06:08,500 --> 01:06:10,080
+plus infinity.
+
+1302
+01:06:10,080 --> 01:06:13,270
+This will be an estimate of the
+size of the k-th derivative,
+
+1303
+01:06:13,270 --> 01:06:15,330
+notwithstanding it's squared.
+
+1304
+01:06:15,330 --> 01:06:17,960
+If this is big, that's
+bad for smoothness.
+
+1305
+01:06:17,960 --> 01:06:20,190
+If this is small, that's
+good for smoothness.
+
+1306
+01:06:20,190 --> 01:06:24,960
+Now I'm going to up the ante, and combine
+the contributions of different
+
+1307
+01:06:24,960 --> 01:06:27,590
+derivatives.
+
+1308
+01:06:27,590 --> 01:06:31,210
+I am going to combine all the
+derivatives with coefficients.
+
+1309
+01:06:31,210 --> 01:06:34,160
+If you want some of them, all you need
+to do is just set these guys to zero
+
+1310
+01:06:34,160 --> 01:06:35,700
+for the ones you are not using.
+
+1311
+01:06:35,700 --> 01:06:38,360
+Typically, you will be using, let's
+say, first derivative and second
+
+1312
+01:06:38,360 --> 01:06:38,820
+derivative.
+
+1313
+01:06:38,820 --> 01:06:40,540
+And the rest of the guys are zero.
+
+1314
+01:06:40,540 --> 01:06:42,300
+And you get a condition like that.
+
+1315
+01:06:42,300 --> 01:06:43,970
+And now you multiply it by lambda.
+
+1316
+01:06:43,970 --> 01:06:45,750
+That's the regularization parameter.
+
+1317
+01:06:45,750 --> 01:06:48,690
+And you try to minimize the
+augmented error here.
+
+1318
+01:06:48,690 --> 01:06:51,440
+And the bigger lambda is, the
+more insistent you are on
+
+1319
+01:06:51,440 --> 01:06:53,000
+smoothness versus fitting.
+
+1320
+01:06:53,000 --> 01:06:55,490
+And we have seen all of that before.
+
+1321
+01:06:55,490 --> 01:06:59,910
+The interesting thing is that, if
+you actually solve this under
+
+1322
+01:06:59,910 --> 01:07:05,130
+conditions, and assumptions, and after
+an incredibly hairy mathematics that
+
+1323
+01:07:05,130 --> 01:07:10,460
+goes with it, you end up with
+radial basis functions.
+
+1324
+01:07:10,460 --> 01:07:12,220
+What does that mean?
+
+1325
+01:07:12,220 --> 01:07:13,250
+It really means--
+
+1326
+01:07:13,250 --> 01:07:14,780
+I'm looking for an interpolation.
+
+1327
+01:07:14,780 --> 01:07:18,490
+And I'm looking for as smooth
+an interpolation as possible, in the sense
+
+1328
+01:07:18,490 --> 01:07:22,370
+of the sum of the squares of the
+derivatives with these coefficients.
+
+1329
+01:07:22,370 --> 01:07:27,460
+It's not stunning that the best
+interpolation happens to be Gaussian.
+
+1330
+01:07:27,460 --> 01:07:28,880
+That's all we are saying.
+
+1331
+01:07:28,880 --> 01:07:29,980
+So it comes out.
+
+1332
+01:07:29,980 --> 01:07:34,430
+And that's what gives it a bigger
+credibility as being
+
+1333
+01:07:34,430 --> 01:07:38,220
+inherently self-regularized,
+and whatnot.
+
+1334
+01:07:38,220 --> 01:07:41,890
+And you get, this is the smoothest
+interpolation.
+
+1335
+01:07:41,890 --> 01:07:46,000
+And that is one interpretation
+of radial basis functions.
+
+1336
+01:07:46,000 --> 01:07:49,810
+On that happy note, we will stop,
+and I'll take questions
+
+1337
+01:07:49,810 --> 01:07:53,040
+after a short break.
+
+1338
+01:07:53,040 --> 01:07:57,050
+Let's start the Q&amp;A.
+
+1339
+01:07:57,050 --> 01:08:02,150
+MODERATOR: First, can you explain
+again how does an SVM simulate
+
+1340
+01:08:02,150 --> 01:08:04,660
+a two-level neural network?
+
+1341
+01:08:04,660 --> 01:08:07,440
+PROFESSOR: OK.
+
+1342
+01:08:07,440 --> 01:08:10,340
+Look at the RBF, in order
+to get a hint.
+
+1343
+01:08:10,340 --> 01:08:12,970
+What does this feature do?
+
+1344
+01:08:12,970 --> 01:08:17,430
+It actually computes
+the kernel, right?
+
+1345
+01:08:17,430 --> 01:08:21,410
+So think of what this guy is doing
+as implementing the kernel.
+
+1346
+01:08:21,410 --> 01:08:22,729
+What is it implementing?
+
+1347
+01:08:22,729 --> 01:08:26,080
+It's implementing theta, the sigmoidal
+function, the tanh in this
+
+1348
+01:08:26,080 --> 01:08:29,340
+case, of this guy.
+
+1349
+01:08:29,340 --> 01:08:34,830
+Now if you take this as your kernel,
+and you verify that it is
+
+1350
+01:08:34,830 --> 01:08:39,700
+a valid kernel-- in the case of radial
+basis functions, we had no
+
+1351
+01:08:39,700 --> 01:08:40,569
+problem with that.
+
+1352
+01:08:40,569 --> 01:08:44,270
+In the case of neural networks, believe
+it or not, depending on your choice of
+
+1353
+01:08:44,270 --> 01:08:48,170
+parameters, that kernel could be
+a valid kernel corresponding to
+
+1354
+01:08:48,170 --> 01:08:52,380
+a legitimate Z space, or can be
+an illegitimate kernel.
+
+1355
+01:08:52,380 --> 01:08:54,710
+But basically, you use
+that as your kernel.
+
+1356
+01:08:54,710 --> 01:08:57,920
+And if it's a valid kernel, you carry
+out the support vector machinery.
+
+1357
+01:08:57,920 --> 01:08:59,109
+So what are you going to get?
+
+1358
+01:08:59,109 --> 01:09:02,479
+You are going to get that value of the
+kernel, evaluated at different data
+
+1359
+01:09:02,479 --> 01:09:04,660
+points, which happen to be
+the support vectors.
+
+1360
+01:09:04,660 --> 01:09:06,130
+These become your units.
+
+1361
+01:09:06,130 --> 01:09:09,180
+And then you get to combine
+them using the weights.
+
+1362
+01:09:09,180 --> 01:09:11,850
+And that is the second layer
+of the neural network.
+
+1363
+01:09:11,850 --> 01:09:15,529
+So it will implement a two-layer
+neural network this way.
+
+1364
+01:09:15,529 --> 01:09:18,170
+
+
+1365
+01:09:18,170 --> 01:09:22,080
+MODERATOR: In a real example, where you're
+not comparing to support vectors, how
+
+1366
+01:09:22,080 --> 01:09:26,090
+do you choose the number of centers?
+
+1367
+01:09:26,090 --> 01:09:31,880
+PROFESSOR: This is perhaps
+the biggest question in clustering.
+
+1368
+01:09:31,880 --> 01:09:34,189
+There is no conclusive answer.
+
+1369
+01:09:34,189 --> 01:09:39,160
+There are lots of information
+criteria, and this and that.
+
+1370
+01:09:39,160 --> 01:09:43,300
+But it really is an open question.
+
+1371
+01:09:43,300 --> 01:09:45,979
+That's probably the best
+answer I can give.
+
+1372
+01:09:45,979 --> 01:09:52,859
+In many cases, there is a relatively
+clear criterion.
+
+1373
+01:09:52,859 --> 01:09:54,580
+I'm looking at the minimization.
+
+1374
+01:09:54,580 --> 01:10:01,140
+And if I increase the clusters by one,
+supposedly the sum of the squared
+
+1375
+01:10:01,140 --> 01:10:05,060
+distances should go down, because I have
+one more parameter to play with.
+
+1376
+01:10:05,060 --> 01:10:10,930
+So if I increase the things by one, and
+the objective function goes down
+
+1377
+01:10:10,930 --> 01:10:14,360
+significantly, then it looks like it's
+meritorious, that it was warranted to
+
+1378
+01:10:14,360 --> 01:10:15,680
+add this center.
+
+1379
+01:10:15,680 --> 01:10:18,470
+And if it doesn't, then maybe
+it's not a good idea.
+
+1380
+01:10:18,470 --> 01:10:20,780
+There are tons of heuristics
+like that.
+
+1381
+01:10:20,780 --> 01:10:23,290
+But it is really a difficult question.
+
+1382
+01:10:23,290 --> 01:10:27,730
+And the good news is that if you
+don't get it exactly, it's not
+
+1383
+01:10:27,730 --> 01:10:28,980
+the end of the world.
+
+1384
+01:10:28,980 --> 01:10:31,140
+If you get a reasonable number
+of clusters, the rest of
+
+1385
+01:10:31,140 --> 01:10:31,940
+the machinery works.
+
+1386
+01:10:31,940 --> 01:10:34,440
+And you get a fairly comparable
+performance.
+
+1387
+01:10:34,440 --> 01:10:39,030
+Very seldom that there is an absolute
+hit, in terms of the number of clusters
+
+1388
+01:10:39,030 --> 01:10:43,260
+that are needed, if the goal is to plug
+them in later on for the rest of the
+
+1389
+01:10:43,260 --> 01:10:44,990
+RBF machinery.
+
+1390
+01:10:44,990 --> 01:10:47,370
+MODERATOR: So cross-validation
+would be useful for--
+
+1391
+01:10:47,370 --> 01:10:48,780
+PROFESSOR: Validation would
+be one way of doing it.
+
+1392
+01:10:48,780 --> 01:10:52,200
+But there are so many things to validate
+with respect to, but this is
+
+1393
+01:10:52,200 --> 01:10:55,370
+definitely one of them.
+
+1394
+01:10:55,370 --> 01:11:03,260
+MODERATOR: Also, is RBF practical in
+applications where there's a high
+
+1395
+01:11:03,260 --> 01:11:04,910
+dimensionality of the input space?
+
+1396
+01:11:04,910 --> 01:11:10,330
+I mean, does Lloyd algorithm suffer
+from high dimensionality problems?
+
+1397
+01:11:10,330 --> 01:11:12,740
+PROFESSOR: Yeah, it's a question
+of-- distances become funny,
+
+1398
+01:11:12,740 --> 01:11:15,950
+or sparsity becomes funny, in
+higher-dimensional space.
+
+1399
+01:11:15,950 --> 01:11:20,900
+So the question of choice of gamma and
+other things become more critical.
+
+1400
+01:11:20,900 --> 01:11:23,160
+And if it's really very high-dimensional
+space, and you have few
+
+1401
+01:11:23,160 --> 01:11:29,970
+points, then it becomes very difficult
+to expect good interpolation.
+
+1402
+01:11:29,970 --> 01:11:30,890
+So there are difficulties.
+
+1403
+01:11:30,890 --> 01:11:32,190
+But the difficulties are inherent.
+
+1404
+01:11:32,190 --> 01:11:34,110
+The curse of dimensionality
+is inherent in this case.
+
+1405
+01:11:34,110 --> 01:11:36,610
+And I think it's not
+particular to RBF's.
+
+1406
+01:11:36,610 --> 01:11:37,470
+You use other methods.
+
+1407
+01:11:37,470 --> 01:11:41,300
+And you also suffer from
+one problem or another.
+
+1408
+01:11:41,300 --> 01:11:44,550
+MODERATOR: Can you review
+again how to choose gamma?
+
+1409
+01:11:44,550 --> 01:11:45,800
+PROFESSOR: OK.
+
+1410
+01:11:45,800 --> 01:11:56,720
+
+
+1411
+01:11:56,720 --> 01:12:02,440
+This is one way of doing it.
+
+1412
+01:12:02,440 --> 01:12:05,370
+Let me--
+
+1413
+01:12:05,370 --> 01:12:06,620
+
+
+1414
+01:12:06,620 --> 01:12:08,740
+
+
+1415
+01:12:08,740 --> 01:12:14,300
+Here I am trying to take advantage of
+the fact that determining a subset
+
+1416
+01:12:14,300 --> 01:12:16,070
+of the parameters is easy.
+
+1417
+01:12:16,070 --> 01:12:19,480
+If I didn't have that, I would have
+treated all the parameters on equal
+
+1418
+01:12:19,480 --> 01:12:24,160
+footing, and I would have just used
+a general nonlinear optimization, like
+
+1419
+01:12:24,160 --> 01:12:28,570
+gradient descent, in order to find all
+of them at once, iteratively until I
+
+1420
+01:12:28,570 --> 01:12:32,350
+converge to a local minimum
+with respect to all of them.
+
+1421
+01:12:32,350 --> 01:12:36,990
+Now that I realize that when gamma is
+fixed, there is a very simple way in
+
+1422
+01:12:36,990 --> 01:12:39,900
+one step to get to the w's.
+
+1423
+01:12:39,900 --> 01:12:42,000
+I would like to take
+advantage of that.
+
+1424
+01:12:42,000 --> 01:12:45,170
+The way I'm going to take advantage of
+it, is to separate the variables into
+
+1425
+01:12:45,170 --> 01:12:49,440
+two groups, the expectation
+and the maximization,
+
+1426
+01:12:49,440 --> 01:12:51,390
+according to the EM algorithm.
+
+1427
+01:12:51,390 --> 01:12:55,030
+And when I fix one of them, when
+I fix gamma, then I can
+
+1428
+01:12:55,030 --> 01:12:56,780
+solve for w_k's directly.
+
+1429
+01:12:56,780 --> 01:12:57,550
+I get them.
+
+1430
+01:12:57,550 --> 01:12:58,890
+So that's one step.
+
+1431
+01:12:58,890 --> 01:13:03,240
+And then I fix w's that I have, and then
+try to optimize with respect to
+
+1432
+01:13:03,240 --> 01:13:05,010
+gamma, according to the
+mean squared error.
+
+1433
+01:13:05,010 --> 01:13:09,910
+So I take this guy with w's being
+constant, gamma being a variable, and
+
+1434
+01:13:09,910 --> 01:13:15,010
+I apply this to every point in the
+training set, x_1 up to x_N, and take it
+
+1435
+01:13:15,010 --> 01:13:17,110
+minus y_n squared, sum them up.
+
+1436
+01:13:17,110 --> 01:13:18,600
+This is an objective function.
+
+1437
+01:13:18,600 --> 01:13:22,510
+And then get the gradient of that and
+try to minimize it, until I get to
+
+1438
+01:13:22,510 --> 01:13:23,500
+a local minimum.
+
+1439
+01:13:23,500 --> 01:13:25,680
+And when I get to a local minimum, and
+now it's a local minimum with respect
+
+1440
+01:13:25,680 --> 01:13:30,120
+to this gamma, and with the
+w_k's as being constant.
+
+1441
+01:13:30,120 --> 01:13:33,130
+There's no question of variation
+of the w_k's in those cases.
+
+1442
+01:13:33,130 --> 01:13:36,190
+But I get a value of gamma at
+which I assume a minimum.
+
+1443
+01:13:36,190 --> 01:13:38,880
+Now I freeze it, and repeat
+the iteration.
+
+1444
+01:13:38,880 --> 01:13:42,340
+And going back and forth will be far
+more efficient than doing gradient
+
+1445
+01:13:42,340 --> 01:13:45,550
+descent in all, just because one of the
+steps that involves so many variables
+
+1446
+01:13:45,550 --> 01:13:46,800
+is a one shot.
+
+1447
+01:13:46,800 --> 01:13:49,380
+And usually, the EM algorithm
+converges very quickly
+
+1448
+01:13:49,380 --> 01:13:50,310
+to a very good result.
+
+1449
+01:13:50,310 --> 01:13:53,874
+It's a very successful algorithm
+in practice.
+
+1450
+01:13:53,874 --> 01:13:57,340
+MODERATOR: Going back to neural
+networks, now that you mentioned the
+
+1451
+01:13:57,340 --> 01:14:01,690
+relation with the SVM's. In practical
+problems, is it necessary to
+
+1452
+01:14:01,690 --> 01:14:03,980
+have more than one hidden
+layer, or is it--
+
+1453
+01:14:03,980 --> 01:14:06,230
+PROFESSOR: Well, in terms
+of the approximation, there is
+
+1454
+01:14:06,230 --> 01:14:09,140
+an approximation result that tells you you
+can approximate everything using
+
+1455
+01:14:09,140 --> 01:14:10,570
+a two-layer neural network.
+
+1456
+01:14:10,570 --> 01:14:14,460
+And the argument is fairly similar to
+the argument that we gave before.
+
+1457
+01:14:14,460 --> 01:14:15,550
+So it's not necessary.
+
+1458
+01:14:15,550 --> 01:14:19,390
+And if you look at people who are using
+neural networks, I would say the
+
+1459
+01:14:19,390 --> 01:14:21,080
+minority use more than two layers.
+
+1460
+01:14:21,080 --> 01:14:24,750
+So I wouldn't consider the restriction
+of two layers dictated by support
+
+1461
+01:14:24,750 --> 01:14:31,210
+vector machines as being a very
+prohibitive restriction in this case.
+
+1462
+01:14:31,210 --> 01:14:33,750
+But there are cases where you need
+more than two layers, and in that
+
+1463
+01:14:33,750 --> 01:14:38,210
+case, you go just for the
+straightforward neural networks, and
+
+1464
+01:14:38,210 --> 01:14:40,460
+then you have an algorithm
+that goes with that.
+
+1465
+01:14:40,460 --> 01:14:43,640
+There is an in-house question.
+
+1466
+01:14:43,640 --> 01:14:44,080
+STUDENT: Hi, professor.
+
+1467
+01:14:44,080 --> 01:14:48,160
+I have a question about slide one.
+
+1468
+01:14:48,160 --> 01:14:53,070
+Why we come up with this
+radial basis function?
+
+1469
+01:14:53,070 --> 01:14:59,730
+You said that because the hypothesis is
+affected by the data point which is
+
+1470
+01:14:59,730 --> 01:15:03,880
+closest to x.
+
+1471
+01:15:03,880 --> 01:15:06,360
+PROFESSOR: This is the slide
+you are referring to, right?
+
+1472
+01:15:06,360 --> 01:15:06,640
+STUDENT: Yeah.
+
+1473
+01:15:06,640 --> 01:15:07,700
+This is the slide.
+
+1474
+01:15:07,700 --> 01:15:13,920
+So is it because you assume that the
+target function should be smooth?
+
+1475
+01:15:13,920 --> 01:15:15,580
+So that's why we can use this.
+
+1476
+01:15:15,580 --> 01:15:18,560
+PROFESSOR: It turns out, in
+hindsight, that this is the underlying
+
+1477
+01:15:18,560 --> 01:15:22,980
+assumption, because when we looked at
+solving the approximation problem with
+
+1478
+01:15:22,980 --> 01:15:25,270
+smoothness, we ended up with those
+radial basis functions.
+
+1479
+01:15:25,270 --> 01:15:27,340
+There is another motivation,
+which I didn't refer to.
+
+1480
+01:15:27,340 --> 01:15:29,500
+It's a good opportunity to raise it.
+
+1481
+01:15:29,500 --> 01:15:36,720
+Let's say that I have a data
+set, x_1 y1, x_2 y_2, up to x_N y_N.
+
+1482
+01:15:36,720 --> 01:15:39,100
+And I'm going to assume
+that there is noise.
+
+1483
+01:15:39,100 --> 01:15:40,220
+But it's a funny noise.
+
+1484
+01:15:40,220 --> 01:15:42,840
+It's not noise in the value y.
+
+1485
+01:15:42,840 --> 01:15:45,550
+It's noise in the value x.
+
+1486
+01:15:45,550 --> 01:15:49,670
+That is, I can't measure
+the input exactly.
+
+1487
+01:15:49,670 --> 01:15:53,100
+And I want to take that into
+consideration in my learning.
+
+1488
+01:15:53,100 --> 01:15:56,150
+The interesting ramification of that
+is that, if I assume that there is
+
+1489
+01:15:56,150 --> 01:15:58,470
+noise, and let's say that the noise
+is Gaussian, which is a typical
+
+1490
+01:15:58,470 --> 01:15:59,330
+assumption.
+
+1491
+01:15:59,330 --> 01:16:03,200
+Although this is the x that was given
+to me, the real x could be here,
+
+1492
+01:16:03,200 --> 01:16:04,480
+or here, or here.
+
+1493
+01:16:04,480 --> 01:16:08,900
+And what I have to do, since I have
+the value y at that x, the value y
+
+1494
+01:16:08,900 --> 01:16:11,670
+itself, I'm going to consider to
+be noiseless in that case.
+
+1495
+01:16:11,670 --> 01:16:16,130
+I just don't know which
+x it corresponds to.
+
+1496
+01:16:16,130 --> 01:16:20,040
+Then you will find that when you solve
+this, you realize that what you have
+
+1497
+01:16:20,040 --> 01:16:23,960
+to do, you have to make the value of
+your hypothesis not change much by
+
+1498
+01:16:23,960 --> 01:16:27,470
+changing x, because you run
+the risk of missing it.
+
+1499
+01:16:27,470 --> 01:16:30,970
+And if you solve it, you end up with
+actually having an interpolation which
+
+1500
+01:16:30,970 --> 01:16:32,370
+is Gaussian in this case.
+
+1501
+01:16:32,370 --> 01:16:35,910
+So you can arrive at the same thing
+under different assumptions.
+
+1502
+01:16:35,910 --> 01:16:37,880
+There are many ways
+of looking at this.
+
+1503
+01:16:37,880 --> 01:16:43,600
+But definitely smoothness comes one
+way or the other, whether by just observing
+
+1504
+01:16:43,600 --> 01:16:46,665
+here, by observing the regularization,
+by observing the input noise
+
+1505
+01:16:46,665 --> 01:16:48,266
+interpretation, or other
+interpretations.
+
+1506
+01:16:48,266 --> 01:16:49,370
+STUDENT: OK, I see.
+
+1507
+01:16:49,370 --> 01:16:58,050
+Another question is about slide
+six, when we choose small gamma
+
+1508
+01:16:58,050 --> 01:16:59,680
+or large gamma.
+
+1509
+01:16:59,680 --> 01:17:01,220
+Yes, here.
+
+1510
+01:17:01,220 --> 01:17:06,250
+So actually here, just from this example,
+can we say that definitely
+
+1511
+01:17:06,250 --> 01:17:08,790
+small gamma is better than
+large gamma here?
+
+1512
+01:17:08,790 --> 01:17:10,960
+PROFESSOR: Well,
+small is a relative.
+
+1513
+01:17:10,960 --> 01:17:16,340
+So the question is-- this is related to
+the distance between points in the
+
+1514
+01:17:16,340 --> 01:17:23,070
+space, because the value of the Gaussian
+will decay in that space.
+
+1515
+01:17:23,070 --> 01:17:28,090
+And this guy looks great if
+the two points are here.
+
+1516
+01:17:28,090 --> 01:17:31,220
+But the same guy looks terrible if the
+two points are here because, by the
+
+1517
+01:17:31,220 --> 01:17:32,700
+time you get here, it
+will have died out.
+
+1518
+01:17:32,700 --> 01:17:33,790
+So it's all relative.
+
+1519
+01:17:33,790 --> 01:17:39,480
+But relatively speaking, it's a good
+idea to have the width of the Gaussian
+
+1520
+01:17:39,480 --> 01:17:43,100
+comparable to the distances between the
+points so that there is a genuine
+
+1521
+01:17:43,100 --> 01:17:44,660
+interpolation.
+
+1522
+01:17:44,660 --> 01:17:49,850
+And the objective criterion for choosing
+gamma will affect that,
+
+1523
+01:17:49,850 --> 01:17:54,410
+because when we solve for gamma,
+we are using the K centers.
+
+1524
+01:17:54,410 --> 01:17:58,510
+So you have points that have
+the center of the Gaussian.
+
+1525
+01:17:58,510 --> 01:18:02,440
+But you need to worry about that
+Gaussian covering the data points that
+
+1526
+01:18:02,440 --> 01:18:04,300
+are nearby.
+
+1527
+01:18:04,300 --> 01:18:07,210
+And therefore, you are going to have the
+widths of that up or down, and the
+
+1528
+01:18:07,210 --> 01:18:10,350
+other ones, such that the influence
+gets to those points.
+
+1529
+01:18:10,350 --> 01:18:14,820
+So the good news is that there is
+an objective criterion for choosing it.
+
+1530
+01:18:14,820 --> 01:18:19,250
+This slide was meant to make the
+point that gamma matters.
+
+1531
+01:18:19,250 --> 01:18:21,930
+Now that it matters, let's look at
+the principled way of solving it.
+
+1532
+01:18:21,930 --> 01:18:24,820
+And the other way was
+the principled way of solving it.
+
+1533
+01:18:24,820 --> 01:18:29,540
+STUDENT: So does that mean that
+choosing gamma makes sense when we have
+
+1534
+01:18:29,540 --> 01:18:33,705
+fewer clusters than number of samples?
+Because in this case, we have three
+
+1535
+01:18:33,705 --> 01:18:36,040
+clusters and three samples.
+
+1536
+01:18:36,040 --> 01:18:39,760
+PROFESSOR: This was not meant
+to be a utility for gamma.
+
+1537
+01:18:39,760 --> 01:18:42,680
+It was meant just to visually illustrate
+that gamma matters.
+
+1538
+01:18:42,680 --> 01:18:45,130
+But the main utility, indeed,
+is for the K centers.
+
+1539
+01:18:45,130 --> 01:18:46,050
+STUDENT: OK, I see.
+
+1540
+01:18:46,050 --> 01:18:51,030
+Here actually, in both cases,
+the in-sample error is zero, same
+
+1541
+01:18:51,030 --> 01:18:52,720
+generalization behavior.
+
+1542
+01:18:52,720 --> 01:18:54,100
+PROFESSOR: You're
+absolutely correct.
+
+1543
+01:18:54,100 --> 01:18:58,230
+STUDENT: So can we say that K, the
+number of clusters is a measure of VC
+
+1544
+01:18:58,230 --> 01:19:00,840
+dimension, in this sense?
+
+1545
+01:19:00,840 --> 01:19:03,720
+PROFESSOR: Well, it's
+a cause and effect.
+
+1546
+01:19:03,720 --> 01:19:08,260
+When I decide on the number of
+clusters, I decide on the number of
+
+1547
+01:19:08,260 --> 01:19:10,690
+parameters, and that will affect
+the VC dimension.
+
+1548
+01:19:10,690 --> 01:19:13,380
+So this is the way it is, rather
+than the other way around.
+
+1549
+01:19:13,380 --> 01:19:18,960
+I didn't want people to take the
+question as: oh, we want to determine
+
+1550
+01:19:18,960 --> 01:19:22,070
+the number of clusters, so let's
+look for the VC dimension.
+
+1551
+01:19:22,070 --> 01:19:24,030
+That would be the argument backwards.
+
+1552
+01:19:24,030 --> 01:19:26,070
+So the statement is correct.
+
+1553
+01:19:26,070 --> 01:19:26,500
+They are related.
+
+1554
+01:19:26,500 --> 01:19:30,290
+But the cause and effect is that your
+choice of the number of clusters
+
+1555
+01:19:30,290 --> 01:19:32,880
+affects the complexity of
+your hypothesis set.
+
+1556
+01:19:32,880 --> 01:19:33,890
+STUDENT: Not the reverse?
+
+1557
+01:19:33,890 --> 01:19:38,820
+Because I thought, for example, if you
+have N data, and we know what
+
+1558
+01:19:38,820 --> 01:19:42,810
+kind of VC dimension will give good
+generalization, so based on that, can
+
+1559
+01:19:42,810 --> 01:19:43,690
+we kind of--
+
+1560
+01:19:43,690 --> 01:19:45,540
+PROFESSOR: So this
+is out of necessity.
+
+1561
+01:19:45,540 --> 01:19:51,620
+You're not saying that this is the
+inherent number of clusters that are
+
+1562
+01:19:51,620 --> 01:19:52,220
+needed to do this.
+
+1563
+01:19:52,220 --> 01:19:53,130
+This is what I can afford.
+
+1564
+01:19:53,130 --> 01:19:53,500
+STUDENT: Yeah, that's what I mean.
+
+1565
+01:19:53,500 --> 01:19:54,660
+PROFESSOR: And then
+in that case, it's true.
+
+1566
+01:19:54,660 --> 01:19:57,040
+But in this case, it's not the number
+of clusters you can afford--
+
+1567
+01:19:57,040 --> 01:19:59,250
+it is indirectly--
+
+1568
+01:19:59,250 --> 01:20:02,670
+it is the number of parameters you can
+afford, because of the VC dimension.
+
+1569
+01:20:02,670 --> 01:20:05,010
+And because I have that many parameters,
+I have to settle for that
+
+1570
+01:20:05,010 --> 01:20:07,850
+number of clusters, whether or not
+they break the data points
+
+1571
+01:20:07,850 --> 01:20:09,370
+correctly or not.
+
+1572
+01:20:09,370 --> 01:20:12,160
+The only thing I'm trying to avoid
+is that I don't want people to
+
+1573
+01:20:12,160 --> 01:20:17,940
+think that this will carry an answer to
+the optimal choice of clusters, from
+
+1574
+01:20:17,940 --> 01:20:20,060
+an unsupervised learning
+point of view.
+
+1575
+01:20:20,060 --> 01:20:21,930
+That link is not there.
+
+1576
+01:20:21,930 --> 01:20:22,820
+STUDENT: I see.
+
+1577
+01:20:22,820 --> 01:20:27,373
+But because like in this example, we
+deal with-- it seems there's no natural
+
+1578
+01:20:27,373 --> 01:20:32,350
+cluster in the input sample, it's
+uniformly distributed in the input space.
+
+1579
+01:20:32,350 --> 01:20:32,710
+PROFESSOR: Correct.
+
+1580
+01:20:32,710 --> 01:20:37,340
+And in many cases, even if there is
+clustering, you don't know the
+
+1581
+01:20:37,340 --> 01:20:39,590
+inherent number of clusters.
+
+1582
+01:20:39,590 --> 01:20:46,870
+But again, the saving grace here is that
+we can do a half-cooked
+
+1583
+01:20:46,870 --> 01:20:51,050
+clustering, just to have a representative
+of some points, and then
+
+1584
+01:20:51,050 --> 01:20:57,910
+let the supervised stage of learning
+take care of getting the values right.
+
+1585
+01:20:57,910 --> 01:20:59,670
+So it is just a way to
+think of clustering.
+
+1586
+01:20:59,670 --> 01:21:03,130
+I'm trying, instead of using
+all the points, I'm
+
+1587
+01:21:03,130 --> 01:21:04,280
+trying to use K centers.
+
+1588
+01:21:04,280 --> 01:21:06,700
+And I want them to be as
+representative as possible.
+
+1589
+01:21:06,700 --> 01:21:08,990
+And that will put me
+ahead of the game.
+
+1590
+01:21:08,990 --> 01:21:13,590
+And then the real test would be when
+I plug it into the supervised.
+
+1591
+01:21:13,590 --> 01:21:16,720
+STUDENT: OK. Thank you, professor.
+
+1592
+01:21:16,720 --> 01:21:20,540
+MODERATOR: Are there cases when RBF's
+are actually better than SVM's?
+
+1593
+01:21:20,540 --> 01:21:21,330
+PROFESSOR: There are cases.
+
+1594
+01:21:21,330 --> 01:21:27,510
+You can run them in a number of
+cases, and if the data is clustered in
+
+1595
+01:21:27,510 --> 01:21:30,890
+a particular way, and the clusters happen
+to have a common value, then
+
+1596
+01:21:30,890 --> 01:21:33,930
+you would expect that doing the
+unsupervised learning will get me
+
+1597
+01:21:33,930 --> 01:21:38,640
+ahead, whereas the SVM's now are on the
+boundary and they have to be such that
+
+1598
+01:21:38,640 --> 01:21:41,770
+the cancellations of RBF's will
+give me the right value.
+
+1599
+01:21:41,770 --> 01:21:46,260
+So you can definitely create cases where
+one will win over the other.
+
+1600
+01:21:46,260 --> 01:21:51,150
+Most people will use the RBF kernels,
+the SVM approach.
+
+1601
+01:21:51,150 --> 01:21:53,070
+MODERATOR: Then that's
+it for today.
+
+1602
+01:21:53,070 --> 01:21:53,460
+PROFESSOR: Very good.
+
+1603
+01:21:53,460 --> 01:21:53,930
+Thank you.
+
+1604
+01:21:53,930 --> 01:21:55,180
+We'll see you next week.
+
+1605
+01:21:55,180 --> 01:22:07,794
+

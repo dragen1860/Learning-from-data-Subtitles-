@@ -1,0 +1,7530 @@
+1
+00:00:00,000 --> 00:00:00,290
+
+
+2
+00:00:00,290 --> 00:00:03,275
+ANNOUNCER: The following program
+is brought to you by Caltech.
+
+3
+00:00:03,275 --> 00:00:15,069
+
+
+4
+00:00:15,069 --> 00:00:18,390
+YASER ABU-MOSTAFA: Welcome back.
+
+5
+00:00:18,390 --> 00:00:21,850
+Last time, we talked about validation,
+which is a very important technique in
+
+6
+00:00:21,850 --> 00:00:26,350
+machine learning for estimating the
+out-of-sample performance.
+
+7
+00:00:26,350 --> 00:00:30,440
+And the idea is that we start from
+the data set that is given to
+
+8
+00:00:30,440 --> 00:00:32,310
+us, that has N points.
+
+9
+00:00:32,310 --> 00:00:37,690
+We set aside K points for validation,
+for just estimation, and
+
+10
+00:00:37,690 --> 00:00:42,280
+we train with the remaining points, N
+minus K. Because we are training with
+
+11
+00:00:42,280 --> 00:00:46,240
+a subset, we end up with a hypothesis
+that we are going to label g minus,
+
+12
+00:00:46,240 --> 00:00:50,840
+instead of g. And it is on this g minus,
+that we are going to get
+
+13
+00:00:50,840 --> 00:00:55,590
+an estimate of the out-of-sample
+performance by the validation error.
+
+14
+00:00:55,590 --> 00:00:59,920
+And then there is a leap of faith, when
+we put back all the examples in the
+
+15
+00:00:59,920 --> 00:01:04,129
+pot in order to come up with the best
+possible hypothesis-- to work with the
+
+16
+00:01:04,129 --> 00:01:06,020
+most training examples.
+
+17
+00:01:06,020 --> 00:01:10,020
+We are going to get g, and we are using
+the validation error we had on
+
+18
+00:01:10,020 --> 00:01:13,980
+the reduced hypothesis, if you will,
+to estimate the out-of-sample
+
+19
+00:01:13,980 --> 00:01:17,400
+performance on the hypothesis
+we are actually delivering.
+
+20
+00:01:17,400 --> 00:01:20,590
+And there is a question of how
+accurate an estimate this
+
+21
+00:01:20,590 --> 00:01:21,950
+would be for E_out.
+
+22
+00:01:21,950 --> 00:01:26,812
+And we found out that K cannot be too
+small, and cannot be too big, in order
+
+23
+00:01:26,812 --> 00:01:28,470
+for this estimate to be reliable.
+
+24
+00:01:28,470 --> 00:01:33,790
+And we ended up with a rule of thumb
+of about 20% of the data set go to
+
+25
+00:01:33,790 --> 00:01:37,500
+validation. That will give you
+a reasonable estimate.
+
+26
+00:01:37,500 --> 00:01:39,210
+Now this was an unbiased estimate.
+
+27
+00:01:39,210 --> 00:01:40,170
+So we get an E_out.
+
+28
+00:01:40,170 --> 00:01:45,120
+We can get better than E_out or worse
+than E_out in general, as far as
+
+29
+00:01:45,120 --> 00:01:48,690
+E_val estimating the performance
+of g minus.
+
+30
+00:01:48,690 --> 00:01:52,090
+On the other hand, once you use the
+validation error for model selection,
+
+31
+00:01:52,090 --> 00:01:55,450
+which is the main utility for
+validation, you end up with a little
+
+32
+00:01:55,450 --> 00:01:59,210
+bit of an optimistic bias, because you
+chose a model that performs well on
+
+33
+00:01:59,210 --> 00:02:00,470
+that validation error.
+
+34
+00:02:00,470 --> 00:02:04,260
+Therefore, the validation error is not
+going to necessarily be an unbiased
+
+35
+00:02:04,260 --> 00:02:05,980
+estimate of the out-of-sample error.
+
+36
+00:02:05,980 --> 00:02:10,229
+It will have a slight positive,
+or optimistic, bias.
+
+37
+00:02:10,229 --> 00:02:16,660
+And we showed an experiment where, using
+very few examples in this case,
+
+38
+00:02:16,660 --> 00:02:18,420
+in order to exaggerate the effect.
+
+39
+00:02:18,420 --> 00:02:22,470
+We can see the impact of-- the blue
+curve is the validation error,
+
+40
+00:02:22,470 --> 00:02:26,910
+and the red curve is the out-of-sample
+error on the same hypothesis, just to
+
+41
+00:02:26,910 --> 00:02:29,160
+pin down the bias.
+
+42
+00:02:29,160 --> 00:02:32,050
+And we realize that, as we increase
+the number of examples,
+
+43
+00:02:32,050 --> 00:02:32,920
+the bias goes down.
+
+44
+00:02:32,920 --> 00:02:35,560
+The difference between the
+two curves goes down.
+
+45
+00:02:35,560 --> 00:02:39,040
+And indeed, if you have a reasonable-size
+validation set, you can afford to
+
+46
+00:02:39,040 --> 00:02:42,220
+estimate a couple of parameters for
+sure, without contaminating
+
+47
+00:02:42,220 --> 00:02:43,270
+the data too much.
+
+48
+00:02:43,270 --> 00:02:46,950
+So you can assume that the measurement
+you're getting from the validation set
+
+49
+00:02:46,950 --> 00:02:49,530
+is a reliable estimate.
+
+50
+00:02:49,530 --> 00:02:54,140
+Then, because the number of examples
+turned out to be an issue, we
+
+51
+00:02:54,140 --> 00:02:58,280
+introduced the cross-validation, which
+is, by and large, the method of
+
+52
+00:02:58,280 --> 00:03:00,750
+validation you're going to be using
+in a practical situation.
+
+53
+00:03:00,750 --> 00:03:03,440
+Because it gets you the
+best of both worlds.
+
+54
+00:03:03,440 --> 00:03:05,670
+So in this case, we--
+
+55
+00:03:05,670 --> 00:03:07,680
+illustrating a case where we have
+10-fold cross-validation.
+
+56
+00:03:07,680 --> 00:03:11,350
+So you divide the data
+set into 10 parts.
+
+57
+00:03:11,350 --> 00:03:14,870
+You train on nine, and validate
+on the tenth, and keep that
+
+58
+00:03:14,870 --> 00:03:16,160
+estimate of the error.
+
+59
+00:03:16,160 --> 00:03:19,260
+And you keep repeating as you
+choose the validation subset
+
+60
+00:03:19,260 --> 00:03:20,390
+to be one of those.
+
+61
+00:03:20,390 --> 00:03:21,720
+So you have 10 runs.
+
+62
+00:03:21,720 --> 00:03:25,530
+And each of them gives you an estimate
+on a small number of examples, 1/10 of
+
+63
+00:03:25,530 --> 00:03:26,400
+the examples.
+
+64
+00:03:26,400 --> 00:03:30,130
+And then by the time you average all of
+these estimates, that will give you
+
+65
+00:03:30,130 --> 00:03:34,965
+a general estimate of what the out-of-sample
+error would be on 9/10 of the
+
+66
+00:03:34,965 --> 00:03:38,770
+data, in spite of the fact that they
+are different 9/10 each time.
+
+67
+00:03:38,770 --> 00:03:43,610
+And in that case, the advantage of it
+is that the 9/10 is very close to 1,
+
+68
+00:03:43,610 --> 00:03:46,610
+so the estimate you are
+getting is very close.
+
+69
+00:03:46,610 --> 00:03:50,040
+And furthermore, the number of examples
+taken into consideration in
+
+70
+00:03:50,040 --> 00:03:53,040
+getting an estimate of the validation
+error is really N. You got
+
+71
+00:03:53,040 --> 00:03:55,290
+all of them, albeit in different runs.
+
+72
+00:03:55,290 --> 00:03:58,750
+So this is really the way to go
+in cross-validation.
+
+73
+00:03:58,750 --> 00:04:02,530
+And invariably, in any learning
+situation, you will need to choose
+
+74
+00:04:02,530 --> 00:04:06,080
+a model, a parameter, something--
+to make a decision.
+
+75
+00:04:06,080 --> 00:04:10,440
+And validation is the method of choice
+in that case, in order to make that.
+
+76
+00:04:10,440 --> 00:04:11,360
+OK.
+
+77
+00:04:11,360 --> 00:04:15,880
+So we move on to today's lecture, which
+is Support Vector Machines.
+
+78
+00:04:15,880 --> 00:04:20,790
+Support vector machines are arguably
+the most successful classification
+
+79
+00:04:20,790 --> 00:04:22,930
+method in machine learning.
+
+80
+00:04:22,930 --> 00:04:26,170
+And they are very nice, because
+there is a principled
+
+81
+00:04:26,170 --> 00:04:27,930
+derivation for the method.
+
+82
+00:04:27,930 --> 00:04:32,610
+There is a very nice optimization
+package that you can use in order to
+
+83
+00:04:32,610 --> 00:04:33,830
+get the solution.
+
+84
+00:04:33,830 --> 00:04:36,940
+And the solution also has a very
+intuitive interpretation.
+
+85
+00:04:36,940 --> 00:04:42,360
+So it's a very, very neat piece
+of work for machine learning.
+
+86
+00:04:42,360 --> 00:04:44,440
+So the outline will be the following.
+
+87
+00:04:44,440 --> 00:04:47,500
+We are going to introduce the notion
+of the margin, which is the main
+
+88
+00:04:47,500 --> 00:04:49,040
+notion in support vector machines.
+
+89
+00:04:49,040 --> 00:04:52,410
+And we'll ask a question of maximizing
+the margin-- getting the
+
+90
+00:04:52,410 --> 00:04:54,200
+best possible margin.
+
+91
+00:04:54,200 --> 00:04:57,460
+And after formulating the problem, we
+are going to go and get the solution.
+
+92
+00:04:57,460 --> 00:04:59,480
+And we're going to do
+that analytically.
+
+93
+00:04:59,480 --> 00:05:01,450
+It will be a constrained
+optimization problem.
+
+94
+00:05:01,450 --> 00:05:04,640
+And we faced one before in
+regularization, where we gave
+
+95
+00:05:04,640 --> 00:05:07,540
+a geometrical solution, if you will.
+
+96
+00:05:07,540 --> 00:05:10,950
+This time we are going to do it
+analytically, because the formulation
+
+97
+00:05:10,950 --> 00:05:15,300
+is simply too complicated to have
+an intuitive geometric solution for.
+
+98
+00:05:15,300 --> 00:05:19,450
+And finally, we are going to expand from
+the linear case to the nonlinear
+
+99
+00:05:19,450 --> 00:05:23,650
+case in the usual way, thus expanding
+all of the machinery to a case where
+
+100
+00:05:23,650 --> 00:05:29,240
+you can deal with nonlinear surfaces,
+instead of just a line in a separable
+
+101
+00:05:29,240 --> 00:05:32,010
+case, which is the main case
+we are going to handle.
+
+102
+00:05:32,010 --> 00:05:33,720
+
+
+103
+00:05:33,720 --> 00:05:36,000
+So now let's talk about
+linear separation.
+
+104
+00:05:36,000 --> 00:05:39,280
+Let's say I have a linearly
+separable data set.
+
+105
+00:05:39,280 --> 00:05:42,040
+
+
+106
+00:05:42,040 --> 00:05:43,560
+Just take four, for example.
+
+107
+00:05:43,560 --> 00:05:47,310
+There are lines that will separate
+the red from the blue.
+
+108
+00:05:47,310 --> 00:05:50,000
+Now, when you apply perceptron,
+you will get a line.
+
+109
+00:05:50,000 --> 00:05:52,880
+When you apply any algorithm, you will
+get a line, and separate-- you get 0
+
+110
+00:05:52,880 --> 00:05:53,510
+training error.
+
+111
+00:05:53,510 --> 00:05:55,170
+And everything is fine.
+
+112
+00:05:55,170 --> 00:05:58,950
+And now there is a curious point
+when you ask yourself: I can
+
+113
+00:05:58,950 --> 00:06:01,400
+get different lines.
+
+114
+00:06:01,400 --> 00:06:05,890
+Is there any advantage of choosing
+one of the lines over the other?
+
+115
+00:06:05,890 --> 00:06:08,140
+That is the new addition
+to the problem.
+
+116
+00:06:08,140 --> 00:06:08,660
+
+
+117
+00:06:08,660 --> 00:06:10,110
+So let's look at it.
+
+118
+00:06:10,110 --> 00:06:11,850
+Here is a line.
+
+119
+00:06:11,850 --> 00:06:14,870
+So I chose this line to
+separate the two.
+
+120
+00:06:14,870 --> 00:06:16,970
+You may not think that this
+is the best line.
+
+121
+00:06:16,970 --> 00:06:22,440
+And we'll try to take our intuition
+and understand why this is
+
+122
+00:06:22,440 --> 00:06:24,310
+not the best line.
+
+123
+00:06:24,310 --> 00:06:28,470
+So I'm going to think of a margin,
+that is, if this line moves
+
+124
+00:06:28,470 --> 00:06:31,170
+a little bit, when is it
+going to cross over?
+
+125
+00:06:31,170 --> 00:06:32,930
+When is it going to start
+making an error?
+
+126
+00:06:32,930 --> 00:06:36,160
+So in this case, let's put it as
+a yellow region around it.
+
+127
+00:06:36,160 --> 00:06:37,460
+That's the margin you have.
+
+128
+00:06:37,460 --> 00:06:41,210
+So if you choose this line, this
+is the margin of error.
+
+129
+00:06:41,210 --> 00:06:43,800
+Sort of informal notion.
+
+130
+00:06:43,800 --> 00:06:48,790
+Now you can look at this line.
+
+131
+00:06:48,790 --> 00:06:52,648
+And it does seem to have
+a better margin.
+
+132
+00:06:52,648 --> 00:06:53,090
+
+
+133
+00:06:53,090 --> 00:06:55,790
+And you can now look at the problem
+closely and say: let me try to get the
+
+134
+00:06:55,790 --> 00:06:56,680
+best possible margin.
+
+135
+00:06:56,680 --> 00:07:02,760
+And then you get this line, which has
+this margin, that is exactly right for
+
+136
+00:07:02,760 --> 00:07:04,235
+the blue and red points.
+
+137
+00:07:04,235 --> 00:07:06,900
+
+
+138
+00:07:06,900 --> 00:07:09,890
+Now, let us ask ourselves
+the following question.
+
+139
+00:07:09,890 --> 00:07:12,470
+
+
+140
+00:07:12,470 --> 00:07:16,380
+Which is the best line
+for classification?
+
+141
+00:07:16,380 --> 00:07:19,220
+As far as the in-sample error is
+concerned, all of them give
+
+142
+00:07:19,220 --> 00:07:21,420
+in-sample error 0.
+
+143
+00:07:21,420 --> 00:07:25,140
+As far as generalization questions are
+concerned, as far as our previous
+
+144
+00:07:25,140 --> 00:07:28,485
+analysis has done, all of them
+are dealing with linear
+
+145
+00:07:28,485 --> 00:07:30,570
+model with four points.
+
+146
+00:07:30,570 --> 00:07:34,240
+So generalization, as an estimate,
+will be the same.
+
+147
+00:07:34,240 --> 00:07:38,570
+Nonetheless, I think you will agree with
+me that if you had your choice,
+
+148
+00:07:38,570 --> 00:07:41,520
+you will choose the fat margin.
+
+149
+00:07:41,520 --> 00:07:42,790
+
+
+150
+00:07:42,790 --> 00:07:45,010
+Somehow it's intuitive.
+
+151
+00:07:45,010 --> 00:07:48,510
+So let's ask two questions.
+
+152
+00:07:48,510 --> 00:07:53,180
+The first one is: why is
+a bigger margin better?
+
+153
+00:07:53,180 --> 00:07:54,510
+
+
+154
+00:07:54,510 --> 00:07:55,840
+Second one.
+
+155
+00:07:55,840 --> 00:08:01,470
+If we are convinced that a bigger
+margin is better, then you ask
+
+156
+00:08:01,470 --> 00:08:07,520
+yourself: can I solve for w
+that maximizes the margin?
+
+157
+00:08:07,520 --> 00:08:12,250
+Now it is quite intuitive that the
+bigger margin is better, because think
+
+158
+00:08:12,250 --> 00:08:14,760
+of a process that is generating
+the data.
+
+159
+00:08:14,760 --> 00:08:17,670
+And let's say that there
+is noise in it.
+
+160
+00:08:17,670 --> 00:08:22,010
+If you have the bigger margin, the
+chances are the new point will still
+
+161
+00:08:22,010 --> 00:08:24,540
+be on correct side of the line.
+
+162
+00:08:24,540 --> 00:08:25,190
+
+
+163
+00:08:25,190 --> 00:08:28,810
+Whereas, if I use this one, there's
+a chance that the next red point will be
+
+164
+00:08:28,810 --> 00:08:31,310
+here, and it will be misclassified.
+
+165
+00:08:31,310 --> 00:08:33,370
+Again, I'm not giving any proofs.
+
+166
+00:08:33,370 --> 00:08:34,659
+I'm just giving you an intuition here.
+
+167
+00:08:34,659 --> 00:08:35,390
+
+
+168
+00:08:35,390 --> 00:08:38,700
+So it stands to logic that indeed,
+the bigger margin is better.
+
+169
+00:08:38,700 --> 00:08:42,870
+And now we're going to argue that the
+bigger margin is better for a reason
+
+170
+00:08:42,870 --> 00:08:45,920
+that relates to our VC
+analysis before.
+
+171
+00:08:45,920 --> 00:08:48,250
+
+
+172
+00:08:48,250 --> 00:08:52,310
+So anybody remember the growth
+function from ages ago?
+
+173
+00:08:52,310 --> 00:08:52,780
+
+
+174
+00:08:52,780 --> 00:08:54,010
+What was that?
+
+175
+00:08:54,010 --> 00:09:02,040
+So we take the dichotomies of the
+line on points in the plane.
+
+176
+00:09:02,040 --> 00:09:05,050
+And let's say, we take three points.
+
+177
+00:09:05,050 --> 00:09:09,440
+So on three points, you can get all
+possible dichotomies by a line.
+
+178
+00:09:09,440 --> 00:09:12,330
+The blue versus not-blue region.
+
+179
+00:09:12,330 --> 00:09:16,322
+And you can see that by varying where
+the line is, I can get all possible 2
+
+180
+00:09:16,322 --> 00:09:19,380
+to the 3 equals 8 dichotomies here.
+
+181
+00:09:19,380 --> 00:09:21,560
+So you know that the growth
+function is big.
+
+182
+00:09:21,560 --> 00:09:24,170
+And we know that the growth function
+being big is bad news for
+
+183
+00:09:24,170 --> 00:09:25,040
+generalization.
+
+184
+00:09:25,040 --> 00:09:28,340
+That was our take-home lesson.
+
+185
+00:09:28,340 --> 00:09:32,090
+So now let's see if this is
+affected by the margin.
+
+186
+00:09:32,090 --> 00:09:33,830
+
+
+187
+00:09:33,830 --> 00:09:38,210
+So now we are taking dichotomies, not only
+the line, but also requiring that the
+
+188
+00:09:38,210 --> 00:09:39,810
+dichotomies have a fat margin.
+
+189
+00:09:39,810 --> 00:09:42,720
+Let's look at dichotomies,
+and their margin.
+
+190
+00:09:42,720 --> 00:09:45,680
+
+
+191
+00:09:45,680 --> 00:09:48,600
+Now in this case, I'm putting
+the same three points.
+
+192
+00:09:48,600 --> 00:09:53,910
+And I'm putting a line that has the
+biggest possible margin for the
+
+193
+00:09:53,910 --> 00:09:56,200
+constellation of points I have.
+
+194
+00:09:56,200 --> 00:10:00,130
+So you can see here. I put
+it. It sandwiched them.
+
+195
+00:10:00,130 --> 00:10:01,820
+Every time, it touches all the points.
+
+196
+00:10:01,820 --> 00:10:07,760
+It cannot extend any further because
+it will get beyond the points.
+
+197
+00:10:07,760 --> 00:10:10,960
+And when you look at it, this
+is a thin margin for
+
+198
+00:10:10,960 --> 00:10:12,740
+this particular dichotomy.
+
+199
+00:10:12,740 --> 00:10:13,830
+This is an intermediate one.
+
+200
+00:10:13,830 --> 00:10:14,690
+This is a fat one.
+
+201
+00:10:14,690 --> 00:10:17,490
+And this is a hugely fat one,
+but that's the constant one.
+
+202
+00:10:17,490 --> 00:10:20,070
+That's not a big deal.
+
+203
+00:10:20,070 --> 00:10:25,520
+Now let's say that I told you that you
+are allowed to use a classifier, but
+
+204
+00:10:25,520 --> 00:10:29,690
+you have to have at least that
+margin for me to accept it.
+
+205
+00:10:29,690 --> 00:10:32,920
+So now I'm requiring the margin
+to be at least something.
+
+206
+00:10:32,920 --> 00:10:37,920
+All of a sudden, these guys that used to
+be legitimate dichotomies using my
+
+207
+00:10:37,920 --> 00:10:41,060
+model, are no longer allowed.
+
+208
+00:10:41,060 --> 00:10:45,340
+So effectively by requiring the margin
+to be at least something, I'm putting
+
+209
+00:10:45,340 --> 00:10:48,420
+a restriction on the growth function.
+
+210
+00:10:48,420 --> 00:10:52,560
+Fat margins imply fewer
+dichotomies possible.
+
+211
+00:10:52,560 --> 00:10:56,740
+And therefore, if we manage to separate
+the points with a fat
+
+212
+00:10:56,740 --> 00:11:00,860
+dichotomy, we can say that fat
+dichotomies have a smaller VC
+
+213
+00:11:00,860 --> 00:11:05,040
+dimension, smaller growth function than
+if I didn't restrict them at all.
+
+214
+00:11:05,040 --> 00:11:05,740
+
+
+215
+00:11:05,740 --> 00:11:09,810
+And, although this is all informal, we
+will come at the end of the lecture to
+
+216
+00:11:09,810 --> 00:11:13,760
+a result that estimates the out-of-
+sample error based on the margin.
+
+217
+00:11:13,760 --> 00:11:17,690
+And we will find out that indeed, when
+you have a bigger margin, you will be
+
+218
+00:11:17,690 --> 00:11:20,240
+able to achieve better out-of-sample
+performance.
+
+219
+00:11:20,240 --> 00:11:21,080
+
+
+220
+00:11:21,080 --> 00:11:25,200
+So now that I completely and irrevocably
+convinced you that the fat
+
+221
+00:11:25,200 --> 00:11:29,270
+margins are good, let us
+try to solve for them.
+
+222
+00:11:29,270 --> 00:11:34,350
+That is, find the w that not only
+classifies the points correctly, but
+
+223
+00:11:34,350 --> 00:11:37,780
+achieves so with the biggest
+possible margin.
+
+224
+00:11:37,780 --> 00:11:39,870
+
+
+225
+00:11:39,870 --> 00:11:41,650
+So how are we going to do that?
+
+226
+00:11:41,650 --> 00:11:46,580
+Well the margin is just the distance
+from the plane to a point.
+
+227
+00:11:46,580 --> 00:11:50,220
+So I'm going to take from the data set
+the point x_n, which happens to be the
+
+228
+00:11:50,220 --> 00:11:54,830
+nearest data point to the line, that we
+have used in the previous example.
+
+229
+00:11:54,830 --> 00:11:58,410
+And the line is given by the
+linear equation-- equals 0.
+
+230
+00:11:58,410 --> 00:12:01,390
+And since we're going to use a higher
+dimensional thing, I'm not going to
+
+231
+00:12:01,390 --> 00:12:02,270
+refer to it as a line.
+
+232
+00:12:02,270 --> 00:12:03,880
+I'm going to refer to it as a plane--
+
+233
+00:12:03,880 --> 00:12:05,980
+hyperplane really-- but
+just plane for short.
+
+234
+00:12:05,980 --> 00:12:08,760
+So we're talking about d-dimensional
+space and a hyperplane that
+
+235
+00:12:08,760 --> 00:12:10,710
+separates the points.
+
+236
+00:12:10,710 --> 00:12:11,000
+
+
+237
+00:12:11,000 --> 00:12:13,670
+So we would like to estimate that.
+
+238
+00:12:13,670 --> 00:12:18,800
+And we ask ourselves: if I give you w
+and the x's, can you plug them into
+
+239
+00:12:18,800 --> 00:12:22,000
+a formula and give me the distance
+between that plane, that is described
+
+240
+00:12:22,000 --> 00:12:24,850
+by w, and the point x_n?
+
+241
+00:12:24,850 --> 00:12:27,900
+I'm now taking the nearest point,
+because then that distance will be
+
+242
+00:12:27,900 --> 00:12:29,710
+the margin that I'm talking about.
+
+243
+00:12:29,710 --> 00:12:31,390
+
+
+244
+00:12:31,390 --> 00:12:34,210
+Now there are two preliminary
+technicalities that I'm going to
+
+245
+00:12:34,210 --> 00:12:34,860
+invoke here.
+
+246
+00:12:34,860 --> 00:12:37,970
+And they will simplify the
+analysis later on.
+
+247
+00:12:37,970 --> 00:12:40,370
+So here is the first one.
+
+248
+00:12:40,370 --> 00:12:45,320
+The first one is to normalize
+w. What do I mean by that?
+
+249
+00:12:45,320 --> 00:12:50,280
+For all the points in the data set,
+near and far, when you take w
+
+250
+00:12:50,280 --> 00:12:55,550
+transposed times x_n, you will get
+a number that is different from 0.
+
+251
+00:12:55,550 --> 00:12:56,170
+
+
+252
+00:12:56,170 --> 00:12:59,220
+And indeed, it will agree with the
+label y_n, because the points are
+
+253
+00:12:59,220 --> 00:13:00,060
+linearly separable.
+
+254
+00:13:00,060 --> 00:13:02,840
+So I can take the absolute value of this,
+and claim that it's greater than
+
+255
+00:13:02,840 --> 00:13:05,070
+0 for every point.
+
+256
+00:13:05,070 --> 00:13:10,060
+Now I would like to relate w to the
+margin, or to the distance.
+
+257
+00:13:10,060 --> 00:13:14,540
+But I realize that here, there is a minor
+technicality that is annoying.
+
+258
+00:13:14,540 --> 00:13:17,645
+Let's say that I multiply the
+vector w by a million.
+
+259
+00:13:17,645 --> 00:13:20,420
+
+
+260
+00:13:20,420 --> 00:13:25,110
+Does the plane that I'm
+talking about change?
+
+261
+00:13:25,110 --> 00:13:25,920
+No.
+
+262
+00:13:25,920 --> 00:13:27,060
+This is the equation of it.
+
+263
+00:13:27,060 --> 00:13:31,460
+I can multiply by any positive number,
+and I get the same plane.
+
+264
+00:13:31,460 --> 00:13:35,670
+So the consequence of that is that any
+formula that takes w and produces the
+
+265
+00:13:35,670 --> 00:13:38,890
+margin will have to have, built
+in it, scale invariance.
+
+266
+00:13:38,890 --> 00:13:42,720
+We'll be dividing by something that
+takes out that factor that does not
+
+267
+00:13:42,720 --> 00:13:45,200
+affect which plane I'm talking about.
+
+268
+00:13:45,200 --> 00:13:49,270
+So I'm going to do it now, in order
+to simplify the analysis later.
+
+269
+00:13:49,270 --> 00:13:53,330
+I'm going to consider all
+representations of the same plane.
+
+270
+00:13:53,330 --> 00:13:58,100
+And I'm going to pick one where this is
+normalized, by requiring that for
+
+271
+00:13:58,100 --> 00:14:01,040
+the minimum point, this fellow is 1.
+
+272
+00:14:01,040 --> 00:14:01,940
+I can always do that.
+
+273
+00:14:01,940 --> 00:14:05,360
+I can scale w up and down until
+I get the closest one to have
+
+274
+00:14:05,360 --> 00:14:06,580
+this equal to 1.
+
+275
+00:14:06,580 --> 00:14:07,070
+
+
+276
+00:14:07,070 --> 00:14:08,630
+There's obviously no
+loss in generality.
+
+277
+00:14:08,630 --> 00:14:11,220
+Because in this case, this is a plane.
+
+278
+00:14:11,220 --> 00:14:15,130
+And I have not missed any
+planes by doing that.
+
+279
+00:14:15,130 --> 00:14:19,450
+Now the quantity w x_n which is
+the signal, as we talked about it, is
+
+280
+00:14:19,450 --> 00:14:20,510
+a pretty interesting thing.
+
+281
+00:14:20,510 --> 00:14:22,030
+So let's look at it.
+
+282
+00:14:22,030 --> 00:14:23,290
+I have the plane.
+
+283
+00:14:23,290 --> 00:14:25,930
+So the plane has the signal equals 0.
+
+284
+00:14:25,930 --> 00:14:27,110
+And it doesn't touch any points.
+
+285
+00:14:27,110 --> 00:14:29,070
+The points are linearly separable.
+
+286
+00:14:29,070 --> 00:14:31,180
+Now when you get the signal
+to be positive, you are
+
+287
+00:14:31,180 --> 00:14:32,700
+moving in one direction.
+
+288
+00:14:32,700 --> 00:14:34,330
+You hit the closest point.
+
+289
+00:14:34,330 --> 00:14:37,620
+And then you hit more points, the
+interior points, so to speak.
+
+290
+00:14:37,620 --> 00:14:40,490
+And when you go in the other direction
+and it's negative, you hit the other
+
+291
+00:14:40,490 --> 00:14:43,640
+points, the nearest point on the
+negative side, and then the interior
+
+292
+00:14:43,640 --> 00:14:45,560
+points which are further out.
+
+293
+00:14:45,560 --> 00:14:46,300
+
+
+294
+00:14:46,300 --> 00:14:49,810
+So indeed that signal actually relates
+to the distance, but it's not the
+
+295
+00:14:49,810 --> 00:14:50,630
+Euclidean distance.
+
+296
+00:14:50,630 --> 00:14:53,810
+It just has an order of the points,
+according to which is nearest
+
+297
+00:14:53,810 --> 00:14:55,850
+and which is furthest.
+
+298
+00:14:55,850 --> 00:14:57,560
+But what I'd like to do, I would
+like to actually get
+
+299
+00:14:57,560 --> 00:14:58,610
+the Euclidean distance.
+
+300
+00:14:58,610 --> 00:15:00,860
+Because I'm not comparing the
+performance of this plane
+
+301
+00:15:00,860 --> 00:15:02,340
+on different points.
+
+302
+00:15:02,340 --> 00:15:06,010
+I'm comparing the performance of
+different planes on the same point.
+
+303
+00:15:06,010 --> 00:15:07,770
+So I have to have the same yardstick.
+
+304
+00:15:07,770 --> 00:15:12,040
+And the yardstick I'm going to
+use is the Euclidean distance.
+
+305
+00:15:12,040 --> 00:15:12,620
+
+
+306
+00:15:12,620 --> 00:15:14,390
+So I'm going to take this
+as a constraint.
+
+307
+00:15:14,390 --> 00:15:18,970
+And when I solve for it, I will find out
+that the problem I'm now solving for is
+
+308
+00:15:18,970 --> 00:15:20,080
+much easier to solve.
+
+309
+00:15:20,080 --> 00:15:21,350
+And then I can get the plane.
+
+310
+00:15:21,350 --> 00:15:24,680
+And the plane will be general
+under this normalization.
+
+311
+00:15:24,680 --> 00:15:27,130
+The second one is pure technicality.
+
+312
+00:15:27,130 --> 00:15:32,282
+Remember that we had x being in
+Euclidean space R to the d.
+
+313
+00:15:32,282 --> 00:15:37,600
+And then we added this artificial
+coordinate x_0 in order to take care of
+
+314
+00:15:37,600 --> 00:15:42,020
+w_0 that was the threshold, if you
+think of it as comparing with
+
+315
+00:15:42,020 --> 00:15:45,270
+a number, or a bias if you think
+of it as adding a number.
+
+316
+00:15:45,270 --> 00:15:48,810
+And that was convenient just to have
+the nice vector and matrix
+
+317
+00:15:48,810 --> 00:15:50,780
+representation and so on.
+
+318
+00:15:50,780 --> 00:15:56,650
+Now it turns out that, when you solve for
+the margin, the w_1 up to w_d will
+
+319
+00:15:56,650 --> 00:16:00,940
+play a completely different role
+from the role w_0 is playing.
+
+320
+00:16:00,940 --> 00:16:04,610
+So it is no longer convenient to
+have them as the same vector.
+
+321
+00:16:04,610 --> 00:16:09,700
+So for the analysis of support vector
+machines, we're going to pull w_0 out.
+
+322
+00:16:09,700 --> 00:16:15,280
+So the vector w now is the
+old vector w_1 up to w_d.
+
+323
+00:16:15,280 --> 00:16:16,100
+
+
+324
+00:16:16,100 --> 00:16:18,800
+And you take out w_0.
+
+325
+00:16:18,800 --> 00:16:22,350
+And in order not to confuse it and call
+it w, because it has a different
+
+326
+00:16:22,350 --> 00:16:26,330
+role, we are going to call
+it here b, for bias.
+
+327
+00:16:26,330 --> 00:16:27,280
+OK?
+
+328
+00:16:27,280 --> 00:16:34,960
+So now the equation for the plane is w,
+our new w, times x plus b equals 0.
+
+329
+00:16:34,960 --> 00:16:35,710
+
+
+330
+00:16:35,710 --> 00:16:37,900
+And there is no x_0.
+
+331
+00:16:37,900 --> 00:16:43,490
+x_0 used to be multiplied
+by b, also known as w_0.
+
+332
+00:16:43,490 --> 00:16:48,190
+So every w you will see in this
+lecture will belong to this
+
+333
+00:16:48,190 --> 00:16:49,230
+convention.
+
+334
+00:16:49,230 --> 00:16:54,760
+And now if you can look at this-- this
+will be w transposed x_n plus b.
+
+335
+00:16:54,760 --> 00:16:56,570
+Absolute value equals 1.
+
+336
+00:16:56,570 --> 00:16:59,950
+And the plane will be w transposed
+x plus b equals 0.
+
+337
+00:16:59,950 --> 00:17:00,580
+
+
+338
+00:17:00,580 --> 00:17:03,920
+Just a convention that will make
+our math much more friendly.
+
+339
+00:17:03,920 --> 00:17:04,339
+
+
+340
+00:17:04,339 --> 00:17:07,150
+So these are the technicalities that
+I wanted to get out of the way.
+
+341
+00:17:07,150 --> 00:17:08,010
+
+
+342
+00:17:08,010 --> 00:17:12,380
+Now, big box, because it's
+an important thing.
+
+343
+00:17:12,380 --> 00:17:13,160
+It will stay with us.
+
+344
+00:17:13,160 --> 00:17:16,390
+And then we go for computing
+the distance.
+
+345
+00:17:16,390 --> 00:17:21,130
+So now, we would like to get
+the distance between x_n--
+
+346
+00:17:21,130 --> 00:17:23,069
+we took x_n to be the nearest point,
+
+347
+00:17:23,069 --> 00:17:24,950
+and therefore the distance
+will be the margin.
+
+348
+00:17:24,950 --> 00:17:26,750
+And we want to get the distance
+from the plane.
+
+349
+00:17:26,750 --> 00:17:28,342
+So let's look at the geometry
+of the situation.
+
+350
+00:17:28,342 --> 00:17:31,830
+
+
+351
+00:17:31,830 --> 00:17:35,100
+I have this as the equation
+for the plane.
+
+352
+00:17:35,100 --> 00:17:40,210
+And I have the conditions
+that I talked about.
+
+353
+00:17:40,210 --> 00:17:41,080
+This is the geometry.
+
+354
+00:17:41,080 --> 00:17:42,810
+I have a plane.
+
+355
+00:17:42,810 --> 00:17:44,360
+And I have a point x_n.
+
+356
+00:17:44,360 --> 00:17:47,610
+And I'd like to estimate the distance.
+
+357
+00:17:47,610 --> 00:17:50,520
+First statement.
+
+358
+00:17:50,520 --> 00:17:56,050
+The vector w is perpendicular
+to the plane.
+
+359
+00:17:56,050 --> 00:17:59,480
+That should be easy enough if you have
+seen any geometry before, but it's not
+
+360
+00:17:59,480 --> 00:18:01,180
+very difficult to argue.
+
+361
+00:18:01,180 --> 00:18:03,730
+But remember now that the vector
+w is in the X space.
+
+362
+00:18:03,730 --> 00:18:05,120
+I'm not talking about
+the weight space.
+
+363
+00:18:05,120 --> 00:18:09,290
+I'm talking about w as you plug in
+the values and you get a vector.
+
+364
+00:18:09,290 --> 00:18:12,110
+And I'm looking at that vector
+in the input space X.
+
+365
+00:18:12,110 --> 00:18:14,530
+And I'm saying it's perpendicular
+to the plane.
+
+366
+00:18:14,530 --> 00:18:16,120
+Why is that?
+
+367
+00:18:16,120 --> 00:18:19,650
+Because let's say that you
+pick any two points--
+
+368
+00:18:19,650 --> 00:18:23,140
+call them x dash and x double
+dash-- on the plane proper.
+
+369
+00:18:23,140 --> 00:18:23,410
+
+
+370
+00:18:23,410 --> 00:18:25,870
+So they are lying there.
+
+371
+00:18:25,870 --> 00:18:26,660
+
+
+372
+00:18:26,660 --> 00:18:28,430
+What do I know about these two points?
+
+373
+00:18:28,430 --> 00:18:31,420
+Well, they are on the plane, so
+they had better satisfy the
+
+374
+00:18:31,420 --> 00:18:33,340
+equation of the plane.
+
+375
+00:18:33,340 --> 00:18:34,260
+Right?
+
+376
+00:18:34,260 --> 00:18:38,210
+So I can conclude that it must be that,
+when I plug in x dash in that equation,
+
+377
+00:18:38,210 --> 00:18:39,290
+I will get 0.
+
+378
+00:18:39,290 --> 00:18:43,310
+And when I plug in x double
+dash, I will get 0.
+
+379
+00:18:43,310 --> 00:18:44,245
+Conclusion:
+
+380
+00:18:44,245 --> 00:18:48,870
+If I take the difference between these
+two equations, I will get w
+
+381
+00:18:48,870 --> 00:18:52,040
+transposed times x dash minus
+x double dash, equals 0.
+
+382
+00:18:52,040 --> 00:18:55,400
+And now you can see that
+good old b dropped out.
+
+383
+00:18:55,400 --> 00:18:58,190
+And this is the reason why it has
+a different treatment here.
+
+384
+00:18:58,190 --> 00:18:59,540
+The other guys actually mattered.
+
+385
+00:18:59,540 --> 00:19:01,600
+But the b plays a different role.
+
+386
+00:19:01,600 --> 00:19:02,710
+
+
+387
+00:19:02,710 --> 00:19:05,150
+So when you see an equation like
+that, your conclusion is what?
+
+388
+00:19:05,150 --> 00:19:11,820
+Your conclusion is that w, as a vector,
+must be orthogonal to x dash minus x
+
+389
+00:19:11,820 --> 00:19:13,500
+double dash, as a vector.
+
+390
+00:19:13,500 --> 00:19:17,500
+So when you look at the plane, here is
+the vector x dash minus x double dash.
+
+391
+00:19:17,500 --> 00:19:18,750
+Let me magnify it.
+
+392
+00:19:18,750 --> 00:19:22,010
+
+
+393
+00:19:22,010 --> 00:19:25,824
+And this must be orthogonal
+to the vector w.
+
+394
+00:19:25,824 --> 00:19:27,074
+
+
+395
+00:19:27,074 --> 00:19:29,020
+
+
+396
+00:19:29,020 --> 00:19:35,890
+So the interesting thing is that we
+didn't make any restrictions on x dash
+
+397
+00:19:35,890 --> 00:19:36,530
+and x double dash.
+
+398
+00:19:36,530 --> 00:19:40,020
+These could be any two points
+on the plane, right?
+
+399
+00:19:40,020 --> 00:19:44,330
+So now the conclusion is that w, which is
+the same w-- the vector w that defines
+
+400
+00:19:44,330 --> 00:19:49,410
+the plane, is orthogonal to
+every vector on the plane.
+
+401
+00:19:49,410 --> 00:19:50,060
+Right?
+
+402
+00:19:50,060 --> 00:19:52,380
+Therefore, it is orthogonal
+to the plane.
+
+403
+00:19:52,380 --> 00:19:53,230
+
+
+404
+00:19:53,230 --> 00:19:54,180
+So we got that much.
+
+405
+00:19:54,180 --> 00:19:57,200
+We know that now w has
+an interpretation.
+
+406
+00:19:57,200 --> 00:19:58,490
+
+
+407
+00:19:58,490 --> 00:20:00,190
+Now we can get the distance.
+
+408
+00:20:00,190 --> 00:20:01,660
+Once you know they are orthogonal
+to the plane, you
+
+409
+00:20:01,660 --> 00:20:02,590
+probably can get the distance.
+
+410
+00:20:02,590 --> 00:20:04,410
+Because what do we have?
+
+411
+00:20:04,410 --> 00:20:10,540
+The distance between x_n and the plane,
+and we put them here, is what?
+
+412
+00:20:10,540 --> 00:20:12,360
+Can be computed as follows.
+
+413
+00:20:12,360 --> 00:20:14,480
+Pick any point, one point,
+on the plane.
+
+414
+00:20:14,480 --> 00:20:16,858
+We just call to generic x.
+
+415
+00:20:16,858 --> 00:20:18,250
+
+
+416
+00:20:18,250 --> 00:20:25,470
+And then you take the projection of the
+vector going from here to here.
+
+417
+00:20:25,470 --> 00:20:29,350
+You project it on the direction which
+is orthogonal to the plane.
+
+418
+00:20:29,350 --> 00:20:31,540
+And that will be your distance.
+
+419
+00:20:31,540 --> 00:20:32,320
+Right?
+
+420
+00:20:32,320 --> 00:20:34,860
+So we just need to put the mathematics
+that goes with that.
+
+421
+00:20:34,860 --> 00:20:35,730
+
+
+422
+00:20:35,730 --> 00:20:37,540
+So here's the vector.
+
+423
+00:20:37,540 --> 00:20:41,490
+And here is the other vector, which we
+know that is orthogonal to the plane.
+
+424
+00:20:41,490 --> 00:20:47,220
+Now if you project this fellow on this
+direction, that length will give you
+
+425
+00:20:47,220 --> 00:20:49,120
+the distance.
+
+426
+00:20:49,120 --> 00:20:51,030
+
+
+427
+00:20:51,030 --> 00:20:53,030
+Now in order to get the projection,
+what do you do?
+
+428
+00:20:53,030 --> 00:20:54,490
+You get the unit vector
+in the direction.
+
+429
+00:20:54,490 --> 00:20:59,560
+So you take w, which is this vector--
+could be of any length-- and you
+
+430
+00:20:59,560 --> 00:21:01,360
+normalize it by its norm.
+
+431
+00:21:01,360 --> 00:21:05,380
+And you get a unit vector under
+which the projection would be
+
+432
+00:21:05,380 --> 00:21:07,100
+simply a dot product.
+
+433
+00:21:07,100 --> 00:21:11,250
+So now the w hat is a shorter w,
+if the norm of w happens to be
+
+434
+00:21:11,250 --> 00:21:12,320
+bigger than 1.
+
+435
+00:21:12,320 --> 00:21:14,120
+And what you get--
+
+436
+00:21:14,120 --> 00:21:16,030
+you get the distance being
+simply the inner product.
+
+437
+00:21:16,030 --> 00:21:17,930
+You take the unit vector, dot that.
+
+438
+00:21:17,930 --> 00:21:19,570
+And that is your distance.
+
+439
+00:21:19,570 --> 00:21:21,600
+Except for one minor issue.
+
+440
+00:21:21,600 --> 00:21:25,020
+This could be positive or negative
+depending on whether w is facing x or
+
+441
+00:21:25,020 --> 00:21:28,180
+facing the other direction so in order
+to get the distance proper, you
+
+442
+00:21:28,180 --> 00:21:30,110
+need the absolute value.
+
+443
+00:21:30,110 --> 00:21:32,080
+So we have a solution for it.
+
+444
+00:21:32,080 --> 00:21:33,470
+
+
+445
+00:21:33,470 --> 00:21:35,150
+Now we can write the distance as--
+
+446
+00:21:35,150 --> 00:21:38,140
+
+
+447
+00:21:38,140 --> 00:21:39,630
+this is the formula.
+
+448
+00:21:39,630 --> 00:21:41,740
+Now I multiply it by w hat.
+
+449
+00:21:41,740 --> 00:21:43,300
+I know what the formula for w hat is.
+
+450
+00:21:43,300 --> 00:21:44,430
+I write it down.
+
+451
+00:21:44,430 --> 00:21:47,040
+And now I have it in this form.
+
+452
+00:21:47,040 --> 00:21:53,440
+Now this can be simplified if I add
+the missing term, plus b minus b.
+
+453
+00:21:53,440 --> 00:21:55,260
+Why is that?
+
+454
+00:21:55,260 --> 00:21:59,440
+Can someone tell me what is w^T x plus
+b, which is this quantity being
+
+455
+00:21:59,440 --> 00:22:01,600
+subtracted here?
+
+456
+00:22:01,600 --> 00:22:06,590
+This is the value of the equation of
+the plane, for a point on the plane.
+
+457
+00:22:06,590 --> 00:22:09,210
+So this will happen to be 0.
+
+458
+00:22:09,210 --> 00:22:13,560
+How about this quantity, w^T x_n
+plus b, for my point x_n.
+
+459
+00:22:13,560 --> 00:22:14,690
+
+
+460
+00:22:14,690 --> 00:22:19,120
+Well, that was the quantity
+that we insisted on being 1.
+
+461
+00:22:19,120 --> 00:22:22,350
+Remember when we normalized the w,
+because w's could go up and down.
+
+462
+00:22:22,350 --> 00:22:26,690
+And we scaled them such that the
+absolute value of this quantity is 1.
+
+463
+00:22:26,690 --> 00:22:30,430
+So all of a sudden, this
+thing is just 1.
+
+464
+00:22:30,430 --> 00:22:34,640
+And you end up with the formula for the
+distance, given that normalization,
+
+465
+00:22:34,640 --> 00:22:37,220
+being simply 1 over the norm.
+
+466
+00:22:37,220 --> 00:22:39,700
+That's a pretty easy thing to do.
+
+467
+00:22:39,700 --> 00:22:45,000
+So if you take the plane and insist on
+a canonical representation of w by
+
+468
+00:22:45,000 --> 00:22:51,180
+making this part 1 for the nearest
+point, then your margin will simply be
+
+469
+00:22:51,180 --> 00:22:54,210
+1 over the norm of w you used.
+
+470
+00:22:54,210 --> 00:22:58,100
+This I can use, in order now to choose
+what combination of w's will give me
+
+471
+00:22:58,100 --> 00:23:01,490
+the best possible margin,
+which is the next one.
+
+472
+00:23:01,490 --> 00:23:03,270
+So let's now formulate the problem.
+
+473
+00:23:03,270 --> 00:23:07,500
+Here is the optimization
+problem that resulted.
+
+474
+00:23:07,500 --> 00:23:09,430
+We are maximizing the margin.
+
+475
+00:23:09,430 --> 00:23:11,090
+The margin happens to
+be 1 over the norm.
+
+476
+00:23:11,090 --> 00:23:13,810
+So that is what we are maximizing.
+
+477
+00:23:13,810 --> 00:23:16,840
+Subject to what?
+
+478
+00:23:16,840 --> 00:23:22,050
+Subject to the fact that for the nearest
+point, which happens to have
+
+479
+00:23:22,050 --> 00:23:25,480
+the smallest value of those guys-- so
+the minimum over all points in the
+
+480
+00:23:25,480 --> 00:23:31,300
+training set. I took the quantity here
+and scaled w up or down in order to
+
+481
+00:23:31,300 --> 00:23:32,690
+make that quantity 1.
+
+482
+00:23:32,690 --> 00:23:34,470
+So I take this as a constraint.
+
+483
+00:23:34,470 --> 00:23:39,430
+When you constrain yourself this way,
+then you are maximizing 1 over w.
+
+484
+00:23:39,430 --> 00:23:41,040
+And that is what you get.
+
+485
+00:23:41,040 --> 00:23:43,210
+
+
+486
+00:23:43,210 --> 00:23:45,450
+So what do we do with this?
+
+487
+00:23:45,450 --> 00:23:48,880
+Well, this is not a friendly
+optimization problem.
+
+488
+00:23:48,880 --> 00:23:52,610
+Because if the constraints have
+a minimum in them, that's bad news.
+
+489
+00:23:52,610 --> 00:23:56,760
+Minimum is not a nice
+function to have.
+
+490
+00:23:56,760 --> 00:24:00,560
+So what we are going to do now, we are
+going to try to find an equivalent
+
+491
+00:24:00,560 --> 00:24:02,570
+problem that is more friendly.
+
+492
+00:24:02,570 --> 00:24:04,850
+Completely equivalent, by very
+simple observations.
+
+493
+00:24:04,850 --> 00:24:07,050
+So the first observation is that I
+want to get rid of the minimum.
+
+494
+00:24:07,050 --> 00:24:08,690
+That's my biggest concern.
+
+495
+00:24:08,690 --> 00:24:10,100
+So the first thing I notice that--
+
+496
+00:24:10,100 --> 00:24:11,970
+not to mention the absolute value.
+
+497
+00:24:11,970 --> 00:24:14,750
+So the absolute value of this
+happens to be
+
+498
+00:24:14,750 --> 00:24:17,970
+equal to this fellow.
+
+499
+00:24:17,970 --> 00:24:19,400
+Why is that?
+
+500
+00:24:19,400 --> 00:24:22,480
+Well, every point is
+classified correctly.
+
+501
+00:24:22,480 --> 00:24:26,870
+I'm only considering the points that
+separate the data sets correctly.
+
+502
+00:24:26,870 --> 00:24:30,000
+And I'm choosing between them, for the
+one that maximizes the margin.
+
+503
+00:24:30,000 --> 00:24:32,890
+Because they are classifying the points
+correctly, it has to be that
+
+504
+00:24:32,890 --> 00:24:35,680
+the signal agrees with the label.
+
+505
+00:24:35,680 --> 00:24:39,430
+Therefore when you multiply, the label is
+just +1 or -1, and therefore it takes
+
+506
+00:24:39,430 --> 00:24:41,130
+care of the absolute value part.
+
+507
+00:24:41,130 --> 00:24:43,850
+So now I can use this instead
+of the absolute value.
+
+508
+00:24:43,850 --> 00:24:46,650
+I still haven't gotten
+rid of the minimum.
+
+509
+00:24:46,650 --> 00:24:50,280
+And I don't particularly like dividing
+1 over the norm, which has a square
+
+510
+00:24:50,280 --> 00:24:51,300
+root in it.
+
+511
+00:24:51,300 --> 00:24:53,150
+But that is very easily handled.
+
+512
+00:24:53,150 --> 00:24:58,150
+Instead of maximizing 1 over the norm,
+I'm going to minimize this friendly
+
+513
+00:24:58,150 --> 00:25:00,230
+quantity, quadratic one.
+
+514
+00:25:00,230 --> 00:25:01,170
+I'm minimizing now.
+
+515
+00:25:01,170 --> 00:25:02,980
+So I'm maximizing 1 over,
+minimizing that.
+
+516
+00:25:02,980 --> 00:25:04,770
+Everybody sees that it's equivalent.
+
+517
+00:25:04,770 --> 00:25:05,430
+
+
+518
+00:25:05,430 --> 00:25:06,640
+So now we can see.
+
+519
+00:25:06,640 --> 00:25:07,040
+
+
+520
+00:25:07,040 --> 00:25:09,960
+Does anybody see quadratic programming
+coming up in the horizon?
+
+521
+00:25:09,960 --> 00:25:10,350
+
+
+522
+00:25:10,350 --> 00:25:11,800
+There's our quadratic formula.
+
+523
+00:25:11,800 --> 00:25:12,560
+
+
+524
+00:25:12,560 --> 00:25:14,950
+The only thing I need to do is just have
+the constraints being friendly
+
+525
+00:25:14,950 --> 00:25:16,680
+constraints, not a minimum
+and absolute value.
+
+526
+00:25:16,680 --> 00:25:19,770
+Just inequality constraints
+that are linear in nature.
+
+527
+00:25:19,770 --> 00:25:20,390
+
+
+528
+00:25:20,390 --> 00:25:25,320
+And I claim that you can do this by
+simply taking subject to these.
+
+529
+00:25:25,320 --> 00:25:25,550
+
+
+530
+00:25:25,550 --> 00:25:28,390
+So this doesn't bother me, because I
+already established that it deals with
+
+531
+00:25:28,390 --> 00:25:29,490
+the absolute value.
+
+532
+00:25:29,490 --> 00:25:34,750
+But here, I'm taking greater than
+or equal to 1 for all points.
+
+533
+00:25:34,750 --> 00:25:36,090
+
+
+534
+00:25:36,090 --> 00:25:40,300
+I can see that if the minimum
+is 1, then this is true.
+
+535
+00:25:40,300 --> 00:25:44,290
+But it is conceivable that I do this
+optimization, and I end up with a quantity
+
+536
+00:25:44,290 --> 00:25:47,970
+for which all of these guys happen
+to be strictly greater than 1.
+
+537
+00:25:47,970 --> 00:25:50,870
+That is a feasible point, according
+to the constraints.
+
+538
+00:25:50,870 --> 00:25:54,220
+And if this by any chance gives me the
+minimum, then that is the minimum I'm
+
+539
+00:25:54,220 --> 00:25:54,920
+going to get.
+
+540
+00:25:54,920 --> 00:25:57,330
+And the problem with that is that this
+is a different statement from the
+
+541
+00:25:57,330 --> 00:25:58,610
+statement I made here.
+
+542
+00:25:58,610 --> 00:25:59,600
+That's the only difference.
+
+543
+00:25:59,600 --> 00:26:00,600
+
+
+544
+00:26:00,600 --> 00:26:04,290
+Well, is it possible that the minimum
+will be achieved at a point where this
+
+545
+00:26:04,290 --> 00:26:07,960
+is greater than 1 for all of them?
+
+546
+00:26:07,960 --> 00:26:10,240
+A simple observation tells you: no,
+this is impossible.
+
+547
+00:26:10,240 --> 00:26:12,130
+Because let's say that you
+got that solution.
+
+548
+00:26:12,130 --> 00:26:15,780
+You tell me: this is the minimum I
+can get for w transposed w, right?
+
+549
+00:26:15,780 --> 00:26:19,480
+And I got it for values where this
+is strictly greater than 1.
+
+550
+00:26:19,480 --> 00:26:22,370
+Then what I'm going to do, I'm going
+to ask you: give me your solution.
+
+551
+00:26:22,370 --> 00:26:24,440
+And I'm going to give you
+a better solution.
+
+552
+00:26:24,440 --> 00:26:25,850
+What am I going to do?
+
+553
+00:26:25,850 --> 00:26:30,650
+I'm going to scale w and b
+proportionately down until
+
+554
+00:26:30,650 --> 00:26:31,860
+they touch the 1.
+
+555
+00:26:31,860 --> 00:26:33,600
+You have a slack, right?
+
+556
+00:26:33,600 --> 00:26:38,240
+So I can just pull all of them, just
+slightly, until one of them touches 1.
+
+557
+00:26:38,240 --> 00:26:39,140
+
+
+558
+00:26:39,140 --> 00:26:41,610
+Now under those conditions, definitely,
+if the original
+
+559
+00:26:41,610 --> 00:26:44,980
+constraints were satisfied, the new
+constraints will be satisfied.
+
+560
+00:26:44,980 --> 00:26:46,300
+All of them are just proportional.
+
+561
+00:26:46,300 --> 00:26:49,200
+I can pull out the factor, which
+is a positive factor.
+
+562
+00:26:49,200 --> 00:26:53,180
+And indeed, if this is the case, this
+will be the case for the other one.
+
+563
+00:26:53,180 --> 00:26:56,910
+And the point is that the w I got is
+smaller than yours because I scaled
+
+564
+00:26:56,910 --> 00:26:58,750
+them down, right?
+
+565
+00:26:58,750 --> 00:27:01,480
+So it must be that my solution
+is better than yours.
+
+566
+00:27:01,480 --> 00:27:02,360
+Conclusion:
+
+567
+00:27:02,360 --> 00:27:07,320
+When you solve this, the w that you will
+get necessarily satisfies these
+
+568
+00:27:07,320 --> 00:27:09,630
+with at least one of those
+guys with equality.
+
+569
+00:27:09,630 --> 00:27:11,250
+Which means that the minimum is 1.
+
+570
+00:27:11,250 --> 00:27:14,920
+And therefore, this problem is
+equivalent to this problem.
+
+571
+00:27:14,920 --> 00:27:16,420
+This is really very nice.
+
+572
+00:27:16,420 --> 00:27:19,610
+So we started from a concept, and geometry,
+and simplification, and now
+
+573
+00:27:19,610 --> 00:27:23,320
+we end up with this very friendly
+statement that we are going to solve.
+
+574
+00:27:23,320 --> 00:27:28,100
+And when you solve it, you're going to
+get the separating plane with the best
+
+575
+00:27:28,100 --> 00:27:29,550
+possible margin.
+
+576
+00:27:29,550 --> 00:27:31,350
+
+
+577
+00:27:31,350 --> 00:27:33,340
+So let's look at the solution.
+
+578
+00:27:33,340 --> 00:27:38,200
+Formally speaking, let's put it in
+a constrained optimization question.
+
+579
+00:27:38,200 --> 00:27:42,360
+The constrained optimization here-- you
+minimize this objective function
+
+580
+00:27:42,360 --> 00:27:44,840
+subject to these constraints.
+
+581
+00:27:44,840 --> 00:27:46,000
+We have seen those.
+
+582
+00:27:46,000 --> 00:27:50,630
+And the domain you're working on,
+w happens to be in the Euclidean
+
+583
+00:27:50,630 --> 00:27:52,160
+space R to the d.
+
+584
+00:27:52,160 --> 00:27:54,680
+b happens to be a scalar, belongs
+to the real numbers.
+
+585
+00:27:54,680 --> 00:27:56,770
+That is the statement.
+
+586
+00:27:56,770 --> 00:27:59,790
+Now when you have a constrained
+optimization-- we have a bunch of
+
+587
+00:27:59,790 --> 00:28:01,020
+constraints here.
+
+588
+00:28:01,020 --> 00:28:04,410
+And we will need to go an analytic
+route in order to solve it.
+
+589
+00:28:04,410 --> 00:28:07,200
+Geometry won't help us very much.
+
+590
+00:28:07,200 --> 00:28:10,740
+So what we're going to do here, we are
+going to ask ourselves: oh, constrained
+
+591
+00:28:10,740 --> 00:28:11,410
+optimization.
+
+592
+00:28:11,410 --> 00:28:13,140
+I heard of Lagrange.
+
+593
+00:28:13,140 --> 00:28:16,350
+You form a Lagrangian, and then all of
+a sudden the constrained become
+
+594
+00:28:16,350 --> 00:28:19,770
+unconstrained, and you solve it, and
+you get the multipliers lambda.
+
+595
+00:28:19,770 --> 00:28:22,300
+Lambda is pretty much what we got
+in regularization before.
+
+596
+00:28:22,300 --> 00:28:23,140
+We did it geometrically.
+
+597
+00:28:23,140 --> 00:28:24,790
+We didn't do it explicitly
+with Lagrange.
+
+598
+00:28:24,790 --> 00:28:26,540
+But that's what you get.
+
+599
+00:28:26,540 --> 00:28:29,910
+Now the problem here is that the
+constraints you have are inequality
+
+600
+00:28:29,910 --> 00:28:32,050
+constraints, not equality constraints.
+
+601
+00:28:32,050 --> 00:28:34,840
+That changes the game a little
+bit, but just a little bit.
+
+602
+00:28:34,840 --> 00:28:39,260
+Because what people did is simply look
+at these and realize that there is
+
+603
+00:28:39,260 --> 00:28:40,710
+a slack here.
+
+604
+00:28:40,710 --> 00:28:45,110
+If I call the slack s squared,
+I can make this equality.
+
+605
+00:28:45,110 --> 00:28:47,730
+And then I can solve the old Lagrangian,
+with equality.
+
+606
+00:28:47,730 --> 00:28:48,300
+
+
+607
+00:28:48,300 --> 00:28:50,600
+I can comment on that in the
+Q&amp;A session, because
+
+608
+00:28:50,600 --> 00:28:52,750
+it's a very nice approach.
+
+609
+00:28:52,750 --> 00:28:56,510
+And that approach was derived
+independently by two sets of people,
+
+610
+00:28:56,510 --> 00:29:00,040
+Karush, which is the first K, and
+Kuhn-Tucker, which is the KT.
+
+611
+00:29:00,040 --> 00:29:05,480
+And the Lagrangian under the inequality
+constraint is referred to as KKT.
+
+612
+00:29:05,480 --> 00:29:05,940
+
+
+613
+00:29:05,940 --> 00:29:08,800
+So now, let us try to solve this.
+
+614
+00:29:08,800 --> 00:29:11,770
+And I'd like, before I actually go
+through the mathematics of it, to
+
+615
+00:29:11,770 --> 00:29:16,910
+remind you that we actually saw this
+before in the constrained optimization
+
+616
+00:29:16,910 --> 00:29:20,740
+we solved before under inequality constraints,
+which was regularization.
+
+617
+00:29:20,740 --> 00:29:21,490
+
+
+618
+00:29:21,490 --> 00:29:25,730
+And it is good to look at that picture,
+because it will put the analysis here
+
+619
+00:29:25,730 --> 00:29:26,900
+in perspective.
+
+620
+00:29:26,900 --> 00:29:27,470
+
+
+621
+00:29:27,470 --> 00:29:29,580
+So in that case, you don't
+have to go through the details.
+
+622
+00:29:29,580 --> 00:29:30,730
+We were minimizing something--
+
+623
+00:29:30,730 --> 00:29:34,140
+you don't have to worry about the
+formula exactly-- under a constraint.
+
+624
+00:29:34,140 --> 00:29:36,325
+And the constraint is an inequality
+constraint that resulted in weight
+
+625
+00:29:36,325 --> 00:29:38,160
+decay, if you remember.
+
+626
+00:29:38,160 --> 00:29:40,840
+And we had a picture
+that went with it.
+
+627
+00:29:40,840 --> 00:29:44,650
+And what we did was, we looked
+at the picture and found
+
+628
+00:29:44,650 --> 00:29:46,570
+a condition for the solution.
+
+629
+00:29:46,570 --> 00:29:47,380
+
+
+630
+00:29:47,380 --> 00:29:52,520
+And the condition for the solution
+showed that the gradient of your
+
+631
+00:29:52,520 --> 00:29:56,760
+objective function, of the thing you are
+trying to minimize, becomes
+
+632
+00:29:56,760 --> 00:29:58,965
+something that is related to
+the constraint itself.
+
+633
+00:29:58,965 --> 00:30:01,300
+In this case: normal.
+
+634
+00:30:01,300 --> 00:30:04,430
+The most important aspect to realize is
+that, when you solve the constrained
+
+635
+00:30:04,430 --> 00:30:08,775
+problem here, the end result was
+that the gradient is not 0.
+
+636
+00:30:08,775 --> 00:30:11,170
+It would have been 0 if the
+problem was unconstrained.
+
+637
+00:30:11,170 --> 00:30:14,860
+If I asked you to minimize this, you
+just go for gradient equals 0, and solve.
+
+638
+00:30:14,860 --> 00:30:18,930
+So now, because of the constraint, the
+constraint kicks in, and you have the
+
+639
+00:30:18,930 --> 00:30:21,320
+gradient being something related
+to the constraint.
+
+640
+00:30:21,320 --> 00:30:23,580
+And that's what will happen
+exactly when we have the
+
+641
+00:30:23,580 --> 00:30:25,670
+Lagrangian in this case.
+
+642
+00:30:25,670 --> 00:30:27,220
+But one of the benefits of having--
+
+643
+00:30:27,220 --> 00:30:27,840
+of reminding you
+
+644
+00:30:27,840 --> 00:30:32,160
+of the regularization is that there's
+a conceptual dichotomy,
+
+645
+00:30:32,160 --> 00:30:38,160
+no pun intended, between the
+regularization and the SVM.
+
+646
+00:30:38,160 --> 00:30:40,560
+SVM is what we're doing here,
+maximizing the margin, and
+
+647
+00:30:40,560 --> 00:30:41,630
+regularization.
+
+648
+00:30:41,630 --> 00:30:45,690
+So let's look at both cases and ask
+ourselves: what are we optimizing, and
+
+649
+00:30:45,690 --> 00:30:48,290
+what is the constraint?
+
+650
+00:30:48,290 --> 00:30:50,520
+If you remember in regularization,
+we already have the equation.
+
+651
+00:30:50,520 --> 00:30:52,810
+What we are minimizing is
+the in-sample error.
+
+652
+00:30:52,810 --> 00:30:53,120
+
+
+653
+00:30:53,120 --> 00:30:58,500
+So we are optimizing E_in, under the
+constraints that are related to w
+
+654
+00:30:58,500 --> 00:31:00,620
+transposed w, the size of the weights.
+
+655
+00:31:00,620 --> 00:31:02,520
+That was weight decay.
+
+656
+00:31:02,520 --> 00:31:05,340
+If you look at the equation we just
+found out in order to maximize the
+
+657
+00:31:05,340 --> 00:31:10,720
+margin, what we are actually optimizing
+is w transposed w.
+
+658
+00:31:10,720 --> 00:31:12,960
+That is what you're trying
+to minimize.
+
+659
+00:31:12,960 --> 00:31:14,010
+Right?
+
+660
+00:31:14,010 --> 00:31:16,610
+And your constraint is that you're
+getting all the points right.
+
+661
+00:31:16,610 --> 00:31:19,630
+So your constraint is that E_in is 0.
+
+662
+00:31:19,630 --> 00:31:21,150
+So it's the other way around.
+
+663
+00:31:21,150 --> 00:31:24,590
+But again, because both of them will
+blend in the Lagrangian, and you will
+
+664
+00:31:24,590 --> 00:31:30,820
+end up doing something that is
+a compromise, it's conceptually not
+
+665
+00:31:30,820 --> 00:31:34,930
+a big shock that we are reversing roles
+here, and minimizing what is in our
+
+666
+00:31:34,930 --> 00:31:39,370
+mind a constraint, and constraining
+what is in our mind an objective
+
+667
+00:31:39,370 --> 00:31:41,040
+function to be minimized.
+
+668
+00:31:41,040 --> 00:31:41,600
+
+
+669
+00:31:41,600 --> 00:31:43,310
+Back to the formulation.
+
+670
+00:31:43,310 --> 00:31:45,630
+So now, let's look at the
+Lagrange formulation.
+
+671
+00:31:45,630 --> 00:31:46,060
+
+
+672
+00:31:46,060 --> 00:31:48,510
+And I would like you to pay
+attention to this slide.
+
+673
+00:31:48,510 --> 00:31:53,270
+Because once you get the formulation,
+we're not going to do much beyond
+
+674
+00:31:53,270 --> 00:31:57,190
+getting a clean version of the
+Lagrangian, and then passing it on to
+
+675
+00:31:57,190 --> 00:32:01,020
+a package of quadratic programming
+to give us a solution.
+
+676
+00:32:01,020 --> 00:32:03,850
+But at least, arriving
+there is important.
+
+677
+00:32:03,850 --> 00:32:05,450
+So let's look at it.
+
+678
+00:32:05,450 --> 00:32:08,260
+We are minimizing--
+
+679
+00:32:08,260 --> 00:32:11,860
+this is our objective function--
+subject to
+
+680
+00:32:11,860 --> 00:32:14,150
+constraints of this form.
+
+681
+00:32:14,150 --> 00:32:18,470
+First step, take the inequality
+constraints and put
+
+682
+00:32:18,470 --> 00:32:20,710
+them in the 0 form.
+
+683
+00:32:20,710 --> 00:32:22,150
+So what do I mean by that?
+
+684
+00:32:22,150 --> 00:32:26,690
+Instead of saying that's greater or
+equal to 1, you put it as minus 1, and
+
+685
+00:32:26,690 --> 00:32:30,700
+then require that this is greater
+than or equal to 0.
+
+686
+00:32:30,700 --> 00:32:31,980
+
+
+687
+00:32:31,980 --> 00:32:35,980
+And now you see, it got multiplied
+by a Lagrange multiplier.
+
+688
+00:32:35,980 --> 00:32:36,470
+
+
+689
+00:32:36,470 --> 00:32:41,140
+So think of this, since this should be
+greater than 0, this is the slack.
+
+690
+00:32:41,140 --> 00:32:44,500
+So the Lagrange multipliers get
+multiplied by the slack.
+
+691
+00:32:44,500 --> 00:32:47,500
+And then you add them up.
+
+692
+00:32:47,500 --> 00:32:49,780
+And they become part of the objective.
+
+693
+00:32:49,780 --> 00:32:55,510
+And they come out as a minus, simply
+because the inequalities here are in
+
+694
+00:32:55,510 --> 00:32:57,820
+the direction greater than or equal to.
+
+695
+00:32:57,820 --> 00:32:59,560
+That's what goes with the minus here.
+
+696
+00:32:59,560 --> 00:33:01,340
+I'm not proving any of that.
+
+697
+00:33:01,340 --> 00:33:05,940
+I'm just motivating for you that this
+formula makes sense, but there's
+
+698
+00:33:05,940 --> 00:33:08,880
+mathematics that actually
+pins it down exactly.
+
+699
+00:33:08,880 --> 00:33:10,180
+And you're minimizing this.
+
+700
+00:33:10,180 --> 00:33:12,220
+So now let's give it a name.
+
+701
+00:33:12,220 --> 00:33:13,830
+It's a Lagrangian.
+
+702
+00:33:13,830 --> 00:33:16,640
+It is dependent on the variables
+that I used to minimize with
+
+703
+00:33:16,640 --> 00:33:18,300
+respect to, w and b.
+
+704
+00:33:18,300 --> 00:33:20,960
+And now I have a bunch of new variables
+which are the Lagrange
+
+705
+00:33:20,960 --> 00:33:25,770
+multipliers, the vector alpha, which
+is called lambda in other cases.
+
+706
+00:33:25,770 --> 00:33:27,220
+Here it's standard, alpha.
+
+707
+00:33:27,220 --> 00:33:28,900
+And there are N of them.
+
+708
+00:33:28,900 --> 00:33:32,320
+There's a Lagrange multiplier
+for every point in the set.
+
+709
+00:33:32,320 --> 00:33:33,820
+
+
+710
+00:33:33,820 --> 00:33:37,100
+We are minimizing this
+with respect to what?
+
+711
+00:33:37,100 --> 00:33:38,820
+With respect to w and b.
+
+712
+00:33:38,820 --> 00:33:40,300
+So that was the original thing.
+
+713
+00:33:40,300 --> 00:33:44,480
+The interesting part, which you should
+pay attention to, is that you're
+
+714
+00:33:44,480 --> 00:33:47,110
+actually maximizing with
+respect to alpha.
+
+715
+00:33:47,110 --> 00:33:53,730
+Again, I'm not making a mathematical
+proof that this method holds.
+
+716
+00:33:53,730 --> 00:33:55,120
+But this is what you do.
+
+717
+00:33:55,120 --> 00:34:00,320
+And it's interesting because when we
+had equality, we didn't worry about
+
+718
+00:34:00,320 --> 00:34:01,820
+maximization versus minimization.
+
+719
+00:34:01,820 --> 00:34:04,100
+Because all you did, you get
+the gradient equals 0.
+
+720
+00:34:04,100 --> 00:34:05,910
+So that applies for both
+maximum and minimum.
+
+721
+00:34:05,910 --> 00:34:08,150
+So we didn't necessarily
+pay attention to it.
+
+722
+00:34:08,150 --> 00:34:10,766
+Here you have to pay attention to it,
+because you are maximizing with
+
+723
+00:34:10,766 --> 00:34:13,800
+respect to alphas, but the alphas
+have to be non-negative.
+
+724
+00:34:13,800 --> 00:34:14,580
+
+
+725
+00:34:14,580 --> 00:34:18,190
+Once you restrict the domain, you can't
+just get the gradient to be 0, because
+
+726
+00:34:18,190 --> 00:34:18,790
+the function--
+
+727
+00:34:18,790 --> 00:34:21,730
+if the function was all over and this
+way, you get the minimum.
+
+728
+00:34:21,730 --> 00:34:23,080
+And minimum has gradient 0.
+
+729
+00:34:23,080 --> 00:34:23,719
+
+
+730
+00:34:23,719 --> 00:34:29,670
+But if I tell you to stop here, the
+function could be going this way.
+
+731
+00:34:29,670 --> 00:34:31,449
+And this is the point you're
+going to pick.
+
+732
+00:34:31,449 --> 00:34:33,690
+And the gradient here
+is definitely not 0.
+
+733
+00:34:33,690 --> 00:34:34,500
+
+
+734
+00:34:34,500 --> 00:34:38,020
+So the question of maximizing versus
+minimizing, you need to
+
+735
+00:34:38,020 --> 00:34:38,469
+pay attention here.
+
+736
+00:34:38,469 --> 00:34:41,320
+We are not going to pay too much
+attention to it, because we'll just
+
+737
+00:34:41,320 --> 00:34:43,489
+tell the quadratic programming
+guy, please maximize.
+
+738
+00:34:43,489 --> 00:34:44,699
+And it will give us the solution.
+
+739
+00:34:44,699 --> 00:34:47,239
+But that is the problem
+we are solving.
+
+740
+00:34:47,239 --> 00:34:50,440
+So now we do at least
+the unconstrained part.
+
+741
+00:34:50,440 --> 00:34:53,820
+With respect to w and b, you
+are just minimizing this.
+
+742
+00:34:53,820 --> 00:34:54,300
+
+
+743
+00:34:54,300 --> 00:34:55,409
+So let's do it.
+
+744
+00:34:55,409 --> 00:34:59,100
+We're going to take the gradient
+of the Lagrangian with respect to w.
+
+745
+00:34:59,100 --> 00:35:04,510
+So I'm getting partial by partial
+for every weight that appears.
+
+746
+00:35:04,510 --> 00:35:08,530
+And I get the equation here.
+
+747
+00:35:08,530 --> 00:35:09,220
+How do I get that?
+
+748
+00:35:09,220 --> 00:35:09,420
+
+
+749
+00:35:09,420 --> 00:35:10,023
+I can differentiate.
+
+750
+00:35:10,023 --> 00:35:11,660
+So I'm going to differentiate this.
+
+751
+00:35:11,660 --> 00:35:12,810
+I get a w.
+
+752
+00:35:12,810 --> 00:35:14,660
+The squared goes with the half.
+
+753
+00:35:14,660 --> 00:35:18,280
+When I get this, I ask myself: what
+is the coefficient of w?
+
+754
+00:35:18,280 --> 00:35:21,160
+I get alpha, y_n, and x_n.
+
+755
+00:35:21,160 --> 00:35:21,950
+Right?
+
+756
+00:35:21,950 --> 00:35:25,580
+That one gets multiplied by w for
+every n equals 1 to N.
+
+757
+00:35:25,580 --> 00:35:27,040
+So I get that.
+
+758
+00:35:27,040 --> 00:35:29,400
+And I have a minus sign
+here, that comes here.
+
+759
+00:35:29,400 --> 00:35:31,210
+Everything else drops out.
+
+760
+00:35:31,210 --> 00:35:32,520
+So this is the formula.
+
+761
+00:35:32,520 --> 00:35:32,970
+
+
+762
+00:35:32,970 --> 00:35:34,740
+And what do I want the gradient to be?
+
+763
+00:35:34,740 --> 00:35:37,270
+I want it to be the vector 0.
+
+764
+00:35:37,270 --> 00:35:37,860
+
+
+765
+00:35:37,860 --> 00:35:39,250
+So that's a condition.
+
+766
+00:35:39,250 --> 00:35:40,700
+What is the other one?
+
+767
+00:35:40,700 --> 00:35:44,240
+I now get the derivative with
+respect to b. b is a scalar.
+
+768
+00:35:44,240 --> 00:35:48,690
+That's the remaining parameter.
+
+769
+00:35:48,690 --> 00:35:49,430
+
+
+770
+00:35:49,430 --> 00:35:52,510
+And when I look at it,
+can we do this?
+
+771
+00:35:52,510 --> 00:35:55,440
+What gets multiplied by b?
+
+772
+00:35:55,440 --> 00:35:56,775
+Oh I guess it's just the alphas.
+
+773
+00:35:56,775 --> 00:35:59,250
+Everything else drops out.
+
+774
+00:35:59,250 --> 00:36:01,740
+So-- oh, not just alphas!
+
+775
+00:36:01,740 --> 00:36:03,170
+It's y_n.
+
+776
+00:36:03,170 --> 00:36:03,900
+
+
+777
+00:36:03,900 --> 00:36:08,030
+So here's the b. It gets multiplied
+by y_n and alpha.
+
+778
+00:36:08,030 --> 00:36:10,590
+And that's what I get.
+
+779
+00:36:10,590 --> 00:36:13,850
+And you get this to be equal
+to the scalar 0.
+
+780
+00:36:13,850 --> 00:36:17,630
+So optimizing this with respect to
+w and b resulted in these two
+
+781
+00:36:17,630 --> 00:36:18,720
+conditions.
+
+782
+00:36:18,720 --> 00:36:22,740
+Now what I'm going to do, I'm going
+to go back and substitute with
+
+783
+00:36:22,740 --> 00:36:27,070
+these conditions in the original
+Lagrangian, such that the maximization
+
+784
+00:36:27,070 --> 00:36:27,960
+with respect to alpha--
+
+785
+00:36:27,960 --> 00:36:32,070
+which is the tricky part, because alpha
+has a range-- will become
+
+786
+00:36:32,070 --> 00:36:33,640
+free of w and b.
+
+787
+00:36:33,640 --> 00:36:34,200
+
+
+788
+00:36:34,200 --> 00:36:39,480
+And that formulation is referred to as
+the dual formulation of the problem.
+
+789
+00:36:39,480 --> 00:36:42,510
+So let's substitute.
+
+790
+00:36:42,510 --> 00:36:46,600
+Here are what I got from
+the last slide.
+
+791
+00:36:46,600 --> 00:36:51,590
+This one I got from the gradient
+with respect to w equals 0.
+
+792
+00:36:51,590 --> 00:36:53,150
+So w has to be this.
+
+793
+00:36:53,150 --> 00:36:57,720
+And this one from the partial
+by partial b, equals 0.
+
+794
+00:36:57,720 --> 00:36:58,610
+I get those.
+
+795
+00:36:58,610 --> 00:37:01,730
+And now I'm going to substitute
+them in the Lagrangian.
+
+796
+00:37:01,730 --> 00:37:04,230
+And the Lagrangian has that form.
+
+797
+00:37:04,230 --> 00:37:04,850
+
+
+798
+00:37:04,850 --> 00:37:07,940
+Now let's do this carefully, because
+things drop out nicely.
+
+799
+00:37:07,940 --> 00:37:11,390
+And I get a very nice formula at the
+end, which is function of alpha only.
+
+800
+00:37:11,390 --> 00:37:12,360
+
+
+801
+00:37:12,360 --> 00:37:15,940
+So this equals--
+
+802
+00:37:15,940 --> 00:37:19,730
+first part, I get the summation
+of the Lagrange multipliers.
+
+803
+00:37:19,730 --> 00:37:21,075
+Where did I get that?
+
+804
+00:37:21,075 --> 00:37:23,860
+I got that because I
+have -1 here.
+
+805
+00:37:23,860 --> 00:37:26,200
+It gets multiplied by alpha_n
+for all of those.
+
+806
+00:37:26,200 --> 00:37:29,140
+Canceled with this minus, so
+I get summation over that.
+
+807
+00:37:29,140 --> 00:37:29,510
+
+
+808
+00:37:29,510 --> 00:37:30,560
+So this part I got.
+
+809
+00:37:30,560 --> 00:37:32,390
+So let me kill the part
+that I already used.
+
+810
+00:37:32,390 --> 00:37:35,000
+So I kill the -1.
+
+811
+00:37:35,000 --> 00:37:36,350
+So that part I got.
+
+812
+00:37:36,350 --> 00:37:37,910
+Next.
+
+813
+00:37:37,910 --> 00:37:41,530
+I look at this and say: I have
++b here, right?
+
+814
+00:37:41,530 --> 00:37:45,970
+So when I take +b, it gets
+multiplied by y_n alpha_n, summed up
+
+815
+00:37:45,970 --> 00:37:51,760
+from n equals 1 to N. Now, I look at
+this and say: oh, the
+
+816
+00:37:51,760 --> 00:37:56,140
+summation of alpha_n y n from n
+equals 1 to N is 0.
+
+817
+00:37:56,140 --> 00:38:01,220
+So the guys that get multiplied
+by b, will get to 0.
+
+818
+00:38:01,220 --> 00:38:04,171
+And therefore, I can kill +b.
+
+819
+00:38:04,171 --> 00:38:06,820
+
+
+820
+00:38:06,820 --> 00:38:07,740
+
+
+821
+00:38:07,740 --> 00:38:11,010
+Now when I have it down to this,
+it's very easy to see.
+
+822
+00:38:11,010 --> 00:38:16,690
+Because you look at the form for w, when
+you have w transposed w, you are going
+
+823
+00:38:16,690 --> 00:38:18,260
+to get a quadratic version of this.
+
+824
+00:38:18,260 --> 00:38:23,310
+You get some double summation,
+alpha alpha y y x x, right?
+
+825
+00:38:23,310 --> 00:38:27,450
+With the proper name of the dummy
+variable, to get it right.
+
+826
+00:38:27,450 --> 00:38:28,320
+
+
+827
+00:38:28,320 --> 00:38:33,290
+And when you have here, well, you have
+already alpha_n y_n and x n, and now
+
+828
+00:38:33,290 --> 00:38:36,610
+when you substitute w by this, you're
+going to get exactly the same thing.
+
+829
+00:38:36,610 --> 00:38:39,770
+You're going to get another alpha,
+another y, another x.
+
+830
+00:38:39,770 --> 00:38:43,280
+So this will be exactly the same as
+this, except that this one has
+
+831
+00:38:43,280 --> 00:38:46,410
+a factor half, this has
+a factor -1.
+
+832
+00:38:46,410 --> 00:38:47,170
+So you add them up.
+
+833
+00:38:47,170 --> 00:38:51,080
+And you end up with this.
+
+834
+00:38:51,080 --> 00:38:52,340
+
+
+835
+00:38:52,340 --> 00:38:54,600
+So we look at this: what
+happened to w?
+
+836
+00:38:54,600 --> 00:38:55,360
+What happened to b?
+
+837
+00:38:55,360 --> 00:38:56,010
+
+
+838
+00:38:56,010 --> 00:38:56,650
+All gone.
+
+839
+00:38:56,650 --> 00:38:58,960
+We are now just function of
+the Lagrange multipliers.
+
+840
+00:38:58,960 --> 00:39:03,470
+And therefore, we can call
+this L of alpha.
+
+841
+00:39:03,470 --> 00:39:04,710
+
+
+842
+00:39:04,710 --> 00:39:09,840
+Now this is a very nice quantity to
+have, because this is a very simple
+
+843
+00:39:09,840 --> 00:39:12,300
+quadratic form in the vector alpha.
+
+844
+00:39:12,300 --> 00:39:14,360
+Alpha here appears as a linear guy.
+
+845
+00:39:14,360 --> 00:39:15,780
+Here appears as a quadratic guy.
+
+846
+00:39:15,780 --> 00:39:16,760
+That's all.
+
+847
+00:39:16,760 --> 00:39:19,830
+Now I need to put the constraints.
+
+848
+00:39:19,830 --> 00:39:21,990
+I put back the things I took out.
+
+849
+00:39:21,990 --> 00:39:27,190
+And let's look at the maximization
+with respect to alpha, subject to
+
+850
+00:39:27,190 --> 00:39:27,980
+non-negative ones.
+
+851
+00:39:27,980 --> 00:39:29,460
+This is a KKT condition.
+
+852
+00:39:29,460 --> 00:39:32,390
+I have to look for solutions
+under these conditions.
+
+853
+00:39:32,390 --> 00:39:36,940
+And I also have to consider the
+conditions that I inherited from the
+
+854
+00:39:36,940 --> 00:39:37,950
+first stage.
+
+855
+00:39:37,950 --> 00:39:42,010
+So I have to satisfy this, and I
+have to satisfy this, for the
+
+856
+00:39:42,010 --> 00:39:43,210
+solution to be valid.
+
+857
+00:39:43,210 --> 00:39:47,710
+So this one is a constraint over the
+alphas, and therefore I have to take
+
+858
+00:39:47,710 --> 00:39:49,910
+it as a constraint here.
+
+859
+00:39:49,910 --> 00:39:53,650
+But I don't have to take the constraint
+here, because that is vacuous as far
+
+860
+00:39:53,650 --> 00:39:55,100
+as alphas are concerned.
+
+861
+00:39:55,100 --> 00:39:58,070
+This does no constraint over
+alphas whatsoever.
+
+862
+00:39:58,070 --> 00:39:59,190
+You do your thing.
+
+863
+00:39:59,190 --> 00:40:00,420
+You come up with alphas.
+
+864
+00:40:00,420 --> 00:40:03,870
+And you call whatever that formula
+is, the resulting w.
+
+865
+00:40:03,870 --> 00:40:06,170
+Since w doesn't appear in
+optimization, I don't
+
+866
+00:40:06,170 --> 00:40:07,630
+worry about it at all.
+
+867
+00:40:07,630 --> 00:40:09,440
+So I end up with this thing.
+
+868
+00:40:09,440 --> 00:40:13,510
+Now if I didn't have those annoying
+constraints, I would be
+
+869
+00:40:13,510 --> 00:40:14,500
+basically done.
+
+870
+00:40:14,500 --> 00:40:16,650
+Because I look at this,
+that's pretty easy.
+
+871
+00:40:16,650 --> 00:40:20,025
+I can express one of the alphas in
+terms of the rest of the alphas.
+
+872
+00:40:20,025 --> 00:40:20,360
+Right?
+
+873
+00:40:20,360 --> 00:40:21,720
+Factor it out.
+
+874
+00:40:21,720 --> 00:40:22,330
+
+
+875
+00:40:22,330 --> 00:40:24,470
+Substitute for that alpha here.
+
+876
+00:40:24,470 --> 00:40:27,210
+And all of a sudden, I have a purely
+unconstrained optimization for
+
+877
+00:40:27,210 --> 00:40:28,000
+a quadratic one.
+
+878
+00:40:28,000 --> 00:40:28,720
+I solve it.
+
+879
+00:40:28,720 --> 00:40:32,650
+I get something, maybe a pseudo inverse
+or something, and I'm done.
+
+880
+00:40:32,650 --> 00:40:35,880
+But I cannot do that simply because
+I'm restricted to those choices.
+
+881
+00:40:35,880 --> 00:40:40,050
+And therefore, I have to work with
+a constrained optimization, albeit a very
+
+882
+00:40:40,050 --> 00:40:41,960
+minor constrained optimization.
+
+883
+00:40:41,960 --> 00:40:44,380
+
+
+884
+00:40:44,380 --> 00:40:45,540
+Now let's look at the solution.
+
+885
+00:40:45,540 --> 00:40:48,470
+The solution goes with quadratic
+programming.
+
+886
+00:40:48,470 --> 00:40:48,980
+
+
+887
+00:40:48,980 --> 00:40:53,800
+So the purpose of the slide here is
+to translate the objective and the
+
+888
+00:40:53,800 --> 00:40:57,680
+constraints we had into the coefficients
+that you're going to pass
+
+889
+00:40:57,680 --> 00:41:00,570
+on to a package called quadratic
+programming.
+
+890
+00:41:00,570 --> 00:41:02,140
+So this is a practical slide.
+
+891
+00:41:02,140 --> 00:41:04,250
+
+
+892
+00:41:04,250 --> 00:41:08,970
+First, what we are doing is maximizing
+with respect to alpha this quantity
+
+893
+00:41:08,970 --> 00:41:12,490
+that we found, subject to
+a bunch of constraints.
+
+894
+00:41:12,490 --> 00:41:15,110
+Quadratic programming packages come
+usually with minimization.
+
+895
+00:41:15,110 --> 00:41:17,220
+So we need to translate this
+into minimization.
+
+896
+00:41:17,220 --> 00:41:17,600
+
+
+897
+00:41:17,600 --> 00:41:18,790
+How are going to do that?
+
+898
+00:41:18,790 --> 00:41:20,260
+We're just going to get
+the minus of that.
+
+899
+00:41:20,260 --> 00:41:22,160
+So this would become this minus that.
+
+900
+00:41:22,160 --> 00:41:23,906
+So let's do that.
+
+901
+00:41:23,906 --> 00:41:26,800
+We got the minus, minimum of this.
+
+902
+00:41:26,800 --> 00:41:27,140
+
+
+903
+00:41:27,140 --> 00:41:28,880
+So now it's ready to go.
+
+904
+00:41:28,880 --> 00:41:30,740
+Now the next step will
+be pretty scary.
+
+905
+00:41:30,740 --> 00:41:34,900
+Because what I'm going to do, I'm going
+to expand this, isolating the
+
+906
+00:41:34,900 --> 00:41:36,080
+coefficients from the alphas.
+
+907
+00:41:36,080 --> 00:41:37,080
+The alphas are the parameters.
+
+908
+00:41:37,080 --> 00:41:40,400
+You're not passing alphas to
+the quadratic programming.
+
+909
+00:41:40,400 --> 00:41:42,730
+Quadratic programming works
+with a vector of variables
+
+910
+00:41:42,730 --> 00:41:44,000
+that you called alpha.
+
+911
+00:41:44,000 --> 00:41:46,990
+What you are passing are the
+coefficients of your particular
+
+912
+00:41:46,990 --> 00:41:50,830
+problems that are decided by these
+numbers, that the quadratic
+
+913
+00:41:50,830 --> 00:41:54,510
+programming will take, and then will
+be able to give you the alphas that
+
+914
+00:41:54,510 --> 00:41:56,730
+would minimize this quantity.
+
+915
+00:41:56,730 --> 00:41:58,230
+So this is what it looks like.
+
+916
+00:41:58,230 --> 00:42:01,680
+
+
+917
+00:42:01,680 --> 00:42:04,380
+I have a quadratic term,
+alpha transposed alpha.
+
+918
+00:42:04,380 --> 00:42:06,970
+And these are the coefficients
+in the double summation.
+
+919
+00:42:06,970 --> 00:42:07,520
+
+
+920
+00:42:07,520 --> 00:42:11,420
+These are numbers that you read
+off your training data.
+
+921
+00:42:11,420 --> 00:42:13,150
+You give me x_1 and y_1.
+
+922
+00:42:13,150 --> 00:42:15,475
+I'm going to compute these numbers
+for all of these combinations.
+
+923
+00:42:15,475 --> 00:42:17,250
+And I end up with a matrix.
+
+924
+00:42:17,250 --> 00:42:20,170
+That matrix gets passed to
+quadratic programming.
+
+925
+00:42:20,170 --> 00:42:20,430
+
+
+926
+00:42:20,430 --> 00:42:23,370
+And quadratic programming asks you for
+the quadratic term, and asks you for
+
+927
+00:42:23,370 --> 00:42:24,530
+the linear term.
+
+928
+00:42:24,530 --> 00:42:27,500
+Where the linear term, just to be
+formal, happens to be, since we are
+
+929
+00:42:27,500 --> 00:42:32,460
+just taking minus alpha, it's -1 transposed
+alpha, which is the sum of
+
+930
+00:42:32,460 --> 00:42:33,230
+those guys.
+
+931
+00:42:33,230 --> 00:42:36,660
+So this is the bunch of linear
+coefficients that you pass.
+
+932
+00:42:36,660 --> 00:42:37,990
+
+
+933
+00:42:37,990 --> 00:42:39,330
+And then the constraints--
+
+934
+00:42:39,330 --> 00:42:41,700
+you put the constraints again
+in the same way, subject to.
+
+935
+00:42:41,700 --> 00:42:43,580
+So there's a part which asks
+you for constraints.
+
+936
+00:42:43,580 --> 00:42:46,560
+And here again, the constraints-- you
+care about the coefficients of the
+
+937
+00:42:46,560 --> 00:42:46,845
+constraints.
+
+938
+00:42:46,845 --> 00:42:49,330
+So this is a linear equality
+constraint.
+
+939
+00:42:49,330 --> 00:42:51,727
+So we are going to pass the y
+transposed, which are the coefficients
+
+940
+00:42:51,727 --> 00:42:53,430
+here, as a vector.
+
+941
+00:42:53,430 --> 00:42:54,170
+
+
+942
+00:42:54,170 --> 00:42:57,880
+And it will ask you for, finally, the
+range of alphas that you need.
+
+943
+00:42:57,880 --> 00:43:01,570
+And the range of alphas that you need
+happens to be between 0, so that would
+
+944
+00:43:01,570 --> 00:43:03,650
+be the vector 0-- would
+be your lower bound.
+
+945
+00:43:03,650 --> 00:43:05,650
+Infinity will be your upper bound.
+
+946
+00:43:05,650 --> 00:43:06,550
+
+
+947
+00:43:06,550 --> 00:43:08,020
+So you read off this slide.
+
+948
+00:43:08,020 --> 00:43:09,620
+You give it to the quadratic
+programming.
+
+949
+00:43:09,620 --> 00:43:12,670
+And the quadratic programming
+gives you back an alpha.
+
+950
+00:43:12,670 --> 00:43:16,110
+And if you're completely discouraged by
+this, let me remind you that all of
+
+951
+00:43:16,110 --> 00:43:19,820
+this is just to give you what
+to pass to the package.
+
+952
+00:43:19,820 --> 00:43:23,940
+This actually looks exactly like this.
+
+953
+00:43:23,940 --> 00:43:26,040
+That's all you're doing.
+
+954
+00:43:26,040 --> 00:43:29,570
+A very simple quadratic function,
+with a linear term.
+
+955
+00:43:29,570 --> 00:43:34,450
+You're minimizing it, subject to linear
+equality constraint, plus a bunch of
+
+956
+00:43:34,450 --> 00:43:36,740
+range constraints.
+
+957
+00:43:36,740 --> 00:43:39,650
+And when you expand it, in terms of
+numbers, this is what you get.
+
+958
+00:43:39,650 --> 00:43:40,970
+And that's what we're going to use.
+
+959
+00:43:40,970 --> 00:43:42,030
+
+
+960
+00:43:42,030 --> 00:43:42,960
+So now we are done.
+
+961
+00:43:42,960 --> 00:43:43,900
+We have done the analysis.
+
+962
+00:43:43,900 --> 00:43:45,150
+We knew what to optimize.
+
+963
+00:43:45,150 --> 00:43:47,330
+It fit one of the standard
+optimization tools.
+
+964
+00:43:47,330 --> 00:43:50,450
+It happens to be convex function in
+this case, so that the quadratic
+
+965
+00:43:50,450 --> 00:43:52,110
+programming will be very successful.
+
+966
+00:43:52,110 --> 00:43:52,620
+
+
+967
+00:43:52,620 --> 00:43:54,780
+And then we pass it, and
+we get a number back.
+
+968
+00:43:54,780 --> 00:43:55,190
+
+
+969
+00:43:55,190 --> 00:43:57,170
+Just a word of warning
+before we go there.
+
+970
+00:43:57,170 --> 00:43:59,240
+
+
+971
+00:43:59,240 --> 00:44:00,900
+You look at the size of this matrix.
+
+972
+00:44:00,900 --> 00:44:04,620
+And it's N by N. Right?
+
+973
+00:44:04,620 --> 00:44:09,280
+So the dimension of the matrix depends
+on the number of examples.
+
+974
+00:44:09,280 --> 00:44:11,160
+Well, if you have a hundred
+examples, no sweat.
+
+975
+00:44:11,160 --> 00:44:13,370
+If you have 1000 examples, no sweat.
+
+976
+00:44:13,370 --> 00:44:16,110
+If you have a million examples,
+this is really trouble.
+
+977
+00:44:16,110 --> 00:44:16,410
+
+
+978
+00:44:16,410 --> 00:44:20,060
+Because this is really a dense matrix.
+
+979
+00:44:20,060 --> 00:44:21,450
+These numbers could come
+up with anything.
+
+980
+00:44:21,450 --> 00:44:22,700
+So all the entries matter.
+
+981
+00:44:22,700 --> 00:44:23,900
+
+
+982
+00:44:23,900 --> 00:44:28,410
+And if you end up with a huge matrix,
+quadratic programming will have
+
+983
+00:44:28,410 --> 00:44:30,480
+pretty hard time finding the solution.
+
+984
+00:44:30,480 --> 00:44:34,600
+To the level where there are tons of
+heuristics to solve this problem when
+
+985
+00:44:34,600 --> 00:44:36,180
+the number of examples is big.
+
+986
+00:44:36,180 --> 00:44:39,250
+It's a practical consideration, but
+it's an important consideration.
+
+987
+00:44:39,250 --> 00:44:39,850
+
+
+988
+00:44:39,850 --> 00:44:44,330
+But basically, if you're working with
+problems-- the typical machine
+
+989
+00:44:44,330 --> 00:44:50,480
+learning problem, where you have, let's
+say not more than 10,000, then
+
+990
+00:44:50,480 --> 00:44:51,180
+it's not formidable.
+
+991
+00:44:51,180 --> 00:44:51,710
+
+
+992
+00:44:51,710 --> 00:44:54,210
+10,000 is flirting with danger,
+but that's what it is.
+
+993
+00:44:54,210 --> 00:44:54,730
+
+
+994
+00:44:54,730 --> 00:44:57,650
+So pay attention to the fact that, in
+spite of the fact that there's
+
+995
+00:44:57,650 --> 00:45:00,250
+a standard way of solving it, and the
+fact that it's convex, so it's
+
+996
+00:45:00,250 --> 00:45:03,540
+friendly, it is not that easy when you
+get a huge number of examples.
+
+997
+00:45:03,540 --> 00:45:05,840
+And people have hierarchical methods
+and whatnot, in order to
+
+998
+00:45:05,840 --> 00:45:07,020
+deal with that case.
+
+999
+00:45:07,020 --> 00:45:07,910
+
+
+1000
+00:45:07,910 --> 00:45:09,250
+So let's say we succeeded.
+
+1001
+00:45:09,250 --> 00:45:13,460
+We gave the matrix and the vectors
+to quadratic programming.
+
+1002
+00:45:13,460 --> 00:45:16,540
+Back comes what?
+
+1003
+00:45:16,540 --> 00:45:18,260
+Back comes alpha.
+
+1004
+00:45:18,260 --> 00:45:19,560
+This is your solution.
+
+1005
+00:45:19,560 --> 00:45:20,220
+
+
+1006
+00:45:20,220 --> 00:45:23,350
+So now we want to take this solution,
+and solve our original problem.
+
+1007
+00:45:23,350 --> 00:45:23,900
+
+
+1008
+00:45:23,900 --> 00:45:27,830
+What is w, what is b, what is the
+surface, what is the margin?
+
+1009
+00:45:27,830 --> 00:45:30,900
+You answer the questions that
+all of this formalization
+
+1010
+00:45:30,900 --> 00:45:32,610
+was meant to tackle.
+
+1011
+00:45:32,610 --> 00:45:34,060
+
+
+1012
+00:45:34,060 --> 00:45:37,860
+So the solution is vector of alphas.
+
+1013
+00:45:37,860 --> 00:45:41,810
+And the first thing is that it is very
+easy to get the w because, luckily,
+
+1014
+00:45:41,810 --> 00:45:47,220
+the formula for w being this was one of
+the constraints we got from solving
+
+1015
+00:45:47,220 --> 00:45:47,850
+the original one.
+
+1016
+00:45:47,850 --> 00:45:50,765
+When we got the gradient with respect to
+w, we found out this is the thing.
+
+1017
+00:45:50,765 --> 00:45:51,030
+
+
+1018
+00:45:51,030 --> 00:45:55,386
+So you get the alphas, you plug them
+in, and then you'll get the w.
+
+1019
+00:45:55,386 --> 00:45:57,950
+So you get the vector
+of weights you want.
+
+1020
+00:45:57,950 --> 00:46:00,410
+
+
+1021
+00:46:00,410 --> 00:46:04,330
+Now I would like to tell you a condition
+which is very important.
+
+1022
+00:46:04,330 --> 00:46:07,110
+And it will be the key to defining
+support vectors in this case, which is
+
+1023
+00:46:07,110 --> 00:46:10,580
+another KKT condition that will
+be satisfied at the minimum,
+
+1024
+00:46:10,580 --> 00:46:12,320
+which is the following.
+
+1025
+00:46:12,320 --> 00:46:13,610
+Quadratic programming hands you alpha.
+
+1026
+00:46:13,610 --> 00:46:16,660
+Let's say that-- alpha is the same length
+as the number of examples--
+
+1027
+00:46:16,660 --> 00:46:17,800
+let's say you have 1000 examples.
+
+1028
+00:46:17,800 --> 00:46:20,305
+So it gives you a vector of 1000 guys.
+
+1029
+00:46:20,305 --> 00:46:23,270
+You look at the vector,
+and to your surprise--
+
+1030
+00:46:23,270 --> 00:46:26,270
+you don't know yet whether it's pleasant
+or unpleasant surprise--
+
+1031
+00:46:26,270 --> 00:46:30,370
+a whole bunch of the alphas are just 0.
+
+1032
+00:46:30,370 --> 00:46:31,870
+The alphas are restricted
+to be non-negative.
+
+1033
+00:46:31,870 --> 00:46:33,760
+They all have to be greater
+than or equal to 0.
+
+1034
+00:46:33,760 --> 00:46:36,360
+If you find any one of them negative,
+then you say quadratic programming
+
+1035
+00:46:36,360 --> 00:46:36,940
+made a mistake.
+
+1036
+00:46:36,940 --> 00:46:37,120
+
+
+1037
+00:46:37,120 --> 00:46:38,220
+But it won't make a mistake.
+
+1038
+00:46:38,220 --> 00:46:40,380
+It will give you numbers
+that are non-negative.
+
+1039
+00:46:40,380 --> 00:46:46,370
+But the remarkable part, out of the
+1000, more than 900 are 0's.
+
+1040
+00:46:46,370 --> 00:46:48,170
+So you say: something is wrong?
+
+1041
+00:46:48,170 --> 00:46:50,250
+Is there a bug in my
+thing or something?
+
+1042
+00:46:50,250 --> 00:46:50,740
+No.
+
+1043
+00:46:50,740 --> 00:46:53,820
+Because of the following.
+
+1044
+00:46:53,820 --> 00:46:55,996
+The following condition holds.
+
+1045
+00:46:55,996 --> 00:46:57,430
+It looks like a big condition.
+
+1046
+00:46:57,430 --> 00:46:59,480
+But let's read it.
+
+1047
+00:46:59,480 --> 00:47:01,580
+This is the constraint in the 0 form.
+
+1048
+00:47:01,580 --> 00:47:04,260
+So this is greater than or equal to 1.
+
+1049
+00:47:04,260 --> 00:47:06,220
+So minus 1 would be greater
+than or equal to 0.
+
+1050
+00:47:06,220 --> 00:47:09,290
+This is what we called the slack.
+
+1051
+00:47:09,290 --> 00:47:12,770
+So the condition that is guaranteed to
+be satisfied, for the point you're
+
+1052
+00:47:12,770 --> 00:47:20,470
+going to get, is that either the slack is
+0, or the Lagrange multiplier is 0.
+
+1053
+00:47:20,470 --> 00:47:23,670
+The product of them will
+definitely be 0.
+
+1054
+00:47:23,670 --> 00:47:27,690
+So if there's a positive slack, which
+means that you are talking about
+
+1055
+00:47:27,690 --> 00:47:28,880
+an interior point.
+
+1056
+00:47:28,880 --> 00:47:32,990
+Remember that I have a plane,
+and I have a margin.
+
+1057
+00:47:32,990 --> 00:47:34,940
+And the margin touches
+on the nearest point.
+
+1058
+00:47:34,940 --> 00:47:36,780
+And that is what defines the margin.
+
+1059
+00:47:36,780 --> 00:47:40,770
+Then there are interior points, where
+the slack is bigger than 1.
+
+1060
+00:47:40,770 --> 00:47:43,110
+At those points, the
+slack is exactly 1.
+
+1061
+00:47:43,110 --> 00:47:44,760
+No, not the slack.
+
+1062
+00:47:44,760 --> 00:47:46,010
+The slack is 0.
+
+1063
+00:47:46,010 --> 00:47:47,660
+The value is 1.
+
+1064
+00:47:47,660 --> 00:47:49,740
+The other ones, the slack
+will be positive.
+
+1065
+00:47:49,740 --> 00:47:55,040
+So for all the interior points, you're
+guaranteed that the corresponding
+
+1066
+00:47:55,040 --> 00:47:58,100
+Lagrange multiplier will be 0.
+
+1067
+00:47:58,100 --> 00:47:59,350
+OK?
+
+1068
+00:47:59,350 --> 00:48:01,180
+
+
+1069
+00:48:01,180 --> 00:48:05,920
+I claim that we saw this before, again
+in the regularization case.
+
+1070
+00:48:05,920 --> 00:48:08,910
+Remember this fellow?
+
+1071
+00:48:08,910 --> 00:48:12,370
+We had a constraint which is to
+be within the red circle.
+
+1072
+00:48:12,370 --> 00:48:14,725
+And we're trying to optimize a function
+that has equi-potentials
+
+1073
+00:48:14,725 --> 00:48:15,630
+around this.
+
+1074
+00:48:15,630 --> 00:48:17,130
+So this is the absolute minimum.
+
+1075
+00:48:17,130 --> 00:48:18,980
+And it grows and grows and grows.
+
+1076
+00:48:18,980 --> 00:48:21,440
+And because we are in the constraint,
+we couldn't get the absolute minimum
+
+1077
+00:48:21,440 --> 00:48:23,930
+when we went there.
+
+1078
+00:48:23,930 --> 00:48:27,570
+When we had the constraint being
+vacuous, that is, the constraint
+
+1079
+00:48:27,570 --> 00:48:31,780
+doesn't really constrain us, and the
+absolute optimal is inside, we ended
+
+1080
+00:48:31,780 --> 00:48:35,080
+up with no need for regularization,
+if you remember?
+
+1081
+00:48:35,080 --> 00:48:38,560
+And the lambda for regularization
+in that case was 0.
+
+1082
+00:48:38,560 --> 00:48:39,170
+
+
+1083
+00:48:39,170 --> 00:48:43,500
+That is the case, where you have
+an interior point, and the
+
+1084
+00:48:43,500 --> 00:48:45,580
+multiplier is 0.
+
+1085
+00:48:45,580 --> 00:48:49,770
+And then when you got a genuine guy that
+you have to actually compromise,
+
+1086
+00:48:49,770 --> 00:48:52,950
+you ended up with a condition that
+requires lambda to be positive.
+
+1087
+00:48:52,950 --> 00:48:53,620
+
+
+1088
+00:48:53,620 --> 00:48:57,240
+So these are the guys where
+the constraint is active.
+
+1089
+00:48:57,240 --> 00:49:02,330
+And therefore you get a positive lambda,
+while this guy is by itself 0.
+
+1090
+00:49:02,330 --> 00:49:03,170
+
+
+1091
+00:49:03,170 --> 00:49:07,910
+So now we come to an interesting
+definition.
+
+1092
+00:49:07,910 --> 00:49:08,170
+
+
+1093
+00:49:08,170 --> 00:49:11,930
+So alpha is largely 0's,
+interior points.
+
+1094
+00:49:11,930 --> 00:49:15,670
+The most important points in the game
+are the points that actually define
+
+1095
+00:49:15,670 --> 00:49:17,690
+the plane and the margin.
+
+1096
+00:49:17,690 --> 00:49:20,790
+And these are the ones for which
+alpha_n's are positive.
+
+1097
+00:49:20,790 --> 00:49:21,870
+
+
+1098
+00:49:21,870 --> 00:49:27,140
+And these are called support vectors.
+
+1099
+00:49:27,140 --> 00:49:29,390
+So I have N points.
+
+1100
+00:49:29,390 --> 00:49:31,670
+And I classify them, and I
+got the maximum margin.
+
+1101
+00:49:31,670 --> 00:49:35,140
+And because it's a maximum margin, it
+touched on some of the +1 and some
+
+1102
+00:49:35,140 --> 00:49:36,660
+of the -1 points.
+
+1103
+00:49:36,660 --> 00:49:39,870
+Those points support the
+plane, so to speak.
+
+1104
+00:49:39,870 --> 00:49:41,340
+And they're called support vectors.
+
+1105
+00:49:41,340 --> 00:49:44,070
+And the other guys are
+interior points.
+
+1106
+00:49:44,070 --> 00:49:48,410
+And the mathematics of it tells us that
+we can identify those, because we
+
+1107
+00:49:48,410 --> 00:49:52,850
+can go for lambdas that happen to be
+positive, the alphas in this case.
+
+1108
+00:49:52,850 --> 00:49:57,050
+And the alpha greater than 0 will
+identify a support vector.
+
+1109
+00:49:57,050 --> 00:49:58,300
+
+
+1110
+00:49:58,300 --> 00:50:01,210
+
+
+1111
+00:50:01,210 --> 00:50:03,110
+Again, when I put a box, it's
+an important thing.
+
+1112
+00:50:03,110 --> 00:50:04,540
+So this is an important notion.
+
+1113
+00:50:04,540 --> 00:50:05,170
+
+
+1114
+00:50:05,170 --> 00:50:08,970
+So let's talk about support vectors.
+
+1115
+00:50:08,970 --> 00:50:11,830
+I have a bunch of points
+here to classify.
+
+1116
+00:50:11,830 --> 00:50:13,820
+And I go through the entire machinery.
+
+1117
+00:50:13,820 --> 00:50:15,320
+I formulate the problem.
+
+1118
+00:50:15,320 --> 00:50:16,310
+I get the matrix.
+
+1119
+00:50:16,310 --> 00:50:17,540
+I pass it to quadratic programming.
+
+1120
+00:50:17,540 --> 00:50:18,710
+I get the alpha back.
+
+1121
+00:50:18,710 --> 00:50:19,520
+I compute the w.
+
+1122
+00:50:19,520 --> 00:50:20,840
+All of the above.
+
+1123
+00:50:20,840 --> 00:50:23,310
+And this is what I get.
+
+1124
+00:50:23,310 --> 00:50:24,660
+
+
+1125
+00:50:24,660 --> 00:50:27,410
+So where are the support
+vectors this picture?
+
+1126
+00:50:27,410 --> 00:50:32,270
+
+
+1127
+00:50:32,270 --> 00:50:34,410
+They are the closest ones
+to the plane, where the
+
+1128
+00:50:34,410 --> 00:50:36,830
+margin region touched.
+
+1129
+00:50:36,830 --> 00:50:39,760
+And they happen to be these three.
+
+1130
+00:50:39,760 --> 00:50:41,550
+This one, this one, this one.
+
+1131
+00:50:41,550 --> 00:50:45,300
+So all of these guys that are here, and
+all of these guys are here will just
+
+1132
+00:50:45,300 --> 00:50:46,620
+contribute nothing to the solution.
+
+1133
+00:50:46,620 --> 00:50:49,160
+They will get alpha equals
+0 in this case.
+
+1134
+00:50:49,160 --> 00:50:52,070
+
+
+1135
+00:50:52,070 --> 00:50:55,150
+And the support vectors achieve
+the margin exactly.
+
+1136
+00:50:55,150 --> 00:50:56,430
+They are the critical points.
+
+1137
+00:50:56,430 --> 00:50:57,540
+
+
+1138
+00:50:57,540 --> 00:50:59,460
+The other guys--
+
+1139
+00:50:59,460 --> 00:51:02,350
+their margin, if you will,
+is bigger or much bigger.
+
+1140
+00:51:02,350 --> 00:51:04,870
+
+
+1141
+00:51:04,870 --> 00:51:08,330
+And for the support vectors, you
+satisfy this with equal 1.
+
+1142
+00:51:08,330 --> 00:51:10,070
+So all of this is fine.
+
+1143
+00:51:10,070 --> 00:51:10,930
+
+
+1144
+00:51:10,930 --> 00:51:15,960
+Now, we used to compute w in terms of
+the summation of alpha_n y_n x_n.
+
+1145
+00:51:15,960 --> 00:51:18,810
+Because we said that this is the
+quantity we got, when we got the
+
+1146
+00:51:18,810 --> 00:51:21,360
+gradient with respect to w equals 0.
+
+1147
+00:51:21,360 --> 00:51:22,360
+So this is one of the equations.
+
+1148
+00:51:22,360 --> 00:51:25,640
+And this is our way to get the alphas
+back, which is the currency we get
+
+1149
+00:51:25,640 --> 00:51:29,450
+back from quadratic programming, and
+plug it in, in order to get the w.
+
+1150
+00:51:29,450 --> 00:51:34,180
+This goes from n equals 1 to N.
+Now that I notice that many of the
+
+1151
+00:51:34,180 --> 00:51:39,730
+alphas are 0, and alpha is only positive
+for support vectors, then I
+
+1152
+00:51:39,730 --> 00:51:43,913
+can say that I can sum this up over
+only the support vectors.
+
+1153
+00:51:43,913 --> 00:51:46,230
+It looks like a minor technicality.
+
+1154
+00:51:46,230 --> 00:51:49,400
+So the other terms happen to
+be 0, so you excluded them.
+
+1155
+00:51:49,400 --> 00:51:53,030
+You just made the notation
+more clumsy in this case.
+
+1156
+00:51:53,030 --> 00:51:55,100
+But there's a very important point.
+
+1157
+00:51:55,100 --> 00:51:58,400
+Think of alphas now as the
+parameters of your model.
+
+1158
+00:51:58,400 --> 00:51:59,010
+
+
+1159
+00:51:59,010 --> 00:52:00,850
+When they're 0s, they don't count.
+
+1160
+00:52:00,850 --> 00:52:02,810
+Just expect almost all
+of them to be 0.
+
+1161
+00:52:02,810 --> 00:52:05,990
+What counts is the actual values of
+the parameters that will be some
+
+1162
+00:52:05,990 --> 00:52:07,610
+number bigger than 0.
+
+1163
+00:52:07,610 --> 00:52:08,290
+
+
+1164
+00:52:08,290 --> 00:52:11,100
+So now, your weight vector--
+
+1165
+00:52:11,100 --> 00:52:13,730
+
+
+1166
+00:52:13,730 --> 00:52:18,960
+it's a d-dimensional vector-- is
+expressed in terms of the constants
+
+1167
+00:52:18,960 --> 00:52:21,870
+which are your data set, x_n
+and their label.
+
+1168
+00:52:21,870 --> 00:52:25,490
+Plus few parameters, hopefully few
+parameters, which is just the number
+
+1169
+00:52:25,490 --> 00:52:26,320
+of support vectors.
+
+1170
+00:52:26,320 --> 00:52:29,150
+So you have three support
+vectors, then this--
+
+1171
+00:52:29,150 --> 00:52:31,070
+let's say you're working at
+20-dimensional space.
+
+1172
+00:52:31,070 --> 00:52:32,580
+So I'm looking at 20-dimensional space.
+
+1173
+00:52:32,580 --> 00:52:33,500
+I'm getting a weight.
+
+1174
+00:52:33,500 --> 00:52:36,350
+Well, it's 20-dimensional
+space in disguise.
+
+1175
+00:52:36,350 --> 00:52:39,910
+Because of the constraint you put, you
+got something that is effectively
+
+1176
+00:52:39,910 --> 00:52:41,680
+three-dimensional.
+
+1177
+00:52:41,680 --> 00:52:42,490
+
+
+1178
+00:52:42,490 --> 00:52:46,370
+And now you can realize
+why there might be
+
+1179
+00:52:46,370 --> 00:52:48,150
+a generalization dividend here.
+
+1180
+00:52:48,150 --> 00:52:52,170
+Because I end up with fewer parameters
+than the express parameters that are
+
+1181
+00:52:52,170 --> 00:52:54,380
+in the value I get.
+
+1182
+00:52:54,380 --> 00:52:55,170
+
+
+1183
+00:52:55,170 --> 00:52:57,600
+So, we can also--
+
+1184
+00:52:57,600 --> 00:53:00,880
+now that we have it-- solve for the b.
+
+1185
+00:53:00,880 --> 00:53:05,785
+Because you want w and b-- b is the bias,
+or corresponding to the threshold term,
+
+1186
+00:53:05,785 --> 00:53:06,420
+if you will.
+
+1187
+00:53:06,420 --> 00:53:07,850
+And it's very easy to do.
+
+1188
+00:53:07,850 --> 00:53:11,940
+Because all you need to do is take any
+support vector, any one of them, and
+
+1189
+00:53:11,940 --> 00:53:14,740
+for any of them you know that
+this equation holds.
+
+1190
+00:53:14,740 --> 00:53:17,290
+You already solved for w, by that.
+
+1191
+00:53:17,290 --> 00:53:18,670
+So you plug this in.
+
+1192
+00:53:18,670 --> 00:53:21,580
+And the only unknown in this
+equation would be b.
+
+1193
+00:53:21,580 --> 00:53:24,270
+And as a check for you, take any
+support vector and plug it in.
+
+1194
+00:53:24,270 --> 00:53:26,240
+And you have to find the
+same b coming out.
+
+1195
+00:53:26,240 --> 00:53:31,490
+That was your check that everything
+in the math went through.
+
+1196
+00:53:31,490 --> 00:53:33,220
+You take any of them,
+and you solve for b.
+
+1197
+00:53:33,220 --> 00:53:38,230
+And now you have w and b, and you are ready
+with the classification line or
+
+1198
+00:53:38,230 --> 00:53:41,640
+hyperplane that you have.
+
+1199
+00:53:41,640 --> 00:53:46,650
+Now let me close with the nonlinear
+transforms, which will be a very short
+
+1200
+00:53:46,650 --> 00:53:49,780
+presentation that has
+an enormous impact.
+
+1201
+00:53:49,780 --> 00:53:53,310
+We are talking about
+a linear boundary.
+
+1202
+00:53:53,310 --> 00:53:55,800
+And we are talking about linearly
+separable case, at
+
+1203
+00:53:55,800 --> 00:53:56,660
+least in this lecture.
+
+1204
+00:53:56,660 --> 00:54:00,080
+In the next lecture, I'm going to
+go to the non-separable case.
+
+1205
+00:54:00,080 --> 00:54:03,320
+But a non-separable case could be
+handled here in the same way we
+
+1206
+00:54:03,320 --> 00:54:05,880
+handled non-separable case
+with the perceptrons.
+
+1207
+00:54:05,880 --> 00:54:09,850
+Instead of working in the X space,
+we went to the Z space.
+
+1208
+00:54:09,850 --> 00:54:13,860
+And I'd like to see what happens to the
+problem of support vector machines,
+
+1209
+00:54:13,860 --> 00:54:18,200
+as we stated it and solved it, when
+you actually move to the higher
+
+1210
+00:54:18,200 --> 00:54:19,350
+dimensional space.
+
+1211
+00:54:19,350 --> 00:54:20,950
+Is the problem becoming
+more difficult?
+
+1212
+00:54:20,950 --> 00:54:21,650
+Does it hold?
+
+1213
+00:54:21,650 --> 00:54:22,260
+Et cetera.
+
+1214
+00:54:22,260 --> 00:54:24,570
+So let's look at it.
+
+1215
+00:54:24,570 --> 00:54:26,920
+So we're going to work
+with z instead of x.
+
+1216
+00:54:26,920 --> 00:54:31,460
+And we're going to work in the Z space
+instead of the X space.
+
+1217
+00:54:31,460 --> 00:54:34,330
+So let's first put what we are doing.
+
+1218
+00:54:34,330 --> 00:54:37,390
+Analytically, after doing all of the
+stuff, and I even forgot what the
+
+1219
+00:54:37,390 --> 00:54:42,350
+details are, all I care about is that:
+would you please maximize this with
+
+1220
+00:54:42,350 --> 00:54:45,850
+respect to alpha, subject to a couple
+of sets of constraints.
+
+1221
+00:54:45,850 --> 00:54:46,600
+
+
+1222
+00:54:46,600 --> 00:54:47,520
+So you look at here.
+
+1223
+00:54:47,520 --> 00:54:51,630
+And you can see, when I transform
+from x to z, nothing
+
+1224
+00:54:51,630 --> 00:54:53,100
+happens to the y's.
+
+1225
+00:54:53,100 --> 00:54:54,460
+The labels are the same.
+
+1226
+00:54:54,460 --> 00:54:56,940
+And these are the guys that probably
+will be changed, because now
+
+1227
+00:54:56,940 --> 00:54:58,040
+I'm working in a new space.
+
+1228
+00:54:58,040 --> 00:54:59,780
+So I'm putting them in
+a different color.
+
+1229
+00:54:59,780 --> 00:55:02,400
+So if I work in the X space, that's
+what I'm working with.
+
+1230
+00:55:02,400 --> 00:55:04,810
+And these are the guys that I'm going
+to multiply in order to get the
+
+1231
+00:55:04,810 --> 00:55:07,390
+matrix that I pass on to
+quadratic programming.
+
+1232
+00:55:07,390 --> 00:55:08,400
+
+
+1233
+00:55:08,400 --> 00:55:12,720
+Now let's take the usual
+nonlinear transform.
+
+1234
+00:55:12,720 --> 00:55:14,570
+So this is your X space.
+
+1235
+00:55:14,570 --> 00:55:16,210
+And in X space, I give you this data.
+
+1236
+00:55:16,210 --> 00:55:20,410
+Well, this data is not separable, not
+linearly separable, and definitely not
+
+1237
+00:55:20,410 --> 00:55:21,890
+nearly linearly separable.
+
+1238
+00:55:21,890 --> 00:55:24,440
+This is the case where you need
+a nonlinear transformation.
+
+1239
+00:55:24,440 --> 00:55:26,260
+And we did this nonlinear
+transformation before.
+
+1240
+00:55:26,260 --> 00:55:30,230
+Let's say you take just
+x1 squared and x2 squared.
+
+1241
+00:55:30,230 --> 00:55:33,190
+And then you get this, and this
+one is linearly separable.
+
+1242
+00:55:33,190 --> 00:55:35,280
+So all you're doing now is
+working in the Z space.
+
+1243
+00:55:35,280 --> 00:55:38,760
+And instead of getting just a generic
+separator, you're getting the best
+
+1244
+00:55:38,760 --> 00:55:42,750
+separator, according to SVM, and then
+mapping it back, hoping that it will
+
+1245
+00:55:42,750 --> 00:55:44,860
+have dividends in terms
+of the generalization.
+
+1246
+00:55:44,860 --> 00:55:45,660
+
+
+1247
+00:55:45,660 --> 00:55:47,070
+So you look at this.
+
+1248
+00:55:47,070 --> 00:55:48,910
+I'm moving from X to Z.
+
+1249
+00:55:48,910 --> 00:55:51,130
+So when I go back to here,
+what do you do?
+
+1250
+00:55:51,130 --> 00:55:56,000
+All you need to do is replace
+the x's with z's.
+
+1251
+00:55:56,000 --> 00:55:59,370
+And then you forget that there
+was ever an X space.
+
+1252
+00:55:59,370 --> 00:56:00,040
+
+
+1253
+00:56:00,040 --> 00:56:01,360
+I have vector z.
+
+1254
+00:56:01,360 --> 00:56:04,220
+I do the inner product in order
+to get these numbers.
+
+1255
+00:56:04,220 --> 00:56:06,720
+These numbers I'm going to pass
+on to quadratic programming.
+
+1256
+00:56:06,720 --> 00:56:10,800
+And when I get the solution back, I have
+the separating plane or line in
+
+1257
+00:56:10,800 --> 00:56:11,720
+the Z space.
+
+1258
+00:56:11,720 --> 00:56:13,890
+And then when I want to know what
+the surface is in the X
+
+1259
+00:56:13,890 --> 00:56:15,160
+space, I map it back.
+
+1260
+00:56:15,160 --> 00:56:16,140
+I get the pre-image of it.
+
+1261
+00:56:16,140 --> 00:56:18,430
+And that's what I get.
+
+1262
+00:56:18,430 --> 00:56:22,490
+The most important aspect to observe
+here is that-- OK, the
+
+1263
+00:56:22,490 --> 00:56:24,330
+solution is easy.
+
+1264
+00:56:24,330 --> 00:56:27,930
+Let's say I move from two-dimensional
+to two-dimensional here.
+
+1265
+00:56:27,930 --> 00:56:29,410
+Nothing happened.
+
+1266
+00:56:29,410 --> 00:56:33,250
+Let's say I move from two-dimensional
+to a million-dimensional.
+
+1267
+00:56:33,250 --> 00:56:37,890
+Let's see how much more difficult
+the problem became.
+
+1268
+00:56:37,890 --> 00:56:38,600
+What do I do?
+
+1269
+00:56:38,600 --> 00:56:43,390
+Now I have a million-dimensional vector,
+inner product with a million
+
+1270
+00:56:43,390 --> 00:56:44,840
+dimensional vector.
+
+1271
+00:56:44,840 --> 00:56:46,280
+That doesn't faze me at all.
+
+1272
+00:56:46,280 --> 00:56:47,130
+Just an inner product.
+
+1273
+00:56:47,130 --> 00:56:48,650
+I get a number.
+
+1274
+00:56:48,650 --> 00:56:53,350
+But when I'm done, how many
+alphas do I have?
+
+1275
+00:56:53,350 --> 00:56:56,150
+This is the dimensionality of the
+problem that I'm passing to quadratic
+
+1276
+00:56:56,150 --> 00:56:57,680
+programming.
+
+1277
+00:56:57,680 --> 00:56:59,080
+Exactly the same thing.
+
+1278
+00:56:59,080 --> 00:57:01,850
+It's the number of data points.
+
+1279
+00:57:01,850 --> 00:57:04,660
+Has nothing to do with the
+dimensionality of the space you're
+
+1280
+00:57:04,660 --> 00:57:06,530
+working in.
+
+1281
+00:57:06,530 --> 00:57:10,770
+So you can go to an enormous space,
+without paying the price for it in
+
+1282
+00:57:10,770 --> 00:57:13,320
+terms of the optimization
+you're going to do.
+
+1283
+00:57:13,320 --> 00:57:14,930
+You're going to get
+a plane in that space.
+
+1284
+00:57:14,930 --> 00:57:17,300
+You can't even imagine, because
+it's million-dimensional.
+
+1285
+00:57:17,300 --> 00:57:19,680
+It has a margin.
+
+1286
+00:57:19,680 --> 00:57:21,700
+The margin will look very
+interesting in this case.
+
+1287
+00:57:21,700 --> 00:57:24,700
+And supposedly it has good
+generalization property.
+
+1288
+00:57:24,700 --> 00:57:26,330
+And then you map it back here.
+
+1289
+00:57:26,330 --> 00:57:29,450
+But the difficulty of solving
+the problem is identical.
+
+1290
+00:57:29,450 --> 00:57:33,170
+The only thing that is different is
+just getting those coefficients.
+
+1291
+00:57:33,170 --> 00:57:34,850
+You'll be multiplying longer vectors.
+
+1292
+00:57:34,850 --> 00:57:37,440
+But that is the least of our concerns.
+
+1293
+00:57:37,440 --> 00:57:39,790
+The other one is that you're going
+to get the full matrix of this.
+
+1294
+00:57:39,790 --> 00:57:42,500
+And quadratic programming will have
+to manipulate the matrix.
+
+1295
+00:57:42,500 --> 00:57:44,470
+And that's where the price is paid.
+
+1296
+00:57:44,470 --> 00:57:47,570
+So that price is constant, as long
+as you give it this number.
+
+1297
+00:57:47,570 --> 00:57:50,650
+It doesn't care whether it was inner
+product of 2 by 2, or inner product of
+
+1298
+00:57:50,650 --> 00:57:51,640
+a million by million.
+
+1299
+00:57:51,640 --> 00:57:52,910
+it will just hand you the alphas.
+
+1300
+00:57:52,910 --> 00:57:56,660
+And then you interpret the alphas in
+the space that you created it from.
+
+1301
+00:57:56,660 --> 00:57:57,290
+
+
+1302
+00:57:57,290 --> 00:57:59,840
+So the w will belong to the Z space.
+
+1303
+00:57:59,840 --> 00:58:01,900
+
+
+1304
+00:58:01,900 --> 00:58:05,090
+Now let's look at, if I do the nonlinear
+transformation, do I have
+
+1305
+00:58:05,090 --> 00:58:05,900
+support vectors?
+
+1306
+00:58:05,900 --> 00:58:08,670
+Yes, you have support vectors
+for sure in the Z space.
+
+1307
+00:58:08,670 --> 00:58:11,290
+Because you're working exclusively in
+the Z space, you get the plane there.
+
+1308
+00:58:11,290 --> 00:58:12,250
+You get the margin.
+
+1309
+00:58:12,250 --> 00:58:13,460
+The margin will touch some points.
+
+1310
+00:58:13,460 --> 00:58:15,380
+These are your support vectors
+by definition.
+
+1311
+00:58:15,380 --> 00:58:18,460
+And you can identify them even without
+looking geometrically at the Z space,
+
+1312
+00:58:18,460 --> 00:58:20,410
+because what are the support vectors?
+
+1313
+00:58:20,410 --> 00:58:22,220
+Oh, I look at the alphas I get.
+
+1314
+00:58:22,220 --> 00:58:26,300
+And the alphas that are positive, these
+correspond to support vectors.
+
+1315
+00:58:26,300 --> 00:58:29,680
+So without even imagining what the Z
+space is like, I can identify which
+
+1316
+00:58:29,680 --> 00:58:33,870
+guys happen to have the critical margin
+in the Z space, just by looking
+
+1317
+00:58:33,870 --> 00:58:35,050
+at the alphas.
+
+1318
+00:58:35,050 --> 00:58:37,160
+
+
+1319
+00:58:37,160 --> 00:58:41,760
+So support vectors live in the space
+you are doing the process in, in this
+
+1320
+00:58:41,760 --> 00:58:43,010
+case, the Z space.
+
+1321
+00:58:43,010 --> 00:58:44,830
+
+
+1322
+00:58:44,830 --> 00:58:47,610
+In the X space, there is
+an interpretation.
+
+1323
+00:58:47,610 --> 00:58:49,850
+So let's look at the X space here.
+
+1324
+00:58:49,850 --> 00:58:55,680
+If I have these guys, not linearly
+separable, and you decided to go to
+
+1325
+00:58:55,680 --> 00:58:56,970
+a high-dimensional Z space.
+
+1326
+00:58:56,970 --> 00:58:59,110
+I'm not going to tell you what.
+
+1327
+00:58:59,110 --> 00:59:01,500
+And you solved the support
+vector machines.
+
+1328
+00:59:01,500 --> 00:59:02,510
+You got the alphas.
+
+1329
+00:59:02,510 --> 00:59:04,780
+You got the line, or the hyperplane
+in that space.
+
+1330
+00:59:04,780 --> 00:59:08,310
+And then you are putting the boundary
+here that corresponds to this guy.
+
+1331
+00:59:08,310 --> 00:59:08,540
+
+
+1332
+00:59:08,540 --> 00:59:11,720
+And this is what the boundary
+looks like.
+
+1333
+00:59:11,720 --> 00:59:12,920
+
+
+1334
+00:59:12,920 --> 00:59:14,550
+Now, we have alarm bells--
+
+1335
+00:59:14,550 --> 00:59:15,930
+overfitting, overfitting!
+
+1336
+00:59:15,930 --> 00:59:18,400
+Whenever you see something like
+that, you say wait.
+
+1337
+00:59:18,400 --> 00:59:21,370
+That's the big advantage you
+get out of support vectors.
+
+1338
+00:59:21,370 --> 00:59:22,310
+So I get this surface.
+
+1339
+00:59:22,310 --> 00:59:22,780
+
+
+1340
+00:59:22,780 --> 00:59:27,310
+This surface is simply what the line in the
+Z space with the best margin got.
+
+1341
+00:59:27,310 --> 00:59:28,670
+That's all.
+
+1342
+00:59:28,670 --> 00:59:31,850
+So if I look at what the support vectors
+are in the Z space, they
+
+1343
+00:59:31,850 --> 00:59:33,180
+happen to correspond to points here.
+
+1344
+00:59:33,180 --> 00:59:34,110
+They are just data points.
+
+1345
+00:59:34,110 --> 00:59:34,630
+Right?
+
+1346
+00:59:34,630 --> 00:59:35,260
+
+
+1347
+00:59:35,260 --> 00:59:39,940
+So let me identify them here, as
+pre-images of support vectors.
+
+1348
+00:59:39,940 --> 00:59:42,520
+People will say they are
+support vectors.
+
+1349
+00:59:42,520 --> 00:59:44,970
+But you need to be careful,
+because the formal
+
+1350
+00:59:44,970 --> 00:59:46,590
+definition is in the Z space.
+
+1351
+00:59:46,590 --> 00:59:48,230
+So they may look like this.
+
+1352
+00:59:48,230 --> 00:59:49,310
+So let's look at it.
+
+1353
+00:59:49,310 --> 00:59:50,280
+This is one.
+
+1354
+00:59:50,280 --> 00:59:50,960
+This is another.
+
+1355
+00:59:50,960 --> 00:59:51,620
+This is another.
+
+1356
+00:59:51,620 --> 00:59:52,490
+This is another.
+
+1357
+00:59:52,490 --> 00:59:55,350
+And usually they are when you turn.
+
+1358
+00:59:55,350 --> 00:59:55,890
+
+
+1359
+00:59:55,890 --> 00:59:58,580
+You would think that in the Z space,
+this is being sandwiched.
+
+1360
+00:59:58,580 --> 00:59:58,830
+
+
+1361
+00:59:58,830 --> 01:00:01,600
+So this is what it's likely to be.
+
+1362
+01:00:01,600 --> 01:00:05,880
+Now the interesting aspect here is that
+if this is true, then one, two,
+
+1363
+01:00:05,880 --> 01:00:06,610
+three, four--
+
+1364
+01:00:06,610 --> 01:00:09,370
+I have only four support vectors.
+
+1365
+01:00:09,370 --> 01:00:13,880
+So I have only four parameters, really,
+expressing w in the Z space.
+
+1366
+01:00:13,880 --> 01:00:14,670
+Because that's what we did.
+
+1367
+01:00:14,670 --> 01:00:18,850
+We said that w equals summation, over
+the support vectors, of the alphas.
+
+1368
+01:00:18,850 --> 01:00:22,740
+Now that is remarkable, because I just
+went to a million-dimensional space.
+
+1369
+01:00:22,740 --> 01:00:25,620
+w is a million-dimensional vector.
+
+1370
+01:00:25,620 --> 01:00:28,850
+And when I did the solution,
+and if I get four--
+
+1371
+01:00:28,850 --> 01:00:31,000
+only four, which is very lucky
+if you are using a million
+
+1372
+01:00:31,000 --> 01:00:32,590
+dimensional, but just
+for illustration.
+
+1373
+01:00:32,590 --> 01:00:36,840
+If I get four support vectors, then
+effectively, in spite of the fact that
+
+1374
+01:00:36,840 --> 01:00:41,010
+I used the glory of the million-dimensional
+space, I actually have
+
+1375
+01:00:41,010 --> 01:00:42,670
+four parameters.
+
+1376
+01:00:42,670 --> 01:00:46,160
+And the generalization behavior will
+go with the four parameters.
+
+1377
+01:00:46,160 --> 01:00:49,890
+So this looks like a sophisticated
+surface, but it's a sophisticated
+
+1378
+01:00:49,890 --> 01:00:51,310
+surface in disguise.
+
+1379
+01:00:51,310 --> 01:00:55,180
+It was so carefully chosen that--
+there are lots of snakes that can
+
+1380
+01:00:55,180 --> 01:00:57,450
+go around and mess up
+the generalization.
+
+1381
+01:00:57,450 --> 01:00:59,160
+This one will be the best of them.
+
+1382
+01:00:59,160 --> 01:01:02,370
+And you have a handle on how good the
+generalization is, just by counting the
+
+1383
+01:01:02,370 --> 01:01:03,970
+number of support vectors.
+
+1384
+01:01:03,970 --> 01:01:07,740
+And that will get us--
+
+1385
+01:01:07,740 --> 01:01:10,180
+Yeah, this is a good point
+I forgot to mention.
+
+1386
+01:01:10,180 --> 01:01:15,510
+So the distance between the support
+vectors and the surface here are not
+
+1387
+01:01:15,510 --> 01:01:16,210
+the margin.
+
+1388
+01:01:16,210 --> 01:01:16,700
+
+
+1389
+01:01:16,700 --> 01:01:19,190
+The margins are in the linear
+space, et cetera.
+
+1390
+01:01:19,190 --> 01:01:19,750
+
+
+1391
+01:01:19,750 --> 01:01:22,540
+They're likely, these guys, to
+be close to the surface.
+
+1392
+01:01:22,540 --> 01:01:24,470
+But the distance wouldn't be the same.
+
+1393
+01:01:24,470 --> 01:01:27,390
+And there are perhaps other points that
+look like they should be support
+
+1394
+01:01:27,390 --> 01:01:28,360
+vectors, and they aren't.
+
+1395
+01:01:28,360 --> 01:01:30,790
+What makes them support vectors or
+not is that they achieve the
+
+1396
+01:01:30,790 --> 01:01:32,890
+margin in the Z space.
+
+1397
+01:01:32,890 --> 01:01:35,290
+This is just an illustrative
+version of it.
+
+1398
+01:01:35,290 --> 01:01:36,730
+
+
+1399
+01:01:36,730 --> 01:01:40,320
+And now we come to the generalization
+result that makes this fly.
+
+1400
+01:01:40,320 --> 01:01:42,440
+And here is the deal.
+
+1401
+01:01:42,440 --> 01:01:44,550
+Generalization result: E out is less
+than or equal to something.
+
+1402
+01:01:44,550 --> 01:01:46,530
+So you're doing classification.
+
+1403
+01:01:46,530 --> 01:01:49,190
+And you are using the classification
+error, the binary error.
+
+1404
+01:01:49,190 --> 01:01:52,210
+So this is the probability of error in
+classifying an out-of-sample point.
+
+1405
+01:01:52,210 --> 01:01:53,070
+
+
+1406
+01:01:53,070 --> 01:01:58,710
+The statement here is very
+much what you expect.
+
+1407
+01:01:58,710 --> 01:02:01,490
+You have the number of support vectors,
+which happens to be the number of
+
+1408
+01:02:01,490 --> 01:02:04,160
+effective parameters-- the
+alphas that survived.
+
+1409
+01:02:04,160 --> 01:02:04,640
+
+
+1410
+01:02:04,640 --> 01:02:05,800
+This is your guy.
+
+1411
+01:02:05,800 --> 01:02:08,530
+You divide it by N, well, N
+minus 1 in this case.
+
+1412
+01:02:08,530 --> 01:02:12,000
+And that will give you
+an upper bound on E_out.
+
+1413
+01:02:12,000 --> 01:02:14,720
+Now I wish this was exactly
+the result.
+
+1414
+01:02:14,720 --> 01:02:15,970
+The result is very close to this.
+
+1415
+01:02:15,970 --> 01:02:20,750
+In order to get the correct result, you
+need to run several versions and
+
+1416
+01:02:20,750 --> 01:02:23,030
+get an average in order
+to guarantee this.
+
+1417
+01:02:23,030 --> 01:02:27,010
+So the real result has to do with
+expected values of those guys.
+
+1418
+01:02:27,010 --> 01:02:29,540
+So for several runs,
+the expected value.
+
+1419
+01:02:29,540 --> 01:02:33,780
+But if the expected value lives up to
+its name, and you expect the expected
+
+1420
+01:02:33,780 --> 01:02:37,850
+value, then in that case, the E_out you
+will get in a particular situation
+
+1421
+01:02:37,850 --> 01:02:44,250
+will be bounded above by this, which
+is a very familiar type of a bound,
+
+1422
+01:02:44,250 --> 01:02:47,880
+number of parameters, degrees of
+freedom, VC dimension, dot dot dot,
+
+1423
+01:02:47,880 --> 01:02:49,410
+divided by the number of examples.
+
+1424
+01:02:49,410 --> 01:02:50,710
+We have seen this before.
+
+1425
+01:02:50,710 --> 01:02:54,630
+And again, the most important aspect
+is that, pretty much like quadratic
+
+1426
+01:02:54,630 --> 01:02:57,260
+programming didn't worry about
+the nature of the Z space.
+
+1427
+01:02:57,260 --> 01:02:58,640
+Could be million-dimensional.
+
+1428
+01:02:58,640 --> 01:03:02,000
+And that didn't figure out in the
+computational difficulty.
+
+1429
+01:03:02,000 --> 01:03:05,270
+It doesn't figure out in the
+generalization difficulty.
+
+1430
+01:03:05,270 --> 01:03:07,880
+You didn't ask me about the
+million-dimensional space.
+
+1431
+01:03:07,880 --> 01:03:11,940
+You asked me, after you were done with
+this entire machinery, how many
+
+1432
+01:03:11,940 --> 01:03:14,200
+support vectors did you get?
+
+1433
+01:03:14,200 --> 01:03:18,730
+If you have 1000 data points, and you
+get 10 support vectors, you're in
+
+1434
+01:03:18,730 --> 01:03:21,710
+pretty good shape regardless of
+the dimensionality of the
+
+1435
+01:03:21,710 --> 01:03:23,720
+space that you visited.
+
+1436
+01:03:23,720 --> 01:03:24,480
+
+
+1437
+01:03:24,480 --> 01:03:28,520
+Because, then, 10 over 1000-- that's
+a pretty good bound on E_out.
+
+1438
+01:03:28,520 --> 01:03:31,340
+On the other hand, it doesn't say that
+now I can go to any dimensional space
+
+1439
+01:03:31,340 --> 01:03:32,620
+and things would be fine.
+
+1440
+01:03:32,620 --> 01:03:36,080
+Because you still are dependent on
+the number of support vectors.
+
+1441
+01:03:36,080 --> 01:03:39,715
+If you go through this machinery, and
+then the number of support vectors out
+
+1442
+01:03:39,715 --> 01:03:42,710
+of 1000 is 500, you know
+you are in trouble.
+
+1443
+01:03:42,710 --> 01:03:45,590
+And trouble is understood in this
+case, because that snake will be
+
+1444
+01:03:45,590 --> 01:03:46,530
+really a snake--
+
+1445
+01:03:46,530 --> 01:03:48,980
+going around every point, going
+around every point.
+
+1446
+01:03:48,980 --> 01:03:51,990
+So just trying to fit the data
+hopelessly, getting so many support
+
+1447
+01:03:51,990 --> 01:03:56,140
+vectors that the generalization
+question now becomes useless.
+
+1448
+01:03:56,140 --> 01:03:56,620
+
+
+1449
+01:03:56,620 --> 01:04:01,000
+But this is the main theoretical result
+that makes people use support
+
+1450
+01:04:01,000 --> 01:04:04,400
+vectors, and support vectors with
+the nonlinear transformation.
+
+1451
+01:04:04,400 --> 01:04:07,900
+You don't pay for the computation of
+going to the higher dimension.
+
+1452
+01:04:07,900 --> 01:04:12,800
+And you don't get to pay for the
+generalization that goes with that.
+
+1453
+01:04:12,800 --> 01:04:16,580
+And then when we go to kernel methods,
+which is a modification of this next
+
+1454
+01:04:16,580 --> 01:04:20,900
+time, you're not even going to pay for
+the simple computational price of
+
+1455
+01:04:20,900 --> 01:04:22,200
+getting the inner product.
+
+1456
+01:04:22,200 --> 01:04:24,730
+Remember when I told you take an inner
+product between a million-vector and
+
+1457
+01:04:24,730 --> 01:04:28,010
+itself, and that was minor,
+even if it's minor, we're
+
+1458
+01:04:28,010 --> 01:04:29,930
+going to get away without it.
+
+1459
+01:04:29,930 --> 01:04:30,550
+
+
+1460
+01:04:30,550 --> 01:04:33,300
+And when we get away without it, we will
+be able to do something rather
+
+1461
+01:04:33,300 --> 01:04:34,700
+interesting.
+
+1462
+01:04:34,700 --> 01:04:39,190
+The Z space we're going to visit-- we
+are now going to take Z spaces that
+
+1463
+01:04:39,190 --> 01:04:43,720
+happen to be infinite-dimensional.
+
+1464
+01:04:43,720 --> 01:04:48,470
+Something completely unthought
+of when we dealt with
+
+1465
+01:04:48,470 --> 01:04:50,970
+generalization in the old way.
+
+1466
+01:04:50,970 --> 01:04:53,950
+Because obviously, in an infinite-dimensional
+space, I'm not going to be
+
+1467
+01:04:53,950 --> 01:04:56,250
+able to actually computationally
+get the inner product.
+
+1468
+01:04:56,250 --> 01:04:56,890
+Thank you.
+
+1469
+01:04:56,890 --> 01:04:57,530
+
+
+1470
+01:04:57,530 --> 01:04:59,030
+So there has to be another way.
+
+1471
+01:04:59,030 --> 01:05:00,790
+And the other way will be the kernel.
+
+1472
+01:05:00,790 --> 01:05:01,370
+
+
+1473
+01:05:01,370 --> 01:05:04,630
+But that will open another set of
+possibilities of working in a set of
+
+1474
+01:05:04,630 --> 01:05:09,340
+spaces we never imagined touching, and
+still getting not only the computation
+
+1475
+01:05:09,340 --> 01:05:12,070
+being the same, but also the
+generalization being dependent on
+
+1476
+01:05:12,070 --> 01:05:16,670
+something that we can measure, which
+is the number of support vectors.
+
+1477
+01:05:16,670 --> 01:05:16,940
+
+
+1478
+01:05:16,940 --> 01:05:19,610
+I will stop here and take questions
+after a short break.
+
+1479
+01:05:19,610 --> 01:05:26,070
+
+
+1480
+01:05:26,070 --> 01:05:26,670
+
+
+1481
+01:05:26,670 --> 01:05:28,970
+Let's start the Q&amp;A.
+
+1482
+01:05:28,970 --> 01:05:29,610
+MODERATOR: OK.
+
+1483
+01:05:29,610 --> 01:05:36,290
+Can you please first explain
+again why you can normalize w
+
+1484
+01:05:36,290 --> 01:05:38,445
+transposed x plus b to be 1.
+
+1485
+01:05:38,445 --> 01:05:39,695
+PROFESSOR: OK.
+
+1486
+01:05:39,695 --> 01:05:44,990
+
+
+1487
+01:05:44,990 --> 01:05:51,010
+We would like to solve for
+the margin given w.
+
+1488
+01:05:51,010 --> 01:05:55,200
+That has dependency on the combination
+of w's you get, which is like the
+
+1489
+01:05:55,200 --> 01:05:57,800
+angle that is the relevant one.
+
+1490
+01:05:57,800 --> 01:06:02,100
+And also w has an inherent
+scale in it.
+
+1491
+01:06:02,100 --> 01:06:05,180
+So the problem is that the scale has
+nothing to do with which plane you're
+
+1492
+01:06:05,180 --> 01:06:05,850
+talking about.
+
+1493
+01:06:05,850 --> 01:06:12,550
+When I take w, the full w and b, and
+take 10 times that, they look like
+
+1494
+01:06:12,550 --> 01:06:15,740
+different vectors as far as the analysis
+is concerned, but they are talking
+
+1495
+01:06:15,740 --> 01:06:17,380
+about the same plane.
+
+1496
+01:06:17,380 --> 01:06:21,300
+So if I'm going to solve without the
+normalization, I will get a solution.
+
+1497
+01:06:21,300 --> 01:06:25,350
+But the solution, whatever I'm
+optimizing, will invariably have in
+
+1498
+01:06:25,350 --> 01:06:29,990
+its denominator something that takes
+out the scale, so that the thing is
+
+1499
+01:06:29,990 --> 01:06:30,730
+scale-invariant.
+
+1500
+01:06:30,730 --> 01:06:32,160
+I cannot possibly solve.
+
+1501
+01:06:32,160 --> 01:06:36,840
+And it will tell me that w has to be
+this, when in fact any positive
+
+1502
+01:06:36,840 --> 01:06:39,820
+multiple of it will serve
+the same plane.
+
+1503
+01:06:39,820 --> 01:06:43,610
+So all I'm doing myself is simplifying
+my life in the optimization.
+
+1504
+01:06:43,610 --> 01:06:45,870
+I want the optimization to be
+as simple as possible.
+
+1505
+01:06:45,870 --> 01:06:48,320
+I don't want it to be something
+over something.
+
+1506
+01:06:48,320 --> 01:06:48,680
+
+
+1507
+01:06:48,680 --> 01:06:52,110
+Because then I will have trouble
+actually getting the solution.
+
+1508
+01:06:52,110 --> 01:06:56,620
+Therefore, I started by putting
+a condition that does not result in loss
+
+1509
+01:06:56,620 --> 01:06:57,730
+of generality.
+
+1510
+01:06:57,730 --> 01:07:03,060
+Because if I restrict myself
+to w's, not to planes--
+
+1511
+01:07:03,060 --> 01:07:04,550
+all planes are admitted.
+
+1512
+01:07:04,550 --> 01:07:07,840
+But every plane is represented
+by an infinite number of w's.
+
+1513
+01:07:07,840 --> 01:07:11,010
+And I'm picking one particular w
+to represent them that happens
+
+1514
+01:07:11,010 --> 01:07:12,080
+to have that form.
+
+1515
+01:07:12,080 --> 01:07:15,800
+When I do that and put it as
+a constraint, what I end up with, the
+
+1516
+01:07:15,800 --> 01:07:19,480
+thing that I'm optimizing happens to
+be a friendly guy that goes with
+
+1517
+01:07:19,480 --> 01:07:21,190
+quadratic programming and
+I get the solution.
+
+1518
+01:07:21,190 --> 01:07:24,130
+I could definitely have started
+by not putting this condition.
+
+1519
+01:07:24,130 --> 01:07:26,665
+Except that I would run into
+mathematical trouble later on.
+
+1520
+01:07:26,665 --> 01:07:27,760
+That's all there is to it.
+
+1521
+01:07:27,760 --> 01:07:29,860
+Similarly, I could have left w0.
+
+1522
+01:07:29,860 --> 01:07:33,450
+And then all of a sudden, every time I
+put something, I only tell you: take
+
+1523
+01:07:33,450 --> 01:07:38,610
+the norm of the first d guys, or w_1 up
+to w_d, and forget the first one.
+
+1524
+01:07:38,610 --> 01:07:42,690
+So all of this was just pure technical
+preparation that does not alter the
+
+1525
+01:07:42,690 --> 01:07:46,376
+problem at all, that makes the
+solution friendly later on.
+
+1526
+01:07:46,376 --> 01:07:49,214
+
+
+1527
+01:07:49,214 --> 01:07:50,770
+MODERATOR: Many people are curious.
+
+1528
+01:07:50,770 --> 01:07:50,780
+
+
+1529
+01:07:50,780 --> 01:07:54,270
+What happens when the points
+are not linearly separable?
+
+1530
+01:07:54,270 --> 01:07:56,660
+PROFESSOR: There are two cases.
+
+1531
+01:07:56,660 --> 01:07:56,670
+
+
+1532
+01:07:56,670 --> 01:08:01,350
+One of them: they are horribly not
+linearly separable, like that.
+
+1533
+01:08:01,350 --> 01:08:02,960
+And in this case, you
+got to a nonlinear
+
+1534
+01:08:02,960 --> 01:08:04,860
+transformation, as we have seen.
+
+1535
+01:08:04,860 --> 01:08:07,610
+And then there is a slightly
+not linearly separable,
+
+1536
+01:08:07,610 --> 01:08:08,950
+as we've seen before.
+
+1537
+01:08:08,950 --> 01:08:13,500
+And in that case, you will see that the
+method I described today is called
+
+1538
+01:08:13,500 --> 01:08:15,800
+hard-margin SVM.
+
+1539
+01:08:15,800 --> 01:08:18,670
+Hard-margin because the margin
+is satisfied strictly.
+
+1540
+01:08:18,670 --> 01:08:21,370
+And then you're going to get another
+version of it, which is called soft
+
+1541
+01:08:21,370 --> 01:08:25,000
+margin, that allows for few errors
+and penalizes for them.
+
+1542
+01:08:25,000 --> 01:08:27,310
+And that will be covered next.
+
+1543
+01:08:27,310 --> 01:08:27,660
+
+
+1544
+01:08:27,660 --> 01:08:32,050
+But basically, it's very much in
+parallel with the perceptron.
+
+1545
+01:08:32,050 --> 01:08:33,979
+Perceptron means linearly separable.
+
+1546
+01:08:33,979 --> 01:08:36,189
+If there are few, then
+you apply something.
+
+1547
+01:08:36,189 --> 01:08:38,050
+Let's say like the pocket
+in that case.
+
+1548
+01:08:38,050 --> 01:08:42,220
+But if it's terribly not linearly
+separable, then you go to a nonlinear
+
+1549
+01:08:42,220 --> 01:08:43,000
+transformation.
+
+1550
+01:08:43,000 --> 01:08:47,010
+And nonlinear transformation here is very
+attractive because of the particular
+
+1551
+01:08:47,010 --> 01:08:48,670
+positive properties that we discussed.
+
+1552
+01:08:48,670 --> 01:08:53,274
+But in general, you actually use
+a nonlinear transformation together with
+
+1553
+01:08:53,274 --> 01:08:57,399
+the soft version, because you don't want
+the snake to go out of its way
+
+1554
+01:08:57,399 --> 01:08:59,170
+just to take care of an outlier.
+
+1555
+01:08:59,170 --> 01:08:59,359
+
+
+1556
+01:08:59,359 --> 01:09:03,410
+So we are better off just making
+an error on the outlier, and making the
+
+1557
+01:09:03,410 --> 01:09:05,680
+snake a little bit less wiggly.
+
+1558
+01:09:05,680 --> 01:09:08,380
+And we will talk about that
+when we get the details.
+
+1559
+01:09:08,380 --> 01:09:11,572
+
+
+1560
+01:09:11,572 --> 01:09:15,830
+MODERATOR: Could you explain once again
+why in this case, just the number of
+
+1561
+01:09:15,830 --> 01:09:21,029
+support vectors gives an approximation
+of the VC dimension, while in other
+
+1562
+01:09:21,029 --> 01:09:22,630
+cases the transform--
+
+1563
+01:09:22,630 --> 01:09:24,939
+PROFESSOR: The explanation
+I gave was intuitive.
+
+1564
+01:09:24,939 --> 01:09:25,640
+It's not a proof.
+
+1565
+01:09:25,640 --> 01:09:29,490
+There is a proof for these terms
+that I didn't even touch on.
+
+1566
+01:09:29,490 --> 01:09:30,200
+
+
+1567
+01:09:30,200 --> 01:09:32,189
+And the idea is the following.
+
+1568
+01:09:32,189 --> 01:09:37,000
+We have come to the conclusion that the
+number of parameters, independent
+
+1569
+01:09:37,000 --> 01:09:41,210
+parameters or effective parameters, is
+the VC dimension in many cases.
+
+1570
+01:09:41,210 --> 01:09:45,540
+So to the extent that you can actually
+accept that as a rule of thumb, then
+
+1571
+01:09:45,540 --> 01:09:51,260
+you look at the alphas. I have as
+many alphas as data points.
+
+1572
+01:09:51,260 --> 01:09:53,920
+So if these were actually my parameters,
+I'd be in deep trouble.
+
+1573
+01:09:53,920 --> 01:09:57,450
+Because I have as many parameters as
+points, so I'm basically memorizing
+
+1574
+01:09:57,450 --> 01:09:59,320
+the points.
+
+1575
+01:09:59,320 --> 01:10:03,100
+But the particulars of the problem
+result in the fact that, in almost all
+
+1576
+01:10:03,100 --> 01:10:08,110
+the cases, the vast majority of the
+parameters will be identically 0.
+
+1577
+01:10:08,110 --> 01:10:11,380
+So in spite of the fact that they were
+open to be non-zero, the fact that the
+
+1578
+01:10:11,380 --> 01:10:15,400
+expectation is that almost all of them
+will be 0, makes it more or less that the
+
+1579
+01:10:15,400 --> 01:10:18,630
+effective number of parameters are the
+ones that end up being non-zero.
+
+1580
+01:10:18,630 --> 01:10:22,840
+Again, this is not an accurate
+statement, but it's
+
+1581
+01:10:22,840 --> 01:10:24,300
+a very reasonable statement.
+
+1582
+01:10:24,300 --> 01:10:28,350
+So the number of non-zero parameters,
+which corresponds to the VC
+
+1583
+01:10:28,350 --> 01:10:30,900
+dimension, also happens to be the
+number of the support vectors by
+
+1584
+01:10:30,900 --> 01:10:31,640
+definition.
+
+1585
+01:10:31,640 --> 01:10:36,060
+Because support vectors are the ones
+that correspond to the non-zero
+
+1586
+01:10:36,060 --> 01:10:37,580
+Lagrange multipliers.
+
+1587
+01:10:37,580 --> 01:10:41,440
+And therefore, we get a rule, which
+either counts the number of support
+
+1588
+01:10:41,440 --> 01:10:44,050
+vectors or the number of surviving
+parameters, if you will.
+
+1589
+01:10:44,050 --> 01:10:47,270
+And this is the rule that we had at
+the end, that I said that I didn't
+
+1590
+01:10:47,270 --> 01:10:51,268
+prove, but actually gives
+you a bound on E_out.
+
+1591
+01:10:51,268 --> 01:10:55,680
+MODERATOR: Is there any advantage in
+considering the margin, but using
+
+1592
+01:10:55,680 --> 01:10:57,500
+a different norm?
+
+1593
+01:10:57,500 --> 01:10:59,320
+PROFESSOR: So there
+are variations of this.
+
+1594
+01:10:59,320 --> 01:11:02,130
+And indeed, some of the aggregation
+methods, like boosting, has
+
+1595
+01:11:02,130 --> 01:11:03,490
+a margin of its own.
+
+1596
+01:11:03,490 --> 01:11:05,010
+And then you can compare that.
+
+1597
+01:11:05,010 --> 01:11:10,130
+It's really the question of the
+ease of solving the problem.
+
+1598
+01:11:10,130 --> 01:11:14,630
+And if you have a reason for
+using one norm or another,
+
+1599
+01:11:14,630 --> 01:11:15,640
+for a practical problem.
+
+1600
+01:11:15,640 --> 01:11:20,280
+For example, if I see that loss goes
+with squared, or loss goes with the
+
+1601
+01:11:20,280 --> 01:11:25,650
+absolute value or whatever, and then I
+design my margin accordingly, then we
+
+1602
+01:11:25,650 --> 01:11:29,270
+go back to the idea of a principled
+error measure, in
+
+1603
+01:11:29,270 --> 01:11:30,710
+this case margin measure.
+
+1604
+01:11:30,710 --> 01:11:31,330
+
+
+1605
+01:11:31,330 --> 01:11:34,350
+On the other hand, in most of the cases,
+there is really no preference.
+
+1606
+01:11:34,350 --> 01:11:38,690
+And it is the analytic considerations
+that makes me choose
+
+1607
+01:11:38,690 --> 01:11:40,100
+one margin or another.
+
+1608
+01:11:40,100 --> 01:11:45,370
+But different measures for the margin,
+with 1-norm, 2-norm, and other
+
+1609
+01:11:45,370 --> 01:11:46,970
+things, have been applied.
+
+1610
+01:11:46,970 --> 01:11:50,990
+And there is really no compelling reason
+to prefer one over the other in
+
+1611
+01:11:50,990 --> 01:11:52,120
+terms of performance.
+
+1612
+01:11:52,120 --> 01:11:54,970
+So it really is the analytic
+properties that
+
+1613
+01:11:54,970 --> 01:11:57,482
+usually dictate the choice.
+
+1614
+01:11:57,482 --> 01:12:03,830
+MODERATOR: Is there any pruning method
+that can maybe get rid of some of the
+
+1615
+01:12:03,830 --> 01:12:07,310
+support vectors, or not really?
+
+1616
+01:12:07,310 --> 01:12:10,590
+PROFESSOR: So you're not happy
+with even reducing it to support vectors?
+
+1617
+01:12:10,590 --> 01:12:15,600
+You want to get rid of some of them.
+Well--
+
+1618
+01:12:15,600 --> 01:12:19,030
+Offhand, I cannot think of a method
+that I can directly translate
+
+1619
+01:12:19,030 --> 01:12:21,670
+into-- as if it's getting rid of
+some of the support vectors.
+
+1620
+01:12:21,670 --> 01:12:26,230
+What happens for computational reasons
+is that when you solve a problem that
+
+1621
+01:12:26,230 --> 01:12:28,710
+is huge in data set, you
+cannot solve it all.
+
+1622
+01:12:28,710 --> 01:12:31,860
+So sometimes what happens is that
+you take subsets, and you
+
+1623
+01:12:31,860 --> 01:12:33,150
+get the support vectors.
+
+1624
+01:12:33,150 --> 01:12:36,215
+And then you take the support vectors as
+a union and get the support vectors
+
+1625
+01:12:36,215 --> 01:12:38,330
+of the support vectors,
+and stuff like that.
+
+1626
+01:12:38,330 --> 01:12:40,590
+So these are really computational
+considerations.
+
+1627
+01:12:40,590 --> 01:12:46,650
+But basically, the support vectors are
+there to support the separating plane.
+
+1628
+01:12:46,650 --> 01:12:47,200
+
+
+1629
+01:12:47,200 --> 01:12:51,320
+So if you let one of them
+go, the thing will fall!
+
+1630
+01:12:51,320 --> 01:12:53,530
+Obviously, I'm half-joking only.
+
+1631
+01:12:53,530 --> 01:12:57,320
+But because really, they are the ones
+that dictate the margin, so their
+
+1632
+01:12:57,320 --> 01:12:59,840
+existence really tells you
+that the margin is valid.
+
+1633
+01:12:59,840 --> 01:13:04,135
+And that's really why they are there.
+
+1634
+01:13:04,135 --> 01:13:11,180
+MODERATOR: Some people are worried that
+a noisy data set would completely ruin
+
+1635
+01:13:11,180 --> 01:13:13,150
+the performance of the SVM.
+
+1636
+01:13:13,150 --> 01:13:15,370
+So how does it deal with this?
+
+1637
+01:13:15,370 --> 01:13:17,920
+PROFESSOR: It will ruin as much
+as it will ruin any other method.
+
+1638
+01:13:17,920 --> 01:13:19,680
+It's not particularly susceptible
+to noise.
+
+1639
+01:13:19,680 --> 01:13:22,760
+Except obviously when you have noise,
+the chances of getting a cleanly
+
+1640
+01:13:22,760 --> 01:13:25,330
+linearly separable data is not there.
+
+1641
+01:13:25,330 --> 01:13:27,530
+And therefore, you're using
+the other methods.
+
+1642
+01:13:27,530 --> 01:13:32,600
+And if you're using strictly
+nonlinear transformation, but with
+
+1643
+01:13:32,600 --> 01:13:34,840
+hard margin, then I can see
+the point of ruining.
+
+1644
+01:13:34,840 --> 01:13:37,080
+Because now the snake is
+going around noise.
+
+1645
+01:13:37,080 --> 01:13:39,480
+And obviously that's not good, because
+you're fitting the noise.
+
+1646
+01:13:39,480 --> 01:13:43,270
+But in those cases, and in almost all of
+the cases, you use the soft version of
+
+1647
+01:13:43,270 --> 01:13:45,150
+this, which is remarkably similar.
+
+1648
+01:13:45,150 --> 01:13:46,410
+It's different assumptions.
+
+1649
+01:13:46,410 --> 01:13:48,530
+But the solution is remarkably
+similar.
+
+1650
+01:13:48,530 --> 01:13:52,120
+And therefore in that case, you will be
+as vulnerable or not vulnerable to
+
+1651
+01:13:52,120 --> 01:13:54,560
+noise as you would by
+using other methods.
+
+1652
+01:13:54,560 --> 01:13:58,230
+
+
+1653
+01:13:58,230 --> 01:13:59,950
+MODERATOR: All right. I think
+that's it.
+
+1654
+01:13:59,950 --> 01:13:59,960
+
+
+1655
+01:13:59,960 --> 01:14:01,060
+PROFESSOR: Very good.
+
+1656
+01:14:01,060 --> 01:14:01,070
+
+
+1657
+01:14:01,070 --> 01:14:02,440
+We will see you next week.
+
+1658
+01:14:02,440 --> 01:14:15,055
+

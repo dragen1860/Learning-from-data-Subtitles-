@@ -1,0 +1,6556 @@
+1
+00:00:00,000 --> 00:00:00,580
+
+
+2
+00:00:00,580 --> 00:00:03,270
+ANNOUNCER: The following program
+is brought to you by Caltech.
+
+3
+00:00:03,270 --> 00:00:15,220
+
+
+4
+00:00:15,220 --> 00:00:18,280
+YASER ABU-MOSTAFA: Welcome back.
+
+5
+00:00:18,280 --> 00:00:24,200
+Last time, we talked about radial basis
+functions, and the functional
+
+6
+00:00:24,200 --> 00:00:29,470
+form of the hypothesis in that model
+is the superposition of a bunch of
+
+7
+00:00:29,470 --> 00:00:33,940
+Gaussians, centered around mu_k.
+
+8
+00:00:33,940 --> 00:00:39,520
+And we had two models, or two versions
+of that model, one of them where the
+
+9
+00:00:39,520 --> 00:00:43,580
+centers are fewer than the number of
+data points, which is the most common
+
+10
+00:00:43,580 --> 00:00:47,890
+one, in which case we need to come up
+with the value of the centers, mu_k,
+
+11
+00:00:47,890 --> 00:00:50,950
+and learn the values of w_k.
+
+12
+00:00:50,950 --> 00:00:54,750
+And it turned out to be a very simple
+algorithm in that case, where you use
+
+13
+00:00:54,750 --> 00:00:59,700
+unsupervised learning to get the mu_k's,
+the centers, by clustering the input
+
+14
+00:00:59,700 --> 00:01:03,180
+points without reference to
+the label that they have.
+
+15
+00:01:03,180 --> 00:01:07,770
+And after you do that, it becomes a very
+simple linear model where you get
+
+16
+00:01:07,770 --> 00:01:11,355
+the w_k's, the parameters, using
+the usual pseudo-inverse.
+
+17
+00:01:11,355 --> 00:01:15,180
+And in the other case, where we used
+as many centers as there are data
+
+18
+00:01:15,180 --> 00:01:17,580
+points, and the centers were
+the data points, there was
+
+19
+00:01:17,580 --> 00:01:18,810
+obviously no first step.
+
+20
+00:01:18,810 --> 00:01:24,070
+And in that case, in order to get the
+w_k, we actually used the real inverse
+
+21
+00:01:24,070 --> 00:01:26,810
+rather than the pseudo-inverse.
+
+22
+00:01:26,810 --> 00:01:31,670
+One of the interests of radial basis
+functions-- they are very popular
+
+23
+00:01:31,670 --> 00:01:35,550
+functions to use in machine learning,
+but one of the most important features
+
+24
+00:01:35,550 --> 00:01:41,030
+about them is how they relate to so
+many aspects of machine learning.
+
+25
+00:01:41,030 --> 00:01:44,150
+So I'd like to go through this, because
+it's actually very instructive and it
+
+26
+00:01:44,150 --> 00:01:46,820
+puts together some of
+the notions we had.
+
+27
+00:01:46,820 --> 00:01:48,700
+So let me magnify this a bit.
+
+28
+00:01:48,700 --> 00:01:51,640
+
+
+29
+00:01:51,640 --> 00:01:56,550
+Radial basis functions have this as
+the building block, the Gaussian, and
+
+30
+00:01:56,550 --> 00:01:57,900
+they are related to
+nearest neighbor.
+
+31
+00:01:57,900 --> 00:02:01,570
+In the case of nearest neighbor, you
+have a data point, one of your points
+
+32
+00:02:01,570 --> 00:02:04,980
+in the training set, and it influences
+the region around it.
+
+33
+00:02:04,980 --> 00:02:09,340
+So everything in the region around it in
+the input space inherits the label
+
+34
+00:02:09,340 --> 00:02:13,170
+of that point, until you get to a point
+which is closer to another data point,
+
+35
+00:02:13,170 --> 00:02:14,970
+and then you switch to that point.
+
+36
+00:02:14,970 --> 00:02:18,400
+So you can think now of RBF
+as a soft version of that.
+
+37
+00:02:18,400 --> 00:02:22,040
+The point affects the points around
+it, but it's not black and white.
+
+38
+00:02:22,040 --> 00:02:24,320
+It's not full effect and
+then zero effect.
+
+39
+00:02:24,320 --> 00:02:27,830
+It's gradually diminishing effect.
+
+40
+00:02:27,830 --> 00:02:33,650
+It's also related to neural networks,
+thinking of this as the activation in
+
+41
+00:02:33,650 --> 00:02:36,120
+the hidden layer, as we saw last time.
+
+42
+00:02:36,120 --> 00:02:38,550
+And the activation for the
+neural networks in the
+
+43
+00:02:38,550 --> 00:02:40,820
+hidden layer was a sigmoid.
+
+44
+00:02:40,820 --> 00:02:43,670
+And the main conceptual difference
+between the two in this case is that
+
+45
+00:02:43,670 --> 00:02:47,480
+this is local. It takes care of one
+region of the space at the time,
+
+46
+00:02:47,480 --> 00:02:49,220
+whereas this is global.
+
+47
+00:02:49,220 --> 00:02:54,330
+That thing affects points regardless
+of the value of the signal, and you
+
+48
+00:02:54,330 --> 00:02:58,800
+get the effect of a function by getting
+the differences between these
+
+49
+00:02:58,800 --> 00:03:01,020
+different sigmoids.
+
+50
+00:03:01,020 --> 00:03:05,670
+Then we had the relationship to SVM,
+which is very easy because in the
+
+51
+00:03:05,670 --> 00:03:09,390
+case of SVM, we had
+an outright RBF kernel.
+
+52
+00:03:09,390 --> 00:03:13,370
+So there was simply a very easy way to
+compare them because they use the same
+
+53
+00:03:13,370 --> 00:03:17,040
+kernel, except that there were
+many interesting differences.
+
+54
+00:03:17,040 --> 00:03:20,660
+For example, when we use the RBF, we
+cluster the points, we determine the
+
+55
+00:03:20,660 --> 00:03:24,400
+centers according to an unsupervised
+learning criterion.
+
+56
+00:03:24,400 --> 00:03:28,400
+And in the case of SVM, the centers,
+if you're going to call them that,
+
+57
+00:03:28,400 --> 00:03:31,930
+happen to be the support vectors in
+which the output is very much
+
+58
+00:03:31,930 --> 00:03:34,880
+consulted in deciding what these
+support vectors are.
+
+59
+00:03:34,880 --> 00:03:38,360
+And the support vectors happen to be
+around the separating boundary,
+
+60
+00:03:38,360 --> 00:03:41,550
+whereas the centers here happen to be
+all over the input space, in order to
+
+61
+00:03:41,550 --> 00:03:45,330
+represent different clusters
+of the inputs.
+
+62
+00:03:45,330 --> 00:03:49,530
+The two remaining relations as far as
+RBF are concerned are regularization
+
+63
+00:03:49,530 --> 00:03:52,350
+and unsupervised learning.
+
+64
+00:03:52,350 --> 00:03:56,410
+Unsupervised learning is easy, because
+that is the utility we had in order to
+
+65
+00:03:56,410 --> 00:03:58,360
+cluster the points and
+find the centers.
+
+66
+00:03:58,360 --> 00:04:01,690
+So you look at the points, and then
+you try to find the representative
+
+67
+00:04:01,690 --> 00:04:06,150
+center for them such that when you put
+a radial basis function around that
+
+68
+00:04:06,150 --> 00:04:10,480
+point, it captures the contribution of
+those points, and then more or less
+
+69
+00:04:10,480 --> 00:04:13,580
+dies out, or at least is not as
+effective when it goes far away, and
+
+70
+00:04:13,580 --> 00:04:15,780
+this is another center
+that does the same.
+
+71
+00:04:15,780 --> 00:04:19,899
+The interesting aspect was
+regularization because, it seems on
+
+72
+00:04:19,899 --> 00:04:22,530
+face value, it's a completely
+different concept.
+
+73
+00:04:22,530 --> 00:04:26,490
+RBF is a model. Regularization
+is a method that we apply
+
+74
+00:04:26,490 --> 00:04:27,860
+on top of any model.
+
+75
+00:04:27,860 --> 00:04:30,980
+But it turns out that RBF's were derived
+in the first place in function
+
+76
+00:04:30,980 --> 00:04:34,340
+approximation using just a consideration
+of regularization.
+
+77
+00:04:34,340 --> 00:04:36,980
+So you have a bunch of points, you want
+to interpolate and extrapolate
+
+78
+00:04:36,980 --> 00:04:40,840
+them, and you don't want the
+curve to be too wiggly.
+
+79
+00:04:40,840 --> 00:04:44,880
+So you capture a smoothness criterion
+using a function of derivatives, and
+
+80
+00:04:44,880 --> 00:04:47,460
+then when you solve for them, you find
+that the interpolation is done by
+
+81
+00:04:47,460 --> 00:04:51,930
+Gaussians, which gives you the RBF's.
+
+82
+00:04:51,930 --> 00:04:54,690
+So this is what this model does.
+
+83
+00:04:54,690 --> 00:05:01,210
+Today, we're going to switch gears
+completely and in a very pleasant way.
+
+84
+00:05:01,210 --> 00:05:05,220
+If you think about it, we have gone
+through lots of math, and lots of
+
+85
+00:05:05,220 --> 00:05:09,350
+algorithms, and lots of homework, and
+all of that, and I think we paid
+
+86
+00:05:09,350 --> 00:05:15,680
+our dues and we earned the ability to
+do some philosophy, if you will.
+
+87
+00:05:15,680 --> 00:05:20,740
+So we're going to look at learning
+principles without very strong appeal
+
+88
+00:05:20,740 --> 00:05:25,740
+to math, because we have very strong math
+foundation to stand on already.
+
+89
+00:05:25,740 --> 00:05:28,810
+And we'll try to understand the concepts,
+and relate these concepts as
+
+90
+00:05:28,810 --> 00:05:33,390
+they appear in machine learning, because
+they also appear in other
+
+91
+00:05:33,390 --> 00:05:36,650
+fields in science in general, and
+they are fascinating concepts
+
+92
+00:05:36,650 --> 00:05:37,760
+in their own right.
+
+93
+00:05:37,760 --> 00:05:41,570
+And when we put them in the context of
+machine learning, they assume a real
+
+94
+00:05:41,570 --> 00:05:45,830
+meaning and a real understanding that
+will help us understand the principles
+
+95
+00:05:45,830 --> 00:05:47,450
+in general.
+
+96
+00:05:47,450 --> 00:05:53,180
+So the three principles, the usual
+label for them is Occam's razor,
+
+97
+00:05:53,180 --> 00:05:56,180
+sampling bias, and data snooping.
+
+98
+00:05:56,180 --> 00:05:59,290
+And you may be familiar with some of
+them, and we have already alluded to
+
+99
+00:05:59,290 --> 00:06:01,210
+data snooping in one of the lectures.
+
+100
+00:06:01,210 --> 00:06:07,460
+And if you look at them, Occam's
+razor relates to the model.
+
+101
+00:06:07,460 --> 00:06:10,770
+Both of these guys relate to the data.
+
+102
+00:06:10,770 --> 00:06:15,320
+One of them has to do with collecting
+the data, and the other one has to do with
+
+103
+00:06:15,320 --> 00:06:17,750
+handling the data.
+
+104
+00:06:17,750 --> 00:06:20,900
+And we'll take them one at a time, and
+see what they are about and how they
+
+105
+00:06:20,900 --> 00:06:24,620
+apply to machine learning and so on.
+
+106
+00:06:24,620 --> 00:06:26,890
+So let's start with Occam's razor.
+
+107
+00:06:26,890 --> 00:06:30,660
+There is a recurring theme in machine
+learning, and in science, and in life
+
+108
+00:06:30,660 --> 00:06:33,050
+in general that less is more.
+
+109
+00:06:33,050 --> 00:06:35,330
+Simpler is better, and so on.
+
+110
+00:06:35,330 --> 00:06:39,760
+And there are so many manifestations of
+that, and I just chose one of the
+
+111
+00:06:39,760 --> 00:06:43,840
+most famous quotes. I put "quote"
+between quotes because it's
+
+112
+00:06:43,840 --> 00:06:46,270
+not really a quote.
+
+113
+00:06:46,270 --> 00:06:49,900
+He didn't say that in so many words, but
+at least, that's what people keep
+
+114
+00:06:49,900 --> 00:06:51,560
+quoting Einstein as saying.
+
+115
+00:06:51,560 --> 00:06:56,590
+And it says that an explanation of
+the data-- so you are running
+
+116
+00:06:56,590 --> 00:06:59,220
+an experiment, you collect the data,
+and you want to make
+
+117
+00:06:59,220 --> 00:07:00,680
+an explanation of the data.
+
+118
+00:07:00,680 --> 00:07:05,530
+The explanation could be E equals
+M C squared, or something else.
+
+119
+00:07:05,530 --> 00:07:08,560
+So you are trying to find an explanation
+of the data, and here is
+
+120
+00:07:08,560 --> 00:07:11,320
+a condition about what
+the explanation should be like.
+
+121
+00:07:11,320 --> 00:07:17,740
+It should be as simple as possible,
+but no simpler.
+
+122
+00:07:17,740 --> 00:07:20,310
+Very wise words.
+
+123
+00:07:20,310 --> 00:07:22,870
+As simple as possible, that's
+the Occam's razor part.
+
+124
+00:07:22,870 --> 00:07:25,410
+No simpler, because now you
+are violating the data.
+
+125
+00:07:25,410 --> 00:07:27,120
+You have to be able to
+explain the data.
+
+126
+00:07:27,120 --> 00:07:28,590
+So this is the rule.
+
+127
+00:07:28,590 --> 00:07:32,990
+And that quote, in one manifestation or
+another, has occurred in history.
+
+128
+00:07:32,990 --> 00:07:36,540
+Isaac Newton has something that is
+similar, and a bunch of them, but I'm
+
+129
+00:07:36,540 --> 00:07:39,450
+going to quote the one that
+survived the test of time,
+
+130
+00:07:39,450 --> 00:07:40,710
+which is Occam's razor.
+
+131
+00:07:40,710 --> 00:07:43,390
+So let's first explain
+what the razor is.
+
+132
+00:07:43,390 --> 00:07:47,270
+Well, a razor is this.
+
+133
+00:07:47,270 --> 00:07:50,180
+You have to write "Occam" on it in
+order to become Occam's razor!
+
+134
+00:07:50,180 --> 00:07:52,520
+And the idea here is symbolic.
+
+135
+00:07:52,520 --> 00:07:54,910
+So the notion of the razor
+is the following.
+
+136
+00:07:54,910 --> 00:07:58,300
+You have an explanation of the
+data, and you have your razor.
+
+137
+00:07:58,300 --> 00:08:03,140
+So what you do, you keep trimming the
+explanation to the bare minimum that
+
+138
+00:08:03,140 --> 00:08:07,920
+is still consistent with the data, and
+when you arrive at that, then you have
+
+139
+00:08:07,920 --> 00:08:10,270
+the best possible explanation.
+
+140
+00:08:10,270 --> 00:08:15,230
+And it's attributed to William of Occam
+in the 14th century, so it goes
+
+141
+00:08:15,230 --> 00:08:17,660
+back quite a bit.
+
+142
+00:08:17,660 --> 00:08:24,550
+What we would like to do, we'd like
+to state the principle of Occam's
+
+143
+00:08:24,550 --> 00:08:28,520
+razor, and then zoom in, in order
+to make it concrete.
+
+144
+00:08:28,520 --> 00:08:31,710
+Rather than just a nice thing to have,
+we'd like to really understand
+
+145
+00:08:31,710 --> 00:08:33,570
+what is going on.
+
+146
+00:08:33,570 --> 00:08:35,820
+So let's look at the statement.
+
+147
+00:08:35,820 --> 00:08:40,919
+The statement, in English, not in
+mathematics, says that the simplest
+
+148
+00:08:40,919 --> 00:08:50,460
+model that fits the data
+is also the most plausible.
+
+149
+00:08:50,460 --> 00:08:54,290
+And we put it in a box, because
+it's important.
+
+150
+00:08:54,290 --> 00:09:00,470
+So, first thing to realize about this
+statement is that it is neither
+
+151
+00:09:00,470 --> 00:09:05,670
+precise nor self-evident.
+
+152
+00:09:05,670 --> 00:09:09,110
+It's not precise, because I really
+don't know what simplest means.
+
+153
+00:09:09,110 --> 00:09:10,570
+We need to pin that down.
+
+154
+00:09:10,570 --> 00:09:13,870
+Right?
+
+155
+00:09:13,870 --> 00:09:18,160
+I know that the simplest model is nice,
+but I'm saying something more
+
+156
+00:09:18,160 --> 00:09:18,830
+than just nice.
+
+157
+00:09:18,830 --> 00:09:20,170
+I'm saying it's most plausible.
+
+158
+00:09:20,170 --> 00:09:24,130
+It is the most likely to be true
+for explaining the data.
+
+159
+00:09:24,130 --> 00:09:28,180
+That is a statement, and you actually
+need to argue why this is true.
+
+160
+00:09:28,180 --> 00:09:32,950
+It's not wishful thinking that we just
+use the simple, and things will be fine.
+
+161
+00:09:32,950 --> 00:09:34,280
+There is something said here.
+
+162
+00:09:34,280 --> 00:09:38,480
+So there are two questions to answer,
+in order to make this concrete.
+
+163
+00:09:38,480 --> 00:09:41,910
+The two questions are, the first one
+is, what does it mean for a model
+
+164
+00:09:41,910 --> 00:09:43,450
+to be simple?
+
+165
+00:09:43,450 --> 00:09:47,880
+It turns out to be a complex question,
+but we will see that it's actually
+
+166
+00:09:47,880 --> 00:09:50,940
+manageable in very concrete terms.
+
+167
+00:09:50,940 --> 00:09:55,140
+The second question is, how do we
+know that this is the case?
+
+168
+00:09:55,140 --> 00:09:58,740
+How do we know that simpler is better,
+in terms of performance?
+
+169
+00:09:58,740 --> 00:10:02,460
+So we'll take one question
+at a time, and address it.
+
+170
+00:10:02,460 --> 00:10:06,840
+First question, simple
+means exactly what?
+
+171
+00:10:06,840 --> 00:10:10,490
+Now, you look at the literature and
+complexity is all over the place.
+
+172
+00:10:10,490 --> 00:10:17,090
+It's a very appealing concept with very
+big variety of definitions, but
+
+173
+00:10:17,090 --> 00:10:21,150
+the definitions basically belong
+to two categories.
+
+174
+00:10:21,150 --> 00:10:24,920
+When you measure the complexity,
+there are basically two types of
+
+175
+00:10:24,920 --> 00:10:26,870
+measures of complexity.
+
+176
+00:10:26,870 --> 00:10:30,410
+And my goal here is to be able to
+convince you that they actually are
+
+177
+00:10:30,410 --> 00:10:33,550
+talking about more or less the same
+thing, in spite of being inherently
+
+178
+00:10:33,550 --> 00:10:36,840
+different conceptually.
+
+179
+00:10:36,840 --> 00:10:42,500
+The first one is a complexity of
+an object, in our case, a hypothesis h
+
+180
+00:10:42,500 --> 00:10:44,060
+or the final hypothesis g.
+
+181
+00:10:44,060 --> 00:10:47,930
+That is one object, and we can say that
+this is a complex hypothesis or
+
+182
+00:10:47,930 --> 00:10:50,630
+a simple hypothesis.
+
+183
+00:10:50,630 --> 00:10:52,460
+The other set of definitions
+have to do with the
+
+184
+00:10:52,460 --> 00:10:55,760
+complexity of a set of objects.
+
+185
+00:10:55,760 --> 00:10:59,240
+In our case, the hypothesis set. We say
+that this is a complex hypothesis
+
+186
+00:10:59,240 --> 00:11:02,730
+set, complex model, and so on.
+
+187
+00:11:02,730 --> 00:11:07,120
+And we did have concretely a measure of
+complexity of small h and a measure
+
+188
+00:11:07,120 --> 00:11:11,600
+of complexity of big H, and if you
+remember, we actually used the
+
+189
+00:11:11,600 --> 00:11:12,960
+same symbol for them.
+
+190
+00:11:12,960 --> 00:11:14,770
+It was Omega.
+
+191
+00:11:14,770 --> 00:11:18,530
+Omega here was the penalty for
+model complexity when we did the VC
+
+192
+00:11:18,530 --> 00:11:23,130
+analysis, and Omega here was
+the regularization term.
+
+193
+00:11:23,130 --> 00:11:26,250
+This is the one we add in the augmented
+error, in order to capture the
+
+194
+00:11:26,250 --> 00:11:28,080
+complexity of what we end up with.
+
+195
+00:11:28,080 --> 00:11:32,450
+So we already have a feel that there is
+some kind of correspondence, and if
+
+196
+00:11:32,450 --> 00:11:36,340
+you look at the different definitions
+outside, there are many definitions of
+
+197
+00:11:36,340 --> 00:11:39,500
+the complexity of an object, and
+I'm going to give you two
+
+198
+00:11:39,500 --> 00:11:42,020
+from different worlds.
+
+199
+00:11:42,020 --> 00:11:47,750
+One of them is MDL, stands for
+Minimum Description Length.
+
+200
+00:11:47,750 --> 00:11:50,690
+And the other one, which is simple,
+is the order of a polynomial.
+
+201
+00:11:50,690 --> 00:11:53,140
+Let me take the minimum
+description length.
+
+202
+00:11:53,140 --> 00:11:56,490
+So the idea is that I give you an object
+and you try to specify the
+
+203
+00:11:56,490 --> 00:12:01,570
+object, and you try to specify it
+with as few bits as possible.
+
+204
+00:12:01,570 --> 00:12:05,440
+The fewer the bits you can get
+away with, the simpler the
+
+205
+00:12:05,440 --> 00:12:06,870
+object in your mind.
+
+206
+00:12:06,870 --> 00:12:12,990
+So the measure of complexity here is
+how few bits can I get away with, in
+
+207
+00:12:12,990 --> 00:12:14,890
+specifying that object?
+
+208
+00:12:14,890 --> 00:12:18,740
+And let's take just an example, in order
+to be able to relate to that.
+
+209
+00:12:18,740 --> 00:12:23,790
+Let's say I'm looking at an integer that
+happens to be a million digits,
+
+210
+00:12:23,790 --> 00:12:25,370
+a million decimal digits.
+
+211
+00:12:25,370 --> 00:12:28,420
+Huge numbers, any numbers.
+
+212
+00:12:28,420 --> 00:12:34,540
+Now, I'm trying to find the complexity
+of individual numbers of that length.
+
+213
+00:12:34,540 --> 00:12:35,890
+There will be different complexities.
+
+214
+00:12:35,890 --> 00:12:40,930
+So let me give you one number which is,
+let's say, 10 to the million
+
+215
+00:12:40,930 --> 00:12:43,050
+minus 1, in order to make
+it a million digits.
+
+216
+00:12:43,050 --> 00:12:46,390
+So let's say 10 to the
+million minus 1.
+
+217
+00:12:46,390 --> 00:12:51,850
+Now, 10 to the million minus 1 is
+99999999, a million times, right?
+
+218
+00:12:51,850 --> 00:12:55,640
+In spite of the fact that this is
+a million in length, it is a simple
+
+219
+00:12:55,640 --> 00:13:00,060
+object because you were able to
+describe it as "10 to the
+
+220
+00:13:00,060 --> 00:13:02,000
+million minus 1".
+
+221
+00:13:02,000 --> 00:13:04,990
+That is not a very long
+description, right?
+
+222
+00:13:04,990 --> 00:13:08,240
+And therefore, because you managed to
+get a short description, the object is
+
+223
+00:13:08,240 --> 00:13:09,980
+simple in your mind.
+
+224
+00:13:09,980 --> 00:13:11,680
+This is very much related to
+
+225
+00:13:11,680 --> 00:13:12,560
+Kolmogorov complexity.
+
+226
+00:13:12,560 --> 00:13:15,490
+The only difference between Kolmogorov
+complexity and minimum
+
+227
+00:13:15,490 --> 00:13:18,310
+description length is that minimum
+description length is more friendly.
+
+228
+00:13:18,310 --> 00:13:21,070
+It doesn't depend on computability
+and other issues.
+
+229
+00:13:21,070 --> 00:13:22,620
+But this is the notion.
+
+230
+00:13:22,620 --> 00:13:25,760
+And you can see that when we describe
+the complexity of an object, that
+
+231
+00:13:25,760 --> 00:13:29,860
+complexity is an intrinsic
+property of the object.
+
+232
+00:13:29,860 --> 00:13:31,570
+Order of a polynomial is
+simpler to understand.
+
+233
+00:13:31,570 --> 00:13:34,400
+I tell you there is a 17th-order
+polynomial versus a 100th-order
+
+234
+00:13:34,400 --> 00:13:37,980
+polynomial, and you already can see that
+the object is more complex when
+
+235
+00:13:37,980 --> 00:13:39,160
+you have a higher order.
+
+236
+00:13:39,160 --> 00:13:43,230
+And indeed, this was our definition of
+the complexity of the target, if you
+
+237
+00:13:43,230 --> 00:13:47,280
+recall, when we were running the
+experiments of deterministic noise.
+
+238
+00:13:47,280 --> 00:13:50,500
+In that case, we needed to generate
+target functions of different
+
+239
+00:13:50,500 --> 00:13:53,560
+complexity, and the way we did it, we
+just increased the order of the
+
+240
+00:13:53,560 --> 00:13:58,890
+polynomial as our measure of the
+complexity of that object.
+
+241
+00:13:58,890 --> 00:14:01,490
+Now we come to the complexity
+of a class of objects.
+
+242
+00:14:01,490 --> 00:14:07,130
+Well, there are notions running around
+that actually define that, and I'm
+
+243
+00:14:07,130 --> 00:14:09,580
+going to quote two of
+them, very famous.
+
+244
+00:14:09,580 --> 00:14:12,850
+The entropy is one, and the one
+we are most familiar with,
+
+245
+00:14:12,850 --> 00:14:14,710
+which is the VC dimension.
+
+246
+00:14:14,710 --> 00:14:17,860
+Now, these guys apply
+to a set of objects.
+
+247
+00:14:17,860 --> 00:14:18,690
+For example, the entropy.
+
+248
+00:14:18,690 --> 00:14:21,790
+You run an experiment, you consider
+all possible outcomes of the
+
+249
+00:14:21,790 --> 00:14:25,850
+experiment, the probabilities that go
+with them, and you find one collective
+
+250
+00:14:25,850 --> 00:14:28,470
+function that captures
+the probability,
+
+251
+00:14:28,470 --> 00:14:30,310
+sum of p logarithm of 1 over p,
+
+252
+00:14:30,310 --> 00:14:33,300
+and that becomes your entropy and
+that describes the disorder, the
+
+253
+00:14:33,300 --> 00:14:37,720
+complexity, whatever you want, of the
+class of objects, each outcome being
+
+254
+00:14:37,720 --> 00:14:39,160
+one object.
+
+255
+00:14:39,160 --> 00:14:41,960
+In the case of the VC dimension, it
+applies directly to the notion we are
+
+256
+00:14:41,960 --> 00:14:42,650
+most familiar with.
+
+257
+00:14:42,650 --> 00:14:48,030
+It applies to a hypothesis set, and it
+looks at the hypothesis set as a whole,
+
+258
+00:14:48,030 --> 00:14:52,880
+and produces one number that describes
+the diversity of that hypothesis set.
+
+259
+00:14:52,880 --> 00:14:55,880
+And the diversity in that case
+we measure as the complexity.
+
+260
+00:14:55,880 --> 00:15:00,810
+So if you look at one object from that
+set, and you look at this measure of
+
+261
+00:15:00,810 --> 00:15:04,370
+complexity, now that measure of
+complexity is extrinsic with respect
+
+262
+00:15:04,370 --> 00:15:05,430
+to that object.
+
+263
+00:15:05,430 --> 00:15:09,760
+It depends on what other guys
+belong to the same category.
+
+264
+00:15:09,760 --> 00:15:13,020
+That's how I measure the complexity of
+it, whereas in the first one, I didn't
+
+265
+00:15:13,020 --> 00:15:14,230
+want to be a member of anything.
+
+266
+00:15:14,230 --> 00:15:17,650
+I just looked at that object, and tried
+to find an intrinsic property of that
+
+267
+00:15:17,650 --> 00:15:19,790
+object that captures the complexity.
+
+268
+00:15:19,790 --> 00:15:24,190
+So these are the two categories
+you will find in the literature.
+
+269
+00:15:24,190 --> 00:15:27,670
+Now, when we think of simple as far as
+Occam's razor, as far as different
+
+270
+00:15:27,670 --> 00:15:32,620
+quotes are concerned, we are thinking
+of a single object.
+
+271
+00:15:32,620 --> 00:15:38,830
+I tell you E equals M C squared, or I looked
+at the board, P V equals n R T, and
+
+272
+00:15:38,830 --> 00:15:40,830
+that is a simple statement.
+
+273
+00:15:40,830 --> 00:15:43,430
+You don't look at what other
+alternatives were there
+
+274
+00:15:43,430 --> 00:15:44,120
+to explain the data.
+
+275
+00:15:44,120 --> 00:15:46,880
+You just look at that object
+intrinsically, and that is what you
+
+276
+00:15:46,880 --> 00:15:49,670
+think of as the measure of complexity.
+
+277
+00:15:49,670 --> 00:15:53,200
+When you do the math in order to prove
+Occam's razor in one version or
+
+278
+00:15:53,200 --> 00:15:57,480
+another, the complexity you are using is
+actually the complexity of the set
+
+279
+00:15:57,480 --> 00:15:58,870
+of objects.
+
+280
+00:15:58,870 --> 00:16:01,230
+And we have seen that already.
+
+281
+00:16:01,230 --> 00:16:04,520
+We looked at the VC dimension, for
+example, in order to prove something
+
+282
+00:16:04,520 --> 00:16:08,290
+of an Occam's nature in this course
+already, and that captured the
+
+283
+00:16:08,290 --> 00:16:10,120
+complexity of a set of objects.
+
+284
+00:16:10,120 --> 00:16:14,250
+So this is a little bit worrying,
+because the intuitive concept is one
+
+285
+00:16:14,250 --> 00:16:16,800
+thing, and the mathematical
+proofs deal with another.
+
+286
+00:16:16,800 --> 00:16:19,730
+But the good news is that the complexity
+of an object and the
+
+287
+00:16:19,730 --> 00:16:23,550
+complexity of a set of objects, as we
+described in this slide, are very much
+
+288
+00:16:23,550 --> 00:16:26,910
+related, almost identical.
+
+289
+00:16:26,910 --> 00:16:31,240
+And here is the link between them:
+
+290
+00:16:31,240 --> 00:16:32,490
+counting.
+
+291
+00:16:32,490 --> 00:16:34,160
+Couldn't be simpler.
+
+292
+00:16:34,160 --> 00:16:35,770
+Here is the idea.
+
+293
+00:16:35,770 --> 00:16:38,480
+Let's say we are using the minimum
+description length, which is very
+
+294
+00:16:38,480 --> 00:16:41,270
+popular and versatile.
+
+295
+00:16:41,270 --> 00:16:47,300
+So it takes l bits to specify
+a particular object, h.
+
+296
+00:16:47,300 --> 00:16:49,940
+I'm taking the objects here to be h,
+because I'm in machine learning.
+
+297
+00:16:49,940 --> 00:16:53,280
+The objects are hypotheses,
+so I use that.
+
+298
+00:16:53,280 --> 00:16:57,790
+Now, the measure of complexity in this
+term is that the complexity of
+
+299
+00:16:57,790 --> 00:17:02,620
+this fellow is l bits, because
+that is my definition.
+
+300
+00:17:02,620 --> 00:17:05,520
+Now, this implies something.
+
+301
+00:17:05,520 --> 00:17:09,450
+This implies that if I look at all the
+guys that are similar to this object
+
+302
+00:17:09,450 --> 00:17:13,848
+in terms of complexity, they also happen
+to have l bits worth of minimum
+
+303
+00:17:13,848 --> 00:17:15,240
+description.
+
+304
+00:17:15,240 --> 00:17:17,440
+How many of them are there?
+
+305
+00:17:17,440 --> 00:17:20,000
+Well, 2^l, right?
+
+306
+00:17:20,000 --> 00:17:24,200
+And now you can look at the set of all
+similar objects, and you call it
+
+307
+00:17:24,200 --> 00:17:30,450
+H, and you have one of 2^l as
+the description of an object
+
+308
+00:17:30,450 --> 00:17:35,720
+here, and you can take the "1 of 2^l" as
+the description of the complexity
+
+309
+00:17:35,720 --> 00:17:38,130
+of that set.
+
+310
+00:17:38,130 --> 00:17:41,730
+So now we are establishing
+something in our mind.
+
+311
+00:17:41,730 --> 00:17:47,710
+Something is being complex in its
+own right, when it's one of many.
+
+312
+00:17:47,710 --> 00:17:52,250
+Something is simple in its own
+right, when it's one of few.
+
+313
+00:17:52,250 --> 00:17:57,030
+That is the link that makes us able
+to use this side for the proofs, and
+
+314
+00:17:57,030 --> 00:17:58,600
+make a claim on this side.
+
+315
+00:17:58,600 --> 00:18:03,360
+It is not an exact correspondence,
+but it is an overwhelmingly valid
+
+316
+00:18:03,360 --> 00:18:04,610
+correspondence.
+
+317
+00:18:04,610 --> 00:18:07,290
+
+
+318
+00:18:07,290 --> 00:18:09,870
+Now these are with bits, and
+I can pin it down exactly.
+
+319
+00:18:09,870 --> 00:18:11,630
+How about real-valued parameters?
+
+320
+00:18:11,630 --> 00:18:14,620
+Let's look at our 17th-order polynomial.
+
+321
+00:18:14,620 --> 00:18:18,140
+You can look at a 17th-order polynomial,
+and you can see that
+
+322
+00:18:18,140 --> 00:18:21,420
+because it's 17th order, it goes up
+and down and up and down, and that
+
+323
+00:18:21,420 --> 00:18:23,520
+looks complex.
+
+324
+00:18:23,520 --> 00:18:30,060
+But also, because if it's a 17th order
+polynomial, it's one of many, in the
+
+325
+00:18:30,060 --> 00:18:34,890
+realm of infinity in this case, because
+having 17 parameters to choose
+
+326
+00:18:34,890 --> 00:18:37,570
+makes me able to choose
+a whole bunch of guys that
+
+327
+00:18:37,570 --> 00:18:39,150
+belong to the same category.
+
+328
+00:18:39,150 --> 00:18:42,770
+So the class of 17th-order polynomials
+is big, and therefore, it's not only
+
+329
+00:18:42,770 --> 00:18:47,640
+that the individual is complex,
+the set is also complex.
+
+330
+00:18:47,640 --> 00:18:50,810
+There are exceptions to this rule,
+and one notable exception was
+
+331
+00:18:50,810 --> 00:18:52,570
+a deliberate exception.
+
+332
+00:18:52,570 --> 00:18:56,700
+And we wanted something that looks
+complex, so that it does our job of
+
+333
+00:18:56,700 --> 00:18:59,430
+fitting, but is one of few.
+
+334
+00:18:59,430 --> 00:19:02,720
+And therefore, we are not going to pay
+the full price for it being complex,
+
+335
+00:19:02,720 --> 00:19:06,770
+and that was our good old friend SVM.
+
+336
+00:19:06,770 --> 00:19:08,750
+Remember this fellow?
+
+337
+00:19:08,750 --> 00:19:12,250
+This looks complex all right, but it's
+actually not really complex because
+
+338
+00:19:12,250 --> 00:19:15,670
+it's defined only by very
+few support vectors.
+
+339
+00:19:15,670 --> 00:19:18,930
+And therefore in spite of the fact that
+it looks complex, it's really one
+
+340
+00:19:18,930 --> 00:19:24,850
+of few, and that is what we achieve
+by the support vector machines.
+
+341
+00:19:24,850 --> 00:19:30,630
+Now, let us take this in our mind,
+that we are going to use the
+
+342
+00:19:30,630 --> 00:19:35,880
+complexity of an object as the same as
+the complexity of the set of objects
+
+343
+00:19:35,880 --> 00:19:40,920
+that the object naturally belongs to,
+and we will see some ramifications.
+
+344
+00:19:40,920 --> 00:19:43,730
+So now I'm going to give you the
+first puzzle of the lecture.
+
+345
+00:19:43,730 --> 00:19:47,660
+There are 5 puzzles in this lecture,
+so you need to pay attention,
+
+346
+00:19:47,660 --> 00:19:49,940
+and each puzzle makes a point.
+
+347
+00:19:49,940 --> 00:19:52,690
+And the first one has to do
+with this complexity, so
+
+348
+00:19:52,690 --> 00:19:55,310
+let's look at the puzzle.
+
+349
+00:19:55,310 --> 00:20:01,130
+The puzzle has to do with a football
+oracle, someone who can predict
+
+350
+00:20:01,130 --> 00:20:03,190
+football games perfectly.
+
+351
+00:20:03,190 --> 00:20:07,560
+You watch Monday night football, you
+want to know the result, and something
+
+352
+00:20:07,560 --> 00:20:09,660
+happens Monday morning.
+
+353
+00:20:09,660 --> 00:20:11,225
+You get a letter in the mail.
+
+354
+00:20:11,225 --> 00:20:13,010
+You open the letter.
+
+355
+00:20:13,010 --> 00:20:14,040
+Hi.
+
+356
+00:20:14,040 --> 00:20:19,150
+Today, the home team will win.
+Or, the home team will lose.
+
+357
+00:20:19,150 --> 00:20:23,360
+You don't make much of it, just
+some character sent something.
+
+358
+00:20:23,360 --> 00:20:24,610
+It's not a big deal.
+
+359
+00:20:24,610 --> 00:20:27,490
+
+
+360
+00:20:27,490 --> 00:20:30,280
+You watch the game, and
+it's a good call.
+
+361
+00:20:30,280 --> 00:20:32,330
+OK, interesting.
+
+362
+00:20:32,330 --> 00:20:33,580
+50%, lucky.
+
+363
+00:20:33,580 --> 00:20:36,130
+
+
+364
+00:20:36,130 --> 00:20:40,830
+Next Monday, another letter,
+another prediction.
+
+365
+00:20:40,830 --> 00:20:44,880
+And the funny thing is that he predicted
+either the home team will
+
+366
+00:20:44,880 --> 00:20:49,030
+win or not, and it was very long odds.
+
+367
+00:20:49,030 --> 00:20:51,190
+Everybody thought the
+other way around.
+
+368
+00:20:51,190 --> 00:20:55,900
+And at the end of the game, the guy was
+right, and the guy was right for
+
+369
+00:20:55,900 --> 00:20:59,130
+5 weeks in a row.
+
+370
+00:20:59,130 --> 00:21:02,760
+Now you are really very curious, and you
+are eagerly waiting in the 6th
+
+371
+00:21:02,760 --> 00:21:07,630
+week in the morning of Monday
+to see where the letter is.
+
+372
+00:21:07,630 --> 00:21:09,360
+You have a perfect record.
+
+373
+00:21:09,360 --> 00:21:12,500
+Now comes the letter.
+
+374
+00:21:12,500 --> 00:21:14,645
+The letter says: you want
+more predictions?
+
+375
+00:21:14,645 --> 00:21:17,390
+
+
+376
+00:21:17,390 --> 00:21:18,640
+Pay me $50.
+
+377
+00:21:18,640 --> 00:21:22,860
+
+
+378
+00:21:22,860 --> 00:21:25,240
+Very simple question:
+
+379
+00:21:25,240 --> 00:21:26,510
+Should you pay?
+
+380
+00:21:26,510 --> 00:21:30,190
+The question is easily answered, because
+now the scams are so many that
+
+381
+00:21:30,190 --> 00:21:32,170
+the default, I just don't
+look at anything.
+
+382
+00:21:32,170 --> 00:21:33,870
+There must be something to it.
+
+383
+00:21:33,870 --> 00:21:37,530
+But I really want to pin down what is
+it, because that is the message we are
+
+384
+00:21:37,530 --> 00:21:38,780
+carrying out.
+
+385
+00:21:38,780 --> 00:21:40,320
+
+
+386
+00:21:40,320 --> 00:21:45,070
+So the idea here is that no, you
+shouldn't, and the guy is really not
+
+387
+00:21:45,070 --> 00:21:46,040
+predicting anything.
+
+388
+00:21:46,040 --> 00:21:49,170
+And the reason for that
+is the following.
+
+389
+00:21:49,170 --> 00:21:51,355
+He's not sending letters to you only.
+
+390
+00:21:51,355 --> 00:21:55,690
+He's sending letters to 32 people.
+
+391
+00:21:55,690 --> 00:21:59,160
+
+
+392
+00:21:59,160 --> 00:22:05,390
+In the first game, for half of them, he
+said that the home team will lose.
+
+393
+00:22:05,390 --> 00:22:07,880
+The second one, he said the
+home team will win.
+
+394
+00:22:07,880 --> 00:22:10,510
+
+
+395
+00:22:10,510 --> 00:22:13,790
+Now, because he did that, he is sure
+that some of the guys will get the
+
+396
+00:22:13,790 --> 00:22:16,010
+correct answer.
+
+397
+00:22:16,010 --> 00:22:21,850
+So the game is played, and
+the home team loses.
+
+398
+00:22:21,850 --> 00:22:28,840
+So in the second week, he goes for the
+guys where he was right, and sends half
+
+399
+00:22:28,840 --> 00:22:32,880
+of them that the home team will
+lose, and the other half, the
+
+400
+00:22:32,880 --> 00:22:34,980
+home team will win.
+
+401
+00:22:34,980 --> 00:22:39,330
+Now, he had plans to send the other guys
+as well something similar, except
+
+402
+00:22:39,330 --> 00:22:41,970
+that it's hopeless now because he
+already lost with them, so they're not
+
+403
+00:22:41,970 --> 00:22:44,390
+going to pay him the $50.
+
+404
+00:22:44,390 --> 00:22:47,390
+So just for the memory, this is
+what would have been sent.
+
+405
+00:22:47,390 --> 00:22:52,080
+There are no letters sent here, but he
+would have gone zero one, zero one.
+
+406
+00:22:52,080 --> 00:22:58,730
+And he waits for the game, and
+out comes: the home team won.
+
+407
+00:22:58,730 --> 00:23:04,790
+So you can see who he's going to
+send letters to now, right?
+
+408
+00:23:04,790 --> 00:23:07,380
+The other guys are a lost cause.
+
+409
+00:23:07,380 --> 00:23:10,250
+This would have been sent
+to them, but that's OK.
+
+410
+00:23:10,250 --> 00:23:12,700
+And he waits, and what
+happens this time?
+
+411
+00:23:12,700 --> 00:23:14,890
+The home team lost.
+
+412
+00:23:14,890 --> 00:23:16,690
+And therefore, here is
+your next letter.
+
+413
+00:23:16,690 --> 00:23:21,380
+
+
+414
+00:23:21,380 --> 00:23:25,570
+Home team won. Here is
+your next letter.
+
+415
+00:23:25,570 --> 00:23:28,330
+Only two people are surviving
+from this thing.
+
+416
+00:23:28,330 --> 00:23:31,980
+And here is the result,
+the home team won.
+
+417
+00:23:31,980 --> 00:23:35,570
+Now at that point, the guy
+sent how many letters?
+
+418
+00:23:35,570 --> 00:23:41,810
+32 plus 16 plus 8 plus 4 plus 2,
+so about 64, 63 to be exact.
+
+419
+00:23:41,810 --> 00:23:47,430
+The postage on that, writing the letter,
+he probably spent $30 on that.
+
+420
+00:23:47,430 --> 00:23:52,120
+And he's charging you, the lucky
+guy out of the 32, $50.
+
+421
+00:23:52,120 --> 00:23:55,190
+That's a money making proposition.
+
+422
+00:23:55,190 --> 00:23:59,310
+Very nice, and it's understood
+and illegal, by the way!
+
+423
+00:23:59,310 --> 00:24:02,580
+But the interesting thing here is to
+understand, why is this related to
+
+424
+00:24:02,580 --> 00:24:05,746
+what we've just talked about?
+
+425
+00:24:05,746 --> 00:24:09,230
+You thought the prediction ability
+was great because you
+
+426
+00:24:09,230 --> 00:24:11,030
+only saw your letters.
+
+427
+00:24:11,030 --> 00:24:15,830
+There is one hypothesis, and
+it got it right perfectly.
+
+428
+00:24:15,830 --> 00:24:20,910
+The problem is that actually, the
+hypothesis set is very complex, and
+
+429
+00:24:20,910 --> 00:24:23,660
+therefore the prediction
+value is meaningless.
+
+430
+00:24:23,660 --> 00:24:24,672
+You just didn't know.
+
+431
+00:24:24,672 --> 00:24:26,380
+You didn't see the hypothesis set.
+
+432
+00:24:26,380 --> 00:24:31,090
+
+
+433
+00:24:31,090 --> 00:24:34,110
+So now we understand what is the
+complexity of an object.
+
+434
+00:24:34,110 --> 00:24:38,850
+Now we go to the question,
+why is simpler better?
+
+435
+00:24:38,850 --> 00:24:43,200
+So the first thing to understand is that
+we are not saying that simpler is
+
+436
+00:24:43,200 --> 00:24:44,630
+more elegant.
+
+437
+00:24:44,630 --> 00:24:49,460
+Simpler is more elegant, but this is
+not the statement of Occam's razor.
+
+438
+00:24:49,460 --> 00:24:53,930
+Occam's razor is stating that simpler
+will have better out-of-sample
+
+439
+00:24:53,930 --> 00:24:54,510
+performance.
+
+440
+00:24:54,510 --> 00:24:56,550
+That's a concrete statement.
+
+441
+00:24:56,550 --> 00:25:00,130
+In all honesty, if Occam said that you
+take the more complex guy and it will
+
+442
+00:25:00,130 --> 00:25:03,220
+give you better out-of-sample
+error, I will take the more
+
+443
+00:25:03,220 --> 00:25:04,640
+complex one, thank you.
+
+444
+00:25:04,640 --> 00:25:05,730
+I am after performance.
+
+445
+00:25:05,730 --> 00:25:07,210
+I'm not after elegance here.
+
+446
+00:25:07,210 --> 00:25:10,290
+It's nice that the elegant guy happens
+also to be better, but we need to
+
+447
+00:25:10,290 --> 00:25:11,870
+establish that it is actually better.
+
+448
+00:25:11,870 --> 00:25:14,750
+
+
+449
+00:25:14,750 --> 00:25:18,460
+And there is a basic argument. It
+manifests itself in many ways, and we
+
+450
+00:25:18,460 --> 00:25:21,520
+have already run one in this
+course during the theory.
+
+451
+00:25:21,520 --> 00:25:26,300
+And you put some assumptions, and
+there's a formal proof under idealized
+
+452
+00:25:26,300 --> 00:25:27,740
+conditions of the following.
+
+453
+00:25:27,740 --> 00:25:31,520
+Instead of going through any formal
+proofs-- quite a variety of them, I
+
+454
+00:25:31,520 --> 00:25:33,580
+am extracting the crux of the proof.
+
+455
+00:25:33,580 --> 00:25:35,190
+What is the point being made?
+
+456
+00:25:35,190 --> 00:25:39,280
+And I'm going to relate it to the
+proof that we ourselves ran.
+
+457
+00:25:39,280 --> 00:25:42,430
+So here is high-order steps.
+
+458
+00:25:42,430 --> 00:25:46,080
+There are fewer simple hypotheses
+than complex ones.
+
+459
+00:25:46,080 --> 00:25:49,470
+That is what we established from
+the definition of complexity.
+
+460
+00:25:49,470 --> 00:25:52,870
+And in our case, that was captured
+by the growth function.
+
+461
+00:25:52,870 --> 00:25:55,840
+You probably have forgotten
+what this is, long ago.
+
+462
+00:25:55,840 --> 00:25:59,960
+This was taking N points, finding what
+your hypothesis set can generate
+
+463
+00:25:59,960 --> 00:26:03,870
+in terms of different patterns on those
+N points, we call dichotomies.
+
+464
+00:26:03,870 --> 00:26:08,080
+So if it can generate everything like
+the postal guy, then it's a huge
+
+465
+00:26:08,080 --> 00:26:08,970
+hypothesis set.
+
+466
+00:26:08,970 --> 00:26:12,220
+If it can generate few of them, then
+it's a simple hypothesis, and it's
+
+467
+00:26:12,220 --> 00:26:15,440
+measured by that growth function, and
+that resulted in the VC dimension.
+
+468
+00:26:15,440 --> 00:26:17,600
+Remember all of that?
+
+469
+00:26:17,600 --> 00:26:18,860
+So now, fine.
+
+470
+00:26:18,860 --> 00:26:21,350
+Fewer simple hypotheses
+than complex ones.
+
+471
+00:26:21,350 --> 00:26:23,350
+OK, then what?
+
+472
+00:26:23,350 --> 00:26:27,940
+The next thing is because there are
+fewer ones, it is less likely to fit
+
+473
+00:26:27,940 --> 00:26:29,680
+a given data set.
+
+474
+00:26:29,680 --> 00:26:33,700
+That is, you have N points, and
+you're going to generate labels.
+
+475
+00:26:33,700 --> 00:26:36,500
+Let's say you generate them at random,
+and you ask yourself, what are the
+
+476
+00:26:36,500 --> 00:26:39,860
+chances that my hypothesis
+set will fit?
+
+477
+00:26:39,860 --> 00:26:42,860
+Well, if it has few of those guys,
+obviously that goes down, and the
+
+478
+00:26:42,860 --> 00:26:46,240
+probability, if you take it uniformly,
+simply would be the growth function
+
+479
+00:26:46,240 --> 00:26:47,770
+divided by 2^N.
+
+480
+00:26:47,770 --> 00:26:51,610
+If my growth function is polynomial, then
+very quickly, the probability of
+
+481
+00:26:51,610 --> 00:26:53,960
+fitting a given data
+set is very small.
+
+482
+00:26:53,960 --> 00:26:56,470
+OK, fine, I can buy that.
+
+483
+00:26:56,470 --> 00:27:00,760
+So now that's nice, but you want
+to convince me now that simpler
+
+484
+00:27:00,760 --> 00:27:01,710
+is better in fit.
+
+485
+00:27:01,710 --> 00:27:03,290
+Here, you told me that I cannot fit.
+
+486
+00:27:03,290 --> 00:27:05,180
+So what is the point?
+
+487
+00:27:05,180 --> 00:27:12,890
+The punchline in all of those is that if
+something is less likely, then when
+
+488
+00:27:12,890 --> 00:27:17,090
+it does happen, it's more significant.
+
+489
+00:27:17,090 --> 00:27:20,920
+And there are many manifestations of
+this, even when you define the entropy
+
+490
+00:27:20,920 --> 00:27:22,480
+that I alluded to.
+
+491
+00:27:22,480 --> 00:27:25,110
+A probability of an event is p.
+
+492
+00:27:25,110 --> 00:27:29,592
+What is the information associated
+with that particular point?
+
+493
+00:27:29,592 --> 00:27:33,140
+The smaller the probability, the bigger
+the information, the bigger the
+
+494
+00:27:33,140 --> 00:27:34,510
+surprise when it happens.
+
+495
+00:27:34,510 --> 00:27:37,790
+And indeed, you define the term
+as being logarithm 1 over p.
+
+496
+00:27:37,790 --> 00:27:40,810
+So if p is very small, tons
+of bits of information.
+
+497
+00:27:40,810 --> 00:27:43,940
+If something half the time will happen,
+half the time will not happen,
+
+498
+00:27:43,940 --> 00:27:44,710
+it's just 1 bit.
+
+499
+00:27:44,710 --> 00:27:46,490
+It's not a big deal.
+
+500
+00:27:46,490 --> 00:27:52,590
+And, looking back at the postal
+scam, the only difference between
+
+501
+00:27:52,590 --> 00:27:56,140
+someone believing in the scam and
+someone having the big picture is the
+
+502
+00:27:56,140 --> 00:27:59,510
+fact that the growth function, from your
+point of view when you received the
+
+503
+00:27:59,510 --> 00:28:00,600
+letters, was 1.
+
+504
+00:28:00,600 --> 00:28:03,780
+You thought you were the only person.
+Here is one hypothesis, and you got it
+
+505
+00:28:03,780 --> 00:28:06,540
+right, and you gave a lot of
+value for that because this
+
+506
+00:28:06,540 --> 00:28:08,750
+is unlikely to happen.
+
+507
+00:28:08,750 --> 00:28:11,420
+On the other hand, the reality of it is
+that the growth function is actually
+
+508
+00:28:11,420 --> 00:28:16,830
+2^N and this is certain to happen,
+so when it happens, it's meaningless.
+
+509
+00:28:16,830 --> 00:28:23,590
+Let's look at a scientific experiment,
+where a fit is meaningless.
+
+510
+00:28:23,590 --> 00:28:26,490
+So you are running an experiment, or you
+ask people to run an experiment,
+
+511
+00:28:26,490 --> 00:28:31,060
+to establish whether conductivity of
+a particular metal is linear in the
+
+512
+00:28:31,060 --> 00:28:32,960
+temperature.
+
+513
+00:28:32,960 --> 00:28:35,520
+I can design an experiment for that.
+
+514
+00:28:35,520 --> 00:28:41,040
+So you go and you ask two scientists to
+conduct experiments, and they
+
+515
+00:28:41,040 --> 00:28:44,230
+go, and they come back with
+the following results.
+
+516
+00:28:44,230 --> 00:28:45,480
+Here is the first scientist.
+
+517
+00:28:45,480 --> 00:28:47,980
+
+
+518
+00:28:47,980 --> 00:28:53,900
+Took the metal, but they had a dinner
+appointment, so they were in a hurry,
+
+519
+00:28:53,900 --> 00:28:58,840
+so they got 2 points and drew
+the line and gave you this.
+
+520
+00:28:58,840 --> 00:29:05,270
+The second guy had a supper appointment,
+so had more time to do it,
+
+521
+00:29:05,270 --> 00:29:10,650
+so did it 3 times,
+and then the line.
+
+522
+00:29:10,650 --> 00:29:15,660
+I have a very specific question, which
+is: what evidence do they provide for
+
+523
+00:29:15,660 --> 00:29:19,490
+the hypothesis that conductivity is
+indeed linear in the temperature?
+
+524
+00:29:19,490 --> 00:29:22,910
+What is clear without thinking too much
+is that this guy provided more
+
+525
+00:29:22,910 --> 00:29:25,520
+evidence than this guy.
+
+526
+00:29:25,520 --> 00:29:33,640
+It is interesting to realize that this
+guy provided nil, none, nada.
+
+527
+00:29:33,640 --> 00:29:35,260
+Why is that?
+
+528
+00:29:35,260 --> 00:29:39,890
+Because obviously, 2 points can
+always be connected by a line.
+
+529
+00:29:39,890 --> 00:29:43,290
+So the notion that goes with this
+is called falsifiability.
+
+530
+00:29:43,290 --> 00:29:47,120
+
+
+531
+00:29:47,120 --> 00:29:53,690
+If your data has no chance of falsifying
+your assertion, then by the
+
+532
+00:29:53,690 --> 00:29:59,290
+same token, it does not provide any
+evidence for that assertion.
+
+533
+00:29:59,290 --> 00:30:03,150
+You have to have a chance of falsifying
+your assertion, in order to
+
+534
+00:30:03,150 --> 00:30:04,680
+be able to draw the evidence.
+
+535
+00:30:04,680 --> 00:30:07,850
+This is called the axiom of
+non-falsifiability, and in some sense,
+
+536
+00:30:07,850 --> 00:30:11,330
+it's equivalent to the arguments
+we have done so far.
+
+537
+00:30:11,330 --> 00:30:18,470
+And in our terms, the linear model is
+just way too complex for the size of
+
+538
+00:30:18,470 --> 00:30:23,730
+the data set, which is 2, to
+be able to generalize at all.
+
+539
+00:30:23,730 --> 00:30:25,320
+And therefore, there is
+no evidence here.
+
+540
+00:30:25,320 --> 00:30:31,630
+
+
+541
+00:30:31,630 --> 00:30:35,780
+In this case, this guy could
+have been falsified if the
+
+542
+00:30:35,780 --> 00:30:36,480
+red point came here.
+
+543
+00:30:36,480 --> 00:30:38,850
+Therefore, he actually provides
+an evidence. This is the point.
+
+544
+00:30:38,850 --> 00:30:40,230
+This guy could not have
+been falsified.
+
+545
+00:30:40,230 --> 00:30:43,290
+
+
+546
+00:30:43,290 --> 00:30:48,520
+So now we go to the next notion, which
+is sampling bias. It's a very interesting
+
+547
+00:30:48,520 --> 00:30:50,360
+notion, and it's tricky.
+
+548
+00:30:50,360 --> 00:30:53,800
+And by the way, if you look at all of
+these principles, it's not like
+
+549
+00:30:53,800 --> 00:30:57,340
+they're just concepts, and nice,
+and relate to other fields.
+
+550
+00:30:57,340 --> 00:31:02,780
+They also provide you with red flags
+when you're doing machine learning.
+
+551
+00:31:02,780 --> 00:31:05,900
+For example, when you use Occam's
+razor, what does it mean?
+
+552
+00:31:05,900 --> 00:31:10,620
+It means that beware of fitting the data
+with complex models, because it
+
+553
+00:31:10,620 --> 00:31:14,770
+looks great in sample and you are very
+encouraged, and when you go out of
+
+554
+00:31:14,770 --> 00:31:16,230
+sample, you know what happens.
+
+555
+00:31:16,230 --> 00:31:18,840
+You know all too well by the
+theory we have done.
+
+556
+00:31:18,840 --> 00:31:22,190
+Similarly, when we talk about sampling
+bias and later, data snooping, there
+
+557
+00:31:22,190 --> 00:31:26,120
+are traps that we need to avoid when
+we practice machine learning.
+
+558
+00:31:26,120 --> 00:31:30,640
+So let's look at sampling bias,
+and we start with a puzzle.
+
+559
+00:31:30,640 --> 00:31:31,580
+Here is the puzzle.
+
+560
+00:31:31,580 --> 00:31:36,730
+It has to do with the presidential
+election, not this one.
+
+561
+00:31:36,730 --> 00:31:43,290
+But in 1948, this was the first
+presidential election after World War
+
+562
+00:31:43,290 --> 00:31:48,230
+II, which was a big deal, and the two
+people who ran was Truman, who was
+
+563
+00:31:48,230 --> 00:31:51,540
+currently President, and
+he ran against Dewey.
+
+564
+00:31:51,540 --> 00:31:56,630
+And it was very close in terms of--
+people will take opinion polls,
+
+565
+00:31:56,630 --> 00:32:00,790
+and it's not clear who is going to win.
+
+566
+00:32:00,790 --> 00:32:08,820
+So now, one newspaper ran a phone poll,
+and what they did is ask people
+
+567
+00:32:08,820 --> 00:32:10,260
+how they actually voted.
+
+568
+00:32:10,260 --> 00:32:13,790
+So this is not before the election
+asking, what do you think?
+
+569
+00:32:13,790 --> 00:32:17,430
+This is the night of the election,
+after the election closed, they
+
+570
+00:32:17,430 --> 00:32:21,550
+actually called people picked at random
+at their home, asked them: who
+
+571
+00:32:21,550 --> 00:32:22,760
+did you vote for?
+
+572
+00:32:22,760 --> 00:32:24,090
+Black and white.
+
+573
+00:32:24,090 --> 00:32:26,420
+Dewey or Truman, et cetera?
+
+574
+00:32:26,420 --> 00:32:30,280
+They collected the thing, and they
+applied some statistical thing or
+
+575
+00:32:30,280 --> 00:32:33,950
+Hoeffding or some other quantity,
+and came with the conclusion
+
+576
+00:32:33,950 --> 00:32:35,760
+that Dewey has won decisively.
+
+577
+00:32:35,760 --> 00:32:37,880
+Decisively doesn't mean he won by 60%.
+
+578
+00:32:37,880 --> 00:32:40,740
+Decisively means that he won
+above the error bar.
+
+579
+00:32:40,740 --> 00:32:45,280
+The probability that the opposite
+is true is diminishingly small.
+
+580
+00:32:45,280 --> 00:32:49,200
+And the result was so obvious that they
+decided to be the first to break
+
+581
+00:32:49,200 --> 00:32:52,906
+the news, and they printed their
+newspaper declaring:
+
+582
+00:32:52,906 --> 00:32:58,040
+
+
+583
+00:32:58,040 --> 00:32:59,680
+Great. OK, so Dewey won.
+
+584
+00:32:59,680 --> 00:33:01,900
+What happens when someone
+wins an election?
+
+585
+00:33:01,900 --> 00:33:03,590
+They have a victory rally.
+
+586
+00:33:03,590 --> 00:33:07,110
+So let's look at the victory rally.
+
+587
+00:33:07,110 --> 00:33:09,350
+One problem.
+
+588
+00:33:09,350 --> 00:33:14,700
+Victory rally was Truman, and you can
+see the big smile on the guy's face.
+
+589
+00:33:14,700 --> 00:33:21,430
+
+
+590
+00:33:21,430 --> 00:33:23,470
+So what happened?
+
+591
+00:33:23,470 --> 00:33:26,440
+Well, polls are polls and there
+is always a probability,
+
+592
+00:33:26,440 --> 00:33:27,560
+and this and that.
+
+593
+00:33:27,560 --> 00:33:29,200
+No, that's not the issue here.
+
+594
+00:33:29,200 --> 00:33:30,980
+That's the key.
+
+595
+00:33:30,980 --> 00:33:34,340
+So don't blame delta for it.
+
+596
+00:33:34,340 --> 00:33:34,880
+delta?
+
+597
+00:33:34,880 --> 00:33:36,550
+What was delta again?
+
+598
+00:33:36,550 --> 00:33:38,010
+We've been doing techniques
+for a while.
+
+599
+00:33:38,010 --> 00:33:39,660
+I forgot all about the theory.
+
+600
+00:33:39,660 --> 00:33:43,050
+So let's remind you what delta was.
+
+601
+00:33:43,050 --> 00:33:47,350
+We were talking about the discrepancy
+between in-sample, the poll, out-of-
+
+602
+00:33:47,350 --> 00:33:50,900
+sample, the general population, the
+actual vote, and we were asking
+
+603
+00:33:50,900 --> 00:33:54,160
+ourselves, what is the probability
+that this will be bigger than
+
+604
+00:33:54,160 --> 00:33:56,210
+something, such that the
+result is flipped?
+
+605
+00:33:56,210 --> 00:33:59,230
+You thought it was Dewey winning,
+and it turned out to be Truman.
+
+606
+00:33:59,230 --> 00:34:02,165
+And that turned out to be less than or
+equal to delta, and delta is expressed
+
+607
+00:34:02,165 --> 00:34:05,290
+in terms of epsilon, N, and whatnot.
+
+608
+00:34:05,290 --> 00:34:11,639
+So in principle, it is possible,
+although not very probable, that the
+
+609
+00:34:11,639 --> 00:34:15,580
+newspaper was just incredibly unlucky.
+
+610
+00:34:15,580 --> 00:34:17,199
+Now, the statement is
+very interesting.
+
+611
+00:34:17,199 --> 00:34:21,010
+No, the newspaper was not unlucky.
+
+612
+00:34:21,010 --> 00:34:27,739
+If they did the poll again and again and
+again, with 10 times the sample, or
+
+613
+00:34:27,739 --> 00:34:33,110
+100 times the sample, they will
+get exactly the same thing.
+
+614
+00:34:33,110 --> 00:34:34,610
+OK?!
+
+615
+00:34:34,610 --> 00:34:37,969
+So what is the problem?
+
+616
+00:34:37,969 --> 00:34:40,840
+The problem is the following.
+
+617
+00:34:40,840 --> 00:34:45,530
+There is a bias in the poll they
+conducted and it is because of
+
+618
+00:34:45,530 --> 00:34:46,880
+a rather laughable reason.
+
+619
+00:34:46,880 --> 00:34:49,510
+
+
+620
+00:34:49,510 --> 00:34:54,940
+In 1948, phones were expensive.
+
+621
+00:34:54,940 --> 00:35:01,650
+That means that households that had
+phones used to be richer, and richer
+
+622
+00:35:01,650 --> 00:35:08,040
+people at that point favored Dewey more
+than the general population did.
+
+623
+00:35:08,040 --> 00:35:11,150
+So there was a sampling bias.
+
+624
+00:35:11,150 --> 00:35:17,030
+There was always the case-- the
+population they were asking actually
+
+625
+00:35:17,030 --> 00:35:18,180
+favored Dewey.
+
+626
+00:35:18,180 --> 00:35:22,190
+The sample was very reflective of the
+general population, of that mini
+
+627
+00:35:22,190 --> 00:35:23,470
+general population.
+
+628
+00:35:23,470 --> 00:35:27,060
+The problem is that, that general
+population is not the overall general
+
+629
+00:35:27,060 --> 00:35:28,460
+population.
+
+630
+00:35:28,460 --> 00:35:33,710
+And that brings us to the statement
+of the sampling bias principle.
+
+631
+00:35:33,710 --> 00:35:41,160
+It says that if the data is sampled in
+a biased way, then learning will
+
+632
+00:35:41,160 --> 00:35:44,880
+produce a similarly biased outcome.
+
+633
+00:35:44,880 --> 00:35:48,190
+Learning is not an oracle, not
+like the football oracle.
+
+634
+00:35:48,190 --> 00:35:51,470
+Learning sees the world through
+the data you give it.
+
+635
+00:35:51,470 --> 00:35:53,680
+I'm a learning algorithm,
+here is the data.
+
+636
+00:35:53,680 --> 00:35:56,870
+You give me skewed data, I'm going
+to give you a skewed hypothesis.
+
+637
+00:35:56,870 --> 00:35:58,020
+I'm doing my job.
+
+638
+00:35:58,020 --> 00:35:59,980
+I'm trying to fit the data.
+
+639
+00:35:59,980 --> 00:36:03,450
+So this is always the case, and then
+you realize that there is always
+
+640
+00:36:03,450 --> 00:36:07,670
+a problem in terms of making sure that
+the data is actually representative of
+
+641
+00:36:07,670 --> 00:36:09,210
+what you want.
+
+642
+00:36:09,210 --> 00:36:11,230
+So again, we put this in a box.
+
+643
+00:36:11,230 --> 00:36:14,550
+That's the second principle,
+so it's important.
+
+644
+00:36:14,550 --> 00:36:17,625
+And let's look at a practical
+example in learning.
+
+645
+00:36:17,625 --> 00:36:20,240
+
+
+646
+00:36:20,240 --> 00:36:24,700
+In financial forecasting, people use
+machine learning a lot, and sometimes
+
+647
+00:36:24,700 --> 00:36:27,750
+when you look at the markets, the
+markets are completely crazy.
+
+648
+00:36:27,750 --> 00:36:31,310
+A rumor comes out and the market
+goes this way, et cetera.
+
+649
+00:36:31,310 --> 00:36:34,740
+And you are a technical person, you
+are trying to find an intrinsic
+
+650
+00:36:34,740 --> 00:36:37,320
+pattern in the time series.
+
+651
+00:36:37,320 --> 00:36:43,890
+So you decide, I'm going to use the
+normal conditions of the market.
+
+652
+00:36:43,890 --> 00:36:47,320
+So I'm going to take periods of the
+market where the market was normal,
+
+653
+00:36:47,320 --> 00:36:50,830
+and then there is actually a pattern
+when people buy, buy, buy, and sell,
+
+654
+00:36:50,830 --> 00:36:53,070
+sell, sell, something happens, or
+whatever you are going to discover
+
+655
+00:36:53,070 --> 00:36:57,850
+using your linear regression or
+other learning algorithm.
+
+656
+00:36:57,850 --> 00:36:59,130
+And you do this.
+
+657
+00:36:59,130 --> 00:37:03,390
+And then you deploy it, and when you
+test it, you test it in the real
+
+658
+00:37:03,390 --> 00:37:06,710
+market, and realize that now
+there is a sampling bias.
+
+659
+00:37:06,710 --> 00:37:09,940
+In spite of the fact that you were very
+happy in-sample, you actually
+
+660
+00:37:09,940 --> 00:37:15,180
+forgot a part of the market, and you
+don't know whether that part will be
+
+661
+00:37:15,180 --> 00:37:18,290
+terrible for you, great for
+you, or neutral for you.
+
+662
+00:37:18,290 --> 00:37:18,940
+You just don't know.
+
+663
+00:37:18,940 --> 00:37:20,370
+That's what sampling bias does.
+
+664
+00:37:20,370 --> 00:37:24,480
+The newspaper could have done this poll
+and, by their sheer luck, the
+
+665
+00:37:24,480 --> 00:37:29,080
+general population thinks the same of
+Truman and Dewey as the small sample
+
+666
+00:37:29,080 --> 00:37:31,600
+they talked about, in which case the
+result would have come out and they
+
+667
+00:37:31,600 --> 00:37:33,970
+would have never discovered
+that they made a mistake.
+
+668
+00:37:33,970 --> 00:37:38,400
+So sampling bias makes you vulnerable,
+at the mercy of the part that you
+
+669
+00:37:38,400 --> 00:37:39,420
+didn't touch.
+
+670
+00:37:39,420 --> 00:37:42,430
+In this case, you didn't touch the
+market in certain conditions, and if
+
+671
+00:37:42,430 --> 00:37:44,250
+it does happen, all bets are off.
+
+672
+00:37:44,250 --> 00:37:47,010
+
+
+673
+00:37:47,010 --> 00:37:52,650
+One way to deal with sampling bias
+is matching the distributions.
+
+674
+00:37:52,650 --> 00:37:55,850
+It's a very interesting technique, and
+it's actually applied in practice.
+
+675
+00:37:55,850 --> 00:37:56,950
+I'm going to mention that.
+
+676
+00:37:56,950 --> 00:37:58,210
+So what is the idea?
+
+677
+00:37:58,210 --> 00:38:02,750
+The idea is that you have a distribution
+on the input space, in
+
+678
+00:38:02,750 --> 00:38:08,000
+your mind, and there was one assumption
+in Hoeffding and VC
+
+679
+00:38:08,000 --> 00:38:09,280
+inequality and all of that.
+
+680
+00:38:09,280 --> 00:38:13,400
+They didn't make too many assumptions,
+but one assumption they certainly made
+
+681
+00:38:13,400 --> 00:38:17,810
+is that you pick the points for training
+from the same distribution
+
+682
+00:38:17,810 --> 00:38:19,230
+you pick for testing.
+
+683
+00:38:19,230 --> 00:38:21,770
+That was the only thing
+that they require.
+
+684
+00:38:21,770 --> 00:38:24,520
+So when you have sampling
+bias, that is violated.
+
+685
+00:38:24,520 --> 00:38:27,470
+And therefore, you try to say
+I don't have the same distribution.
+
+686
+00:38:27,470 --> 00:38:32,070
+I have data picked from some
+distribution, and I'm going to deliver
+
+687
+00:38:32,070 --> 00:38:34,800
+the hypothesis to the customer, and
+they're going to test it in other
+
+688
+00:38:34,800 --> 00:38:35,480
+conditions.
+
+689
+00:38:35,480 --> 00:38:36,800
+What do I do?
+
+690
+00:38:36,800 --> 00:38:41,340
+What you do, you try to
+match the distributions.
+
+691
+00:38:41,340 --> 00:38:42,780
+You don't reach for the distributions
+and match them.
+
+692
+00:38:42,780 --> 00:38:45,830
+You do something that will effectively
+make them match.
+
+693
+00:38:45,830 --> 00:38:48,320
+And you look at this, and let's
+say that this is the training
+
+694
+00:38:48,320 --> 00:38:51,530
+distribution, and the test distribution
+is off a little bit.
+
+695
+00:38:51,530 --> 00:38:52,270
+This is a probability density function.
+
+696
+00:38:52,270 --> 00:38:53,610
+Both of them are Gaussian.
+
+697
+00:38:53,610 --> 00:38:57,170
+One of them is off and with
+a different sigma.
+
+698
+00:38:57,170 --> 00:38:59,040
+So what you do,
+
+699
+00:38:59,040 --> 00:39:01,380
+if you have access to those-- if
+someone tells you what the
+
+700
+00:39:01,380 --> 00:39:05,010
+distributions are and then gives you
+a sample, there is a way by either
+
+701
+00:39:05,010 --> 00:39:08,520
+giving different weights for the
+training data, or re-sampling the
+
+702
+00:39:08,520 --> 00:39:13,810
+training data, to get another set as
+if it was pulled from the other
+
+703
+00:39:13,810 --> 00:39:15,680
+distribution.
+
+704
+00:39:15,680 --> 00:39:19,900
+It's a fairly simple method.
+
+705
+00:39:19,900 --> 00:39:22,980
+Very seldom that you actually have the
+explicit knowledge of the probability
+
+706
+00:39:22,980 --> 00:39:26,200
+distributions, so it's not that useful in
+practice, but in principle, you can
+
+707
+00:39:26,200 --> 00:39:27,370
+see that it can be done.
+
+708
+00:39:27,370 --> 00:39:30,410
+And the price you pay for it is
+that you had 100 examples.
+
+709
+00:39:30,410 --> 00:39:34,290
+When you are done with this scaling and
+re-sampling or whatever method you
+
+710
+00:39:34,290 --> 00:39:37,690
+use, the effective size now is 90.
+
+711
+00:39:37,690 --> 00:39:40,960
+So you lose a little bit in terms of
+the independence of the points, and
+
+712
+00:39:40,960 --> 00:39:44,210
+therefore, you get effectively
+a smaller sample because of it.
+
+713
+00:39:44,210 --> 00:39:46,580
+But at least, you deal with the
+sampling bias that you
+
+714
+00:39:46,580 --> 00:39:49,150
+wanted to deal with.
+
+715
+00:39:49,150 --> 00:39:55,270
+Now, this method works, and even if you
+don't know the distribution, there
+
+716
+00:39:55,270 --> 00:39:59,160
+are ways to try to infer
+the distribution that work.
+
+717
+00:39:59,160 --> 00:40:02,690
+But it doesn't work if there is a region
+in the input space where the
+
+718
+00:40:02,690 --> 00:40:07,340
+probability is zero for training, nothing
+will be sampled from that part, but
+
+719
+00:40:07,340 --> 00:40:08,770
+you are going to test on it.
+
+720
+00:40:08,770 --> 00:40:12,450
+There is a probability of getting
+a point there, very much like
+
+721
+00:40:12,450 --> 00:40:14,880
+guys without a phone.
+
+722
+00:40:14,880 --> 00:40:18,260
+That happened to have zero probability
+in the sample, but they don't have
+
+723
+00:40:18,260 --> 00:40:20,010
+zero probability in the
+general population.
+
+724
+00:40:20,010 --> 00:40:22,290
+And in that case, there is nothing that
+can be done in terms of matching,
+
+725
+00:40:22,290 --> 00:40:25,190
+because obviously you don't know
+what happened in that part.
+
+726
+00:40:25,190 --> 00:40:29,090
+On the other hand, in many other cases,
+there is a simple procedure,
+
+727
+00:40:29,090 --> 00:40:30,540
+which is actually very
+useful in practice.
+
+728
+00:40:30,540 --> 00:40:36,200
+If you look at, for example, the Netflix
+competition, one of the things
+
+729
+00:40:36,200 --> 00:40:38,875
+you realize is that I have the
+data set, it's a huge data
+
+730
+00:40:38,875 --> 00:40:40,390
+set, 100 million points.
+
+731
+00:40:40,390 --> 00:40:45,090
+And then I'm going to test your
+hypothesis on the final guys, the
+
+732
+00:40:45,090 --> 00:40:46,540
+final ratings.
+
+733
+00:40:46,540 --> 00:40:49,620
+So it's a much smaller set.
+
+734
+00:40:49,620 --> 00:40:54,290
+And the interesting aspect about it is
+that if you look at the distribution of the
+
+735
+00:40:54,290 --> 00:40:57,470
+general ratings, the 100 million,
+it really is different from the
+
+736
+00:40:57,470 --> 00:41:00,150
+distribution of these guys.
+
+737
+00:41:00,150 --> 00:41:04,240
+Therefore, the question came up, can I
+do something during the training such
+
+738
+00:41:04,240 --> 00:41:09,790
+that I make the 100 million look as if
+they were pulled from the distribution
+
+739
+00:41:09,790 --> 00:41:10,980
+of the last guys?
+
+740
+00:41:10,980 --> 00:41:14,450
+Very interesting question, has a very
+concrete answer, and the 100 million
+
+741
+00:41:14,450 --> 00:41:18,720
+become 10 million, not that you are
+throwing away points, but you are
+
+742
+00:41:18,720 --> 00:41:22,980
+weighting them such that when you are
+done, they look smaller then a set.
+
+743
+00:41:22,980 --> 00:41:26,100
+But then you are actually matched to
+that, and you can get a dividend in
+
+744
+00:41:26,100 --> 00:41:27,830
+performance.
+
+745
+00:41:27,830 --> 00:41:33,300
+So there is a cure for sampling bias in
+certain cases, and there is no cure
+
+746
+00:41:33,300 --> 00:41:37,490
+in other cases, in which all you can
+do is admit that you don't know how
+
+747
+00:41:37,490 --> 00:41:40,860
+your system will perform in the
+parts that were not sampled.
+
+748
+00:41:40,860 --> 00:41:44,350
+That would be fatal if you are doing
+a presidential poll, but may not be as
+
+749
+00:41:44,350 --> 00:41:48,540
+fatal when you are doing machine
+learning, because all you are going to
+
+750
+00:41:48,540 --> 00:41:51,820
+do, you are going to warn against
+using this system within that
+
+751
+00:41:51,820 --> 00:41:54,820
+particular sub-domain.
+
+752
+00:41:54,820 --> 00:42:01,620
+Third puzzle, try to detect
+sampling bias here.
+
+753
+00:42:01,620 --> 00:42:02,560
+Credit approval.
+
+754
+00:42:02,560 --> 00:42:06,400
+We have seen that before. That's
+a running example in the course, so let
+
+755
+00:42:06,400 --> 00:42:08,240
+me remind you what that was.
+
+756
+00:42:08,240 --> 00:42:10,170
+The bank wants to approve
+credit automatically.
+
+757
+00:42:10,170 --> 00:42:14,360
+It goes for the historical records of
+customers who applied before, and they
+
+758
+00:42:14,360 --> 00:42:18,480
+were given credit cards, so you have
+a benefit of, let's say, 3 or 4
+
+759
+00:42:18,480 --> 00:42:20,210
+years worth of credit behavior.
+
+760
+00:42:20,210 --> 00:42:25,440
+And you look back at their inputs, and
+the inputs in those cases were simply
+
+761
+00:42:25,440 --> 00:42:28,760
+the information they provided at the
+time they applied for credit, because
+
+762
+00:42:28,760 --> 00:42:32,580
+this is the information that will
+be available from a new customer.
+
+763
+00:42:32,580 --> 00:42:35,620
+And you get something like that.
+This is the application.
+
+764
+00:42:35,620 --> 00:42:38,840
+You also have the output, which is
+simply-- you go back and see whatever
+
+765
+00:42:38,840 --> 00:42:43,180
+the credit behavior is and you ask
+yourself, did they make money for me?
+
+766
+00:42:43,180 --> 00:42:45,020
+Because it's not only credit
+worthiness, that you
+
+767
+00:42:45,020 --> 00:42:45,810
+are a reliable person.
+
+768
+00:42:45,810 --> 00:42:49,360
+It's also that some people who are
+flirting with disaster are very
+
+769
+00:42:49,360 --> 00:42:53,180
+profitable for the bank, because they max
+out and they pay this ridiculous
+
+770
+00:42:53,180 --> 00:42:55,680
+percentage, so they make a lot of money
+as long as they don't default.
+
+771
+00:42:55,680 --> 00:42:57,540
+Once they default, it's a problem.
+
+772
+00:42:57,540 --> 00:42:59,950
+So there's a question of just,
+did you make profit or not?
+
+773
+00:42:59,950 --> 00:43:00,770
+That's a question.
+
+774
+00:43:00,770 --> 00:43:03,970
+And I'm going to approve future
+customers if I expect that they will
+
+775
+00:43:03,970 --> 00:43:04,930
+make profit for me.
+
+776
+00:43:04,930 --> 00:43:07,830
+That's the deal.
+
+777
+00:43:07,830 --> 00:43:09,170
+Where is the sampling bias?
+
+778
+00:43:09,170 --> 00:43:13,970
+
+
+779
+00:43:13,970 --> 00:43:17,250
+We probably alluded to it
+in one form or another.
+
+780
+00:43:17,250 --> 00:43:21,710
+The problem is that you're using
+historical data of customers you
+
+781
+00:43:21,710 --> 00:43:24,820
+approved, because these are the
+only ones you actually have
+
+782
+00:43:24,820 --> 00:43:27,220
+credit behavior on.
+
+783
+00:43:27,220 --> 00:43:31,220
+So the guys who applied, and
+you rejected them, are not
+
+784
+00:43:31,220 --> 00:43:33,270
+part of this sample.
+
+785
+00:43:33,270 --> 00:43:35,650
+And when you are done, you are
+going to have a system that
+
+786
+00:43:35,650 --> 00:43:37,340
+applies to a new applicant.
+
+787
+00:43:37,340 --> 00:43:40,430
+You do not know a priori whether that
+applicant will be approved or not,
+
+788
+00:43:40,430 --> 00:43:42,120
+according to your old criteria.
+
+789
+00:43:42,120 --> 00:43:45,290
+So it could belong to the population
+that was never part of
+
+790
+00:43:45,290 --> 00:43:48,420
+your training sample.
+
+791
+00:43:48,420 --> 00:43:53,360
+Now, this is one case where the sampling
+bias is not that terrible in
+
+792
+00:43:53,360 --> 00:43:57,710
+terms of effect, not in terms of
+characterizing what is going on.
+
+793
+00:43:57,710 --> 00:44:01,530
+You have a part of the population, and
+they have zero probability in terms of
+
+794
+00:44:01,530 --> 00:44:04,260
+training, and nonzero probability
+in terms of testing.
+
+795
+00:44:04,260 --> 00:44:07,090
+It's good, old-fashioned
+sampling bias.
+
+796
+00:44:07,090 --> 00:44:12,760
+But the point is that banks tend to be
+a bit aggressive in providing credit
+
+797
+00:44:12,760 --> 00:44:16,280
+because, as I mentioned, the borderline
+guys are very profitable.
+
+798
+00:44:16,280 --> 00:44:18,810
+So you don't want to just be
+conservative and cut them off, because
+
+799
+00:44:18,810 --> 00:44:20,720
+you're going to be losing revenue.
+
+800
+00:44:20,720 --> 00:44:25,110
+Because of this, the boundary that you
+are talking about is pretty much
+
+801
+00:44:25,110 --> 00:44:27,600
+represented by the guys
+you already accepted.
+
+802
+00:44:27,600 --> 00:44:30,440
+You already made mistakes
+in what you accepted.
+
+803
+00:44:30,440 --> 00:44:33,930
+So when you get that boundary, the
+chances are the guys you missed out
+
+804
+00:44:33,930 --> 00:44:36,770
+will be deep on one side.
+
+805
+00:44:36,770 --> 00:44:39,600
+You got all the support vectors,
+if you want, so the interior
+
+806
+00:44:39,600 --> 00:44:40,920
+points don't matter.
+
+807
+00:44:40,920 --> 00:44:44,670
+They matter a little bit, but
+actually, that system with the
+
+808
+00:44:44,670 --> 00:44:48,050
+sampling bias does pretty
+good on future guys.
+
+809
+00:44:48,050 --> 00:44:51,440
+By evidence that you reject someone, how
+do you know that it's good because
+
+810
+00:44:51,440 --> 00:44:52,060
+you rejected it?
+
+811
+00:44:52,060 --> 00:44:54,950
+They apply somewhere else, and they make
+the other guy lose money, so you
+
+812
+00:44:54,950 --> 00:44:56,420
+realize that your decision was good.
+
+813
+00:44:56,420 --> 00:45:00,750
+So you can verify, if you have
+a consortium of banks, whether actually
+
+814
+00:45:00,750 --> 00:45:06,890
+that sampling bias here has an impact,
+or doesn't have an impact.
+
+815
+00:45:06,890 --> 00:45:10,490
+Final topic, data snooping,
+the sweetest of all.
+
+816
+00:45:10,490 --> 00:45:14,980
+Well, it's the sweetest because it
+is so tricky, and manifests
+
+817
+00:45:14,980 --> 00:45:17,390
+itself in so many ways.
+
+818
+00:45:17,390 --> 00:45:21,010
+Let me first state the principle.
+
+819
+00:45:21,010 --> 00:45:29,250
+The principle says, if a data set has
+affected any step of the learning
+
+820
+00:45:29,250 --> 00:45:38,360
+process, then the ability of the same
+data set to assess the outcome has
+
+821
+00:45:38,360 --> 00:45:40,140
+been compromised.
+
+822
+00:45:40,140 --> 00:45:41,900
+Very simply stated.
+
+823
+00:45:41,900 --> 00:45:44,020
+The principle doesn't forbid
+you from doing anything.
+
+824
+00:45:44,020 --> 00:45:44,780
+You can do whatever you want.
+
+825
+00:45:44,780 --> 00:45:48,210
+Just realize that if you use
+a particular data set, whether it's the
+
+826
+00:45:48,210 --> 00:45:53,330
+whole, or a subset or whatever, use it
+to navigate into-- I'm going to do
+
+827
+00:45:53,330 --> 00:45:55,730
+this, I'm going to choose this model,
+I'm going to choose this lambda, I'm
+
+828
+00:45:55,730 --> 00:45:58,210
+going to do this, I'm going to
+reject this, whatever it is.
+
+829
+00:45:58,210 --> 00:46:02,140
+You made a decision, then when you
+have an outcome from the learning
+
+830
+00:46:02,140 --> 00:46:07,060
+process and you use the same data set
+that affected the choice of that, the
+
+831
+00:46:07,060 --> 00:46:10,670
+ability to fairly assess the performance
+of the outcome has been
+
+832
+00:46:10,670 --> 00:46:14,410
+compromised by the fact that this was
+chosen according to the data set.
+
+833
+00:46:14,410 --> 00:46:19,180
+I think this is completely understood by
+us, having gone through the course.
+
+834
+00:46:19,180 --> 00:46:25,530
+We put it in a box, and then we make
+the statement that this is the most
+
+835
+00:46:25,530 --> 00:46:28,390
+common trap for practitioners,
+by and large.
+
+836
+00:46:28,390 --> 00:46:32,540
+I've dealt with Wall Street firms
+quite a bit in my career, and
+
+837
+00:46:32,540 --> 00:46:35,950
+there are lots of people who are using
+machine learning, and it is rather
+
+838
+00:46:35,950 --> 00:46:39,390
+incredible how they manage
+to data-snoop.
+
+839
+00:46:39,390 --> 00:46:44,180
+And there is a good reason for it,
+because when you data-snoop, you end
+
+840
+00:46:44,180 --> 00:46:49,500
+up with better performance, you think,
+because that's why you snooped.
+
+841
+00:46:49,500 --> 00:46:51,790
+I looked at the data, I
+chose a better model.
+
+842
+00:46:51,790 --> 00:46:54,340
+The other guy didn't look at the data,
+and they are struggling with the
+
+843
+00:46:54,340 --> 00:46:57,230
+model, and they are not getting the
+same in-sample, and I am ahead.
+
+844
+00:46:57,230 --> 00:46:59,420
+It looks very tempting to do.
+
+845
+00:46:59,420 --> 00:47:02,560
+And it's not just looking at the data.
+
+846
+00:47:02,560 --> 00:47:06,765
+The problem is that there are many ways
+to fall into the trap, and they
+
+847
+00:47:06,765 --> 00:47:09,410
+are all happy ways.
+
+848
+00:47:09,410 --> 00:47:19,620
+So if you think of it as landmines,
+it is actually happy landmines.
+
+849
+00:47:19,620 --> 00:47:25,290
+You very cheerfully step on the mine,
+because you think you are doing well.
+
+850
+00:47:25,290 --> 00:47:27,140
+So you need to be very careful.
+
+851
+00:47:27,140 --> 00:47:29,780
+And because it has different
+manifestations, what I'm going to do
+
+852
+00:47:29,780 --> 00:47:34,200
+now, I'm going to go through examples of
+data snooping. Some of them we have
+
+853
+00:47:34,200 --> 00:47:36,400
+seen before, and some
+of them we haven't.
+
+854
+00:47:36,400 --> 00:47:40,710
+And then you will get the idea. What
+should I avoid, and what kind of
+
+855
+00:47:40,710 --> 00:47:45,040
+discipline or compensation should I have,
+in order to be able not to suffer
+
+856
+00:47:45,040 --> 00:47:46,870
+from the consequences
+of data snooping?
+
+857
+00:47:46,870 --> 00:47:50,320
+
+
+858
+00:47:50,320 --> 00:47:53,420
+So the first way of data snooping,
+we have seen before, is
+
+859
+00:47:53,420 --> 00:47:54,130
+looking at the data.
+
+860
+00:47:54,130 --> 00:47:57,280
+So I'm borrowing something
+from our experience.
+
+861
+00:47:57,280 --> 00:47:59,630
+Remember the nonlinear transform?
+
+862
+00:47:59,630 --> 00:48:00,450
+Yeah.
+
+863
+00:48:00,450 --> 00:48:04,975
+So you have a data set like this, and
+let's say you didn't even look at the
+
+864
+00:48:04,975 --> 00:48:11,140
+data and you decided that, I'm going
+to use a 2nd-order transform.
+
+865
+00:48:11,140 --> 00:48:14,860
+So this is the transform, you
+take a full 2nd order.
+
+866
+00:48:14,860 --> 00:48:18,530
+You apply it, and you look at the
+outcome, and this is good.
+
+867
+00:48:18,530 --> 00:48:22,030
+I managed to get zero in-sample error.
+
+868
+00:48:22,030 --> 00:48:24,150
+What is the price I'm paying
+for generalization?
+
+869
+00:48:24,150 --> 00:48:26,370
+One, two, three, four, five, six.
+
+870
+00:48:26,370 --> 00:48:29,130
+That's an estimate for the VC dimension,
+so that's the compromise
+
+871
+00:48:29,130 --> 00:48:31,770
+between this six and however
+many points, et cetera.
+
+872
+00:48:31,770 --> 00:48:34,680
+So you realize, I fit the data
+well but I don't like the
+
+873
+00:48:34,680 --> 00:48:35,650
+fact that it's six.
+
+874
+00:48:35,650 --> 00:48:41,010
+I don't have too many points, so my
+handle on generalization is not good.
+
+875
+00:48:41,010 --> 00:48:44,610
+So let me try to do better,
+at least in your mind.
+
+876
+00:48:44,610 --> 00:48:48,830
+So what you do is say, wait a minute,
+I didn't need all of these guys.
+
+877
+00:48:48,830 --> 00:48:53,900
+I could have gone with just this guy,
+knowing that this is the origin.
+
+878
+00:48:53,900 --> 00:48:56,000
+All you need to do is just x_1
+squared and x_2 squared.
+
+879
+00:48:56,000 --> 00:48:57,820
+This is just a circle centered
+at the origin.
+
+880
+00:48:57,820 --> 00:49:00,300
+Why do I need the other funny stuff?
+
+881
+00:49:00,300 --> 00:49:04,230
+This would be if I'm going
+for a more elaborate set.
+
+882
+00:49:04,230 --> 00:49:08,090
+So now one, two, three, now I have VC
+dimension of three, so I'm better.
+
+883
+00:49:08,090 --> 00:49:11,860
+Of course, we know better, but
+I'm just playing along.
+
+884
+00:49:11,860 --> 00:49:15,130
+And then you get carried away and
+say, I can even do this.
+
+885
+00:49:15,130 --> 00:49:20,050
+It's not an ellipse, it's a circle, so
+I can just add up x_1 squared and x_2
+
+886
+00:49:20,050 --> 00:49:22,590
+squared as one coordinate,
+and then I have two.
+
+887
+00:49:22,590 --> 00:49:24,720
+And you see what the problem
+is, and the problem is what
+
+888
+00:49:24,720 --> 00:49:26,410
+we mentioned before.
+
+889
+00:49:26,410 --> 00:49:31,220
+What you are really doing, you are
+a learning algorithm in your own right,
+
+890
+00:49:31,220 --> 00:49:32,500
+but free of charge.
+
+891
+00:49:32,500 --> 00:49:33,760
+That's the problem.
+
+892
+00:49:33,760 --> 00:49:36,050
+You are looking at the data, and you are
+zooming in, and you're zooming in.
+
+893
+00:49:36,050 --> 00:49:36,630
+You're learning.
+
+894
+00:49:36,630 --> 00:49:37,330
+You're learning.
+
+895
+00:49:37,330 --> 00:49:40,680
+You are narrowing down the hypotheses, and
+then leaving the final learning algorithm
+
+896
+00:49:40,680 --> 00:49:41,800
+just to get you the radius.
+
+897
+00:49:41,800 --> 00:49:43,070
+Yeah, big deal.
+
+898
+00:49:43,070 --> 00:49:47,360
+Well, the problem is that you are
+charging now for a VC dimension of
+
+899
+00:49:47,360 --> 00:49:52,980
+two, which is the last part of the
+learning cost, which is choosing
+
+900
+00:49:52,980 --> 00:49:55,670
+the coefficients here.
+
+901
+00:49:55,670 --> 00:49:58,680
+But you didn't charge for the fact that
+you are a learning algorithm, and
+
+902
+00:49:58,680 --> 00:50:02,740
+you took the data into consideration,
+and you kept zooming in from a bigger
+
+903
+00:50:02,740 --> 00:50:03,350
+hypothesis set.
+
+904
+00:50:03,350 --> 00:50:07,250
+You didn't charge for the full
+VC dimension of that.
+
+905
+00:50:07,250 --> 00:50:13,050
+Now, it is very important to realize
+that the problem here is that the
+
+906
+00:50:13,050 --> 00:50:15,610
+snooping here involves the data set.
+
+907
+00:50:15,610 --> 00:50:18,700
+Because what happens when you
+look at the data set?
+
+908
+00:50:18,700 --> 00:50:24,380
+You are vulnerable to designing your
+model, or your choices in the learning,
+
+909
+00:50:24,380 --> 00:50:28,660
+according to the idiosyncrasies
+of the data set.
+
+910
+00:50:28,660 --> 00:50:33,080
+And therefore, you may be doing well on
+that data set, but you don't know
+
+911
+00:50:33,080 --> 00:50:36,460
+whether you will be doing in another,
+independently generated data set from
+
+912
+00:50:36,460 --> 00:50:40,610
+the same distribution, which would be
+your out-of-sample, so that's the key.
+
+913
+00:50:40,610 --> 00:50:46,810
+On the other hand, you are completely
+allowed, encouraged, ordered to look
+
+914
+00:50:46,810 --> 00:50:51,590
+at all other information related to your
+target function and input space,
+
+915
+00:50:51,590 --> 00:50:55,240
+except for the realization of the data
+set that you are going to use for
+
+916
+00:50:55,240 --> 00:50:58,650
+training, unless you are going
+to charge accordingly.
+
+917
+00:50:58,650 --> 00:50:59,970
+So here is the deal.
+
+918
+00:50:59,970 --> 00:51:02,730
+Someone comes in, I ask him, how
+many inputs do you have?
+
+919
+00:51:02,730 --> 00:51:03,970
+What is the range of the inputs?
+
+920
+00:51:03,970 --> 00:51:06,320
+How did you measure the inputs?
+
+921
+00:51:06,320 --> 00:51:08,700
+Are they physically correlated?
+
+922
+00:51:08,700 --> 00:51:11,110
+Do you know of any properties
+that I can apply?
+
+923
+00:51:11,110 --> 00:51:13,000
+Is it monotonic in this?
+
+924
+00:51:13,000 --> 00:51:19,170
+All of this is completely valid and
+completely important for you in order
+
+925
+00:51:19,170 --> 00:51:22,400
+to zoom in correctly, because right
+now, you are not using the data.
+
+926
+00:51:22,400 --> 00:51:24,310
+You are not subject to
+overfitting the data.
+
+927
+00:51:24,310 --> 00:51:27,940
+You are using properties of the target
+function and the input space proper,
+
+928
+00:51:27,940 --> 00:51:31,330
+and therefore improving your chances
+of picking a correct model.
+
+929
+00:51:31,330 --> 00:51:36,470
+The problem starts when you look
+at the data set and not charge
+
+930
+00:51:36,470 --> 00:51:38,695
+accordingly, very specifically.
+
+931
+00:51:38,695 --> 00:51:43,260
+
+
+932
+00:51:43,260 --> 00:51:44,510
+Here is another puzzle.
+
+933
+00:51:44,510 --> 00:51:46,720
+
+
+934
+00:51:46,720 --> 00:51:49,450
+This one is financial forecasting.
+Befitting.
+
+935
+00:51:49,450 --> 00:51:52,550
+So right now, there will be data
+snooping somewhere here, and you need
+
+936
+00:51:52,550 --> 00:51:55,120
+to look out for it.
+
+937
+00:51:55,120 --> 00:51:58,020
+In this case, this is a real
+situation with real data.
+
+938
+00:51:58,020 --> 00:52:01,100
+You are predicting the exchange rate
+between the US dollar versus the
+
+939
+00:52:01,100 --> 00:52:03,010
+British pound.
+
+940
+00:52:03,010 --> 00:52:07,360
+So you have eight years worth of daily
+trading, where you just simply take
+
+941
+00:52:07,360 --> 00:52:09,480
+the change from day to day.
+
+942
+00:52:09,480 --> 00:52:11,960
+And eight years would be
+about 2,000 points.
+
+943
+00:52:11,960 --> 00:52:15,140
+There are about 250 trading days
+per year, at least when
+
+944
+00:52:15,140 --> 00:52:17,290
+the data was collected.
+
+945
+00:52:17,290 --> 00:52:21,000
+And what you are planning
+to do is the following.
+
+946
+00:52:21,000 --> 00:52:25,960
+You look here. Let me magnify it.
+
+947
+00:52:25,960 --> 00:52:29,440
+This is your input for the prediction,
+and this is your output.
+
+948
+00:52:29,440 --> 00:52:32,110
+So r is the rate.
+
+949
+00:52:32,110 --> 00:52:35,220
+So you don't look at the rate in the
+absolute, you look at delta rate, the
+
+950
+00:52:35,220 --> 00:52:37,900
+difference between the rate today
+and the rate yesterday.
+
+951
+00:52:37,900 --> 00:52:39,040
+That's what you're trying to predict.
+
+952
+00:52:39,040 --> 00:52:40,690
+You're asking yourself whether
+it's going up or down every
+
+953
+00:52:40,690 --> 00:52:42,380
+day, and by how much.
+
+954
+00:52:42,380 --> 00:52:47,740
+So you get delta, and you get delta for
+the 20 days before, hoping that
+
+955
+00:52:47,740 --> 00:52:51,810
+a particular pattern of up and down in
+the exchange rate will make it more
+
+956
+00:52:51,810 --> 00:52:56,990
+likely that today's change, which hasn't
+happened yet-- you are deciding
+
+957
+00:52:56,990 --> 00:52:59,690
+to either buy or sell at the open--
+
+958
+00:52:59,690 --> 00:53:03,040
+whether this will be positive
+or negative and by how much.
+
+959
+00:53:03,040 --> 00:53:05,700
+So if you make a certain prediction,
+then you can obviously capitalize on
+
+960
+00:53:05,700 --> 00:53:07,790
+that, and make predictions
+according to that.
+
+961
+00:53:07,790 --> 00:53:10,580
+And if you are right more often than
+not, you will be making money because
+
+962
+00:53:10,580 --> 00:53:16,960
+you are losing less often than
+winning if you have the
+
+963
+00:53:16,960 --> 00:53:18,830
+right objective function.
+
+964
+00:53:18,830 --> 00:53:23,180
+So this is the case. What happens
+here is that now you have the 2,000
+
+965
+00:53:23,180 --> 00:53:27,530
+points, so for every day, there
+is a change, delta r.
+
+966
+00:53:27,530 --> 00:53:31,500
+And what you do first, you normalize
+the data to zero
+
+967
+00:53:31,500 --> 00:53:33,840
+mean and unit variance.
+
+968
+00:53:33,840 --> 00:53:37,000
+And then after that, you have
+this array of 2,000 points.
+
+969
+00:53:37,000 --> 00:53:40,420
+You create training set and test set.
+
+970
+00:53:40,420 --> 00:53:44,870
+So the training set in this case, you
+take 1,500 points, 1,500 days.
+
+971
+00:53:44,870 --> 00:53:48,210
+So every day now, you take the day, and
+you take the previous 20 days as
+
+972
+00:53:48,210 --> 00:53:49,160
+their input.
+
+973
+00:53:49,160 --> 00:53:50,530
+That becomes your training.
+
+974
+00:53:50,530 --> 00:53:54,110
+And for the test, you picked it at
+random, not the last ones, just to make
+
+975
+00:53:54,110 --> 00:53:57,520
+sure that there is no funny stuff,
+change in this or that.
+
+976
+00:53:57,520 --> 00:54:00,040
+You just want to see if something is
+inherent, so just to be on the safe
+
+977
+00:54:00,040 --> 00:54:01,540
+side, you did it randomly.
+
+978
+00:54:01,540 --> 00:54:04,450
+And then you take 500 points
+in order to test on.
+
+979
+00:54:04,450 --> 00:54:11,200
+So right now, out of the 2,000 array of
+points, you have a big array of 20
+
+980
+00:54:11,200 --> 00:54:16,070
+points input, one output, 20 points
+input, one output, 1,500 of those.
+
+981
+00:54:16,070 --> 00:54:19,740
+And on the other side on the test, 20
+points input, one output, 20 inputs,
+
+982
+00:54:19,740 --> 00:54:20,630
+one output, 500 of those.
+
+983
+00:54:20,630 --> 00:54:21,680
+This is for the test.
+
+984
+00:54:21,680 --> 00:54:23,460
+That's the game.
+
+985
+00:54:23,460 --> 00:54:25,200
+So you go on with the training.
+
+986
+00:54:25,200 --> 00:54:28,460
+You train your system on the training
+set, and to make sure, because
+
+987
+00:54:28,460 --> 00:54:32,320
+you heard of data snooping,
+these guys are in a lock.
+
+988
+00:54:32,320 --> 00:54:35,235
+You didn't look at the
+data at any point.
+
+989
+00:54:35,235 --> 00:54:38,330
+You just carried all of this
+automatically, and then when you are
+
+990
+00:54:38,330 --> 00:54:42,760
+done and you froze the final hypothesis,
+you open the safe, you get
+
+991
+00:54:42,760 --> 00:54:45,400
+the test data, and you
+see how you did.
+
+992
+00:54:45,400 --> 00:54:48,280
+And this is how you did.
+
+993
+00:54:48,280 --> 00:54:53,240
+You train only on D_train, you test on
+D_test, and this is what you get.
+
+994
+00:54:53,240 --> 00:54:55,840
+
+
+995
+00:54:55,840 --> 00:54:58,230
+I'm not saying how often you got it
+right, but I'm actually saying that
+
+996
+00:54:58,230 --> 00:55:01,100
+you put a trade according to the
+prediction, and I'm asking you how
+
+997
+00:55:01,100 --> 00:55:03,340
+much money you made.
+
+998
+00:55:03,340 --> 00:55:08,800
+So for the 500 points, sometimes you
+win, sometimes you lose, but you win
+
+999
+00:55:08,800 --> 00:55:10,970
+more often than you lose,
+which is good.
+
+1000
+00:55:10,970 --> 00:55:14,870
+And at the end of two years worth--
+that's what 500 days would be-- you
+
+1001
+00:55:14,870 --> 00:55:21,070
+would have made a respectable 22%
+unleveraged, so that's pretty good.
+
+1002
+00:55:21,070 --> 00:55:26,585
+So you are very happy, and now having
+done that, you go to the bank and tell
+
+1003
+00:55:26,585 --> 00:55:29,360
+them I have this great
+prediction system.
+
+1004
+00:55:29,360 --> 00:55:29,950
+Here is the system.
+
+1005
+00:55:29,950 --> 00:55:32,560
+I'm going to sell it for you, and I
+guarantee that it will be--
+
+1006
+00:55:32,560 --> 00:55:34,540
+you do the error bars and whatever.
+
+1007
+00:55:34,540 --> 00:55:38,280
+And they go, and they go live, and they
+lose money, and they sue you, and
+
+1008
+00:55:38,280 --> 00:55:39,670
+all of that.
+
+1009
+00:55:39,670 --> 00:55:42,220
+So you ask yourself,
+what went wrong?
+
+1010
+00:55:42,220 --> 00:55:48,470
+What went wrong is that
+there is snooping.
+
+1011
+00:55:48,470 --> 00:55:53,290
+And what's interesting is, where
+exactly is the snooping?
+
+1012
+00:55:53,290 --> 00:55:59,150
+So there are many things: random, the
+fact that I used inputs that happened
+
+1013
+00:55:59,150 --> 00:56:00,770
+to be outputs to the other guy?
+
+1014
+00:56:00,770 --> 00:56:01,800
+No, no, that's legitimate.
+
+1015
+00:56:01,800 --> 00:56:03,910
+I'm just really getting the pattern.
+
+1016
+00:56:03,910 --> 00:56:07,730
+You just go around it, and it is really
+remarkably subtle, to the level
+
+1017
+00:56:07,730 --> 00:56:14,470
+where you can fall into that very, very
+easily, and here is where the
+
+1018
+00:56:14,470 --> 00:56:16,900
+snooping happened.
+
+1019
+00:56:16,900 --> 00:56:19,885
+The snooping happened
+when you normalized.
+
+1020
+00:56:19,885 --> 00:56:22,470
+
+
+1021
+00:56:22,470 --> 00:56:24,510
+What?
+
+1022
+00:56:24,510 --> 00:56:26,370
+I had the daily rates, right?
+
+1023
+00:56:26,370 --> 00:56:28,860
+2,000 of them.
+
+1024
+00:56:28,860 --> 00:56:29,690
+I have the change.
+
+1025
+00:56:29,690 --> 00:56:31,610
+All of that is legitimate.
+
+1026
+00:56:31,610 --> 00:56:33,780
+Now, I slipped a fast one by you--
+
+1027
+00:56:33,780 --> 00:56:35,550
+I hope I did--
+
+1028
+00:56:35,550 --> 00:56:39,420
+when I told you, first you
+normalize this to zero
+
+1029
+00:56:39,420 --> 00:56:40,810
+mean and unit variance.
+
+1030
+00:56:40,810 --> 00:56:43,780
+It looked like an innocent step, because
+you get them to a nice numerical
+
+1031
+00:56:43,780 --> 00:56:47,580
+range, and some methods will actually
+ask you to please put the data
+
+1032
+00:56:47,580 --> 00:56:51,660
+normalized, because it's sensitive to
+the dynamic range of the data.
+
+1033
+00:56:51,660 --> 00:56:54,170
+The problem is that I did this
+before I separated the
+
+1034
+00:56:54,170 --> 00:56:56,420
+training from the testing.
+
+1035
+00:56:56,420 --> 00:57:02,600
+So I took into consideration the mean
+and variance of the test set.
+
+1036
+00:57:02,600 --> 00:57:09,830
+That extremely slight snooping into
+what's supposed to be the test set,
+
+1037
+00:57:09,830 --> 00:57:14,660
+supposed not to affect anything, has
+affected me, but by just a mean and--
+
+1038
+00:57:14,660 --> 00:57:17,270
+How could it possibly
+make a difference?
+
+1039
+00:57:17,270 --> 00:57:21,520
+Well, if you didn't do that,
+you split the data first.
+
+1040
+00:57:21,520 --> 00:57:25,710
+You took the training set only,
+and you did the normalization.
+
+1041
+00:57:25,710 --> 00:57:29,390
+And whatever the mu and sigma squared
+that did the normalization for the
+
+1042
+00:57:29,390 --> 00:57:34,190
+training set, you took them frozen and
+applied them to the test set so that
+
+1043
+00:57:34,190 --> 00:57:36,670
+they live in the same range of values.
+
+1044
+00:57:36,670 --> 00:57:40,210
+And you did the training now and
+the test without any snooping.
+
+1045
+00:57:40,210 --> 00:57:42,660
+Under those conditions, this is
+what you would have gotten.
+
+1046
+00:57:42,660 --> 00:57:45,690
+
+
+1047
+00:57:45,690 --> 00:57:47,490
+So no wonder you lost money.
+
+1048
+00:57:47,490 --> 00:57:55,410
+All the money you made is because you
+sniffed on the average of the
+
+1049
+00:57:55,410 --> 00:57:56,560
+out-of-sample.
+
+1050
+00:57:56,560 --> 00:57:59,150
+And the average matters, because if you
+think about it, let's say that the
+
+1051
+00:57:59,150 --> 00:58:01,760
+US dollar had a trend of going up.
+
+1052
+00:58:01,760 --> 00:58:05,030
+That will affect the mean,
+but you don't know that--
+
+1053
+00:58:05,030 --> 00:58:07,870
+at least, you don't know it for the
+out-of-sample unless you got something
+
+1054
+00:58:07,870 --> 00:58:09,300
+out-of-sample.
+
+1055
+00:58:09,300 --> 00:58:12,350
+So I'm not saying normalization
+is a bad idea.
+
+1056
+00:58:12,350 --> 00:58:15,400
+Normalization is a super idea.
+
+1057
+00:58:15,400 --> 00:58:18,535
+Just make sure that whatever parameters
+you use for normalization
+
+1058
+00:58:18,535 --> 00:58:23,930
+are extracted exclusively from what
+you call a training set, and
+
+1059
+00:58:23,930 --> 00:58:25,610
+then you are safe.
+
+1060
+00:58:25,610 --> 00:58:27,380
+Otherwise, you will be getting
+something that you are
+
+1061
+00:58:27,380 --> 00:58:29,440
+not entitled to get.
+
+1062
+00:58:29,440 --> 00:58:32,130
+Easy to think about, if you are actually
+thinking: I'm going to deploy
+
+1063
+00:58:32,130 --> 00:58:33,810
+this system.
+
+1064
+00:58:33,810 --> 00:58:35,620
+I don't have the test set.
+
+1065
+00:58:35,620 --> 00:58:38,630
+So if you don't have the test set, you
+cannot possibly use those points in
+
+1066
+00:58:38,630 --> 00:58:40,020
+order to normalize.
+
+1067
+00:58:40,020 --> 00:58:43,230
+So use only things that you will
+actually be able to use when you
+
+1068
+00:58:43,230 --> 00:58:44,650
+deploy the system.
+
+1069
+00:58:44,650 --> 00:58:46,370
+In this case, you have
+only the training.
+
+1070
+00:58:46,370 --> 00:58:49,130
+
+
+1071
+00:58:49,130 --> 00:58:53,170
+Now, the third manifestation of
+data snooping comes from the
+
+1072
+00:58:53,170 --> 00:58:54,840
+reuse of the data set.
+
+1073
+00:58:54,840 --> 00:58:57,060
+That is also very common.
+
+1074
+00:58:57,060 --> 00:58:58,950
+So what you do, I give you
+a homework problem.
+
+1075
+00:58:58,950 --> 00:59:00,850
+Oh, I am very excited about
+neural networks.
+
+1076
+00:59:00,850 --> 00:59:01,910
+Let me try neural networks.
+
+1077
+00:59:01,910 --> 00:59:03,580
+Oops, they didn't work.
+
+1078
+00:59:03,580 --> 00:59:04,670
+I heard support vector
+machines are better.
+
+1079
+00:59:04,670 --> 00:59:05,900
+Let me try them.
+
+1080
+00:59:05,900 --> 00:59:08,050
+Yeah, I did, but it was
+the wrong kernel.
+
+1081
+00:59:08,050 --> 00:59:09,790
+Let me use the RBF kernel.
+
+1082
+00:59:09,790 --> 00:59:11,740
+Oh, maybe I'm just using too
+sophisticated a model.
+
+1083
+00:59:11,740 --> 00:59:13,980
+Let me go back to the linear models,
+and just use a nonlinear
+
+1084
+00:59:13,980 --> 00:59:14,960
+transformation.
+
+1085
+00:59:14,960 --> 00:59:22,855
+And eventually, using the same
+data set, you will succeed.
+
+1086
+00:59:22,855 --> 00:59:25,690
+
+
+1087
+00:59:25,690 --> 00:59:30,160
+And the best way to describe it is
+a very nice quote in machine learning.
+
+1088
+00:59:30,160 --> 00:59:42,740
+It says, "If you torture the data long
+enough, it will confess", but exactly
+
+1089
+00:59:42,740 --> 00:59:48,760
+the same way that a confession would
+mean nothing in this case.
+
+1090
+00:59:48,760 --> 00:59:55,940
+So the problem here is that when you
+do this, you are increasing the VC
+
+1091
+00:59:55,940 --> 00:59:57,400
+dimension without realizing it.
+
+1092
+00:59:57,400 --> 01:00:01,020
+I used neural networks and it didn't
+work, and then I used support vector
+
+1093
+01:00:01,020 --> 01:00:02,140
+machines with this and that.
+
+1094
+01:00:02,140 --> 01:00:06,170
+Guess what is the final model
+you used in order to learn?
+
+1095
+01:00:06,170 --> 01:00:08,610
+The union of all of the above.
+
+1096
+01:00:08,610 --> 01:00:10,850
+It's just that some of them
+happened to be rejected by
+
+1097
+01:00:10,850 --> 01:00:11,700
+the learning algorithm.
+
+1098
+01:00:11,700 --> 01:00:14,540
+That's fine, but this is
+the resource you had.
+
+1099
+01:00:14,540 --> 01:00:19,140
+So you think of the VC dimension, and
+the VC dimension is of the total
+
+1100
+01:00:19,140 --> 01:00:20,890
+learning model.
+
+1101
+01:00:20,890 --> 01:00:24,410
+Again, as we will see, there will
+be remedies for data snooping, and
+
+1102
+01:00:24,410 --> 01:00:28,690
+there is a question of-- it's not like I
+have to try a system, and when I fail,
+
+1103
+01:00:28,690 --> 01:00:29,770
+I just quit.
+
+1104
+01:00:29,770 --> 01:00:31,200
+That's not what is being said.
+
+1105
+01:00:31,200 --> 01:00:33,830
+It's just asking you to account
+for what you have been doing.
+
+1106
+01:00:33,830 --> 01:00:37,920
+Don't be fooled into thinking that I
+can do whatever, and then the final
+
+1107
+01:00:37,920 --> 01:00:40,760
+guy that I use with a very simple model,
+after all the wisdom that I
+
+1108
+01:00:40,760 --> 01:00:43,770
+accumulated from the data, is the VC
+dimension that I'm going to charge.
+
+1109
+01:00:43,770 --> 01:00:46,010
+That just doesn't work.
+
+1110
+01:00:46,010 --> 01:00:51,520
+The interesting thing is that this could
+happen, not because you used
+
+1111
+01:00:51,520 --> 01:00:53,620
+the data, but because others
+used the data.
+
+1112
+01:00:53,620 --> 01:00:56,090
+Oh my God, it's really terrible here.
+
+1113
+01:00:56,090 --> 01:00:57,330
+Here's the deal.
+
+1114
+01:00:57,330 --> 01:01:00,720
+You decide to try your methods
+on some data set.
+
+1115
+01:01:00,720 --> 01:01:03,420
+So you go to one of the data sets
+available on the internet, let's say
+
+1116
+01:01:03,420 --> 01:01:08,130
+for heart attacks or something, and
+you say, I am very aware of data
+
+1117
+01:01:08,130 --> 01:01:09,120
+snooping, right?
+
+1118
+01:01:09,120 --> 01:01:12,680
+I'm not going to look at the data, I'm
+not going to normalize using the data.
+
+1119
+01:01:12,680 --> 01:01:16,250
+I'm going to get the data, and put them
+in a safe, and close the safe,
+
+1120
+01:01:16,250 --> 01:01:20,160
+and I will just do my homework
+before I even touch the data.
+
+1121
+01:01:20,160 --> 01:01:24,480
+And your homework is in the form of
+reading papers about other people who
+
+1122
+01:01:24,480 --> 01:01:25,320
+used the data set.
+
+1123
+01:01:25,320 --> 01:01:28,790
+You want to get the wisdom, so
+you use this, and you find that
+
+1124
+01:01:28,790 --> 01:01:33,040
+people realize that Boltzmann machines
+don't work in this case.
+
+1125
+01:01:33,040 --> 01:01:38,550
+The best kernel for the SVM happens
+to be polynomial of order
+
+1126
+01:01:38,550 --> 01:01:40,040
+three, whatever it is.
+
+1127
+01:01:40,040 --> 01:01:42,160
+So you collect it, and you look
+at it, and then you have
+
+1128
+01:01:42,160 --> 01:01:43,680
+your own arsenal of things.
+
+1129
+01:01:43,680 --> 01:01:48,010
+So as a starting point, you put
+a baseline based on the experience you
+
+1130
+01:01:48,010 --> 01:01:50,150
+got, and you say that I'm
+going now to modify it.
+
+1131
+01:01:50,150 --> 01:01:53,400
+Now you open the safe
+and get the data.
+
+1132
+01:01:53,400 --> 01:01:55,590
+Now you realize what happened.
+
+1133
+01:01:55,590 --> 01:01:59,160
+You didn't look at the data, but you
+used something that was affected by
+
+1134
+01:01:59,160 --> 01:02:02,250
+the data, through the work of others.
+
+1135
+01:02:02,250 --> 01:02:06,260
+So in that case, don't be surprised that
+if all you did was determine
+
+1136
+01:02:06,260 --> 01:02:10,020
+a couple of parameters, that's the only
+thing you added to the deal, and you
+
+1137
+01:02:10,020 --> 01:02:11,030
+got a great performance.
+
+1138
+01:02:11,030 --> 01:02:14,660
+And you say, I have two parameters,
+VC dimension is 2, I have
+
+1139
+01:02:14,660 --> 01:02:15,660
+7,000 points.
+
+1140
+01:02:15,660 --> 01:02:17,970
+I must be doing great out of sample,
+and you go out of sample, and it
+
+1141
+01:02:17,970 --> 01:02:19,550
+doesn't happen.
+
+1142
+01:02:19,550 --> 01:02:23,110
+Doesn't happen because actually, it's
+not the two parameters, it's all the
+
+1143
+01:02:23,110 --> 01:02:24,793
+decisions that led to that model.
+
+1144
+01:02:24,793 --> 01:02:27,530
+
+
+1145
+01:02:27,530 --> 01:02:30,560
+And the key problem in all of those
+is always to remember that you are
+
+1146
+01:02:30,560 --> 01:02:33,940
+matching a particular
+data set too well.
+
+1147
+01:02:33,940 --> 01:02:35,990
+You are now married to that data set.
+
+1148
+01:02:35,990 --> 01:02:40,010
+You kept trying things, et cetera, and
+after a while, you know exactly what
+
+1149
+01:02:40,010 --> 01:02:41,370
+to do with this data set.
+
+1150
+01:02:41,370 --> 01:02:44,220
+If someone comes and generates another
+data set from the same distribution,
+
+1151
+01:02:44,220 --> 01:02:46,490
+and you look at it, it will look
+completely foreign to you.
+
+1152
+01:02:46,490 --> 01:02:48,200
+What happens?
+
+1153
+01:02:48,200 --> 01:02:50,700
+It used to be that whenever these two
+points are close, there is always
+
+1154
+01:02:50,700 --> 01:02:53,320
+a point in the same line far away.
+
+1155
+01:02:53,320 --> 01:02:55,680
+That's obviously an idiosyncrasy
+of the thing.
+
+1156
+01:02:55,680 --> 01:02:57,170
+Now you give me a data set
+that doesn't have that.
+
+1157
+01:02:57,170 --> 01:02:59,250
+That must be generated from
+a different distribution.
+
+1158
+01:02:59,250 --> 01:03:01,180
+No, it's generated from
+the same distribution.
+
+1159
+01:03:01,180 --> 01:03:04,550
+You just got too much into this data
+set, to the level where you are
+
+1160
+01:03:04,550 --> 01:03:07,423
+starting to fit funny stuff,
+fitting the noise.
+
+1161
+01:03:07,423 --> 01:03:10,140
+
+
+1162
+01:03:10,140 --> 01:03:13,370
+There are two remedies for data
+snooping, and I'm going to do this,
+
+1163
+01:03:13,370 --> 01:03:17,390
+and then give you the final
+puzzle, and call it a day.
+
+1164
+01:03:17,390 --> 01:03:22,080
+You avoid it, or you account for it.
+
+1165
+01:03:22,080 --> 01:03:23,820
+That's it.
+
+1166
+01:03:23,820 --> 01:03:25,870
+So avoiding it is interesting.
+
+1167
+01:03:25,870 --> 01:03:28,560
+It really requires strict discipline.
+
+1168
+01:03:28,560 --> 01:03:30,520
+So I'll tell you a story
+from my own lab.
+
+1169
+01:03:30,520 --> 01:03:33,320
+We were working on a problem, and
+performance was very critical, and we
+
+1170
+01:03:33,320 --> 01:03:36,930
+were very excited about what we are
+having, all the ingredients that make
+
+1171
+01:03:36,930 --> 01:03:38,340
+you go for data snooping.
+
+1172
+01:03:38,340 --> 01:03:40,355
+You just want to push it a little bit.
+
+1173
+01:03:40,355 --> 01:03:43,100
+We realized that this is the case,
+so we had that discipline that
+
+1174
+01:03:43,100 --> 01:03:44,010
+we'll take the data--
+
+1175
+01:03:44,010 --> 01:03:46,750
+the first thing we did, we sampled
+points at random, put them in the
+
+1176
+01:03:46,750 --> 01:03:50,310
+safe, and then the rest of the guys
+you can use for your training,
+
+1177
+01:03:50,310 --> 01:03:52,360
+validation, whatever you want.
+
+1178
+01:03:52,360 --> 01:03:55,460
+So at some point, one of my colleagues
+who was working on the problem
+
+1179
+01:03:55,460 --> 01:03:57,290
+declared that they already have
+the final hypothesis ready.
+
+1180
+01:03:57,290 --> 01:03:59,570
+It was a neural network at that point.
+
+1181
+01:03:59,570 --> 01:04:03,990
+So now I was the safe keeper, so now
+I'm supposed to give them the test
+
+1182
+01:04:03,990 --> 01:04:07,260
+points, in order to see what
+the performance is like.
+
+1183
+01:04:07,260 --> 01:04:12,760
+I smelled a rat, so what I decided, I
+asked them, could you please send me
+
+1184
+01:04:12,760 --> 01:04:17,500
+the weights of the final hypothesis
+before I send you the data set?
+
+1185
+01:04:17,500 --> 01:04:20,360
+That was the requirement, because
+now it's completely clear.
+
+1186
+01:04:20,360 --> 01:04:22,880
+He's committed to one
+final hypothesis.
+
+1187
+01:04:22,880 --> 01:04:26,480
+If I send him the data set and he says
+it performed great, I can verify that
+
+1188
+01:04:26,480 --> 01:04:27,780
+because he has already sent me that.
+
+1189
+01:04:27,780 --> 01:04:30,170
+It's a question of causality
+in this case.
+
+1190
+01:04:30,170 --> 01:04:32,930
+And the problem is that it is
+not that difficult to come--
+
+1191
+01:04:32,930 --> 01:04:37,230
+Here is the data set, and what you
+really had, you had the candidate, but
+
+1192
+01:04:37,230 --> 01:04:40,420
+you had three other guys that
+are in the running.
+
+1193
+01:04:40,420 --> 01:04:43,940
+And then you look at the data, and you
+decide, maybe I get one from the
+
+1194
+01:04:43,940 --> 01:04:45,280
+running, et cetera.
+
+1195
+01:04:45,280 --> 01:04:47,070
+You can do very little.
+
+1196
+01:04:47,070 --> 01:04:50,086
+And in particular, in financial
+applications, it's extremely
+
+1197
+01:04:50,086 --> 01:04:52,180
+vulnerable, because it's so noisy.
+
+1198
+01:04:52,180 --> 01:04:56,380
+It is very easy when you fit the noise
+a little bit, you will make much
+
+1199
+01:04:56,380 --> 01:04:59,590
+better performance than you will ever
+get from the pattern, so you had
+
+1200
+01:04:59,590 --> 01:05:01,630
+better be extremely careful.
+
+1201
+01:05:01,630 --> 01:05:05,890
+And therefore, you have a discipline
+that really is completely waterproof
+
+1202
+01:05:05,890 --> 01:05:08,400
+that you did not data-snoop.
+
+1203
+01:05:08,400 --> 01:05:11,070
+Accounting for data snooping is not
+that bad, because we already did
+
+1204
+01:05:11,070 --> 01:05:14,560
+a theory, and when we have a finite number
+of hypotheses we are choosing
+
+1205
+01:05:14,560 --> 01:05:17,540
+from for validation, we know
+the level of contamination.
+
+1206
+01:05:17,540 --> 01:05:19,840
+Even if it's an infinite one,
+we have the VC dimension.
+
+1207
+01:05:19,840 --> 01:05:24,150
+We had very nice guidelines to tell us
+how much contamination happened.
+
+1208
+01:05:24,150 --> 01:05:29,340
+The most vulnerable part is looking at
+the data, because it's very difficult
+
+1209
+01:05:29,340 --> 01:05:33,630
+to model yourself and say, what is the
+hypothesis set that I explored, in
+
+1210
+01:05:33,630 --> 01:05:36,320
+order to come up with that model
+by looking at the data?
+
+1211
+01:05:36,320 --> 01:05:39,570
+So because accounting is very difficult,
+that's why I keep raising
+
+1212
+01:05:39,570 --> 01:05:41,230
+a flag about looking at the data.
+
+1213
+01:05:41,230 --> 01:05:44,280
+But if you can account, by all means,
+that's all you need to do.
+
+1214
+01:05:44,280 --> 01:05:47,530
+Look at the data all you want, just
+charge accordingly, and you will be
+
+1215
+01:05:47,530 --> 01:05:50,400
+completely safe as far as machine
+learning is concerned.
+
+1216
+01:05:50,400 --> 01:05:53,960
+Final puzzle, and we call it a day.
+
+1217
+01:05:53,960 --> 01:05:58,050
+And we are still in data snooping,
+so maybe this has to do with data
+
+1218
+01:05:58,050 --> 01:06:00,980
+snooping, but it also has to do
+with sampling bias, so it's
+
+1219
+01:06:00,980 --> 01:06:03,500
+an interesting puzzle.
+
+1220
+01:06:03,500 --> 01:06:07,740
+This is a case where you are testing
+the long-term performance of
+
+1221
+01:06:07,740 --> 01:06:13,760
+a famous strategy in trading, which
+is called "buy and hold".
+
+1222
+01:06:13,760 --> 01:06:14,360
+What does it mean?
+
+1223
+01:06:14,360 --> 01:06:16,230
+You buy and hold.
+
+1224
+01:06:16,230 --> 01:06:18,640
+You don't keep-- I'm going to sell
+today, because it's going down.
+
+1225
+01:06:18,640 --> 01:06:20,610
+No, you just buy, and sit
+on it, forget about it.
+
+1226
+01:06:20,610 --> 01:06:22,530
+It's like a pension plan or something.
+
+1227
+01:06:22,530 --> 01:06:25,630
+And five years later, you look
+at it and see what happens.
+
+1228
+01:06:25,630 --> 01:06:28,110
+So you want to see how much money
+you make out of this.
+
+1229
+01:06:28,110 --> 01:06:31,890
+So what you do is you decide to
+use 50 years worth of data.
+
+1230
+01:06:31,890 --> 01:06:34,930
+That's usually a good life span in
+a professional life, so that will cover
+
+1231
+01:06:34,930 --> 01:06:37,620
+how much money you make at the time
+you retire, from the time you start
+
+1232
+01:06:37,620 --> 01:06:39,090
+contributing to it.
+
+1233
+01:06:39,090 --> 01:06:41,140
+So here is the way you do the test.
+
+1234
+01:06:41,140 --> 01:06:44,170
+You want the test to be as broad as
+possible, so you go for the S&amp;P 500.
+
+1235
+01:06:44,170 --> 01:06:48,720
+You take all currently traded
+stocks, the 500 of them.
+
+1236
+01:06:48,720 --> 01:06:52,200
+And then you go back, and you assume that
+you strictly applied a buy and
+
+1237
+01:06:52,200 --> 01:06:54,670
+hold for all of them.
+
+1238
+01:06:54,670 --> 01:06:58,570
+So don't be tempted to say that I'm
+going now to modify it, because this
+
+1239
+01:06:58,570 --> 01:07:01,720
+guy crashed at some point, so if I sold
+and then bought again, I would
+
+1240
+01:07:01,720 --> 01:07:02,040
+make more money.
+
+1241
+01:07:02,040 --> 01:07:02,420
+No, no, no.
+
+1242
+01:07:02,420 --> 01:07:04,050
+It's buy and hold we are testing.
+
+1243
+01:07:04,050 --> 01:07:05,110
+That was frozen.
+
+1244
+01:07:05,110 --> 01:07:08,050
+So you do this, and then you compute,
+and you find that you will make
+
+1245
+01:07:08,050 --> 01:07:09,230
+fantastic profit.
+
+1246
+01:07:09,230 --> 01:07:12,060
+And you compute, if I do this-- you are
+now young in your career-- and
+
+1247
+01:07:12,060 --> 01:07:15,060
+apply it, by the time I retire,
+I will have a couple of yachts
+
+1248
+01:07:15,060 --> 01:07:15,910
+and I will do this.
+
+1249
+01:07:15,910 --> 01:07:17,160
+It's a wonderful thing.
+
+1250
+01:07:17,160 --> 01:07:19,430
+
+
+1251
+01:07:19,430 --> 01:07:22,060
+Can you see the problem?
+
+1252
+01:07:22,060 --> 01:07:25,380
+You are very well trained now,
+so you can detect it.
+
+1253
+01:07:25,380 --> 01:07:29,530
+The problem is there is a sampling bias,
+formally speaking, because you
+
+1254
+01:07:29,530 --> 01:07:34,210
+looked at the currently traded stock.
+
+1255
+01:07:34,210 --> 01:07:39,870
+That obviously excludes the guys that
+were there and took a dive, and that
+
+1256
+01:07:39,870 --> 01:07:43,290
+obviously puts you at
+a very unfair advantage.
+
+1257
+01:07:43,290 --> 01:07:47,250
+And it's interesting that people do
+treat this not as a sampling bias but
+
+1258
+01:07:47,250 --> 01:07:50,210
+as a data snooping, in spite of the
+fact that it doesn't fit our
+
+1259
+01:07:50,210 --> 01:07:51,890
+definition of data snooping.
+
+1260
+01:07:51,890 --> 01:07:56,400
+It does fit the definition of snooping,
+because you looked at the
+
+1261
+01:07:56,400 --> 01:07:57,340
+future when you are here.
+
+1262
+01:07:57,340 --> 01:08:01,380
+It's as if you are looking 50 years from
+now, and someone tells you which
+
+1263
+01:08:01,380 --> 01:08:03,450
+stocks will be traded at that point.
+
+1264
+01:08:03,450 --> 01:08:04,950
+So that's not allowed.
+
+1265
+01:08:04,950 --> 01:08:07,510
+But nonetheless, some people will
+treat this as data snooping.
+
+1266
+01:08:07,510 --> 01:08:12,260
+In our context, this is formally just
+sampling bias, and sampling bias that
+
+1267
+01:08:12,260 --> 01:08:16,779
+happens to be created or caused
+by a form of snooping.
+
+1268
+01:08:16,779 --> 01:08:20,350
+I will stop here, and we will take
+questions after a short break.
+
+1269
+01:08:20,350 --> 01:08:30,050
+
+
+1270
+01:08:30,050 --> 01:08:34,359
+Let's start the Q&amp;A.
+
+1271
+01:08:34,359 --> 01:08:37,770
+MODERATOR: In the last one homework
+that people were using LIBSVM, it
+
+1272
+01:08:37,770 --> 01:08:42,220
+emphasized the fact that data should be
+scaled, so why did we not discuss
+
+1273
+01:08:42,220 --> 01:08:46,279
+this in the course, or what?
+
+1274
+01:08:46,279 --> 01:08:47,370
+PROFESSOR: There are
+many things I did not
+
+1275
+01:08:47,370 --> 01:08:48,399
+discuss in the course.
+
+1276
+01:08:48,399 --> 01:08:53,590
+I had a budget of 18 lectures,
+and I chose what I consider
+
+1277
+01:08:53,590 --> 01:08:55,090
+to be the most important.
+
+1278
+01:08:55,090 --> 01:09:00,700
+There is a question of input data
+processing, and there is a question
+
+1279
+01:09:00,700 --> 01:09:03,700
+not only of normalization, it's also
+a question of de-correlation of inputs
+
+1280
+01:09:03,700 --> 01:09:06,680
+and whatnot, which is
+a practical matter.
+
+1281
+01:09:06,680 --> 01:09:09,210
+
+
+1282
+01:09:09,210 --> 01:09:11,420
+And the fact that I did not cover
+something doesn't mean
+
+1283
+01:09:11,420 --> 01:09:12,330
+that it's not important.
+
+1284
+01:09:12,330 --> 01:09:17,540
+It just means that it's a constrained
+optimization problem, and you have the
+
+1285
+01:09:17,540 --> 01:09:20,340
+solution, and I have to have
+a feasible solution.
+
+1286
+01:09:20,340 --> 01:09:21,990
+So that's what I have.
+
+1287
+01:09:21,990 --> 01:09:25,330
+I think we have an in-house question.
+
+1288
+01:09:25,330 --> 01:09:26,120
+STUDENT: Thanks.
+
+1289
+01:09:26,120 --> 01:09:29,819
+Professor, you mentioned that if you
+reuse the same data set to compare
+
+1290
+01:09:29,819 --> 01:09:34,380
+between different models, it's
+a form of data snooping.
+
+1291
+01:09:34,380 --> 01:09:38,680
+So how do we know what form
+of model is better?
+
+1292
+01:09:38,680 --> 01:09:41,359
+PROFESSOR: The part of it which
+is formally data snooping is the
+
+1293
+01:09:41,359 --> 01:09:47,370
+part where you used the failure of the
+previous model to direct you to the
+
+1294
+01:09:47,370 --> 01:09:51,930
+choice of the new model, without
+accounting for the VC dimension of
+
+1295
+01:09:51,930 --> 01:09:53,640
+having done that.
+
+1296
+01:09:53,640 --> 01:09:57,400
+So effectively, it's not you that looked
+at the data, but the previous
+
+1297
+01:09:57,400 --> 01:10:01,970
+model looked at the data and made
+a decision, and you didn't charge for it.
+
+1298
+01:10:01,970 --> 01:10:05,190
+So that is the data-snooping
+aspect of it.
+
+1299
+01:10:05,190 --> 01:10:07,820
+If you did this as a formal hierarchy.
+
+1300
+01:10:07,820 --> 01:10:10,620
+You start out, here is the data
+set, I don't look at it.
+
+1301
+01:10:10,620 --> 01:10:14,750
+I'm going to start with support vector
+machines with RBF, and then if I fail,
+
+1302
+01:10:14,750 --> 01:10:16,410
+I'm going to do this, et cetera.
+
+1303
+01:10:16,410 --> 01:10:20,560
+And given that this is my hierarchy,
+the effective VC dimension is
+
+1304
+01:10:20,560 --> 01:10:22,820
+whatever, this is completely
+legitimate.
+
+1305
+01:10:22,820 --> 01:10:28,910
+The snooping part is using the data for
+something without accounting for
+
+1306
+01:10:28,910 --> 01:10:32,750
+it-- in this case, using the data for
+rejecting certain models and directing
+
+1307
+01:10:32,750 --> 01:10:34,410
+yourself to other models.
+
+1308
+01:10:34,410 --> 01:10:34,800
+STUDENT: Yes.
+
+1309
+01:10:34,800 --> 01:10:42,030
+So by accounting for the data snooping,
+do you mean you consider the
+
+1310
+01:10:42,030 --> 01:10:46,870
+effective VC dimension of your entire
+model, and use a much larger data set
+
+1311
+01:10:46,870 --> 01:10:47,840
+for your entire model?
+
+1312
+01:10:47,840 --> 01:10:50,460
+PROFESSOR: You'll get the VC dimension,
+so if the VC
+
+1313
+01:10:50,460 --> 01:10:53,560
+dimension is so big that the current
+number, the amount of data set, won't
+
+1314
+01:10:53,560 --> 01:10:56,560
+give you any generalization, the
+conclusion is that I won't be able to
+
+1315
+01:10:56,560 --> 01:10:59,330
+generalize unless I get more data,
+which is what you're suggesting.
+
+1316
+01:10:59,330 --> 01:11:03,300
+So the basic thing is that you are going
+to learn, and you are going to
+
+1317
+01:11:03,300 --> 01:11:07,360
+finally hand a hypothesis to someone.
+
+1318
+01:11:07,360 --> 01:11:10,150
+What do you expect in terms
+of performance?
+
+1319
+01:11:10,150 --> 01:11:13,920
+Data snooping makes you much more
+optimistic than you should, because
+
+1320
+01:11:13,920 --> 01:11:16,500
+you didn't charge for things that
+you should have charged for.
+
+1321
+01:11:16,500 --> 01:11:18,180
+That's the only statement being made.
+
+1322
+01:11:18,180 --> 01:11:20,970
+STUDENT: Is there a possibility that
+data snooping will make you
+
+1323
+01:11:20,970 --> 01:11:26,370
+pessimistic, will make you
+more conservative?
+
+1324
+01:11:26,370 --> 01:11:31,470
+PROFESSOR: I can probably construct
+deliberate scenarios under
+
+1325
+01:11:31,470 --> 01:11:38,090
+which this is the case, but in all the
+problems that I have seen, people are
+
+1326
+01:11:38,090 --> 01:11:41,900
+always eager to get good performance.
+
+1327
+01:11:41,900 --> 01:11:45,090
+That is the inherent bias, and that is
+what directs you toward something
+
+1328
+01:11:45,090 --> 01:11:48,720
+optimistic, because you do something
+that gets you smaller in-sample error,
+
+1329
+01:11:48,720 --> 01:11:52,290
+and you think now that this in-sample
+error is relevant, but you didn't
+
+1330
+01:11:52,290 --> 01:11:54,490
+account for what it cost you to
+get to that in-sample error.
+
+1331
+01:11:54,490 --> 01:11:56,300
+So it's always in the optimistic
+direction.
+
+1332
+01:11:56,300 --> 01:11:56,670
+STUDENT: Yes.
+
+1333
+01:11:56,670 --> 01:11:57,310
+Thank you.
+
+1334
+01:11:57,310 --> 01:11:58,560
+PROFESSOR: Sure.
+
+1335
+01:11:58,560 --> 01:12:02,850
+
+
+1336
+01:12:02,850 --> 01:12:07,030
+MODERATOR: Assuming that there is
+sampling bias, can you discuss how can
+
+1337
+01:12:07,030 --> 01:12:08,540
+you get around it?
+
+1338
+01:12:08,540 --> 01:12:10,720
+PROFESSOR: So we discussed
+it a little bit.
+
+1339
+01:12:10,720 --> 01:12:16,166
+If there is a sampling bias, if you
+know the distributions, you can--
+
+1340
+01:12:16,166 --> 01:12:19,090
+let me look at the--
+
+1341
+01:12:19,090 --> 01:12:23,370
+so in this case, let's say that I
+give you these distributions.
+
+1342
+01:12:23,370 --> 01:12:27,970
+What this means, you generated the data
+according to the blue curve, and
+
+1343
+01:12:27,970 --> 01:12:30,470
+therefore, you will get
+some data here.
+
+1344
+01:12:30,470 --> 01:12:35,600
+So what is clear, for example, is that
+the data that correspond to the center
+
+1345
+01:12:35,600 --> 01:12:38,670
+of the red curve, which is the
+test, are under-represented in
+
+1346
+01:12:38,670 --> 01:12:40,630
+the training set.
+
+1347
+01:12:40,630 --> 01:12:44,390
+And on the other hand, the data that
+are here are over-represented.
+
+1348
+01:12:44,390 --> 01:12:47,200
+The blue curve is much bigger, it
+will give you some samples.
+
+1349
+01:12:47,200 --> 01:12:49,200
+It will hardly ever be the case
+that you will get that
+
+1350
+01:12:49,200 --> 01:12:51,880
+sample from the testing.
+
+1351
+01:12:51,880 --> 01:12:52,840
+So what you do,
+
+1352
+01:12:52,840 --> 01:12:56,700
+you devise a way of scaling,
+or giving importance--
+
+1353
+01:12:56,700 --> 01:13:01,100
+not scaling the y value, just scaling
+the emphasis of the examples--
+
+1354
+01:13:01,100 --> 01:13:04,390
+such that you compensate for this
+discrepancy, as if you are coming from
+
+1355
+01:13:04,390 --> 01:13:07,400
+here, and there are some re-sampling
+methods to do the same effect.
+
+1356
+01:13:07,400 --> 01:13:09,760
+So this is one approach.
+
+1357
+01:13:09,760 --> 01:13:14,100
+The other approach, which is in the
+absence of those guys, is to look at
+
+1358
+01:13:14,100 --> 01:13:17,510
+the input space in terms
+of coordinates.
+
+1359
+01:13:17,510 --> 01:13:22,530
+Let's say that with the case of the
+Netflix, you look at, for example,
+
+1360
+01:13:22,530 --> 01:13:25,760
+users rated a certain
+number of movies.
+
+1361
+01:13:25,760 --> 01:13:28,690
+Some of them are heavy users, and
+some of them are light users.
+
+1362
+01:13:28,690 --> 01:13:35,450
+So you put how many movies a user rated,
+and you try to see that in the
+
+1363
+01:13:35,450 --> 01:13:40,280
+training and in the test, you have
+equivalent distribution as far as the
+
+1364
+01:13:40,280 --> 01:13:41,970
+number of ratings are concerned.
+
+1365
+01:13:41,970 --> 01:13:45,550
+And you look for another coordinate and
+a third coordinate, and you try to
+
+1366
+01:13:45,550 --> 01:13:46,910
+match these coordinates.
+
+1367
+01:13:46,910 --> 01:13:51,160
+This is an attempt to basically take
+a peek at the distribution, the real
+
+1368
+01:13:51,160 --> 01:13:53,960
+distributions that we don't know, in
+terms of the realization along
+
+1369
+01:13:53,960 --> 01:13:55,700
+coordinates that we can relate to.
+
+1370
+01:13:55,700 --> 01:14:00,380
+So there are some methods to do that.
+Basically, you are compensating by
+
+1371
+01:14:00,380 --> 01:14:03,910
+doing something to the training set you
+have, to make it look more like it
+
+1372
+01:14:03,910 --> 01:14:06,420
+was coming from the test distribution.
+
+1373
+01:14:06,420 --> 01:14:09,710
+
+
+1374
+01:14:09,710 --> 01:14:13,430
+MODERATOR: Is there any counter
+example to Occam's razor?
+
+1375
+01:14:13,430 --> 01:14:14,790
+PROFESSOR: Is there--
+
+1376
+01:14:14,790 --> 01:14:17,740
+MODERATOR: Counter example
+to Occam's razor or not?
+
+1377
+01:14:17,740 --> 01:14:20,650
+PROFESSOR: It's statistically
+speaking in what we--
+
+1378
+01:14:20,650 --> 01:14:28,000
+I can take a case where I violate
+the marriage between the
+
+1379
+01:14:28,000 --> 01:14:32,190
+complexity of an object and the
+complexity of the set that belongs to
+
+1380
+01:14:32,190 --> 01:14:32,620
+the object.
+
+1381
+01:14:32,620 --> 01:14:37,930
+So I can take one hypothesis which is
+extremely sophisticated in terms of
+
+1382
+01:14:37,930 --> 01:14:41,280
+the minimum description length or the
+order of the polynomial, but it
+
+1383
+01:14:41,280 --> 01:14:48,480
+happens to be the only hypothesis
+in my hypothesis set.
+
+1384
+01:14:48,480 --> 01:14:52,170
+Now, if this happens to be close to
+your target function, you will be
+
+1385
+01:14:52,170 --> 01:14:54,970
+doing great, in spite of
+the fact that it's complex.
+
+1386
+01:14:54,970 --> 01:14:59,530
+So I can create things where I start
+violating certain things like that.
+
+1387
+01:14:59,530 --> 01:15:05,060
+But in the absence of further
+knowledge, and in very concrete
+
+1388
+01:15:05,060 --> 01:15:08,900
+statistical terms, Occam's
+razor holds.
+
+1389
+01:15:08,900 --> 01:15:14,860
+So the idea is that when you use
+something simpler, on average, you
+
+1390
+01:15:14,860 --> 01:15:16,190
+will be getting a better performance.
+
+1391
+01:15:16,190 --> 01:15:19,200
+That's the conclusion here.
+
+1392
+01:15:19,200 --> 01:15:23,125
+MODERATOR: Specifically talking about
+applications in computer vision and
+
+1393
+01:15:23,125 --> 01:15:27,870
+the idea of sampling bias comes to mind,
+is there any particular method
+
+1394
+01:15:27,870 --> 01:15:32,600
+used there to correct this, or just
+any of the things we discussed?
+
+1395
+01:15:32,600 --> 01:15:34,780
+PROFESSOR: I think it's the same
+as discussed, just
+
+1396
+01:15:34,780 --> 01:15:37,870
+applied to the domain.
+
+1397
+01:15:37,870 --> 01:15:40,630
+Sometimes the method becomes very
+particular when you look at what type
+
+1398
+01:15:40,630 --> 01:15:43,810
+of features you extract in
+a particular domain, and
+
+1399
+01:15:43,810 --> 01:15:45,730
+therefore, it gets modified
+in that way.
+
+1400
+01:15:45,730 --> 01:15:50,590
+But the principle of it is that you take
+the data points from your sample,
+
+1401
+01:15:50,590 --> 01:15:54,000
+and give them either different weight
+or different re-sampling, such that
+
+1402
+01:15:54,000 --> 01:15:58,390
+you replicate what would have happened
+if you were sampling from the test
+
+1403
+01:15:58,390 --> 01:15:59,640
+distribution.
+
+1404
+01:15:59,640 --> 01:16:02,110
+
+
+1405
+01:16:02,110 --> 01:16:03,870
+MODERATOR: I think that's it.
+
+1406
+01:16:03,870 --> 01:16:03,880
+
+
+1407
+01:16:03,880 --> 01:16:05,910
+PROFESSOR: Very good.
+We'll see you on Thursday.
+
+1408
+01:16:05,910 --> 01:16:05,920
+
+
+1409
+01:16:05,920 --> 01:16:17,277
+

@@ -1,0 +1,7255 @@
+1
+00:00:00,000 --> 00:00:00,570
+
+
+2
+00:00:00,570 --> 00:00:03,270
+ANNOUNCER: The following program
+is brought to you by Caltech.
+
+3
+00:00:03,270 --> 00:00:15,100
+
+
+4
+00:00:15,100 --> 00:00:18,030
+YASER ABU-MOSTAFA: Welcome back.
+
+5
+00:00:18,030 --> 00:00:22,980
+Last time, we introduced the
+notion of overfitting.
+
+6
+00:00:22,980 --> 00:00:29,760
+The idea was that we are fitting the
+data all too well, at the expense of
+
+7
+00:00:29,760 --> 00:00:32,680
+the generalization out of sample.
+
+8
+00:00:32,680 --> 00:00:35,750
+We took a case where the target
+was simple, but we
+
+9
+00:00:35,750 --> 00:00:38,090
+added very little noise.
+
+10
+00:00:38,090 --> 00:00:43,570
+And that little noise was enough to
+misguide the fit using a higher-order
+
+11
+00:00:43,570 --> 00:00:46,890
+polynomial into getting an approximation
+that is very poor
+
+12
+00:00:46,890 --> 00:00:51,988
+approximation of the target that
+we are trying to approximate.
+
+13
+00:00:51,988 --> 00:01:01,650
+The overfitting as a notion is more in
+scope than just bad generalization.
+
+14
+00:01:01,650 --> 00:01:05,480
+If you think of what the VC analysis
+told us, the VC analysis told us that,
+
+15
+00:01:05,480 --> 00:01:11,400
+given the data resources and the
+complexity of the hypothesis set, with
+
+16
+00:01:11,400 --> 00:01:16,070
+nothing said about the target, given
+those we can predict the level of
+
+17
+00:01:16,070 --> 00:01:19,540
+generalization as a bound.
+
+18
+00:01:19,540 --> 00:01:22,400
+Now, overfitting relates to the target.
+
+19
+00:01:22,400 --> 00:01:26,650
+For example, in this case the target
+is noisy, and we have overfitting.
+
+20
+00:01:26,650 --> 00:01:30,910
+If the target was noiseless, if we had
+points coming from the blue curve and
+
+21
+00:01:30,910 --> 00:01:33,720
+we fit them, we would fit them
+perfectly, because it's a very simple
+
+22
+00:01:33,720 --> 00:01:35,640
+equation to solve for a polynomial.
+
+23
+00:01:35,640 --> 00:01:39,670
+And then we will get the
+blue curve exactly.
+
+24
+00:01:39,670 --> 00:01:44,320
+Since the VC analysis doesn't tackle
+the target function, you might be
+
+25
+00:01:44,320 --> 00:01:46,450
+curious about: are we
+changing the game,
+
+26
+00:01:46,450 --> 00:01:49,220
+what is the deal here?
+
+27
+00:01:49,220 --> 00:01:52,560
+The idea is that the VC doesn't
+tackle the target, not in the sense
+
+28
+00:01:52,560 --> 00:01:55,010
+that it doesn't know how
+to deal with it.
+
+29
+00:01:55,010 --> 00:01:58,930
+What it does is, it gets you a bound
+that is valid for all possible
+
+30
+00:01:58,930 --> 00:02:02,090
+targets, noisy or noiseless.
+
+31
+00:02:02,090 --> 00:02:05,090
+And therefore, it allows the
+notion of overfitting.
+
+32
+00:02:05,090 --> 00:02:08,650
+It gives you a bar for
+bad generalization.
+
+33
+00:02:08,650 --> 00:02:14,000
+And you could, within this, have
+generalization that will be good.
+
+34
+00:02:14,000 --> 00:02:16,760
+And it could be bad.
+
+35
+00:02:16,760 --> 00:02:20,530
+Furthermore, it could be that the
+in-sample error is going down while
+
+36
+00:02:20,530 --> 00:02:23,780
+out-of-sample error is going up, which
+is our definition of overfitting.
+
+37
+00:02:23,780 --> 00:02:27,810
+Or it could be that both of them are
+going down, but the generalization is
+
+38
+00:02:27,810 --> 00:02:29,260
+getting worse.
+
+39
+00:02:29,260 --> 00:02:34,480
+So it doesn't specify to us whether
+overfitting will happen or not.
+
+40
+00:02:34,480 --> 00:02:36,240
+Although it doesn't predict
+it, it allows it.
+
+41
+00:02:36,240 --> 00:02:40,220
+So now we are zooming in into the
+details of the theory, and trying to
+
+42
+00:02:40,220 --> 00:02:44,020
+characterize a situation that happens
+very often in practice, where the
+
+43
+00:02:44,020 --> 00:02:47,360
+noise in the target function
+results in overfitting.
+
+44
+00:02:47,360 --> 00:02:49,010
+And we can do something about it.
+
+45
+00:02:49,010 --> 00:02:52,840
+That's why we are actually studying it,
+because there will be ways to cure
+
+46
+00:02:52,840 --> 00:02:55,610
+that disease, if you will.
+
+47
+00:02:55,610 --> 00:03:00,440
+Then we characterized that the source of
+overfitting is fitting the noise.
+
+48
+00:03:00,440 --> 00:03:03,200
+And the conventional meaning of the
+noise we have is what we are referring
+
+49
+00:03:03,200 --> 00:03:06,950
+to now as stochastic noise, because
+we are introducing another type.
+
+50
+00:03:06,950 --> 00:03:11,280
+The idea is that if you fit the noise,
+this is bad, because you are fitting
+
+51
+00:03:11,280 --> 00:03:13,040
+something that cannot be fit.
+
+52
+00:03:13,040 --> 00:03:16,800
+And because you are fitting it, you
+are predicting or extrapolating
+
+53
+00:03:16,800 --> 00:03:19,110
+out-of-sample into a non-existing
+pattern.
+
+54
+00:03:19,110 --> 00:03:22,780
+And that non-existing pattern will take
+you away from the target function.
+
+55
+00:03:22,780 --> 00:03:27,560
+So it will contribute in a harmful
+way to your out-of-sample error.
+
+56
+00:03:27,560 --> 00:03:31,190
+But the novel notion was the fact that,
+even if we don't have stochastic
+
+57
+00:03:31,190 --> 00:03:34,760
+noise, even if the data is not noisy
+in the conventional sense, there is
+
+58
+00:03:34,760 --> 00:03:38,970
+something which we refer to as
+deterministic noise, which is
+
+59
+00:03:38,970 --> 00:03:42,080
+a function of the limitations
+of your model.
+
+60
+00:03:42,080 --> 00:03:45,010
+So here, your model is
+4th-order polynomial.
+
+61
+00:03:45,010 --> 00:03:47,720
+Other models will give you different
+deterministic noise.
+
+62
+00:03:47,720 --> 00:03:51,540
+And they are defined as the difference
+between the target function, in this
+
+63
+00:03:51,540 --> 00:03:55,890
+case the blue wiggly curve, and the
+best approximation within your
+
+64
+00:03:55,890 --> 00:03:58,630
+hypothesis set to that
+target function.
+
+65
+00:03:58,630 --> 00:04:02,510
+Again, it captures the notion of
+something that we cannot learn at all,
+
+66
+00:04:02,510 --> 00:04:05,740
+because it's outside of our ability
+as a hypothesis set.
+
+67
+00:04:05,740 --> 00:04:07,370
+Therefore, it behaves like a noise.
+
+68
+00:04:07,370 --> 00:04:11,290
+If we try to fit it, on a finite sample,
+and try to dedicate some resources to
+
+69
+00:04:11,290 --> 00:04:14,710
+it, whatever we are learning doesn't
+make sense, and it will lead to
+
+70
+00:04:14,710 --> 00:04:17,430
+a pattern that harms the
+out-of-sample error.
+
+71
+00:04:17,430 --> 00:04:20,680
+And indeed, we ran an extensive
+experiment where we compared the
+
+72
+00:04:20,680 --> 00:04:23,940
+deterministic noise, parameterized
+by the target complexity.
+
+73
+00:04:23,940 --> 00:04:28,280
+The more complex the target is, the
+more deterministic noise we have.
+
+74
+00:04:28,280 --> 00:04:31,760
+And we found that the behavior, the
+impact on overfitting, is fairly
+
+75
+00:04:31,760 --> 00:04:35,160
+similar to the behavior when we
+increase the stochastic noise in
+
+76
+00:04:35,160 --> 00:04:38,280
+a similar experiment.
+
+77
+00:04:38,280 --> 00:04:41,940
+Today, we are going to introduce the
+first cure for overfitting, which is
+
+78
+00:04:41,940 --> 00:04:42,730
+regularization.
+
+79
+00:04:42,730 --> 00:04:44,990
+And next time, we are going to introduce
+validation, which is the
+
+80
+00:04:44,990 --> 00:04:46,700
+other side of this.
+
+81
+00:04:46,700 --> 00:04:52,250
+Regularization is a technique that you
+will be using in almost every machine
+
+82
+00:04:52,250 --> 00:04:55,090
+learning application you will encounter.
+
+83
+00:04:55,090 --> 00:04:59,290
+So it's a very important technique,
+very important to understand.
+
+84
+00:04:59,290 --> 00:05:01,190
+There are many approaches to it.
+
+85
+00:05:01,190 --> 00:05:05,150
+So as an outline, I am going to first
+talk about it informally, and talk
+
+86
+00:05:05,150 --> 00:05:06,910
+about the different approaches.
+
+87
+00:05:06,910 --> 00:05:11,740
+Then I'm going to give a mathematical
+development of the most famous form of
+
+88
+00:05:11,740 --> 00:05:13,580
+regularization.
+
+89
+00:05:13,580 --> 00:05:16,890
+And from that, we are not only going to
+get the mathematical result, but we are
+
+90
+00:05:16,890 --> 00:05:20,620
+going to get very good intuition about
+the criteria for choosing
+
+91
+00:05:20,620 --> 00:05:23,450
+a regularizer, and we'll discuss
+it in some detail.
+
+92
+00:05:23,450 --> 00:05:27,410
+Then we will talk about the ups and
+downs of choosing a regularizer at the
+
+93
+00:05:27,410 --> 00:05:29,610
+end, which is the practical
+situation you will face.
+
+94
+00:05:29,610 --> 00:05:30,420
+You have a problem.
+
+95
+00:05:30,420 --> 00:05:31,340
+There is overfitting.
+
+96
+00:05:31,340 --> 00:05:34,080
+How do I choose my regularizer?
+
+97
+00:05:34,080 --> 00:05:34,500
+
+
+98
+00:05:34,500 --> 00:05:36,230
+Let's start.
+
+99
+00:05:36,230 --> 00:05:39,370
+You will find two approaches to
+regularization in the literature,
+
+100
+00:05:39,370 --> 00:05:43,710
+which are as vigorous as one another.
+
+101
+00:05:43,710 --> 00:05:46,290
+One of them is mathematical,
+purely mathematical.
+
+102
+00:05:46,290 --> 00:05:49,840
+And it mostly comes from function
+approximation, where you have
+
+103
+00:05:49,840 --> 00:05:51,050
+an ill-posed problem.
+
+104
+00:05:51,050 --> 00:05:53,990
+You want to approximate the function,
+but there are many functions that
+
+105
+00:05:53,990 --> 00:05:55,940
+actually fit it, so the
+problem is ill-posed.
+
+106
+00:05:55,940 --> 00:05:59,610
+And then you impose smoothness
+constraints on it, in order to be able
+
+107
+00:05:59,610 --> 00:06:00,630
+to solve it.
+
+108
+00:06:00,630 --> 00:06:02,940
+This is a very well-developed area.
+
+109
+00:06:02,940 --> 00:06:06,170
+And it is borrowed in
+machine learning.
+
+110
+00:06:06,170 --> 00:06:09,200
+And actually, the mathematical
+development I am going to develop
+
+111
+00:06:09,200 --> 00:06:12,220
+relates to that development.
+
+112
+00:06:12,220 --> 00:06:16,760
+Also, in the Bayesian approach to
+learning, regularization is completely
+
+113
+00:06:16,760 --> 00:06:17,400
+mathematical.
+
+114
+00:06:17,400 --> 00:06:22,240
+You put it in the prior, and from then
+on you have a very well-defined
+
+115
+00:06:22,240 --> 00:06:24,040
+regularizer, in this case.
+
+116
+00:06:24,040 --> 00:06:28,420
+And in all of those cases, if the
+assumptions that you made in order to
+
+117
+00:06:28,420 --> 00:06:31,600
+make the developments hold, then
+this is the way to go.
+
+118
+00:06:31,600 --> 00:06:35,880
+There is no reason to go for intuition
+and heuristics and the other stuff, if
+
+119
+00:06:35,880 --> 00:06:39,910
+you have a solid assumption and a solid
+mathematical derivation that
+
+120
+00:06:39,910 --> 00:06:41,620
+gets you the result.
+
+121
+00:06:41,620 --> 00:06:44,710
+The problem really is that, in most
+of the cases you will encounter, the
+
+122
+00:06:44,710 --> 00:06:49,380
+assumptions that are made
+here are not realistic.
+
+123
+00:06:49,380 --> 00:06:54,730
+Therefore, you end up with these
+approaches having a very careful
+
+124
+00:06:54,730 --> 00:07:00,100
+deviation, based on assumptions
+that do not hold.
+
+125
+00:07:00,100 --> 00:07:03,980
+And it's a strange activity
+when this is the case.
+
+126
+00:07:03,980 --> 00:07:08,380
+If you are very rigorous, and trying to
+get a very specific mathematical
+
+127
+00:07:08,380 --> 00:07:12,220
+result when your main assumption is not
+going to hold in the application
+
+128
+00:07:12,220 --> 00:07:18,850
+you are going to use it in, then you are
+being penny wise, dollar foolish.
+
+129
+00:07:18,850 --> 00:07:24,320
+The best utility for the mathematical
+approach in practical machine learning
+
+130
+00:07:24,320 --> 00:07:28,550
+is to develop the mathematics in
+a specific case, and then try to
+
+131
+00:07:28,550 --> 00:07:32,900
+interpret the mathematical result in
+such a way that we get an intuition
+
+132
+00:07:32,900 --> 00:07:37,120
+that applies when the assumptions don't
+apply, very much like we did
+
+133
+00:07:37,120 --> 00:07:38,640
+with the VC analysis.
+
+134
+00:07:38,640 --> 00:07:42,640
+We don't compute the VC dimension
+and get the bound in every case, but
+
+135
+00:07:42,640 --> 00:07:47,270
+we got something out of the VC bound,
+which gives us the behavior of
+
+136
+00:07:47,270 --> 00:07:48,090
+generalization.
+
+137
+00:07:48,090 --> 00:07:50,510
+And from then on, we used
+it as a rule of thumb.
+
+138
+00:07:50,510 --> 00:07:53,570
+So here we are going to
+use something similar.
+
+139
+00:07:53,570 --> 00:07:56,670
+The other approach you will
+find, is purely heuristic.
+
+140
+00:07:56,670 --> 00:08:00,390
+And in this case, you are just
+handicapping the minimization of the
+
+141
+00:08:00,390 --> 00:08:04,340
+in-sample error, which is putting the
+brakes, as we described it last time.
+
+142
+00:08:04,340 --> 00:08:06,210
+And indeed, this is what
+we are going to do.
+
+143
+00:08:06,210 --> 00:08:09,720
+We are going to borrow enough from the
+math, to make this not a completely
+
+144
+00:08:09,720 --> 00:08:15,000
+random activity, but rather pointed at
+something that is likely to help our
+
+145
+00:08:15,000 --> 00:08:16,425
+cause of fighting overfitting.
+
+146
+00:08:16,425 --> 00:08:19,420
+
+
+147
+00:08:19,420 --> 00:08:23,680
+I am going to start by an example of
+regularization, and how it affects
+
+148
+00:08:23,680 --> 00:08:24,320
+overfitting.
+
+149
+00:08:24,320 --> 00:08:25,990
+And the example will
+be quite familiar.
+
+150
+00:08:25,990 --> 00:08:28,950
+You have seen it before.
+
+151
+00:08:28,950 --> 00:08:30,530
+You probably recognize this picture.
+
+152
+00:08:30,530 --> 00:08:32,289
+This is a sinusoid.
+
+153
+00:08:32,289 --> 00:08:35,970
+And we had the funny problem, where we
+had only two points in the training
+
+154
+00:08:35,970 --> 00:08:38,179
+set, so N equals 2.
+
+155
+00:08:38,179 --> 00:08:42,500
+And we were fitting our model, which
+was a general line in this case.
+
+156
+00:08:42,500 --> 00:08:45,050
+So we pass the line through
+the two points.
+
+157
+00:08:45,050 --> 00:08:48,570
+And we get a variety of lines,
+depending on the data set you have.
+
+158
+00:08:48,570 --> 00:08:52,140
+And we noticed, after doing a careful
+analysis of this using the
+
+159
+00:08:52,140 --> 00:08:55,520
+bias-variance analysis,
+that this is really bad.
+
+160
+00:08:55,520 --> 00:08:58,680
+And the main reason it's bad is because
+it's all over the place.
+
+161
+00:08:58,680 --> 00:09:02,180
+And being all over the place results
+in a high variance term.
+
+162
+00:09:02,180 --> 00:09:03,590
+That was the key.
+
+163
+00:09:03,590 --> 00:09:07,890
+In that case, a simplistic constant
+model, where you approximate the sine
+
+164
+00:09:07,890 --> 00:09:10,720
+by just a constant, which ends
+up being a zero on average,
+
+165
+00:09:10,720 --> 00:09:13,120
+is actually better in performance
+out-of-sample than
+
+166
+00:09:13,120 --> 00:09:14,140
+fitting with a line.
+
+167
+00:09:14,140 --> 00:09:16,580
+That was the lesson that we got there.
+
+168
+00:09:16,580 --> 00:09:20,570
+So let's see if we can improve the
+situation here by regularizing it, by
+
+169
+00:09:20,570 --> 00:09:21,890
+controlling the lines.
+
+170
+00:09:21,890 --> 00:09:27,490
+Instead of having wild lines, we are
+going to have mild lines, if you will.
+
+171
+00:09:27,490 --> 00:09:31,120
+What we're going to do, we are
+going to not let the lines be
+
+172
+00:09:31,120 --> 00:09:32,450
+whatever they want.
+
+173
+00:09:32,450 --> 00:09:36,350
+We are going to restrict them in terms
+of the offset they can have, and the
+
+174
+00:09:36,350 --> 00:09:37,770
+slope they can have.
+
+175
+00:09:37,770 --> 00:09:40,220
+That is how we are putting
+the brakes on the fit.
+
+176
+00:09:40,220 --> 00:09:43,900
+Obviously, we are sacrificing the
+perfect fit on the training set when
+
+177
+00:09:43,900 --> 00:09:44,830
+we do that.
+
+178
+00:09:44,830 --> 00:09:46,530
+But maybe we are going to gain.
+
+179
+00:09:46,530 --> 00:09:47,670
+Yet to be seen.
+
+180
+00:09:47,670 --> 00:09:48,540
+
+
+181
+00:09:48,540 --> 00:09:52,910
+So this would be without regularization,
+using our new term.
+
+182
+00:09:52,910 --> 00:09:57,230
+And when you have it with regularization,
+and put the constraint
+
+183
+00:09:57,230 --> 00:10:01,490
+on the offset and the slope, these are
+the fits you are going to get on the
+
+184
+00:10:01,490 --> 00:10:03,490
+same data sets.
+
+185
+00:10:03,490 --> 00:10:06,050
+
+
+186
+00:10:06,050 --> 00:10:09,840
+Now you can see that they are not
+as crazy as the lines here.
+
+187
+00:10:09,840 --> 00:10:11,750
+Each line tries to fit the two points.
+
+188
+00:10:11,750 --> 00:10:14,940
+It doesn't fit them perfectly, because
+it is under a constraint that prevents
+
+189
+00:10:14,940 --> 00:10:17,500
+it from passing through
+the points perfectly.
+
+190
+00:10:17,500 --> 00:10:22,020
+Nonetheless, it looks like the
+great variance here has
+
+191
+00:10:22,020 --> 00:10:23,260
+been diminished here.
+
+192
+00:10:23,260 --> 00:10:24,920
+But we don't have to
+judge it visually.
+
+193
+00:10:24,920 --> 00:10:28,130
+We can go to our standard quantities,
+the bias and variance, and
+
+194
+00:10:28,130 --> 00:10:30,680
+do a complete analysis here,
+and see which one wins.
+
+195
+00:10:30,680 --> 00:10:33,200
+
+
+196
+00:10:33,200 --> 00:10:35,170
+So let's see who the winner is.
+
+197
+00:10:35,170 --> 00:10:39,070
+This is without regularization,
+versus with regularization.
+
+198
+00:10:39,070 --> 00:10:41,920
+We have seen without regularization
+before.
+
+199
+00:10:41,920 --> 00:10:45,790
+This was the case where, if you
+remember, this red guy is the average
+
+200
+00:10:45,790 --> 00:10:46,850
+line you get.
+
+201
+00:10:46,850 --> 00:10:49,340
+It is not a hypothesis that you
+are going to get in any
+
+202
+00:10:49,340 --> 00:10:51,130
+given learning scenario.
+
+203
+00:10:51,130 --> 00:10:54,880
+But it is the average of all the lines
+people get, when they get different
+
+204
+00:10:54,880 --> 00:10:57,520
+data sets of two points each.
+
+205
+00:10:57,520 --> 00:11:02,190
+And around that is a great variance,
+depending on which two points you get.
+
+206
+00:11:02,190 --> 00:11:06,300
+And this is described as a standard
+deviation, by this region.
+
+207
+00:11:06,300 --> 00:11:10,080
+The width of the gray region is what
+killed us, in that case, because the
+
+208
+00:11:10,080 --> 00:11:13,630
+variance is so big that, in spite of the
+fact that if you have an infinite
+
+209
+00:11:13,630 --> 00:11:17,350
+number of data sets, each with two
+points, you will get the red thing
+
+210
+00:11:17,350 --> 00:11:18,580
+which is not bad at all.
+
+211
+00:11:18,580 --> 00:11:19,370
+But you don't get that.
+
+212
+00:11:19,370 --> 00:11:20,340
+You will get only two points.
+
+213
+00:11:20,340 --> 00:11:23,340
+So sometimes you will be doing something
+like that, instead of this.
+
+214
+00:11:23,340 --> 00:11:27,660
+And on average, the out-of-sample
+error will be terrible.
+
+215
+00:11:27,660 --> 00:11:30,930
+Let's look at the situation
+with regularization.
+
+216
+00:11:30,930 --> 00:11:33,580
+As expected, the gray region
+has diminished, because the
+
+217
+00:11:33,580 --> 00:11:35,770
+lines weren't as crazy.
+
+218
+00:11:35,770 --> 00:11:38,450
+If you look at the red line, the red
+line is a little bit different,
+
+219
+00:11:38,450 --> 00:11:39,810
+because we couldn't fit the points,
+
+220
+00:11:39,810 --> 00:11:44,240
+we couldn't fit the points, so there's
+a little bit of an added bias, because
+
+221
+00:11:44,240 --> 00:11:45,440
+the fit is not perfect.
+
+222
+00:11:45,440 --> 00:11:46,780
+And we get this.
+
+223
+00:11:46,780 --> 00:11:47,860
+
+
+224
+00:11:47,860 --> 00:11:54,070
+Now regularization, in general, reduces
+the variance at the expense,
+
+225
+00:11:54,070 --> 00:11:58,040
+possibly, of increasing the
+bias just a little bit.
+
+226
+00:11:58,040 --> 00:12:00,840
+So think of it that I am
+handicapping the fit.
+
+227
+00:12:00,840 --> 00:12:03,890
+Well, you are handicapping the fit
+on both the noise and the signal.
+
+228
+00:12:03,890 --> 00:12:06,370
+You cannot distinguish
+one from another.
+
+229
+00:12:06,370 --> 00:12:08,580
+But the handicapping of the
+noise is significant.
+
+230
+00:12:08,580 --> 00:12:10,400
+That's what reduced the variance.
+
+231
+00:12:10,400 --> 00:12:13,980
+The handicapping of the fit results in
+a certain loss of the quality of the
+
+232
+00:12:13,980 --> 00:12:15,590
+fit. That is reflected by that.
+
+233
+00:12:15,590 --> 00:12:20,620
+Let's look at the numbers and see that,
+actually, this stands to the reality.
+
+234
+00:12:20,620 --> 00:12:22,050
+The bias here was 0.21.
+
+235
+00:12:22,050 --> 00:12:23,390
+We have seen these numbers before.
+
+236
+00:12:23,390 --> 00:12:25,850
+And the variance was a horrific 1.69.
+
+237
+00:12:25,850 --> 00:12:28,830
+And when we added them up, the
+linear model lost to the
+
+238
+00:12:28,830 --> 00:12:31,430
+simplistic constant model.
+
+239
+00:12:31,430 --> 00:12:33,880
+So let's look at with regularization.
+
+240
+00:12:33,880 --> 00:12:36,960
+Now we are using still the linear model,
+but we are regularizing it.
+
+241
+00:12:36,960 --> 00:12:39,770
+And you get a bias of 0.23.
+
+242
+00:12:39,770 --> 00:12:41,360
+Well, that's not too bad.
+
+243
+00:12:41,360 --> 00:12:42,750
+We lost a little bit.
+
+244
+00:12:42,750 --> 00:12:47,000
+Think of it as a side effect
+of the treatment.
+
+245
+00:12:47,000 --> 00:12:50,040
+You're attacking the disease,
+which is overfitting.
+
+246
+00:12:50,040 --> 00:12:52,710
+And you will get some
+funny side effects.
+
+247
+00:12:52,710 --> 00:12:55,070
+So instead of getting the 0.21,
+you are getting 0.23.
+
+248
+00:12:55,070 --> 00:12:56,170
+OK, fine.
+
+249
+00:12:56,170 --> 00:12:58,600
+How about the variance?
+
+250
+00:12:58,600 --> 00:13:01,590
+Totally dramatic, 0.33.
+
+251
+00:13:01,590 --> 00:13:07,750
+And when you add them up, not only do
+you win over the unregularized guy.
+
+252
+00:13:07,750 --> 00:13:09,830
+You also win over the constant model.
+
+253
+00:13:09,830 --> 00:13:13,390
+If you get the numbers for the constant
+model, this guy wins.
+
+254
+00:13:13,390 --> 00:13:15,440
+And that has a very interesting
+interpretation.
+
+255
+00:13:15,440 --> 00:13:20,050
+Because when you are trying to choose
+a model, you have the constant, and
+
+256
+00:13:20,050 --> 00:13:22,550
+then you have the linear, and
+then you have the quadratic.
+
+257
+00:13:22,550 --> 00:13:25,120
+This is sort of a discrete grid.
+
+258
+00:13:25,120 --> 00:13:28,950
+Maybe the best choice is actually
+in between these guys.
+
+259
+00:13:28,950 --> 00:13:32,200
+And you can look at regularization
+as a way of getting the
+
+260
+00:13:32,200 --> 00:13:33,330
+intermediate guys.
+
+261
+00:13:33,330 --> 00:13:40,230
+There is a continuous set of models
+that go from extremely restricted to
+
+262
+00:13:40,230 --> 00:13:41,820
+extremely unrestricted.
+
+263
+00:13:41,820 --> 00:13:43,520
+And therefore, you fill in the gap.
+
+264
+00:13:43,520 --> 00:13:47,440
+And by filling in the gap, you might
+find the sweet spot that gives you the
+
+265
+00:13:47,440 --> 00:13:49,120
+best out-of-sample error.
+
+266
+00:13:49,120 --> 00:13:51,760
+In this case, we don't know that this
+is the best out-of-sample error, for
+
+267
+00:13:51,760 --> 00:13:54,280
+the particular level of
+regularization that I did.
+
+268
+00:13:54,280 --> 00:13:57,870
+But it certainly beats the previous
+champion, which was
+
+269
+00:13:57,870 --> 00:13:59,050
+the constant model.
+
+270
+00:13:59,050 --> 00:14:01,000
+
+
+271
+00:14:01,000 --> 00:14:04,180
+Knowing this, we would like to
+understand what was the regularization,
+
+272
+00:14:04,180 --> 00:14:06,300
+in specific terms, that
+resulted in this.
+
+273
+00:14:06,300 --> 00:14:10,370
+And I'm going to present
+it in a formal setting.
+
+274
+00:14:10,370 --> 00:14:13,960
+And in this formal setting, I am going
+to give a full mathematical
+
+275
+00:14:13,960 --> 00:14:19,250
+development, until we get to the solution
+for this regularization,
+
+276
+00:14:19,250 --> 00:14:22,280
+which is the most famous regularization
+you will encounter in
+
+277
+00:14:22,280 --> 00:14:23,960
+machine learning.
+
+278
+00:14:23,960 --> 00:14:27,030
+My goal is not mathematics for
+the sake of mathematics.
+
+279
+00:14:27,030 --> 00:14:32,140
+My goal is to get to a concrete
+conclusion in this case, and then read
+
+280
+00:14:32,140 --> 00:14:37,110
+off that conclusion what lessons can we
+learn, in order to be able to deal
+
+281
+00:14:37,110 --> 00:14:41,030
+with a situation which is not as ideal
+as this one, which indeed we will
+
+282
+00:14:41,030 --> 00:14:42,770
+succeed in.
+
+283
+00:14:42,770 --> 00:14:45,190
+So let's look at the polynomial model.
+
+284
+00:14:45,190 --> 00:14:50,780
+We are going to use polynomials,
+as the expanding components.
+
+285
+00:14:50,780 --> 00:14:53,610
+And we are using Legendre
+polynomials, which I
+
+286
+00:14:53,610 --> 00:14:55,360
+alluded to last time.
+
+287
+00:14:55,360 --> 00:14:56,800
+There is nothing mysterious
+about them.
+
+288
+00:14:56,800 --> 00:14:58,270
+They are polynomials, as you can see.
+
+289
+00:14:58,270 --> 00:15:01,570
+And L_2 is of order two.
+
+290
+00:15:01,570 --> 00:15:03,700
+L_3 is of order three, and so on.
+
+291
+00:15:03,700 --> 00:15:06,980
+And the only thing is that, they are
+created such that they would be
+
+292
+00:15:06,980 --> 00:15:10,540
+orthogonal to each other, which would
+make the mathematics nice, and will
+
+293
+00:15:10,540 --> 00:15:14,560
+make it such that when we combine them
+using coefficients, the coefficients
+
+294
+00:15:14,560 --> 00:15:16,210
+can be treated as independent.
+
+295
+00:15:16,210 --> 00:15:19,110
+They deal with different coordinates
+that don't interfere with each other.
+
+296
+00:15:19,110 --> 00:15:22,590
+If we use just the monomials, the
+monomials are extremely correlated.
+
+297
+00:15:22,590 --> 00:15:26,530
+Therefore, the relevant parameter, as
+far as you're concerned, would be
+
+298
+00:15:26,530 --> 00:15:30,240
+a combination of the weights,
+rather than an individual weight.
+
+299
+00:15:30,240 --> 00:15:33,550
+So this saves you by getting the
+combinations ahead of time, so that the
+
+300
+00:15:33,550 --> 00:15:35,410
+weights actually are meaningful
+in their own right.
+
+301
+00:15:35,410 --> 00:15:36,880
+That's the purpose here.
+
+302
+00:15:36,880 --> 00:15:39,030
+So what is the model?
+
+303
+00:15:39,030 --> 00:15:44,390
+The model will be H_Q, which is,
+by definition, the polynomials of
+
+304
+00:15:44,390 --> 00:15:51,210
+order Q. And the nonlinear
+transformation that takes the scalar
+
+305
+00:15:51,210 --> 00:15:55,120
+variable x, and produces this
+polynomial, is given by
+
+306
+00:15:55,120 --> 00:15:56,760
+this vector, as usual.
+
+307
+00:15:56,760 --> 00:15:59,980
+You start with the mandatory 1,
+and then you have Legendre
+
+308
+00:15:59,980 --> 00:16:01,660
+of order 1 up to Legendre
+
+309
+00:16:01,660 --> 00:16:02,722
+of order Q.
+
+310
+00:16:02,722 --> 00:16:06,830
+When you combine these linearly, you are
+going to get a polynomial of order
+
+311
+00:16:06,830 --> 00:16:11,850
+Q, not a weird polynomial of order Q,
+just a regular polynomial of order Q,
+
+312
+00:16:11,850 --> 00:16:14,650
+just represented in this way.
+
+313
+00:16:14,650 --> 00:16:16,730
+If you actually sum up all of the
+coefficients, there will be
+
+314
+00:16:16,730 --> 00:16:20,350
+a coefficient for constant, coefficient
+for x, coefficient for x squared, up
+
+315
+00:16:20,350 --> 00:16:25,920
+to x to the Q.
+
+316
+00:16:25,920 --> 00:16:30,820
+Using these polynomials, the formal
+parameterization of the hypothesis set
+
+317
+00:16:30,820 --> 00:16:32,970
+would be the following.
+
+318
+00:16:32,970 --> 00:16:35,520
+You take these guys, and
+give them weights.
+
+319
+00:16:35,520 --> 00:16:38,900
+And these weights are the parameters
+that will tell you one hypothesis
+
+320
+00:16:38,900 --> 00:16:39,760
+versus the other.
+
+321
+00:16:39,760 --> 00:16:41,920
+And you sum up over the
+range that you have.
+
+322
+00:16:41,920 --> 00:16:46,970
+And this will be the general hypothesis,
+in this hypothesis set.
+
+323
+00:16:46,970 --> 00:16:50,680
+Because it has that nice form, which is
+linear, we obviously are going to
+
+324
+00:16:50,680 --> 00:16:55,060
+apply the old-fashioned linear
+regression, in the Z space, in order to
+
+325
+00:16:55,060 --> 00:16:55,970
+find the solution.
+
+326
+00:16:55,970 --> 00:16:59,180
+It will be a very easy analytic
+solution because of this.
+
+327
+00:16:59,180 --> 00:17:01,380
+Let me just underline one thing.
+
+328
+00:17:01,380 --> 00:17:03,455
+I am talking here about
+the hypothesis set.
+
+329
+00:17:03,455 --> 00:17:06,848
+I am using the Legendre polynomials, and
+this model, in order to construct
+
+330
+00:17:06,848 --> 00:17:08,250
+the hypothesis set.
+
+331
+00:17:08,250 --> 00:17:10,790
+I didn't say a word about
+the target function.
+
+332
+00:17:10,790 --> 00:17:13,089
+The target function here is unknown.
+
+333
+00:17:13,089 --> 00:17:17,130
+And the reason I am saying that is
+because, last time in the experiment
+
+334
+00:17:17,130 --> 00:17:19,960
+for overfitting, I constructed
+the target function
+
+335
+00:17:19,960 --> 00:17:21,490
+using the same apparatus.
+
+336
+00:17:21,490 --> 00:17:25,348
+And I did it just because the
+overfitting depended on the target
+
+337
+00:17:25,348 --> 00:17:27,050
+function, and I wanted
+it to pin it down.
+
+338
+00:17:27,050 --> 00:17:31,290
+But here, the target function goes back
+to the normal learning scenario.
+
+339
+00:17:31,290 --> 00:17:32,640
+The target function is unknown.
+
+340
+00:17:32,640 --> 00:17:37,420
+And I am using this as a parameterized
+hypothesis set, in order to get a good
+
+341
+00:17:37,420 --> 00:17:40,550
+approximation for the target function
+using a finite training set.
+
+342
+00:17:40,550 --> 00:17:41,800
+That's the deal.
+
+343
+00:17:41,800 --> 00:17:44,310
+
+
+344
+00:17:44,310 --> 00:17:46,150
+Let's look at the unconstrained
+solution.
+
+345
+00:17:46,150 --> 00:17:47,690
+Let's say I don't have regularization.
+
+346
+00:17:47,690 --> 00:17:48,540
+This is my model.
+
+347
+00:17:48,540 --> 00:17:49,300
+What do you do?
+
+348
+00:17:49,300 --> 00:17:50,110
+We have seen this before.
+
+349
+00:17:50,110 --> 00:17:53,050
+I am just repeating it, because it's in
+the Z space, and in order to refresh
+
+350
+00:17:53,050 --> 00:17:55,260
+your memory.
+
+351
+00:17:55,260 --> 00:17:59,120
+So you are given the examples x_1 up to
+x_N with the labels, the labels being
+
+352
+00:17:59,120 --> 00:18:00,270
+real numbers, in this case.
+
+353
+00:18:00,270 --> 00:18:04,380
+And x_1 up to x_N, I'm writing them
+as a scalar, because they are.
+
+354
+00:18:04,380 --> 00:18:07,400
+And then I transform them into the
+Z space, so I get a full vector
+
+355
+00:18:07,400 --> 00:18:12,080
+corresponding to every x, which is the
+vector of the Legendre polynomials.
+
+356
+00:18:12,080 --> 00:18:16,180
+I evaluate it at the corresponding
+x, so I get this.
+
+357
+00:18:16,180 --> 00:18:22,490
+And my goal of the learning is to
+minimize the in-sample error.
+
+358
+00:18:22,490 --> 00:18:26,340
+The in-sample error will be function
+of the parameters, w.
+
+359
+00:18:26,340 --> 00:18:29,160
+And this is the formula for
+it. Exactly, it's
+
+360
+00:18:29,160 --> 00:18:32,590
+a squared error formula that
+we used for linear regression.
+
+361
+00:18:32,590 --> 00:18:35,980
+So you do this, which is the linear
+combination in the Z space.
+
+362
+00:18:35,980 --> 00:18:38,370
+Compare it to the target
+value, which is y_n.
+
+363
+00:18:38,370 --> 00:18:40,150
+The error measure is squared.
+
+364
+00:18:40,150 --> 00:18:43,560
+You sum up over all the examples and
+normalize by N. So, this is indeed the
+
+365
+00:18:43,560 --> 00:18:46,810
+in-sample error as we know it.
+
+366
+00:18:46,810 --> 00:18:48,350
+And we put it in vector form,
+
+367
+00:18:48,350 --> 00:18:49,640
+if you remember this one.
+
+368
+00:18:49,640 --> 00:18:53,820
+So all of a sudden, instead of z
+as vector, we have Z as a matrix.
+
+369
+00:18:53,820 --> 00:18:56,090
+And instead of y as a scalar,
+we have y as a vector.
+
+370
+00:18:56,090 --> 00:18:58,240
+So everybody got promoted.
+
+371
+00:18:58,240 --> 00:19:02,150
+The matrix Z is where every
+vector z is a row.
+
+372
+00:19:02,150 --> 00:19:04,750
+So you have a bunch of
+rows describing this.
+
+373
+00:19:04,750 --> 00:19:07,570
+It's a tall matrix if you have
+a big training set, which
+
+374
+00:19:07,570 --> 00:19:09,190
+is the typical situation.
+
+375
+00:19:09,190 --> 00:19:14,910
+And the vector y is the corresponding
+vector of the labels y.
+
+376
+00:19:14,910 --> 00:19:17,360
+When you put it in vector form,
+you have this equals that.
+
+377
+00:19:17,360 --> 00:19:18,390
+Very easy to verify.
+
+378
+00:19:18,390 --> 00:19:22,260
+And it allows us to do the operations
+in a matrix form, which is
+
+379
+00:19:22,260 --> 00:19:23,680
+much easier to do.
+
+380
+00:19:23,680 --> 00:19:25,760
+So we want to minimize that.
+
+381
+00:19:25,760 --> 00:19:28,760
+And the solution we are going
+to call w_lin, for linear
+
+382
+00:19:28,760 --> 00:19:30,560
+regression in this case.
+
+383
+00:19:30,560 --> 00:19:33,170
+And we have the form for it.
+
+384
+00:19:33,170 --> 00:19:34,580
+It's the one-step learning.
+
+385
+00:19:34,580 --> 00:19:36,860
+It happens to be the pseudo-inverse,
+now in the Z space,
+
+386
+00:19:36,860 --> 00:19:38,680
+so it has this form.
+
+387
+00:19:38,680 --> 00:19:42,380
+If I give you the x's, and you know the
+form for the Legendre polynomials,
+
+388
+00:19:42,380 --> 00:19:43,460
+you compute the z's.
+
+389
+00:19:43,460 --> 00:19:44,150
+You have the matrix.
+
+390
+00:19:44,150 --> 00:19:44,740
+You have the labels.
+
+391
+00:19:44,740 --> 00:19:47,440
+You plug it into the formula,
+and you have your solution.
+
+392
+00:19:47,440 --> 00:19:49,920
+So this is an open and shut case.
+
+393
+00:19:49,920 --> 00:19:52,350
+Let's look at the constrained version.
+
+394
+00:19:52,350 --> 00:19:55,600
+What happens if we constrain
+the weights?
+
+395
+00:19:55,600 --> 00:19:58,760
+Now come to think of it, we have already
+constrained the weights in one
+
+396
+00:19:58,760 --> 00:19:59,450
+of the applications.
+
+397
+00:19:59,450 --> 00:20:02,590
+We didn't say that we did, but that's
+what we effectively did.
+
+398
+00:20:02,590 --> 00:20:03,430
+Why is that?
+
+399
+00:20:03,430 --> 00:20:08,320
+We actually had a hard constraint
+on the weights, when we used
+
+400
+00:20:08,320 --> 00:20:10,390
+H_2 instead of H_10.
+
+401
+00:20:10,390 --> 00:20:12,150
+Remember, H_2 is a 2nd-order polynomial.
+
+402
+00:20:12,150 --> 00:20:13,840
+H_10 was a 10th-order polynomial.
+
+403
+00:20:13,840 --> 00:20:14,360
+Wait a minute.
+
+404
+00:20:14,360 --> 00:20:15,920
+These are two different
+hypothesis sets.
+
+405
+00:20:15,920 --> 00:20:19,140
+I thought the constraint was going into
+one hypothesis set, and then playing
+
+406
+00:20:19,140 --> 00:20:20,060
+around with the weights.
+
+407
+00:20:20,060 --> 00:20:21,430
+Yes, that's what it is.
+
+408
+00:20:21,430 --> 00:20:26,770
+But one way to view H_2 is, as if it
+was H_10, with a constraint.
+
+409
+00:20:26,770 --> 00:20:30,130
+And what would that constraint be?
+
+410
+00:20:30,130 --> 00:20:34,110
+Just set all the parameters
+to zero, above power 2.
+
+411
+00:20:34,110 --> 00:20:36,380
+That is a constraint.
+
+412
+00:20:36,380 --> 00:20:38,100
+But obviously that's an extreme case.
+
+413
+00:20:38,100 --> 00:20:40,780
+What we mean in a constraint, usually
+with regularization, is something
+
+414
+00:20:40,780 --> 00:20:43,660
+a little bit softer.
+
+415
+00:20:43,660 --> 00:20:47,130
+So here is the constraint we
+are going to work with.
+
+416
+00:20:47,130 --> 00:20:52,780
+We are going to work with a budget
+C for the total magnitude
+
+417
+00:20:52,780 --> 00:20:54,030
+squared of the weights.
+
+418
+00:20:54,030 --> 00:20:56,670
+
+
+419
+00:20:56,670 --> 00:21:00,190
+Before we interpret this, let's first
+concede that this is indeed
+
+420
+00:21:00,190 --> 00:21:07,250
+a constraint. The hypotheses that
+satisfy this are a proper subset of
+
+421
+00:21:07,250 --> 00:21:10,980
+H_Q, because I have excluded the
+guys that happen to have weights
+
+422
+00:21:10,980 --> 00:21:12,350
+bigger than that.
+
+423
+00:21:12,350 --> 00:21:13,510
+
+
+424
+00:21:13,510 --> 00:21:16,850
+Because of that, I am already ahead,
+using the VC analysis that
+
+425
+00:21:16,850 --> 00:21:17,800
+I have in my mind.
+
+426
+00:21:17,800 --> 00:21:22,190
+I have a smaller hypothesis set, so
+the VC dimension is going in the
+
+427
+00:21:22,190 --> 00:21:23,360
+direction of being smaller.
+
+428
+00:21:23,360 --> 00:21:26,450
+So I am standing a chance of
+better generalization.
+
+429
+00:21:26,450 --> 00:21:27,690
+This is good.
+
+430
+00:21:27,690 --> 00:21:31,000
+Now, interpreting this as something
+along the same lines here,
+
+431
+00:21:31,000 --> 00:21:34,480
+instead of setting some weights to 0,
+which is a little bit hard, you just
+
+432
+00:21:34,480 --> 00:21:36,250
+want them, in general, to be small.
+
+433
+00:21:36,250 --> 00:21:37,840
+You cannot have them all big.
+
+434
+00:21:37,840 --> 00:21:41,220
+So if you have some of them 0, that
+leaves more in the budget for you to
+
+435
+00:21:41,220 --> 00:21:43,650
+play around with the rest of the guys.
+
+436
+00:21:43,650 --> 00:21:48,810
+And because of this, if you think of
+this as a hard-order constraint, that
+
+437
+00:21:48,810 --> 00:21:50,770
+is you say it's 2.
+
+438
+00:21:50,770 --> 00:21:52,280
+Anything above 2 is zero.
+
+439
+00:21:52,280 --> 00:21:52,930
+
+
+440
+00:21:52,930 --> 00:21:57,030
+Here you can deal with it as if
+it's a soft-order constraint.
+
+441
+00:21:57,030 --> 00:21:59,030
+I'm not really excluding
+any orders.
+
+442
+00:21:59,030 --> 00:22:02,580
+I'm just making it harder for you to
+play around with all the powers.
+
+443
+00:22:02,580 --> 00:22:05,980
+
+
+444
+00:22:05,980 --> 00:22:09,040
+Now let's look at the problem, given
+that this is the constraint.
+
+445
+00:22:09,040 --> 00:22:12,190
+You are still minimizing
+the in-sample error.
+
+446
+00:22:12,190 --> 00:22:17,602
+But now you are not free to choose the
+w's here any which way you want.
+
+447
+00:22:17,602 --> 00:22:20,390
+You have to be satisfying
+the constraint.
+
+448
+00:22:20,390 --> 00:22:24,690
+So that minimization is subject to, and
+you put the constraint in vector
+
+449
+00:22:24,690 --> 00:22:27,790
+form, and this is what you have.
+
+450
+00:22:27,790 --> 00:22:31,450
+This is now the problem you have.
+
+451
+00:22:31,450 --> 00:22:34,660
+When you solve it, however you do
+that, we are going to call the
+
+452
+00:22:34,660 --> 00:22:40,220
+solution w_reg, for regularization,
+instead of w_lin, for linear
+
+453
+00:22:40,220 --> 00:22:41,270
+regression.
+
+454
+00:22:41,270 --> 00:22:44,250
+And the question is, what happens
+when you put that constraint?
+
+455
+00:22:44,250 --> 00:22:46,600
+What happens to the old solution,
+which is w_lin?
+
+456
+00:22:46,600 --> 00:22:48,440
+Given w_reg, which one
+generalizes better?
+
+457
+00:22:48,440 --> 00:22:50,040
+What is the form for each, et cetera?
+
+458
+00:22:50,040 --> 00:22:53,480
+
+
+459
+00:22:53,480 --> 00:22:56,630
+Let's see what we do
+to solve for w_reg.
+
+460
+00:22:56,630 --> 00:22:59,590
+
+
+461
+00:22:59,590 --> 00:23:02,235
+You are minimizing this, subject
+to the constraint.
+
+462
+00:23:02,235 --> 00:23:05,390
+
+
+463
+00:23:05,390 --> 00:23:10,600
+I can do this mathematically very easily
+using Lagrange multipliers, or
+
+464
+00:23:10,600 --> 00:23:14,000
+the inequality version of Lagrange
+multipliers, KKT, which I will
+
+465
+00:23:14,000 --> 00:23:18,650
+actually use in the derivation of
+support vector machines next week.
+
+466
+00:23:18,650 --> 00:23:22,130
+But here, I am just going to settle
+for a pictorial proof of what the
+
+467
+00:23:22,130 --> 00:23:24,220
+solution is, in order to motivate it.
+
+468
+00:23:24,220 --> 00:23:27,430
+And obviously, after you learn the KKT,
+you can go back and verify that
+
+469
+00:23:27,430 --> 00:23:30,130
+this is indeed the solution
+you get analytically.
+
+470
+00:23:30,130 --> 00:23:31,380
+So let's look at this.
+
+471
+00:23:31,380 --> 00:23:32,790
+I have two things here.
+
+472
+00:23:32,790 --> 00:23:36,800
+I have the error surface that I'm trying
+to minimize, and I have the
+
+473
+00:23:36,800 --> 00:23:37,500
+constraint.
+
+474
+00:23:37,500 --> 00:23:40,030
+So let's plot both of them in
+two dimensions, because
+
+475
+00:23:40,030 --> 00:23:42,780
+that's what we can plot.
+
+476
+00:23:42,780 --> 00:23:46,020
+Here is the way I'm drawing
+the in-sample error.
+
+477
+00:23:46,020 --> 00:23:50,100
+I am putting contours where the
+in-sample error is a constant.
+
+478
+00:23:50,100 --> 00:23:52,620
+So inside it will be a smaller
+E_in, smaller E_in,
+
+479
+00:23:52,620 --> 00:23:54,990
+and outside it will be bigger
+E_in, et cetera.
+
+480
+00:23:54,990 --> 00:23:57,970
+But on all points on that contour,
+which actually happens to be the
+
+481
+00:23:57,970 --> 00:24:00,455
+surface of an ellipsoid, if you
+solve it analytically, the
+
+482
+00:24:00,455 --> 00:24:02,430
+E_in is the same value.
+
+483
+00:24:02,430 --> 00:24:03,930
+
+
+484
+00:24:03,930 --> 00:24:08,260
+When you look at the constraint,
+the constraint tells you to
+
+485
+00:24:08,260 --> 00:24:09,510
+be inside this circle.
+
+486
+00:24:09,510 --> 00:24:12,630
+
+
+487
+00:24:12,630 --> 00:24:14,620
+So let's look at the centers
+for these guys.
+
+488
+00:24:14,620 --> 00:24:16,090
+What is the center for here?
+
+489
+00:24:16,090 --> 00:24:19,825
+Well, the center for here is the minimum
+possible in-sample error you
+
+490
+00:24:19,825 --> 00:24:21,210
+can get without a constraint.
+
+491
+00:24:21,210 --> 00:24:24,220
+And that we already declared to be
+w_lin, the solution for linear
+
+492
+00:24:24,220 --> 00:24:25,450
+regression.
+
+493
+00:24:25,450 --> 00:24:27,980
+So that is where you achieve
+the minimum possible E_in.
+
+494
+00:24:27,980 --> 00:24:31,690
+And as you go further and further,
+the E_in increases.
+
+495
+00:24:31,690 --> 00:24:32,570
+Now here's the constraint.
+
+496
+00:24:32,570 --> 00:24:33,970
+What is the center of the constraint?
+
+497
+00:24:33,970 --> 00:24:36,620
+Well, the center of the constraint
+is the origin, just because of
+
+498
+00:24:36,620 --> 00:24:38,900
+the nature of it.
+
+499
+00:24:38,900 --> 00:24:43,880
+Now the idea here is that you want to
+pick a point within this disc, such
+
+500
+00:24:43,880 --> 00:24:45,355
+that it minimizes that.
+
+501
+00:24:45,355 --> 00:24:49,900
+It shouldn't be a surprise to you that
+I will need to go as far out as I can
+
+502
+00:24:49,900 --> 00:24:52,700
+afford to, without violating the
+constraint, because this gets me
+
+503
+00:24:52,700 --> 00:24:53,520
+closer to that.
+
+504
+00:24:53,520 --> 00:24:57,210
+So the visual impression here is
+actually true mathematically.
+
+505
+00:24:57,210 --> 00:25:00,130
+Indeed, the constraint that you will
+actually end up working with is not
+
+506
+00:25:00,130 --> 00:25:05,830
+that w T w is less than or equal to C, but
+actually equals C. That is where the
+
+507
+00:25:05,830 --> 00:25:08,740
+best value for E_in, given the
+constraint, would occur.
+
+508
+00:25:08,740 --> 00:25:10,390
+It will occur at the boundary.
+
+509
+00:25:10,390 --> 00:25:12,630
+
+
+510
+00:25:12,630 --> 00:25:16,770
+Let's look at a possible point that
+satisfies this, and try to find
+
+511
+00:25:16,770 --> 00:25:19,710
+an analytic condition for the solution.
+
+512
+00:25:19,710 --> 00:25:24,390
+Before we do that, let's say that the
+constraint was big enough to include
+
+513
+00:25:24,390 --> 00:25:28,040
+the solution for linear regression, that
+is, C is big enough that this is
+
+514
+00:25:28,040 --> 00:25:29,590
+the big circle.
+
+515
+00:25:29,590 --> 00:25:31,900
+What is the solution?
+
+516
+00:25:31,900 --> 00:25:33,810
+You already know it.
+
+517
+00:25:33,810 --> 00:25:34,770
+It's w_lin.
+
+518
+00:25:34,770 --> 00:25:37,470
+Because that is the minimum absolute,
+and it happens to be allowed by the
+
+519
+00:25:37,470 --> 00:25:37,950
+constraint.
+
+520
+00:25:37,950 --> 00:25:39,340
+So this is the solution.
+
+521
+00:25:39,340 --> 00:25:43,120
+The only case where you are interested
+in doing something new, is when the
+
+522
+00:25:43,120 --> 00:25:44,460
+constraint takes you away from that.
+
+523
+00:25:44,460 --> 00:25:47,040
+And now you have to find a compromise
+between the objective and the
+
+524
+00:25:47,040 --> 00:25:47,840
+constraint.
+
+525
+00:25:47,840 --> 00:25:50,190
+The compromise is such that you
+have to obey the constraint.
+
+526
+00:25:50,190 --> 00:25:51,410
+There is no compromise there.
+
+527
+00:25:51,410 --> 00:25:54,510
+But given that this is the condition,
+what would be the best you can get, in
+
+528
+00:25:54,510 --> 00:25:57,230
+terms of the in-sample error?
+
+529
+00:25:57,230 --> 00:25:58,720
+Let's take a point on the surface.
+
+530
+00:25:58,720 --> 00:26:00,010
+This is a candidate.
+
+531
+00:26:00,010 --> 00:26:01,620
+I don't know whether this
+gives you the minimum.
+
+532
+00:26:01,620 --> 00:26:03,930
+I don't think it will give me, because
+I already said that it should be as
+
+533
+00:26:03,930 --> 00:26:05,600
+close as possible to the outside.
+
+534
+00:26:05,600 --> 00:26:06,260
+But let's see.
+
+535
+00:26:06,260 --> 00:26:08,260
+Maybe this will give us the condition.
+
+536
+00:26:08,260 --> 00:26:12,460
+Let's look at this point, and
+look at the gradient of
+
+537
+00:26:12,460 --> 00:26:14,790
+the objective function.
+
+538
+00:26:14,790 --> 00:26:17,380
+The gradient of the objective function
+will give me a good idea about
+
+539
+00:26:17,380 --> 00:26:22,620
+directions to move in order to minimize
+E_in, as we have done before.
+
+540
+00:26:22,620 --> 00:26:28,220
+So if you draw this, you'll find that
+the gradient has to be orthogonal to
+
+541
+00:26:28,220 --> 00:26:31,270
+the ellipse, because the ellipse,
+by definition, has the
+
+542
+00:26:31,270 --> 00:26:32,770
+same value of E_in.
+
+543
+00:26:32,770 --> 00:26:36,570
+So the value of E_in does not change
+as you move along this.
+
+544
+00:26:36,570 --> 00:26:39,560
+The only change it is allowed will
+have to be orthogonal to this.
+
+545
+00:26:39,560 --> 00:26:42,250
+So the direction of the gradient
+will be this way.
+
+546
+00:26:42,250 --> 00:26:47,460
+And I'm putting it outside, because E_in
+grows as you move away from w_lin.
+
+547
+00:26:47,460 --> 00:26:48,890
+So that's one vector.
+
+548
+00:26:48,890 --> 00:26:52,080
+Now let's look at the orthogonal
+vector to the other
+
+549
+00:26:52,080 --> 00:26:53,480
+surface, the red surface.
+
+550
+00:26:53,480 --> 00:26:55,570
+That's not a gradient of anything yet.
+
+551
+00:26:55,570 --> 00:26:58,030
+But if we draw it, it looks like that.
+
+552
+00:26:58,030 --> 00:27:00,850
+And then I find out that
+this is, what?
+
+553
+00:27:00,850 --> 00:27:03,330
+This is just w.
+
+554
+00:27:03,330 --> 00:27:05,840
+
+
+555
+00:27:05,840 --> 00:27:08,370
+If I take a point here,
+this is the origin.
+
+556
+00:27:08,370 --> 00:27:09,260
+This is the vector.
+
+557
+00:27:09,260 --> 00:27:10,760
+It happens to be orthogonal.
+
+558
+00:27:10,760 --> 00:27:12,550
+So this is the direction
+of the vector w.
+
+559
+00:27:12,550 --> 00:27:16,540
+This is the direction of the vector,
+the gradient of E_in.
+
+560
+00:27:16,540 --> 00:27:19,770
+Now by looking at this, I can
+immediately tell you that w does not
+
+561
+00:27:19,770 --> 00:27:25,090
+achieve the minimum of this function,
+subject to this constraint.
+
+562
+00:27:25,090 --> 00:27:26,690
+How do I know that?
+
+563
+00:27:26,690 --> 00:27:32,790
+Because I look at these, and there is
+an angle between them. If I move
+
+564
+00:27:32,790 --> 00:27:37,540
+in this direction, E_in will increase.
+
+565
+00:27:37,540 --> 00:27:41,570
+If I move in this direction,
+E_in will decrease.
+
+566
+00:27:41,570 --> 00:27:44,110
+I wouldn't be having that situation,
+if they were exactly the
+
+567
+00:27:44,110 --> 00:27:45,170
+opposite of each other.
+
+568
+00:27:45,170 --> 00:27:47,310
+Then I would be moving, and
+nothing will happen.
+
+569
+00:27:47,310 --> 00:27:51,170
+But now E_in has a component
+along the tangent here.
+
+570
+00:27:51,170 --> 00:27:55,240
+And therefore, moving along this circle
+will change the value of E_in.
+
+571
+00:27:55,240 --> 00:27:58,550
+And if I increase it and decrease it by
+moving, then definitely this does
+
+572
+00:27:58,550 --> 00:28:01,330
+not achieve the minimum of E_in.
+
+573
+00:28:01,330 --> 00:28:04,940
+So I keep going until I get the point
+where I achieve the minimum of E_in.
+
+574
+00:28:04,940 --> 00:28:07,370
+And at that point, what would
+be the analytic condition?
+
+575
+00:28:07,370 --> 00:28:09,670
+The analytic condition is that this guy
+is going in one direction, this
+
+576
+00:28:09,670 --> 00:28:12,840
+guy is going in exactly the
+opposite direction.
+
+577
+00:28:12,840 --> 00:28:14,890
+So let's write the condition.
+
+578
+00:28:14,890 --> 00:28:20,180
+The condition is that the gradient,
+which is the blue guy, is proportional
+
+579
+00:28:20,180 --> 00:28:23,310
+to the negative of w of your solution.
+
+580
+00:28:23,310 --> 00:28:24,730
+Because now we declared it the solution.
+
+581
+00:28:24,730 --> 00:28:28,480
+This is the value at which you achieve
+the optimal, under the constraint.
+
+582
+00:28:28,480 --> 00:28:30,410
+We've already called that w_reg.
+
+583
+00:28:30,410 --> 00:28:34,000
+So at the value of w_reg, the gradient
+should be proportional to
+
+584
+00:28:34,000 --> 00:28:35,620
+the negative of that.
+
+585
+00:28:35,620 --> 00:28:38,170
+Now because it's proportional to the
+negative of it, I'm going to put the
+
+586
+00:28:38,170 --> 00:28:42,120
+constant of proportionality in a very
+convenient way for further derivation.
+
+587
+00:28:42,120 --> 00:28:46,240
+I'm going to write it as minus,
+
+588
+00:28:46,240 --> 00:28:48,050
+twice--
+
+589
+00:28:48,050 --> 00:28:51,460
+I'm going to differentiate a squared
+somewhere, and I don't want the 2 to
+
+590
+00:28:51,460 --> 00:28:53,520
+hang around, so I'm putting
+it already--
+
+591
+00:28:53,520 --> 00:28:55,680
+lambda, that is my generic parameter.
+
+592
+00:28:55,680 --> 00:28:58,440
+And I'll divide it by N. Of course, I'm
+allowed to do that, because there
+
+593
+00:28:58,440 --> 00:29:00,560
+is some lambda that makes it
+right, so I'm just
+
+594
+00:29:00,560 --> 00:29:03,320
+putting it in that form.
+
+595
+00:29:03,320 --> 00:29:06,470
+When I put it in this form, I
+can now go-- this is the
+
+596
+00:29:06,470 --> 00:29:08,310
+condition for w_reg.
+
+597
+00:29:08,310 --> 00:29:09,410
+This equals minus that.
+
+598
+00:29:09,410 --> 00:29:11,420
+I can move things to the other side.
+
+599
+00:29:11,420 --> 00:29:13,120
+And now I have an equation which
+is very interesting.
+
+600
+00:29:13,120 --> 00:29:18,410
+I have this plus that,
+equals the vector 0.
+
+601
+00:29:18,410 --> 00:29:23,480
+Now this looks suspiciously close to
+being the gradient of something.
+
+602
+00:29:23,480 --> 00:29:27,910
+And if it happens to be the minimum of
+a function, then I can say, the
+
+603
+00:29:27,910 --> 00:29:31,420
+gradient is 0, so that corresponds to
+the minimum of whatever that is.
+
+604
+00:29:31,420 --> 00:29:34,350
+So let's look at what this is
+the differentiation of.
+
+605
+00:29:34,350 --> 00:29:36,990
+It's as if I was minimizing.
+
+606
+00:29:36,990 --> 00:29:38,800
+E_in gives me this fellow.
+
+607
+00:29:38,800 --> 00:29:43,020
+And conveniently, this fellow gives me
+this fellow, when I differentiate.
+
+608
+00:29:43,020 --> 00:29:47,170
+So the solution here is the
+minimization of this guy.
+
+609
+00:29:47,170 --> 00:29:48,640
+That's actually pretty cool.
+
+610
+00:29:48,640 --> 00:29:53,150
+Because I started with a constrained
+optimization problem, which is fairly
+
+611
+00:29:53,150 --> 00:29:54,150
+difficult to do in general.
+
+612
+00:29:54,150 --> 00:29:56,380
+You need some method to do that.
+
+613
+00:29:56,380 --> 00:29:59,260
+And by doing this logic, I ended
+up with minimizing something,
+
+614
+00:29:59,260 --> 00:30:00,590
+unconditionally.
+
+615
+00:30:00,590 --> 00:30:04,120
+Just minimize this, and whatever
+you find will be your solution.
+
+616
+00:30:04,120 --> 00:30:09,240
+And here we have a parameter lambda, and
+here we have a parameter C. They
+
+617
+00:30:09,240 --> 00:30:11,280
+are related to each other.
+
+618
+00:30:11,280 --> 00:30:15,120
+And actually, parameter lambda depends
+on C, depends on the data set, depends
+
+619
+00:30:15,120 --> 00:30:16,060
+on a bunch of stuff.
+
+620
+00:30:16,060 --> 00:30:19,570
+So I'm not going to even attempt
+to get lambda analytically.
+
+621
+00:30:19,570 --> 00:30:21,690
+I just know that there is a lambda.
+
+622
+00:30:21,690 --> 00:30:24,730
+Because when we are done, you'll realize
+that the lambda we get for
+
+623
+00:30:24,730 --> 00:30:29,400
+regularization is decided by validation,
+not by solving anything.
+
+624
+00:30:29,400 --> 00:30:31,260
+So we don't have to worry
+about it yet.
+
+625
+00:30:31,260 --> 00:30:35,040
+But it's a good idea to think of what
+is C, related to lambda, just to be
+
+626
+00:30:35,040 --> 00:30:38,300
+able to relate to that translation of
+the problem, from the constrained
+
+627
+00:30:38,300 --> 00:30:41,540
+version to the unconstrained version.
+
+628
+00:30:41,540 --> 00:30:45,360
+The idea is that C goes up, lambda
+goes down, and vice versa.
+
+629
+00:30:45,360 --> 00:30:47,170
+So let's start with the formula.
+
+630
+00:30:47,170 --> 00:30:49,280
+What happens if C is huge?
+
+631
+00:30:49,280 --> 00:30:52,830
+Well, if C is huge, then w_lin
+is already the solution.
+
+632
+00:30:52,830 --> 00:30:56,260
+And therefore, you should be just
+minimizing E_in, as if there was
+
+633
+00:30:56,260 --> 00:30:57,960
+nothing, no constraint.
+
+634
+00:30:57,960 --> 00:31:01,260
+But that does correspond to lambda
+equals 0, doesn't it?
+
+635
+00:31:01,260 --> 00:31:03,600
+You will be minimizing E_in.
+
+636
+00:31:03,600 --> 00:31:06,390
+So if C is huge, lambda is 0.
+
+637
+00:31:06,390 --> 00:31:09,020
+Now let's get C smaller, and smaller.
+
+638
+00:31:09,020 --> 00:31:13,600
+When C is smaller, the regularization is
+more severe, because the condition
+
+639
+00:31:13,600 --> 00:31:16,010
+now is becoming more severe.
+
+640
+00:31:16,010 --> 00:31:19,240
+And in order to make the condition
+here more severe, in terms of the
+
+641
+00:31:19,240 --> 00:31:21,580
+regularization term, you need
+to increase lambda.
+
+642
+00:31:21,580 --> 00:31:24,750
+The bigger lambda is, the more emphasis
+you have to put on the
+
+643
+00:31:24,750 --> 00:31:26,820
+regularization part of the game.
+
+644
+00:31:26,820 --> 00:31:30,690
+And therefore, indeed, if C
+goes down, lambda goes up.
+
+645
+00:31:30,690 --> 00:31:36,230
+To the level where, let's say that C
+is 0. What is the solution here?
+
+646
+00:31:36,230 --> 00:31:37,860
+Well, you just left me one
+point in the domain.
+
+647
+00:31:37,860 --> 00:31:38,830
+I don't care what E_in is.
+
+648
+00:31:38,830 --> 00:31:41,270
+It happens to be the minimum,
+because it's the only value.
+
+649
+00:31:41,270 --> 00:31:45,210
+So the solution is whatever the value
+is, so w equals 0 is the solution.
+
+650
+00:31:45,210 --> 00:31:49,170
+How do you force this to have
+the solution w equals 0?
+
+651
+00:31:49,170 --> 00:31:52,120
+By getting lambda to be infinite, in
+which case you don't care about the
+
+652
+00:31:52,120 --> 00:31:52,680
+first term.
+
+653
+00:31:52,680 --> 00:31:56,010
+You just absolutely positively
+have to make w equal to 0.
+
+654
+00:31:56,010 --> 00:31:58,790
+So indeed, that correspondence
+matters.
+
+655
+00:31:58,790 --> 00:31:59,560
+So we put it there.
+
+656
+00:31:59,560 --> 00:32:02,690
+And we understand in our mind,
+there are two parameters that are
+
+657
+00:32:02,690 --> 00:32:04,650
+related to each other.
+
+658
+00:32:04,650 --> 00:32:06,250
+Analytically, we didn't find them.
+
+659
+00:32:06,250 --> 00:32:08,000
+But now we have a correspondence.
+
+660
+00:32:08,000 --> 00:32:13,060
+And the form we have here
+will serve as our form.
+
+661
+00:32:13,060 --> 00:32:17,280
+We have to be able to get lambda
+in a principled way, which we will.
+
+662
+00:32:17,280 --> 00:32:20,250
+This is the only remaining
+outstanding item of business.
+
+663
+00:32:20,250 --> 00:32:22,800
+
+
+664
+00:32:22,800 --> 00:32:26,460
+Now let's look at augmented error,
+which is an interesting notion.
+
+665
+00:32:26,460 --> 00:32:30,390
+If you are minimizing E augmented,
+what is E augmented?
+
+666
+00:32:30,390 --> 00:32:32,260
+We used to minimize E_in.
+
+667
+00:32:32,260 --> 00:32:35,680
+Now we augmented it with another term,
+which is a regularization term.
+
+668
+00:32:35,680 --> 00:32:39,450
+So we write it down this way.
+
+669
+00:32:39,450 --> 00:32:43,470
+And this simply can be written,
+for this particular case.
+
+670
+00:32:43,470 --> 00:32:44,750
+Because E_in is no mystery.
+
+671
+00:32:44,750 --> 00:32:46,310
+We have a formula for it.
+
+672
+00:32:46,310 --> 00:32:48,220
+You look at this, and now this
+looks very promising.
+
+673
+00:32:48,220 --> 00:32:51,320
+If I asked you to solve this, this
+used to be a quadratic form, and now
+
+674
+00:32:51,320 --> 00:32:53,350
+it's a quadratic form.
+
+675
+00:32:53,350 --> 00:32:56,280
+So I don't think the solution
+would be difficult at all.
+
+676
+00:32:56,280 --> 00:33:00,940
+But the good news is that solving
+this is equivalent to-- which is
+
+677
+00:33:00,940 --> 00:33:04,260
+unconditional optimization,
+unconstrained optimization-- solves the
+
+678
+00:33:04,260 --> 00:33:05,630
+following problem.
+
+679
+00:33:05,630 --> 00:33:10,980
+You minimize E_in by itself, which we
+have the formula for, subject to the
+
+680
+00:33:10,980 --> 00:33:12,470
+constraint.
+
+681
+00:33:12,470 --> 00:33:16,420
+It's an important correspondence,
+because of the following.
+
+682
+00:33:16,420 --> 00:33:21,890
+The bottom formulation of the problem
+lends itself to the VC analysis.
+
+683
+00:33:21,890 --> 00:33:25,670
+I am restricting my hypothesis
+set, explicitly.
+
+684
+00:33:25,670 --> 00:33:28,330
+There are certain hypotheses
+that are no longer allowed.
+
+685
+00:33:28,330 --> 00:33:30,200
+I am using a subset of
+the hypothesis set.
+
+686
+00:33:30,200 --> 00:33:32,780
+I expect good generalization.
+
+687
+00:33:32,780 --> 00:33:35,190
+Mathematically, this is equivalent
+to the top one.
+
+688
+00:33:35,190 --> 00:33:39,430
+If you look at the top one, I am using
+the full hypothesis set, without
+
+689
+00:33:39,430 --> 00:33:42,350
+explicitly forbidding any value.
+
+690
+00:33:42,350 --> 00:33:45,930
+I am just using a different learning
+algorithm to find the solution.
+
+691
+00:33:45,930 --> 00:33:47,630
+Here, in principle, minimize this.
+
+692
+00:33:47,630 --> 00:33:49,670
+Whatever the solution happens, happens.
+
+693
+00:33:49,670 --> 00:33:54,170
+And I'm going to get a full-fledged w
+that happens to be member of H_Q,
+
+694
+00:33:54,170 --> 00:33:55,710
+my hypothesis set.
+
+695
+00:33:55,710 --> 00:33:57,730
+Nothing here is forbidden.
+
+696
+00:33:57,730 --> 00:34:00,100
+Certain things are more likely
+than others, but that's
+
+697
+00:34:00,100 --> 00:34:01,630
+an algorithmic question.
+
+698
+00:34:01,630 --> 00:34:05,780
+So it will be very difficult to invoke
+a VC analysis here, but it's easy to
+
+699
+00:34:05,780 --> 00:34:06,950
+invoke it here.
+
+700
+00:34:06,950 --> 00:34:11,043
+And that correspondence between
+a constrained version, which is
+
+701
+00:34:11,043 --> 00:34:15,699
+the pure form of regularization as
+stated, and an augmented error,
+
+702
+00:34:15,699 --> 00:34:19,020
+which doesn't put a constraint, but
+adds a term that captures the
+
+703
+00:34:19,020 --> 00:34:23,760
+constraint in a soft form, that
+correspondence is the justification of
+
+704
+00:34:23,760 --> 00:34:27,739
+regularization in terms of
+generalization, as far as VC analysis
+
+705
+00:34:27,739 --> 00:34:28,520
+is concerned.
+
+706
+00:34:28,520 --> 00:34:30,739
+And it's true for any
+regularizer you use.
+
+707
+00:34:30,739 --> 00:34:34,850
+We are just giving here an example for
+this particular type of regularizer.
+
+708
+00:34:34,850 --> 00:34:36,440
+
+
+709
+00:34:36,440 --> 00:34:37,429
+Now, let's get the solution.
+
+710
+00:34:37,429 --> 00:34:39,429
+That's the easy part.
+
+711
+00:34:39,429 --> 00:34:40,630
+We minimize this.
+
+712
+00:34:40,630 --> 00:34:42,409
+Not subject to anything.
+
+713
+00:34:42,409 --> 00:34:44,130
+And this is the formula for it.
+
+714
+00:34:44,130 --> 00:34:46,250
+What do you do?
+
+715
+00:34:46,250 --> 00:34:48,570
+You get the gradient
+of it equated to 0.
+
+716
+00:34:48,570 --> 00:34:52,340
+Can anybody differentiate this,
+as we have done it before?
+
+717
+00:34:52,340 --> 00:34:54,880
+That results in--
+
+718
+00:34:54,880 --> 00:34:55,860
+This is the solution.
+
+719
+00:34:55,860 --> 00:35:00,130
+So this is the part we got from the
+first part, as we got in linear
+
+720
+00:35:00,130 --> 00:35:00,550
+regression.
+
+721
+00:35:00,550 --> 00:35:03,310
+That's what got us the pseudo-inverse
+solution in the first place.
+
+722
+00:35:03,310 --> 00:35:05,740
+And the other guy conveniently
+gets lambda.
+
+723
+00:35:05,740 --> 00:35:07,720
+You can see why I chose the
+parameter to be funny.
+
+724
+00:35:07,720 --> 00:35:09,150
+The 2 was because of the
+differentiation.
+
+725
+00:35:09,150 --> 00:35:10,490
+Now I have squared.
+
+726
+00:35:10,490 --> 00:35:14,420
+The over N, because this one has 1 over
+N, so I was able to factor 1/N
+
+727
+00:35:14,420 --> 00:35:16,660
+out, and leave lambda here,
+which is clean.
+
+728
+00:35:16,660 --> 00:35:21,000
+That's why I chose the constant of
+proportionality in that particular
+
+729
+00:35:21,000 --> 00:35:22,440
+functional form.
+
+730
+00:35:22,440 --> 00:35:23,530
+So I get this, and solve it.
+
+731
+00:35:23,530 --> 00:35:25,910
+And when you solve it, you get w_reg.
+
+732
+00:35:25,910 --> 00:35:28,370
+That's the formal name of the
+solution to this problem.
+
+733
+00:35:28,370 --> 00:35:31,620
+And that happens to be-- it's not the
+pseudo-inverse, but it's not that
+
+734
+00:35:31,620 --> 00:35:32,230
+far from it.
+
+735
+00:35:32,230 --> 00:35:33,830
+All you do is,
+
+736
+00:35:33,830 --> 00:35:39,430
+you just group the w guys, and then get
+the y on the other side, and do
+
+737
+00:35:39,430 --> 00:35:41,710
+an inverse, and that's what you get.
+
+738
+00:35:41,710 --> 00:35:43,980
+So this would be the solution,
+with regularization.
+
+739
+00:35:43,980 --> 00:35:47,470
+And as a reminder to us, if we didn't
+have regularization, and we were
+
+740
+00:35:47,470 --> 00:35:52,750
+solving for w_lin, w_lin would be
+simply this fellow, the regular
+
+741
+00:35:52,750 --> 00:35:56,670
+pseudo-inverse, which you can also get
+by simply setting lambda to 0 here.
+
+742
+00:35:56,670 --> 00:35:57,790
+
+
+743
+00:35:57,790 --> 00:36:01,010
+Let's look at the solution. We
+had this without regularization.
+
+744
+00:36:01,010 --> 00:36:03,580
+And let's put this, because this is
+the one we're going to use with
+
+745
+00:36:03,580 --> 00:36:04,600
+regularization.
+
+746
+00:36:04,600 --> 00:36:08,170
+Now this is remarkable, in this case--
+under the assumptions, under the clean
+
+747
+00:36:08,170 --> 00:36:13,600
+thing-- we actually have one-step
+learning, including regularization.
+
+748
+00:36:13,600 --> 00:36:17,160
+You just tell me what it is, and I
+actually have the solution outright.
+
+749
+00:36:17,160 --> 00:36:20,930
+So instead of doing a constrained
+optimization, or doing it in increments
+
+750
+00:36:20,930 --> 00:36:22,660
+or that, this is the solution.
+
+751
+00:36:22,660 --> 00:36:25,670
+That's a pretty good tool to have.
+
+752
+00:36:25,670 --> 00:36:27,120
+It also is very intuitive.
+
+753
+00:36:27,120 --> 00:36:28,820
+Because look at this.
+
+754
+00:36:28,820 --> 00:36:31,770
+If lambda is 0, you have the
+unconstrained, and you have without
+
+755
+00:36:31,770 --> 00:36:33,330
+regularization.
+
+756
+00:36:33,330 --> 00:36:36,060
+As you increase lambda, what happens?
+
+757
+00:36:36,060 --> 00:36:39,140
+The regularization term becomes
+dominant in the solution.
+
+758
+00:36:39,140 --> 00:36:41,970
+This is the guy that carries the
+information about the inputs.
+
+759
+00:36:41,970 --> 00:36:44,680
+This guy is just lambda 'I'.
+
+760
+00:36:44,680 --> 00:36:45,740
+Now take it to the extreme.
+
+761
+00:36:45,740 --> 00:36:47,550
+Let's say lambda is enormous.
+
+762
+00:36:47,550 --> 00:36:50,780
+Well, if lambda in enormous, this
+completely dominates this.
+
+763
+00:36:50,780 --> 00:36:53,930
+And the result of getting this-- this
+would be about lambda 'I'. The other
+
+764
+00:36:53,930 --> 00:36:55,290
+guy is just noise.
+
+765
+00:36:55,290 --> 00:36:59,420
+And when I invert it, I will get
+something like 1 over lambda.
+
+766
+00:36:59,420 --> 00:37:02,990
+So w_reg would be 1 over lambda, for
+lambda huge, times something.
+
+767
+00:37:02,990 --> 00:37:04,300
+Who cares about the something?
+
+768
+00:37:04,300 --> 00:37:04,960
+1 over lambda is huge.
+
+769
+00:37:04,960 --> 00:37:06,840
+It will knock it down to 0.
+
+770
+00:37:06,840 --> 00:37:10,120
+I am going to get w_reg
+that is very close to 0.
+
+771
+00:37:10,120 --> 00:37:13,980
+And indeed, I am getting smaller and
+smaller w_reg solution, given that
+
+772
+00:37:13,980 --> 00:37:15,860
+lambda is large, which
+is what I expect.
+
+773
+00:37:15,860 --> 00:37:19,050
+And in the extreme case, I am going to
+be forced to have w equal to 0, which
+
+774
+00:37:19,050 --> 00:37:21,430
+is the case we saw before
+as the extreme case.
+
+775
+00:37:21,430 --> 00:37:24,940
+So this, indeed, stands to the
+logic of what we expect.
+
+776
+00:37:24,940 --> 00:37:26,800
+We have the solution.
+
+777
+00:37:26,800 --> 00:37:30,100
+Let's apply it, and see the
+result in a real case.
+
+778
+00:37:30,100 --> 00:37:34,020
+So we're now minimizing this, but we
+know what the solution is explicitly.
+
+779
+00:37:34,020 --> 00:37:37,490
+And what I am going to do, I'm going to
+vary lambda, because this will be
+
+780
+00:37:37,490 --> 00:37:39,590
+a very important parameter for us.
+
+781
+00:37:39,590 --> 00:37:43,740
+So we have the same regularizer, w
+transposed w, and I'm going to vary the
+
+782
+00:37:43,740 --> 00:37:45,750
+amount of regularization I put.
+
+783
+00:37:45,750 --> 00:37:48,410
+And I'm going to apply it
+to a familiar problem.
+
+784
+00:37:48,410 --> 00:37:50,020
+This is for different lambdas.
+
+785
+00:37:50,020 --> 00:37:52,450
+Remember this problem?
+
+786
+00:37:52,450 --> 00:37:53,550
+Yeah, we saw it last time.
+
+787
+00:37:53,550 --> 00:37:55,810
+Actually, we saw it earlier
+this lecture.
+
+788
+00:37:55,810 --> 00:37:56,940
+So this is the case.
+
+789
+00:37:56,940 --> 00:37:58,850
+Now, we are going to put it
+in the new terminology.
+
+790
+00:37:58,850 --> 00:37:59,450
+What is this?
+
+791
+00:37:59,450 --> 00:38:01,290
+This is unconstrained.
+
+792
+00:38:01,290 --> 00:38:05,620
+Therefore, it is really constrained,
+but with lambda equals 0.
+
+793
+00:38:05,620 --> 00:38:08,550
+
+
+794
+00:38:08,550 --> 00:38:11,840
+Now let's put a little bit
+of regularization.
+
+795
+00:38:11,840 --> 00:38:14,565
+And here's what I mean
+by a little bit.
+
+796
+00:38:14,565 --> 00:38:17,470
+Is this a little bit for you?
+
+797
+00:38:17,470 --> 00:38:18,720
+Let's see the result.
+
+798
+00:38:18,720 --> 00:38:21,930
+
+
+799
+00:38:21,930 --> 00:38:23,550
+Wow.
+
+800
+00:38:23,550 --> 00:38:25,770
+This is the guy I showed you last
+time, just as an appetizer.
+
+801
+00:38:25,770 --> 00:38:26,680
+Remember?
+
+802
+00:38:26,680 --> 00:38:27,970
+That's what it took.
+
+803
+00:38:27,970 --> 00:38:29,170
+So the medicine is working.
+
+804
+00:38:29,170 --> 00:38:32,650
+A small dose of the medicine
+did the job.
+
+805
+00:38:32,650 --> 00:38:33,150
+That's good.
+
+806
+00:38:33,150 --> 00:38:36,000
+Let's get carried away, like people get
+carried away with medicine, and
+
+807
+00:38:36,000 --> 00:38:37,250
+get a bigger dose.
+
+808
+00:38:37,250 --> 00:38:40,530
+
+
+809
+00:38:40,530 --> 00:38:43,540
+What happens?
+
+810
+00:38:43,540 --> 00:38:46,420
+Oops.
+
+811
+00:38:46,420 --> 00:38:49,812
+I think we are overdosing here.
+
+812
+00:38:49,812 --> 00:38:51,062
+Let's do it further.
+
+813
+00:38:51,062 --> 00:38:57,630
+
+
+814
+00:38:57,630 --> 00:38:58,910
+You can see what's happening.
+
+815
+00:38:58,910 --> 00:39:00,570
+I'm constraining the weights.
+
+816
+00:39:00,570 --> 00:39:03,780
+And now the algorithm, all it's doing is
+just constraining the weights, and
+
+817
+00:39:03,780 --> 00:39:06,320
+it doesn't care as much about the fit.
+
+818
+00:39:06,320 --> 00:39:12,710
+So the line keeps getting flatter and
+more horizontal, until there is
+
+819
+00:39:12,710 --> 00:39:14,450
+absolutely nothing in the line.
+
+820
+00:39:14,450 --> 00:39:19,470
+If you keep increasing lambda, this was
+a line that used to exactly fit,
+
+821
+00:39:19,470 --> 00:39:23,420
+and now the curvature is going small,
+and the slope is really mitigated.
+
+822
+00:39:23,420 --> 00:39:24,860
+And the curve is getting
+small, et cetera.
+
+823
+00:39:24,860 --> 00:39:26,570
+And eventually what will happen?
+
+824
+00:39:26,570 --> 00:39:30,820
+This will be just a silly
+horizontal line.
+
+825
+00:39:30,820 --> 00:39:34,360
+You have just taken a fatal
+dose of the medicine!
+
+826
+00:39:34,360 --> 00:39:36,840
+That's what happened.
+
+827
+00:39:36,840 --> 00:39:41,510
+When you deal with lambda, you really
+need to understand that the choice of
+
+828
+00:39:41,510 --> 00:39:43,720
+lambda is extremely critical.
+
+829
+00:39:43,720 --> 00:39:47,910
+And the good news is that, in spite of
+the fact that our choice of type of
+
+830
+00:39:47,910 --> 00:39:52,880
+regularizer, like the w transposed
+w in this case, that choice
+
+831
+00:39:52,880 --> 00:39:54,730
+will be largely heuristic.
+
+832
+00:39:54,730 --> 00:39:58,140
+Studying the problem, trying to
+understand how to pick a regularizer,
+
+833
+00:39:58,140 --> 00:40:00,160
+this will be a heuristic choice.
+
+834
+00:40:00,160 --> 00:40:04,130
+The choice of lambda will be extremely
+principled, based on validation.
+
+835
+00:40:04,130 --> 00:40:08,090
+And that will be the saving grace,
+if our heuristic choice for the
+
+836
+00:40:08,090 --> 00:40:12,790
+regularizer is not that great,
+as we will see in a moment.
+
+837
+00:40:12,790 --> 00:40:16,740
+If you want to characterize what's
+happening as you increase lambda, here
+
+838
+00:40:16,740 --> 00:40:19,380
+we started with overfitting.
+
+839
+00:40:19,380 --> 00:40:22,200
+That was the problem we
+were trying to solve.
+
+840
+00:40:22,200 --> 00:40:24,280
+And we solved it.
+
+841
+00:40:24,280 --> 00:40:25,370
+And we solved it.
+
+842
+00:40:25,370 --> 00:40:26,680
+And we solved it all too well.
+
+843
+00:40:26,680 --> 00:40:29,320
+We are certainly not overfitting here.
+
+844
+00:40:29,320 --> 00:40:32,340
+But the problem is that we went
+to the other extreme.
+
+845
+00:40:32,340 --> 00:40:37,800
+And now we are underfitting,
+just as bad.
+
+846
+00:40:37,800 --> 00:40:40,130
+So the proper choice of
+lambda is important.
+
+847
+00:40:40,130 --> 00:40:42,880
+
+
+848
+00:40:42,880 --> 00:40:47,540
+Now, the regularizer that I described to
+you is the most famous regularizer
+
+849
+00:40:47,540 --> 00:40:48,370
+in machine learning.
+
+850
+00:40:48,370 --> 00:40:50,420
+And it's called weight decay.
+
+851
+00:40:50,420 --> 00:40:53,290
+And the name is not very strange,
+because we're trying to get the
+
+852
+00:40:53,290 --> 00:40:55,680
+weights to be small, so
+decay is not a far term.
+
+853
+00:40:55,680 --> 00:40:58,190
+But I would like to understand
+why it is actually called,
+
+854
+00:40:58,190 --> 00:41:02,780
+specifically, decay.
+
+855
+00:41:02,780 --> 00:41:05,170
+The reason is the following.
+
+856
+00:41:05,170 --> 00:41:08,310
+Let's say that you are not in
+a neat, linear case like that.
+
+857
+00:41:08,310 --> 00:41:10,260
+Let's say you are doing this
+in a neural network.
+
+858
+00:41:10,260 --> 00:41:14,100
+And in neural networks, weight decay--
+trying to minimize w transposed w,
+
+859
+00:41:14,100 --> 00:41:17,220
+is a very important regularization
+method.
+
+860
+00:41:17,220 --> 00:41:20,120
+We know that in neural networks, you
+don't have a neat closed-form
+
+861
+00:41:20,120 --> 00:41:21,870
+solution, and you use
+gradient descent.
+
+862
+00:41:21,870 --> 00:41:24,730
+So let's say you use gradient
+descent on this.
+
+863
+00:41:24,730 --> 00:41:27,620
+And let's say just batch gradient
+descent, for the simplicity of the
+
+864
+00:41:27,620 --> 00:41:28,500
+derivation.
+
+865
+00:41:28,500 --> 00:41:29,630
+What do you do?
+
+866
+00:41:29,630 --> 00:41:34,780
+Batch gradient descent, you have
+a step that takes you from w at time t
+
+867
+00:41:34,780 --> 00:41:36,882
+to w time t plus 1.
+
+868
+00:41:36,882 --> 00:41:40,350
+And they happen to be this minus
+eta, which is the learning
+
+869
+00:41:40,350 --> 00:41:42,030
+rate, times the gradient.
+
+870
+00:41:42,030 --> 00:41:44,690
+So we just need to put the gradient,
+and we have our step.
+
+871
+00:41:44,690 --> 00:41:45,510
+Right?
+
+872
+00:41:45,510 --> 00:41:47,130
+
+
+873
+00:41:47,130 --> 00:41:48,190
+The gradient is the following.
+
+874
+00:41:48,190 --> 00:41:50,070
+The gradient is the gradient
+of the sum of this.
+
+875
+00:41:50,070 --> 00:41:51,890
+The gradient of the first part
+is what we had before.
+
+876
+00:41:51,890 --> 00:41:54,300
+If we didn't have regularization,
+that's what we would be doing.
+
+877
+00:41:54,300 --> 00:41:55,200
+And that is what happens.
+
+878
+00:41:55,200 --> 00:41:57,510
+And we got backpropagation.
+
+879
+00:41:57,510 --> 00:42:00,180
+But now there is an added
+term, because of this.
+
+880
+00:42:00,180 --> 00:42:04,450
+And that added term looks like that,
+just by differentiating.
+
+881
+00:42:04,450 --> 00:42:08,530
+So now, if I reorganize this by taking
+the terms that correspond to w(t) by
+
+882
+00:42:08,530 --> 00:42:13,950
+themselves, I am going to get this term,
+basically collecting these two
+
+883
+00:42:13,950 --> 00:42:18,070
+fellows, this guy and this guy, which
+happen to be multiplied by w(t).
+
+884
+00:42:18,070 --> 00:42:21,810
+And then I have this remaining guy,
+which I can put this way.
+
+885
+00:42:21,810 --> 00:42:25,140
+Now look at the interpretation
+of the step here.
+
+886
+00:42:25,140 --> 00:42:28,590
+I am in the weight space,
+and this is my weight.
+
+887
+00:42:28,590 --> 00:42:31,640
+And here is the direction
+that backpropagation is
+
+888
+00:42:31,640 --> 00:42:33,800
+suggesting that I move to.
+
+889
+00:42:33,800 --> 00:42:37,140
+It used to be, without regularization,
+that I'm moving from here to here.
+
+890
+00:42:37,140 --> 00:42:38,640
+Right?
+
+891
+00:42:38,640 --> 00:42:43,260
+Now using this thing, before I do that,
+which I'm going to do, I am
+
+892
+00:42:43,260 --> 00:42:46,010
+actually going to shrink the weights.
+
+893
+00:42:46,010 --> 00:42:47,140
+Here's the origin.
+
+894
+00:42:47,140 --> 00:42:47,920
+I am here.
+
+895
+00:42:47,920 --> 00:42:50,230
+I'm going to move in this direction.
+
+896
+00:42:50,230 --> 00:42:54,520
+Because this fellow is a fraction.
+
+897
+00:42:54,520 --> 00:42:57,300
+And it could be a very small fraction,
+depending on lambda.
+
+898
+00:42:57,300 --> 00:43:00,120
+I could be going by a factor
+of a half, or something.
+
+899
+00:43:00,120 --> 00:43:03,720
+Most likely, I'll go by very
+little, like 0.999.
+
+900
+00:43:03,720 --> 00:43:06,670
+But in every step now, instead of just
+moving from this according to the
+
+901
+00:43:06,670 --> 00:43:11,380
+solution, I am shrinking then moving,
+shrinking then moving,
+
+902
+00:43:11,380 --> 00:43:12,890
+shrinking then moving.
+
+903
+00:43:12,890 --> 00:43:14,600
+So these guys are informative.
+
+904
+00:43:14,600 --> 00:43:18,020
+They tell me about what to do, in order
+to approximate the function.
+
+905
+00:43:18,020 --> 00:43:19,330
+This guy is just obediently
+
+906
+00:43:19,330 --> 00:43:21,430
+trying to go to 0.
+
+907
+00:43:21,430 --> 00:43:24,660
+That makes you unable to really
+escape very much.
+
+908
+00:43:24,660 --> 00:43:27,200
+If I was just going this way, this way,
+that way, et cetera, I would be
+
+909
+00:43:27,200 --> 00:43:28,580
+going very far.
+
+910
+00:43:28,580 --> 00:43:32,490
+But here now, every time, there is
+something that grounds you.
+
+911
+00:43:32,490 --> 00:43:36,440
+And if you take lambda to be big enough,
+that that fraction is huge,
+
+912
+00:43:36,440 --> 00:43:40,120
+then your learning would be, here, and
+this is a suggested direction.
+
+913
+00:43:40,120 --> 00:43:40,430
+
+
+914
+00:43:40,430 --> 00:43:41,040
+I'm going to do it.
+
+915
+00:43:41,040 --> 00:43:44,510
+But before I do it, I'm
+going to go here.
+
+916
+00:43:44,510 --> 00:43:47,210
+Then you move this way, and
+the next time you go here.
+
+917
+00:43:47,210 --> 00:43:50,140
+And before you know it, you are at the
+origin, regardless of what the other
+
+918
+00:43:50,140 --> 00:43:51,650
+guy is suggesting.
+
+919
+00:43:51,650 --> 00:43:53,980
+And that is indeed what happens
+when lambda is huge.
+
+920
+00:43:53,980 --> 00:43:57,230
+You are so tempted towards the 0
+solution that you don't really care
+
+921
+00:43:57,230 --> 00:43:58,620
+about learning the function itself.
+
+922
+00:43:58,620 --> 00:44:01,410
+The other factor pushes
+you over there.
+
+923
+00:44:01,410 --> 00:44:03,725
+So that's why it's called weight decay,
+because the weight decays
+
+924
+00:44:03,725 --> 00:44:06,780
+from one iteration to the next.
+
+925
+00:44:06,780 --> 00:44:08,200
+And it applies to neural networks.
+
+926
+00:44:08,200 --> 00:44:12,030
+All you need to remember in neural
+networks, the w transposed w is a pretty
+
+927
+00:44:12,030 --> 00:44:12,710
+elaborate sum.
+
+928
+00:44:12,710 --> 00:44:15,570
+You have to sum over all of the layers,
+all the input units, all the
+
+929
+00:44:15,570 --> 00:44:15,980
+output units.
+
+930
+00:44:15,980 --> 00:44:18,750
+And you sum the value of
+that weight squared.
+
+931
+00:44:18,750 --> 00:44:22,250
+So that's what you have.
+
+932
+00:44:22,250 --> 00:44:24,130
+Now let's look at variations
+of weight decay.
+
+933
+00:44:24,130 --> 00:44:26,190
+This is the method we developed.
+
+934
+00:44:26,190 --> 00:44:30,170
+And we would like to move to other
+regularizers, and try to infer some
+
+935
+00:44:30,170 --> 00:44:33,180
+intuition about the type
+of regularizer we pick.
+
+936
+00:44:33,180 --> 00:44:35,740
+So what do we do here?
+
+937
+00:44:35,740 --> 00:44:40,180
+You can, instead of just uniformly
+giving a budget C, and having the sum
+
+938
+00:44:40,180 --> 00:44:44,090
+of the w's squared being less than or
+equal to C, you can decide that some
+
+939
+00:44:44,090 --> 00:44:46,610
+weights are more important
+than others.
+
+940
+00:44:46,610 --> 00:44:50,090
+And the way you do it is by having
+this as your regularizer.
+
+941
+00:44:50,090 --> 00:44:52,410
+You introduce an importance factor.
+
+942
+00:44:52,410 --> 00:44:54,200
+Let's call it gamma.
+
+943
+00:44:54,200 --> 00:44:55,860
+And by the choice of
+the proper gamma--
+
+944
+00:44:55,860 --> 00:44:58,260
+these are constants that specify
+what type of regularizer
+
+945
+00:44:58,260 --> 00:44:59,650
+you are working with--
+
+946
+00:44:59,650 --> 00:45:04,350
+if this becomes less than or
+equal to C, now you have a play.
+
+947
+00:45:04,350 --> 00:45:07,470
+If gamma is very small, I have more
+liberty of making that weight big,
+
+948
+00:45:07,470 --> 00:45:09,160
+because it doesn't take
+much from the budget.
+
+949
+00:45:09,160 --> 00:45:11,890
+If gamma is big, then I'd better be
+careful with the corresponding weight,
+
+950
+00:45:11,890 --> 00:45:14,170
+because it kills the budget.
+
+951
+00:45:14,170 --> 00:45:17,070
+Let's look at two extremes.
+
+952
+00:45:17,070 --> 00:45:20,930
+Let's say that I take the gamma
+to be positive exponential.
+
+953
+00:45:20,930 --> 00:45:24,630
+How do you articulate what
+the regularizer is doing?
+
+954
+00:45:24,630 --> 00:45:31,270
+Well, the regularizer is giving huge
+emphasis on higher-order terms.
+
+955
+00:45:31,270 --> 00:45:32,880
+So what is it trying to do?
+
+956
+00:45:32,880 --> 00:45:38,030
+It is trying to find, as much as
+possible, a low-order fit.
+
+957
+00:45:38,030 --> 00:45:41,600
+
+
+958
+00:45:41,600 --> 00:45:43,900
+Let's say Q equals 10.
+
+959
+00:45:43,900 --> 00:45:48,340
+If it tries to put a 10th-order
+polynomial, the smallest weight for the
+
+960
+00:45:48,340 --> 00:45:53,600
+10th order will
+kill the budget already.
+
+961
+00:45:53,600 --> 00:45:55,410
+Let's look at the opposite.
+
+962
+00:45:55,410 --> 00:45:57,310
+If you have that, well, you find it.
+
+963
+00:45:57,310 --> 00:46:00,390
+Now, the bad guys are the early guys.
+
+964
+00:46:00,390 --> 00:46:02,600
+I'm OK with the high-order guys,
+but not the other guys.
+
+965
+00:46:02,600 --> 00:46:05,200
+So this would be a high-order fit.
+
+966
+00:46:05,200 --> 00:46:07,030
+You can see quite a variety of this.
+
+967
+00:46:07,030 --> 00:46:11,790
+And in fact, this functional form is
+indeed used in neural networks, not
+
+968
+00:46:11,790 --> 00:46:15,280
+for high-order or low-order,
+but for something else.
+
+969
+00:46:15,280 --> 00:46:19,050
+It is used because, when you do the
+analysis properly for neural networks,
+
+970
+00:46:19,050 --> 00:46:22,630
+you find that the best way to do
+weight decay is to give different
+
+971
+00:46:22,630 --> 00:46:24,590
+emphasis to the weights
+in different layers.
+
+972
+00:46:24,590 --> 00:46:28,290
+They play a different role
+in affecting the output.
+
+973
+00:46:28,290 --> 00:46:31,505
+And therefore, this would be
+accommodated by just having the proper
+
+974
+00:46:31,505 --> 00:46:33,420
+gamma in this case.
+
+975
+00:46:33,420 --> 00:46:37,780
+The most general form of this type
+of things is the famous Tikhonov
+
+976
+00:46:37,780 --> 00:46:41,010
+regularizer, which is a very
+well-studied set of regularizers that
+
+977
+00:46:41,010 --> 00:46:43,700
+has this general form.
+
+978
+00:46:43,700 --> 00:46:46,890
+This is a quadratic form, but it's
+a diagonal quadratic form.
+
+979
+00:46:46,890 --> 00:46:51,020
+I only take the w_0 squared, w_1
+squared, up to w_Q squared.
+
+980
+00:46:51,020 --> 00:46:54,830
+This one, when I put it in matrix form,
+is a general quadratic form.
+
+981
+00:46:54,830 --> 00:46:57,900
+It has the diagonal guys, and
+it has off-diagonal guys.
+
+982
+00:46:57,900 --> 00:47:03,060
+So it will be giving weights to guys
+that happen to be w_1 w_3, et cetera.
+
+983
+00:47:03,060 --> 00:47:09,510
+And by the proper choice of the matrix
+Gamma in this case, you'll get weight decay,
+
+984
+00:47:09,510 --> 00:47:15,710
+you will get the low-order, high-order,
+and many others that are fit in that.
+
+985
+00:47:15,710 --> 00:47:18,050
+Therefore, studying this form
+is very interesting, because you cover
+
+986
+00:47:18,050 --> 00:47:20,230
+a lot of territory using it.
+
+987
+00:47:20,230 --> 00:47:21,920
+So these are some variations.
+
+988
+00:47:21,920 --> 00:47:26,330
+Now let's even go more extreme,
+and go for not weight
+
+989
+00:47:26,330 --> 00:47:29,510
+decay, but weight growth.
+
+990
+00:47:29,510 --> 00:47:30,520
+Why not?
+
+991
+00:47:30,520 --> 00:47:31,780
+The game was what?
+
+992
+00:47:31,780 --> 00:47:33,660
+The game was constraining, right?
+
+993
+00:47:33,660 --> 00:47:35,890
+You don't want to allow all
+values of the weights.
+
+994
+00:47:35,890 --> 00:47:38,150
+You didn't allow big weights.
+
+995
+00:47:38,150 --> 00:47:39,930
+I'm going not to allow small weights.
+
+996
+00:47:39,930 --> 00:47:40,650
+What's wrong with that?
+
+997
+00:47:40,650 --> 00:47:42,470
+It's a constraint.
+
+998
+00:47:42,470 --> 00:47:43,310
+OK, it's a constraint,
+
+999
+00:47:43,310 --> 00:47:46,040
+let's see how it behaves.
+
+1000
+00:47:46,040 --> 00:47:47,830
+First, let's look at weight decay.
+
+1001
+00:47:47,830 --> 00:47:50,695
+I'm plotting the performance of weight
+decay, the expected out-of-sample
+
+1002
+00:47:50,695 --> 00:47:54,170
+error, as a function of the
+regularization parameter lambda.
+
+1003
+00:47:54,170 --> 00:47:57,980
+There is an optimal value for the
+parameter, like we saw in the example,
+
+1004
+00:47:57,980 --> 00:47:59,540
+that gives me the smallest one.
+
+1005
+00:47:59,540 --> 00:48:04,100
+And before that, I am overfitting, and
+after that, I am starting to underfit.
+
+1006
+00:48:04,100 --> 00:48:05,680
+And there's a value.
+
+1007
+00:48:05,680 --> 00:48:08,780
+Any time you see the curve going down
+and then going up, it means that
+
+1008
+00:48:08,780 --> 00:48:11,620
+that regularizer works, if you
+choose lambda right.
+
+1009
+00:48:11,620 --> 00:48:14,560
+Because if I choose lambda here, I am
+going to get better out-of-sample
+
+1010
+00:48:14,560 --> 00:48:17,460
+performance than if I didn't use
+regularization at all, which is
+
+1011
+00:48:17,460 --> 00:48:20,140
+lambda equals 0.
+
+1012
+00:48:20,140 --> 00:48:24,500
+Now we are going to plot the curve
+for if we constrain the
+
+1013
+00:48:24,500 --> 00:48:26,320
+weights to be large.
+
+1014
+00:48:26,320 --> 00:48:30,170
+So your penalty is for small weights,
+not for large weights.
+
+1015
+00:48:30,170 --> 00:48:33,240
+What would the curve look
+like again here?
+
+1016
+00:48:33,240 --> 00:48:35,900
+If it goes down from 0 to something,
+that's fine.
+
+1017
+00:48:35,900 --> 00:48:37,150
+But it looks like this.
+
+1018
+00:48:37,150 --> 00:48:39,840
+
+
+1019
+00:48:39,840 --> 00:48:43,760
+It's just bad.
+
+1020
+00:48:43,760 --> 00:48:45,830
+But it's not fatal, because what?
+
+1021
+00:48:45,830 --> 00:48:50,470
+Because our principled way of getting
+lambda got us lambda equals 0 as the
+
+1022
+00:48:50,470 --> 00:48:51,540
+proper choice.
+
+1023
+00:48:51,540 --> 00:48:54,490
+So we killed the regularizer
+altogether.
+
+1024
+00:48:54,490 --> 00:48:55,510
+But it's a curious case.
+
+1025
+00:48:55,510 --> 00:48:57,880
+Because now we are using regularizers.
+
+1026
+00:48:57,880 --> 00:49:01,820
+It seems like you can even use
+a regularizer that harms you.
+
+1027
+00:49:01,820 --> 00:49:03,820
+And I'm not sure now that
+I need to--
+
+1028
+00:49:03,820 --> 00:49:04,810
+I should use a regularizer--
+
+1029
+00:49:04,810 --> 00:49:06,680
+
+
+1030
+00:49:06,680 --> 00:49:10,760
+You have to use a regularizer, because
+without a regularizer, you are going
+
+1031
+00:49:10,760 --> 00:49:12,350
+to get overfitting.
+
+1032
+00:49:12,350 --> 00:49:13,560
+There is no question about it.
+
+1033
+00:49:13,560 --> 00:49:15,950
+It's a necessary evil.
+
+1034
+00:49:15,950 --> 00:49:19,370
+But there are guidelines for choosing
+the regularizer that I'm going
+
+1035
+00:49:19,370 --> 00:49:20,780
+to talk about now.
+
+1036
+00:49:20,780 --> 00:49:25,350
+And after you choose the regularizer,
+there is the check of the lambda.
+
+1037
+00:49:25,350 --> 00:49:28,600
+If you happen to choose the wrong one,
+and you do the correct validation, the
+
+1038
+00:49:28,600 --> 00:49:31,690
+correct validation will recommend
+that you give the weight 0.
+
+1039
+00:49:31,690 --> 00:49:36,020
+So there is no downside, except for
+the price you pay for validation.
+
+1040
+00:49:36,020 --> 00:49:38,210
+So what is the lesson here?
+
+1041
+00:49:38,210 --> 00:49:39,300
+It's a practical rule.
+
+1042
+00:49:39,300 --> 00:49:42,370
+I am not going to make a mathematical
+statement here.
+
+1043
+00:49:42,370 --> 00:49:46,980
+What is the criterion that we learned
+from weight decay that will guide us
+
+1044
+00:49:46,980 --> 00:49:48,690
+in the choice of a regularizer?
+
+1045
+00:49:48,690 --> 00:49:52,960
+Here is the observation that
+leads to the practical rule.
+
+1046
+00:49:52,960 --> 00:49:56,530
+Stochastic noise, which we are
+trying to avoid fitting,
+
+1047
+00:49:56,530 --> 00:49:58,180
+happens to be high-frequency.
+
+1048
+00:49:58,180 --> 00:50:00,300
+That is, when you think of
+noise, it's like that.
+
+1049
+00:50:00,300 --> 00:50:01,990
+Whereas the usual target
+functions are this way.
+
+1050
+00:50:01,990 --> 00:50:03,370
+So this guy is this way.
+
+1051
+00:50:03,370 --> 00:50:04,600
+
+
+1052
+00:50:04,600 --> 00:50:06,960
+How about the other type of noise,
+which is also a culprit for
+
+1053
+00:50:06,960 --> 00:50:08,040
+overfitting?
+
+1054
+00:50:08,040 --> 00:50:09,810
+Well, it's not as high-frequency.
+
+1055
+00:50:09,810 --> 00:50:11,630
+But it is also non-smooth.
+
+1056
+00:50:11,630 --> 00:50:15,070
+That is, we capture what we could
+capture by the model.
+
+1057
+00:50:15,070 --> 00:50:18,260
+And what we left out, the chances are
+we really couldn't capture it
+
+1058
+00:50:18,260 --> 00:50:21,620
+because it's going up and down, faster
+or stronger than we can capture.
+
+1059
+00:50:21,620 --> 00:50:23,950
+Again, I am saying this is
+a practical observation.
+
+1060
+00:50:23,950 --> 00:50:27,630
+This happens in most of the hypothesis
+sets that I get to choose, and the
+
+1061
+00:50:27,630 --> 00:50:30,440
+target functions that
+I get to encounter.
+
+1062
+00:50:30,440 --> 00:50:38,120
+And because of this, here is the
+guideline for choosing a regularizer.
+
+1063
+00:50:38,120 --> 00:50:44,510
+Make it tend to pick smoother
+hypotheses.
+
+1064
+00:50:44,510 --> 00:50:46,490
+Why is that?
+
+1065
+00:50:46,490 --> 00:50:51,360
+We said that regularization is a cure,
+and the cure has a side effect.
+
+1066
+00:50:51,360 --> 00:50:52,460
+It's a cure for what?
+
+1067
+00:50:52,460 --> 00:50:54,450
+For fitting the noise.
+
+1068
+00:50:54,450 --> 00:51:00,010
+So you want to make sure that you are
+punishing the noise, more than you are
+
+1069
+00:51:00,010 --> 00:51:02,170
+punishing the signal.
+
+1070
+00:51:02,170 --> 00:51:05,300
+These are the organisms we
+are trying to fight.
+
+1071
+00:51:05,300 --> 00:51:08,990
+If we harm them more than we harm
+the patient, we'll be OK.
+
+1072
+00:51:08,990 --> 00:51:12,830
+We'll put up with the side effect,
+because we are killing the disease.
+
+1073
+00:51:12,830 --> 00:51:15,780
+These guys happen to
+be high-frequency.
+
+1074
+00:51:15,780 --> 00:51:21,520
+So if your regularizer prefers smooth
+guys, it will fail to fit these guys
+
+1075
+00:51:21,520 --> 00:51:23,685
+more than it will fail
+to fit the signal.
+
+1076
+00:51:23,685 --> 00:51:25,960
+That is the guideline.
+
+1077
+00:51:25,960 --> 00:51:29,880
+And it turns out that most of the ways
+you mathematically write a hypothesis
+
+1078
+00:51:29,880 --> 00:51:35,890
+set, as a parameterized set, is by making
+smaller weights correspond to
+
+1079
+00:51:35,890 --> 00:51:37,920
+smoother hypotheses.
+
+1080
+00:51:37,920 --> 00:51:39,600
+I could do it the other way around.
+
+1081
+00:51:39,600 --> 00:51:43,830
+Instead of my hypothesis being
+a summation of w times a polynomial, I
+
+1082
+00:51:43,830 --> 00:51:47,270
+can make a summation of 1/w
+times a polynomial.
+
+1083
+00:51:47,270 --> 00:51:50,820
+These are my parameters, in which
+case big weights will
+
+1084
+00:51:50,820 --> 00:51:52,260
+be better, smoother.
+
+1085
+00:51:52,260 --> 00:51:55,290
+But that's not the way people
+write hypothesis sets.
+
+1086
+00:51:55,290 --> 00:51:59,840
+In most of the parametrization you're
+going to see, small weights correspond
+
+1087
+00:51:59,840 --> 00:52:01,830
+to smoother hypotheses.
+
+1088
+00:52:01,830 --> 00:52:06,130
+That's why small weights, or weight decay,
+works very well in those cases.
+
+1089
+00:52:06,130 --> 00:52:08,500
+Because it has a tendency
+towards smooth guys.
+
+1090
+00:52:08,500 --> 00:52:11,250
+
+
+1091
+00:52:11,250 --> 00:52:15,170
+Now let's write the general form of
+regularization, and then talk about
+
+1092
+00:52:15,170 --> 00:52:16,420
+choosing a regularizer.
+
+1093
+00:52:16,420 --> 00:52:18,790
+
+
+1094
+00:52:18,790 --> 00:52:22,180
+We are going to call the regularizer,
+like the weight decay regularizer by
+
+1095
+00:52:22,180 --> 00:52:23,180
+itself without the lambda.
+
+1096
+00:52:23,180 --> 00:52:26,470
+We are going to call it Omega.
+
+1097
+00:52:26,470 --> 00:52:28,840
+And it happens to be Omega of h.
+
+1098
+00:52:28,840 --> 00:52:33,080
+It used to be function of w.
+w are the parameters that determine h.
+
+1099
+00:52:33,080 --> 00:52:36,020
+So if I now leave out the parameters
+explicitly, and I'm talking about the
+
+1100
+00:52:36,020 --> 00:52:39,320
+general hypothesis set, it depends
+on which hypothesis you pick.
+
+1101
+00:52:39,320 --> 00:52:41,000
+The value of the regularizer is that.
+
+1102
+00:52:41,000 --> 00:52:44,790
+And the regularizer will prefer the
+guys for which Omega of h
+
+1103
+00:52:44,790 --> 00:52:46,340
+happens to be smaller in value.
+
+1104
+00:52:46,340 --> 00:52:50,150
+So you define this function, and
+you have defined a regularizer.
+
+1105
+00:52:50,150 --> 00:52:54,030
+What is the augmented
+error that we minimize?
+
+1106
+00:52:54,030 --> 00:52:57,250
+In this case, the augmented error is,
+again, the augmented error of the
+
+1107
+00:52:57,250 --> 00:52:57,600
+hypothesis.
+
+1108
+00:52:57,600 --> 00:53:00,280
+It happens to be of the weight, if that
+is the way you parameterize your
+
+1109
+00:53:00,280 --> 00:53:01,450
+hypotheses.
+
+1110
+00:53:01,450 --> 00:53:03,680
+And we write it down as this.
+
+1111
+00:53:03,680 --> 00:53:04,990
+This is the form we had.
+
+1112
+00:53:04,990 --> 00:53:06,840
+You get E_in.
+
+1113
+00:53:06,840 --> 00:53:07,830
+That, already, we have.
+
+1114
+00:53:07,830 --> 00:53:12,440
+And then you have the lambda, the
+important parameter, the dose of the
+
+1115
+00:53:12,440 --> 00:53:15,570
+regularizer, and the form of the
+regularizer itself, which we just
+
+1116
+00:53:15,570 --> 00:53:17,420
+called Omega of h.
+
+1117
+00:53:17,420 --> 00:53:18,935
+So this is what we minimize.
+
+1118
+00:53:18,935 --> 00:53:22,320
+
+
+1119
+00:53:22,320 --> 00:53:23,570
+Does this ring a bell?
+
+1120
+00:53:23,570 --> 00:53:25,990
+
+
+1121
+00:53:25,990 --> 00:53:30,010
+Does it look like something
+you have seen before?
+
+1122
+00:53:30,010 --> 00:53:31,020
+Well, yeah, it does.
+
+1123
+00:53:31,020 --> 00:53:34,640
+But I have no idea what the relation
+might possibly be.
+
+1124
+00:53:34,640 --> 00:53:37,340
+I have seen this one before
+from the VC analysis.
+
+1125
+00:53:37,340 --> 00:53:39,960
+But it was a completely
+different ball game.
+
+1126
+00:53:39,960 --> 00:53:42,720
+We were talking about
+E_out, not E_aug.
+
+1127
+00:53:42,720 --> 00:53:44,660
+We were not optimizing anything.
+
+1128
+00:53:44,660 --> 00:53:45,750
+This was less than or equal to.
+
+1129
+00:53:45,750 --> 00:53:46,230
+
+
+1130
+00:53:46,230 --> 00:53:49,260
+Less than or equal to is fine, because
+we said that the behavior is generally
+
+1131
+00:53:49,260 --> 00:53:50,200
+proportional to the bound.
+
+1132
+00:53:50,200 --> 00:53:51,390
+So that's fine.
+
+1133
+00:53:51,390 --> 00:53:53,340
+This is E_in, so that's perfect.
+
+1134
+00:53:53,340 --> 00:53:54,990
+This guy is Omega.
+
+1135
+00:53:54,990 --> 00:53:55,730
+Oh, I'm sneaky.
+
+1136
+00:53:55,730 --> 00:53:58,560
+I called this Omega, deliberately.
+
+1137
+00:53:58,560 --> 00:54:02,120
+But this one was the penalty
+for model complexity.
+
+1138
+00:54:02,120 --> 00:54:04,050
+And the model was the whole model.
+
+1139
+00:54:04,050 --> 00:54:05,400
+This is not a single hypothesis.
+
+1140
+00:54:05,400 --> 00:54:08,690
+You give me the hypothesis set, I came
+up with a number that tells you how
+
+1141
+00:54:08,690 --> 00:54:11,810
+bad the generalization will
+be for that model.
+
+1142
+00:54:11,810 --> 00:54:13,160
+But now let's look at the
+correspondence here.
+
+1143
+00:54:13,160 --> 00:54:16,200
+
+
+1144
+00:54:16,200 --> 00:54:18,160
+This is a complexity, and
+this is a complexity.
+
+1145
+00:54:18,160 --> 00:54:21,500
+Although the complexity here is
+for individual hypotheses.
+
+1146
+00:54:21,500 --> 00:54:24,550
+That's why it's helpful for me to
+navigate the hypothesis set.
+
+1147
+00:54:24,550 --> 00:54:27,900
+Whereas this was just sitting
+here as an estimate.
+
+1148
+00:54:27,900 --> 00:54:31,940
+When I talk about Occam's razor, I
+will relate the complexity of
+
+1149
+00:54:31,940 --> 00:54:36,790
+an individual object, to the complexity
+of the set of objects, which is a very
+
+1150
+00:54:36,790 --> 00:54:38,850
+important notion in its own right.
+
+1151
+00:54:38,850 --> 00:54:41,700
+But if you look at that correspondence,
+you realize that what
+
+1152
+00:54:41,700 --> 00:54:47,930
+I'm really doing here, instead of using
+E_in, I am using E_aug as
+
+1153
+00:54:47,930 --> 00:54:51,510
+an estimate for E_out, if
+I take it literally.
+
+1154
+00:54:51,510 --> 00:54:58,340
+And the thing here is that E_aug, the
+augmented error, is better than E_in.
+
+1155
+00:54:58,340 --> 00:55:00,220
+Better in what?
+
+1156
+00:55:00,220 --> 00:55:05,170
+Better as a proxy to E_out.
+
+1157
+00:55:05,170 --> 00:55:11,140
+You can think of the holy grail of
+machine learning, is to find
+
+1158
+00:55:11,140 --> 00:55:15,770
+an in-sample estimate of the
+out-of-sample error.
+
+1159
+00:55:15,770 --> 00:55:16,970
+If you get that, you're done.
+
+1160
+00:55:16,970 --> 00:55:18,900
+Minimize it, and go home.
+
+1161
+00:55:18,900 --> 00:55:22,380
+But there's always the slack, and there
+are bounds, and this and that.
+
+1162
+00:55:22,380 --> 00:55:26,550
+And now our augmented error is our
+next attempt, from using the plain
+
+1163
+00:55:26,550 --> 00:55:30,540
+vanilla in-sample error, adding something
+up that gets us closer to
+
+1164
+00:55:30,540 --> 00:55:32,570
+the out-of-sample error.
+
+1165
+00:55:32,570 --> 00:55:36,450
+Of course, the augmented error is
+better than E_in in approximating
+
+1166
+00:55:36,450 --> 00:55:39,200
+E_out, because it's purple.
+
+1167
+00:55:39,200 --> 00:55:40,540
+Purple is closer to red than blue!
+
+1168
+00:55:40,540 --> 00:55:41,900
+OK, no.
+
+1169
+00:55:41,900 --> 00:55:42,980
+That's not the reason.
+
+1170
+00:55:42,980 --> 00:55:45,210
+But that's at last the
+reason for the slide.
+
+1171
+00:55:45,210 --> 00:55:47,250
+So this is the idea in
+terms of the theory.
+
+1172
+00:55:47,250 --> 00:55:51,700
+We found a better proxy
+for the out-of-sample.
+
+1173
+00:55:51,700 --> 00:55:54,980
+Now, very quickly, let's see how
+we choose a regularizer.
+
+1174
+00:55:54,980 --> 00:55:57,950
+I say very quickly, not because of
+anything, but because it's really
+
+1175
+00:55:57,950 --> 00:56:03,780
+a heuristic exercise, and I want to
+emphasize a main point here.
+
+1176
+00:56:03,780 --> 00:56:06,620
+What is the perfect regularizer?
+
+1177
+00:56:06,620 --> 00:56:09,430
+Remember when we talked about
+the perfect hypothesis set?
+
+1178
+00:56:09,430 --> 00:56:12,130
+This was the hypothesis set that has
+a singleton, that happens to be our
+
+1179
+00:56:12,130 --> 00:56:14,000
+target function.
+
+1180
+00:56:14,000 --> 00:56:15,370
+Dream on!
+
+1181
+00:56:15,370 --> 00:56:16,470
+We don't know the target function.
+
+1182
+00:56:16,470 --> 00:56:18,140
+We cannot construct something
+like that.
+
+1183
+00:56:18,140 --> 00:56:22,480
+Well, the perfect regularizer is also
+one that restricts, but in the
+
+1184
+00:56:22,480 --> 00:56:25,410
+direction of the target function.
+
+1185
+00:56:25,410 --> 00:56:28,530
+I think we can say that we
+are going in circles here.
+
+1186
+00:56:28,530 --> 00:56:30,400
+We don't know the target function.
+
+1187
+00:56:30,400 --> 00:56:33,460
+Now if you know a property of the target
+function, that allows you to go
+
+1188
+00:56:33,460 --> 00:56:35,260
+there, that is not regularization.
+
+1189
+00:56:35,260 --> 00:56:39,480
+There's another technique which uses
+properties of the target function, in
+
+1190
+00:56:39,480 --> 00:56:40,700
+order to improve the learning.
+
+1191
+00:56:40,700 --> 00:56:43,810
+Explicitly, this property holds for the
+target function, and there is
+
+1192
+00:56:43,810 --> 00:56:46,250
+a prescription for how to use it.
+
+1193
+00:56:46,250 --> 00:56:49,700
+Regularization is an attempt
+to reduce overfitting.
+
+1194
+00:56:49,700 --> 00:56:52,160
+So it is not matching the target.
+
+1195
+00:56:52,160 --> 00:56:53,400
+It doesn't know the target.
+
+1196
+00:56:53,400 --> 00:56:58,900
+All it does is apply generically
+a methodology that harms the overfitting
+
+1197
+00:56:58,900 --> 00:57:01,620
+more than it harms the fitting.
+
+1198
+00:57:01,620 --> 00:57:06,720
+It harms fitting the noise, more than
+it harms fitting the signal.
+
+1199
+00:57:06,720 --> 00:57:08,410
+And that is our guideline.
+
+1200
+00:57:08,410 --> 00:57:10,880
+Because of that, it's a heuristic.
+
+1201
+00:57:10,880 --> 00:57:18,590
+So the guiding principle we found was,
+you move in the direction of smoother.
+
+1202
+00:57:18,590 --> 00:57:21,590
+And the direction of smoother-- we need
+to find the logic in our mind.
+
+1203
+00:57:21,590 --> 00:57:24,940
+We are moving in the direction
+of smoother, because the
+
+1204
+00:57:24,940 --> 00:57:27,000
+noise is not smooth.
+
+1205
+00:57:27,000 --> 00:57:29,520
+That is really the reason.
+
+1206
+00:57:29,520 --> 00:57:32,880
+Because we tend to harm the
+noise more by doing that.
+
+1207
+00:57:32,880 --> 00:57:35,250
+And smoother is fine when we
+have a surface like that.
+
+1208
+00:57:35,250 --> 00:57:39,400
+In some learning problems, we don't have
+a surface to be smooth, so the
+
+1209
+00:57:39,400 --> 00:57:41,130
+corresponding thing is: simpler.
+
+1210
+00:57:41,130 --> 00:57:44,150
+I'll give you an example from something
+you have seen before, which
+
+1211
+00:57:44,150 --> 00:57:47,880
+is the movie rating, our famous example
+that we keep going back to.
+
+1212
+00:57:47,880 --> 00:57:51,270
+We had the error function for
+the movie rating, right?
+
+1213
+00:57:51,270 --> 00:57:55,020
+We were trying to get the factors to
+multiply to a quantity that is very
+
+1214
+00:57:55,020 --> 00:57:59,050
+close to the rating of this user, that
+has those factors, to this movie, that
+
+1215
+00:57:59,050 --> 00:58:00,040
+has those factors.
+
+1216
+00:58:00,040 --> 00:58:00,740
+That's what we did.
+
+1217
+00:58:00,740 --> 00:58:02,430
+And the factors were our parameters.
+
+1218
+00:58:02,430 --> 00:58:05,820
+So we were adjusting the parameters,
+in order to match the rating.
+
+1219
+00:58:05,820 --> 00:58:08,750
+And now in the new terminology, you
+realize that this is very susceptible
+
+1220
+00:58:08,750 --> 00:58:09,570
+to overfitting.
+
+1221
+00:58:09,570 --> 00:58:12,760
+Because let's say I have a user,
+and I'm using 100 factors.
+
+1222
+00:58:12,760 --> 00:58:15,920
+That's 100 parameters dedicated
+to that user.
+
+1223
+00:58:15,920 --> 00:58:20,100
+If that user only rated 10 movies,
+then I'm trying to determine 100
+
+1224
+00:58:20,100 --> 00:58:22,850
+parameters using 10 ratings.
+
+1225
+00:58:22,850 --> 00:58:25,160
+That's bad news.
+
+1226
+00:58:25,160 --> 00:58:28,170
+So clearly, regularization
+is called for.
+
+1227
+00:58:28,170 --> 00:58:30,830
+A notion of simpler here
+is very interesting.
+
+1228
+00:58:30,830 --> 00:58:35,520
+The default that you are trying to go
+to is that everything gives the
+
+1229
+00:58:35,520 --> 00:58:37,400
+average rating.
+
+1230
+00:58:37,400 --> 00:58:40,660
+In the absence of further information,
+consider that everything is just
+
+1231
+00:58:40,660 --> 00:58:43,310
+average rating of all
+movies or all users.
+
+1232
+00:58:43,310 --> 00:58:46,960
+Or you can be more finicky about it, and
+say the average of the movies that
+
+1233
+00:58:46,960 --> 00:58:49,220
+I have seen, and average of the
+ratings that I have done.
+
+1234
+00:58:49,220 --> 00:58:50,770
+Maybe I'm an optimistic user or not.
+
+1235
+00:58:50,770 --> 00:58:51,940
+But just an average.
+
+1236
+00:58:51,940 --> 00:58:55,040
+So you don't consider this particular
+movie, or this particular user.
+
+1237
+00:58:55,040 --> 00:58:56,640
+You just take an average.
+
+1238
+00:58:56,640 --> 00:59:00,450
+If you pull your solution toward the
+average, now we are regularizing
+
+1239
+00:59:00,450 --> 00:59:02,600
+toward the simpler solution.
+
+1240
+00:59:02,600 --> 00:59:05,770
+And indeed, that is the type of
+regularization that was used in the
+
+1241
+00:59:05,770 --> 00:59:08,960
+winning solution of the
+Netflix competition.
+
+1242
+00:59:08,960 --> 00:59:12,920
+So this is another notion of simpler,
+in a case where smoother
+
+1243
+00:59:12,920 --> 00:59:14,170
+doesn't lend itself.
+
+1244
+00:59:14,170 --> 00:59:17,180
+
+
+1245
+00:59:17,180 --> 00:59:19,590
+What happens if you choose
+a bad omega?
+
+1246
+00:59:19,590 --> 00:59:20,140
+Which happens.
+
+1247
+00:59:20,140 --> 00:59:21,080
+It's a heuristic choice.
+
+1248
+00:59:21,080 --> 00:59:22,330
+I am moving toward this.
+
+1249
+00:59:22,330 --> 00:59:23,740
+I may choose a good one, or a bad one.
+
+1250
+00:59:23,740 --> 00:59:27,040
+And in a real situation, you will be
+choosing the regularizer in
+
+1251
+00:59:27,040 --> 00:59:28,080
+a heuristic way.
+
+1252
+00:59:28,080 --> 00:59:29,850
+You can do all of the
+math in the world.
+
+1253
+00:59:29,850 --> 00:59:32,710
+But whenever you do the math, remember
+that you are always making
+
+1254
+00:59:32,710 --> 00:59:33,680
+an assumption.
+
+1255
+00:59:33,680 --> 00:59:36,950
+And your math will be as good, or
+as bad, as your assumption is
+
+1256
+00:59:36,950 --> 00:59:38,200
+valid, or not valid.
+
+1257
+00:59:38,200 --> 00:59:39,630
+There is no escaping that.
+
+1258
+00:59:39,630 --> 00:59:40,150
+
+
+1259
+00:59:40,150 --> 00:59:44,910
+You don't hide behind a great-looking
+derivation, when the
+
+1260
+00:59:44,910 --> 00:59:46,160
+basis of it is shaky.
+
+1261
+00:59:46,160 --> 00:59:49,400
+
+
+1262
+00:59:49,400 --> 00:59:52,440
+We don't worry too much, because we
+have the saving grace of lambda.
+
+1263
+00:59:52,440 --> 00:59:55,000
+We are going to go to validation, so
+you had better be here for the next
+
+1264
+00:59:55,000 --> 00:59:57,410
+lecture, where we are going
+to choose lambda.
+
+1265
+00:59:57,410 --> 01:00:01,120
+And if we happen to be unlucky, that
+after applying the guidelines we end
+
+1266
+01:00:01,120 --> 01:00:04,960
+up with something that is actually
+harmful, then the validation will
+
+1267
+01:00:04,960 --> 01:00:08,480
+tell us it's harmful, and we'll factor
+the regularizer out of the game
+
+1268
+01:00:08,480 --> 01:00:09,320
+altogether.
+
+1269
+01:00:09,320 --> 01:00:13,610
+But trying to put a regularizer in
+the first place is inevitable.
+
+1270
+01:00:13,610 --> 01:00:16,950
+If you don't do it, you will end up
+with overfitting in almost all the
+
+1271
+01:00:16,950 --> 01:00:19,460
+practical machine learning problems
+that you will encounter.
+
+1272
+01:00:19,460 --> 01:00:22,400
+
+
+1273
+01:00:22,400 --> 01:00:25,030
+Now let's look at neural network
+regularizers, in order to get more
+
+1274
+01:00:25,030 --> 01:00:25,950
+intuition about them.
+
+1275
+01:00:25,950 --> 01:00:28,900
+And it's actually pretty useful
+for the intuition.
+
+1276
+01:00:28,900 --> 01:00:32,020
+Let's look at weight decay
+for the neural network.
+
+1277
+01:00:32,020 --> 01:00:35,260
+The math is not as clean, because we
+don't have a closed-form solution.
+
+1278
+01:00:35,260 --> 01:00:38,850
+But there is a very interesting
+interpretation that relates the small
+
+1279
+01:00:38,850 --> 01:00:41,750
+weights to simplicity, in this case.
+
+1280
+01:00:41,750 --> 01:00:43,030
+Remember this guy?
+
+1281
+01:00:43,030 --> 01:00:45,970
+This was the activation function
+of the neurons.
+
+1282
+01:00:45,970 --> 01:00:48,570
+And they were soft threshold.
+
+1283
+01:00:48,570 --> 01:00:50,720
+And we said that the soft threshold
+is somewhere between
+
+1284
+01:00:50,720 --> 01:00:53,080
+linear and hard threshold.
+
+1285
+01:00:53,080 --> 01:00:55,100
+What does it mean to be between?
+
+1286
+01:00:55,100 --> 01:00:59,560
+It means that if the signal is very
+small, you are almost linear.
+
+1287
+01:00:59,560 --> 01:01:03,610
+If the signal is very large, one way or
+the other, you are almost binary.
+
+1288
+01:01:03,610 --> 01:01:04,710
+Right?
+
+1289
+01:01:04,710 --> 01:01:11,740
+So let's say that you are using small
+weights versus big weights.
+
+1290
+01:01:11,740 --> 01:01:15,740
+If you use very small weights, then
+you are always within here.
+
+1291
+01:01:15,740 --> 01:01:19,550
+Because the weights are the ones
+that determine the signal.
+
+1292
+01:01:19,550 --> 01:01:24,490
+So every neuron now is basically
+computing the linear function.
+
+1293
+01:01:24,490 --> 01:01:28,690
+I have this big network, layer upon
+layer upon layer upon layer.
+
+1294
+01:01:28,690 --> 01:01:31,470
+And I'm taking it, because someone told
+me that multilayer perceptrons are
+
+1295
+01:01:31,470 --> 01:01:32,880
+capable of implementing large things.
+
+1296
+01:01:32,880 --> 01:01:35,190
+So if I put enough of them,
+I'll be doing great.
+
+1297
+01:01:35,190 --> 01:01:38,730
+And then I look at the functionality
+that I'm implementing, if I force the
+
+1298
+01:01:38,730 --> 01:01:40,850
+weights to be very, very small.
+
+1299
+01:01:40,850 --> 01:01:42,500
+Well, this is linear.
+
+1300
+01:01:42,500 --> 01:01:44,660
+But this is linear of linear.
+
+1301
+01:01:44,660 --> 01:01:46,580
+Linear of linear of linear.
+
+1302
+01:01:46,580 --> 01:01:49,300
+And when I am done, what am I doing?
+
+1303
+01:01:49,300 --> 01:01:51,980
+I am implementing just a simple
+linear function in
+
+1304
+01:01:51,980 --> 01:01:55,530
+a huge camouflage disguise.
+
+1305
+01:01:55,530 --> 01:01:58,580
+All the weights are just interacting and
+adding up, and I end up with just
+
+1306
+01:01:58,580 --> 01:02:00,710
+a linear function,
+a very simple one.
+
+1307
+01:02:00,710 --> 01:02:04,580
+So very small weights, I'm implementing
+a very simple function.
+
+1308
+01:02:04,580 --> 01:02:08,410
+As you increase the weights, you are
+getting into the more interesting
+
+1309
+01:02:08,410 --> 01:02:10,700
+nonlinearity here.
+
+1310
+01:02:10,700 --> 01:02:13,910
+And if you go all the way, you will
+end up with a logical dependency.
+
+1311
+01:02:13,910 --> 01:02:16,360
+And a logical dependency, as we did
+with a sum of products, you can
+
+1312
+01:02:16,360 --> 01:02:18,580
+implement any functionality you want.
+
+1313
+01:02:18,580 --> 01:02:21,830
+You're going from the most simple
+to the most complex, by
+
+1314
+01:02:21,830 --> 01:02:23,080
+increasing the weights.
+
+1315
+01:02:23,080 --> 01:02:27,100
+So indeed, we have a correspondence in
+this case, not just smoothness per se,
+
+1316
+01:02:27,100 --> 01:02:30,320
+but actually the simplicity of the
+function you are implementing, in
+
+1317
+01:02:30,320 --> 01:02:32,650
+terms of the size of the weights.
+
+1318
+01:02:32,650 --> 01:02:35,630
+There is another regularizer for neural
+networks, which is called
+
+1319
+01:02:35,630 --> 01:02:37,100
+weight elimination.
+
+1320
+01:02:37,100 --> 01:02:37,850
+The idea is the following.
+
+1321
+01:02:37,850 --> 01:02:41,280
+We said that the VC dimension of neural
+networks is the number of weights,
+
+1322
+01:02:41,280 --> 01:02:43,190
+more or less.
+
+1323
+01:02:43,190 --> 01:02:45,670
+So maybe it's a good idea to
+take the network, and just
+
+1324
+01:02:45,670 --> 01:02:47,590
+kill some of the weights.
+
+1325
+01:02:47,590 --> 01:02:50,100
+So although I have the full-fledged
+network, I am forcing some of the
+
+1326
+01:02:50,100 --> 01:02:53,530
+weights to be 0, in which case the
+number of free parameters that I have
+
+1327
+01:02:53,530 --> 01:02:54,590
+will be smaller.
+
+1328
+01:02:54,590 --> 01:02:57,180
+I will have a smaller VC dimension,
+and I stand a better chance of
+
+1329
+01:02:57,180 --> 01:02:57,810
+generalizing.
+
+1330
+01:02:57,810 --> 01:02:59,250
+Maybe I won't overfit.
+
+1331
+01:02:59,250 --> 01:03:00,780
+
+
+1332
+01:03:00,780 --> 01:03:02,260
+Now this is true.
+
+1333
+01:03:02,260 --> 01:03:07,790
+And there is an implementation of it,
+which-- the argument I just said is
+
+1334
+01:03:07,790 --> 01:03:10,050
+fewer weights lead to
+a smaller VC dimension--
+
+1335
+01:03:10,050 --> 01:03:13,490
+There is a version of it that lends
+itself to regularization, which is
+
+1336
+01:03:13,490 --> 01:03:16,440
+called soft weight elimination.
+
+1337
+01:03:16,440 --> 01:03:19,220
+I'm not going to go and combinatorially
+say, should I kill this
+
+1338
+01:03:19,220 --> 01:03:20,040
+weight or kill that weight?
+
+1339
+01:03:20,040 --> 01:03:22,510
+You can see this is a nightmare,
+in terms of optimization.
+
+1340
+01:03:22,510 --> 01:03:25,370
+I'm going to apply something on
+a continuous function that will result,
+
+1341
+01:03:25,370 --> 01:03:29,870
+more or less, in emphasizing some of
+the weights and killing the others.
+
+1342
+01:03:29,870 --> 01:03:32,400
+Here is the regularizer in this case.
+
+1343
+01:03:32,400 --> 01:03:35,655
+It looks awfully similar
+to the weight decay.
+
+1344
+01:03:35,655 --> 01:03:39,540
+If that's all I had, and this wasn't
+upstairs in anticipation of something
+
+1345
+01:03:39,540 --> 01:03:42,230
+that will happen downstairs, this
+would be just weight decay.
+
+1346
+01:03:42,230 --> 01:03:46,810
+I'm adding these guys, and that is the
+term, so I'm just doing this.
+
+1347
+01:03:46,810 --> 01:03:50,240
+But the actual form is this fellow.
+
+1348
+01:03:50,240 --> 01:03:52,050
+So what does this do?
+
+1349
+01:03:52,050 --> 01:03:56,480
+Well, for very small
+w, beta dominates.
+
+1350
+01:03:56,480 --> 01:03:58,880
+We end up with something proportional
+to w squared.
+
+1351
+01:03:58,880 --> 01:04:03,030
+So for very small weights, you
+are doing weight decay.
+
+1352
+01:04:03,030 --> 01:04:06,690
+For very large weights,
+the w's dominate.
+
+1353
+01:04:06,690 --> 01:04:09,760
+Therefore, this basically
+is 1, close to 1.
+
+1354
+01:04:09,760 --> 01:04:11,810
+So there is nothing to be gained
+by changing the weights.
+
+1355
+01:04:11,810 --> 01:04:14,700
+At least, not much to be gained
+by changing the weights.
+
+1356
+01:04:14,700 --> 01:04:18,000
+In this case, big weights
+are left alone.
+
+1357
+01:04:18,000 --> 01:04:20,340
+Small weights are pushed towards zero.
+
+1358
+01:04:20,340 --> 01:04:23,330
+We end up, after doing the optimization,
+clustering the weights into two
+
+1359
+01:04:23,330 --> 01:04:27,140
+groups, serious weights that happen to
+have value, and other weights that are
+
+1360
+01:04:27,140 --> 01:04:30,910
+really being pushed towards 0, that you
+have considered to be eliminated,
+
+1361
+01:04:30,910 --> 01:04:32,590
+although they are soft-eliminated.
+
+1362
+01:04:32,590 --> 01:04:34,850
+And that's the corresponding notion.
+
+1363
+01:04:34,850 --> 01:04:37,960
+
+
+1364
+01:04:37,960 --> 01:04:40,850
+Early stopping, which we alluded to last
+time, is a form of regularizer,
+
+1365
+01:04:40,850 --> 01:04:44,090
+and it's an interesting one.
+
+1366
+01:04:44,090 --> 01:04:44,880
+Remember this thing?
+
+1367
+01:04:44,880 --> 01:04:49,340
+We were training on E_in, no
+augmentation, nothing, just the
+
+1368
+01:04:49,340 --> 01:04:50,390
+in-sample error.
+
+1369
+01:04:50,390 --> 01:04:53,970
+And we realized by looking at the
+out-of-sample error, using
+
+1370
+01:04:53,970 --> 01:04:59,170
+a test set, that it's a good idea
+to stop before you get to the end.
+
+1371
+01:04:59,170 --> 01:05:01,740
+This is a form of regularizer,
+but it's a funny regularizer.
+
+1372
+01:05:01,740 --> 01:05:03,720
+It's through the optimizer.
+
+1373
+01:05:03,720 --> 01:05:06,200
+So we are not changing the
+objective function.
+
+1374
+01:05:06,200 --> 01:05:09,020
+You are just handing the objective
+function, which is the in-sample error,
+
+1375
+01:05:09,020 --> 01:05:12,700
+to the optimizer and telling
+it, please minimize this.
+
+1376
+01:05:12,700 --> 01:05:15,610
+By the way, could you please
+not do a great job?
+
+1377
+01:05:15,610 --> 01:05:17,200
+Because if you do a great
+job, I'm in trouble.
+
+1378
+01:05:17,200 --> 01:05:18,070
+
+
+1379
+01:05:18,070 --> 01:05:19,310
+So that's what you do.
+
+1380
+01:05:19,310 --> 01:05:20,460
+It's a funny situation.
+
+1381
+01:05:20,460 --> 01:05:21,840
+It's not funny for early stopping,
+
+1382
+01:05:21,840 --> 01:05:26,210
+because the way we choose when
+to stop is principled.
+
+1383
+01:05:26,210 --> 01:05:28,590
+We are going to use validation
+to determine that point.
+
+1384
+01:05:28,590 --> 01:05:32,560
+But some people get carried away and
+realize, maybe we can always put
+
+1385
+01:05:32,560 --> 01:05:37,970
+the regularizer in the optimizer, and
+just do a sloppy job of optimization,
+
+1386
+01:05:37,970 --> 01:05:39,850
+thus regularizing the thing.
+
+1387
+01:05:39,850 --> 01:05:40,930
+Oh, wait a minute.
+
+1388
+01:05:40,930 --> 01:05:44,730
+Maybe local minima is
+a blessing in disguise.
+
+1389
+01:05:44,730 --> 01:05:48,050
+They force us to stop short of the
+global minimum, and therefore that's
+
+1390
+01:05:48,050 --> 01:05:49,370
+a great regularizer.
+
+1391
+01:05:49,370 --> 01:05:51,500
+OK, guys.
+
+1392
+01:05:51,500 --> 01:05:52,320
+Heuristic is heuristic.
+
+1393
+01:05:52,320 --> 01:05:55,220
+But we are still scientists
+and engineers.
+
+1394
+01:05:55,220 --> 01:05:57,860
+Separate the concerns.
+
+1395
+01:05:57,860 --> 01:06:01,600
+Put what you consider to be the right
+thing to minimize in the proper
+
+1396
+01:06:01,600 --> 01:06:04,180
+function, in this case
+the augmented error.
+
+1397
+01:06:04,180 --> 01:06:08,360
+And after that, give it to the optimizer
+to go all the way in
+
+1398
+01:06:08,360 --> 01:06:10,000
+optimizing.
+
+1399
+01:06:10,000 --> 01:06:12,425
+The wishy-washy thing is
+just uncertain.
+
+1400
+01:06:12,425 --> 01:06:14,770
+I have no idea how this will work.
+
+1401
+01:06:14,770 --> 01:06:18,510
+But if we capture as much as we can in
+the objective function, and we know
+
+1402
+01:06:18,510 --> 01:06:21,580
+that we really want to minimize it, then
+we have a principled way of doing
+
+1403
+01:06:21,580 --> 01:06:23,200
+that, and we will get what we want.
+
+1404
+01:06:23,200 --> 01:06:27,250
+
+
+1405
+01:06:27,250 --> 01:06:28,740
+The early stopping is
+done by validation.
+
+1406
+01:06:28,740 --> 01:06:32,010
+So the final slide is the optimal
+lambda, which is a good lead into the
+
+1407
+01:06:32,010 --> 01:06:34,280
+next lecture.
+
+1408
+01:06:34,280 --> 01:06:38,480
+What I am going to show you is the
+choice of the optimal lambda in the
+
+1409
+01:06:38,480 --> 01:06:40,120
+big experiment that I did last time.
+
+1410
+01:06:40,120 --> 01:06:42,590
+Last time we had overfitting
+in a situation that had
+
+1411
+01:06:42,590 --> 01:06:44,700
+the colorful graphs.
+
+1412
+01:06:44,700 --> 01:06:48,390
+And now I am applying regularization
+there, using weight decay.
+
+1413
+01:06:48,390 --> 01:06:51,620
+And I'm just asking myself,
+what is lambda, given the
+
+1414
+01:06:51,620 --> 01:06:52,870
+different levels of noise?
+
+1415
+01:06:52,870 --> 01:06:55,550
+
+
+1416
+01:06:55,550 --> 01:06:56,310
+So we look here.
+
+1417
+01:06:56,310 --> 01:06:58,420
+I am applying the regularization.
+
+1418
+01:06:58,420 --> 01:06:59,680
+This is the lambda.
+
+1419
+01:06:59,680 --> 01:07:03,650
+It's the same regularizer, and I
+am changing the emphasis on the
+
+1420
+01:07:03,650 --> 01:07:04,640
+regularizer.
+
+1421
+01:07:04,640 --> 01:07:06,390
+And I am getting the bottom
+line, the expected
+
+1422
+01:07:06,390 --> 01:07:08,000
+out-of-sample error, as a result.
+
+1423
+01:07:08,000 --> 01:07:09,120
+
+
+1424
+01:07:09,120 --> 01:07:13,100
+When there is no noise, guess what?
+
+1425
+01:07:13,100 --> 01:07:15,170
+Regularization is not indicated.
+
+1426
+01:07:15,170 --> 01:07:17,330
+You just put lambda equals
+0, and you are fine.
+
+1427
+01:07:17,330 --> 01:07:20,150
+There's no overfitting to begin with.
+
+1428
+01:07:20,150 --> 01:07:24,310
+As you increase the level of noise,
+as you see here, first you need
+
+1429
+01:07:24,310 --> 01:07:24,650
+regularization.
+
+1430
+01:07:24,650 --> 01:07:28,490
+The minimum occurs at a point
+where lambda is not 0.
+
+1431
+01:07:28,490 --> 01:07:30,800
+So that means you actually
+need regularization.
+
+1432
+01:07:30,800 --> 01:07:32,500
+And the end result is worse anyway.
+
+1433
+01:07:32,500 --> 01:07:34,820
+But the end result has to be worse,
+because there is noise.
+
+1434
+01:07:34,820 --> 01:07:37,510
+The expected out-of-sample error will
+have to have that level of noise in
+
+1435
+01:07:37,510 --> 01:07:40,590
+it, even if I fit the
+other thing perfectly.
+
+1436
+01:07:40,590 --> 01:07:43,710
+And as I increase the noise,
+I need more regularization.
+
+1437
+01:07:43,710 --> 01:07:45,970
+The best value of lambda is greater.
+
+1438
+01:07:45,970 --> 01:07:48,120
+So this is very, very intuitive.
+
+1439
+01:07:48,120 --> 01:07:52,090
+And if we can determine this value using
+validation, then we have a very
+
+1440
+01:07:52,090 --> 01:07:52,440
+good thing.
+
+1441
+01:07:52,440 --> 01:07:55,730
+Now instead of using this, which
+was horrible overfitting,
+
+1442
+01:07:55,730 --> 01:07:56,470
+I am getting this.
+
+1443
+01:07:56,470 --> 01:07:59,420
+And I'm getting the best
+possible, given those.
+
+1444
+01:07:59,420 --> 01:08:02,980
+Now this happens to be
+for stochastic noise.
+
+1445
+01:08:02,980 --> 01:08:06,660
+Out of curiosity, what would the situation
+be if we were talking about
+
+1446
+01:08:06,660 --> 01:08:09,980
+deterministic noise?
+
+1447
+01:08:09,980 --> 01:08:15,820
+And when you plot deterministic noise,
+well, you could have fooled me.
+
+1448
+01:08:15,820 --> 01:08:17,399
+I am not increasing the sigma squared.
+
+1449
+01:08:17,399 --> 01:08:20,800
+I am increasing the complexity of this
+guy, the complexity of the target.
+
+1450
+01:08:20,800 --> 01:08:23,760
+And therefore, I'm increasing
+the deterministic noise.
+
+1451
+01:08:23,760 --> 01:08:25,010
+It's exactly the same behavior.
+
+1452
+01:08:25,010 --> 01:08:27,370
+
+
+1453
+01:08:27,370 --> 01:08:29,319
+Again, if I have this, I don't
+need any regularization.
+
+1454
+01:08:29,319 --> 01:08:32,840
+As I increase the deterministic noise,
+I need more regularization.
+
+1455
+01:08:32,840 --> 01:08:35,710
+The lambda is bigger, and I end
+up with worse performance.
+
+1456
+01:08:35,710 --> 01:08:36,359
+
+
+1457
+01:08:36,359 --> 01:08:39,550
+And if you look at these two, that
+should seal the correspondence in your
+
+1458
+01:08:39,550 --> 01:08:44,880
+mind that, as far as overfitting and its
+cures are concerned, deterministic
+
+1459
+01:08:44,880 --> 01:08:52,000
+noise behaves almost exactly as if
+it were unknown stochastic noise.
+
+1460
+01:08:52,000 --> 01:08:55,069
+I will stop here, and will take questions
+after a short break.
+
+1461
+01:08:55,069 --> 01:09:02,265
+
+
+1462
+01:09:02,265 --> 01:09:03,080
+
+
+1463
+01:09:03,080 --> 01:09:06,270
+Let's start the Q&amp;A.
+
+1464
+01:09:06,270 --> 01:09:11,420
+MODERATOR: The first question is, when
+the regularization parameter is
+
+1465
+01:09:11,420 --> 01:09:16,840
+chosen, say lambda, if it's chosen
+according to the data does that mean
+
+1466
+01:09:16,840 --> 01:09:18,430
+we are doing data snooping?
+
+1467
+01:09:18,430 --> 01:09:20,810
+PROFESSOR: OK.
+
+1468
+01:09:20,810 --> 01:09:25,779
+If we were using the same data for
+training as for choosing the
+
+1469
+01:09:25,779 --> 01:09:29,800
+regularization parameter,
+that would be bad news.
+
+1470
+01:09:29,800 --> 01:09:30,729
+It's snooping.
+
+1471
+01:09:30,729 --> 01:09:32,779
+But it's so clear, that I wouldn't
+even call it snooping.
+
+1472
+01:09:32,779 --> 01:09:36,064
+It's blatant, in this case.
+
+1473
+01:09:36,064 --> 01:09:40,080
+The reality is that we determine this
+using validation, which is a very
+
+1474
+01:09:40,080 --> 01:09:42,439
+controlled form of using the data.
+
+1475
+01:09:42,439 --> 01:09:46,270
+And we will discuss the subject
+completely, from beginning to end, in
+
+1476
+01:09:46,270 --> 01:09:47,170
+the next lecture.
+
+1477
+01:09:47,170 --> 01:09:50,880
+So there will be a way
+to deal with that.
+
+1478
+01:09:50,880 --> 01:09:53,390
+MODERATOR: Would there be a case where
+you use different types of
+
+1479
+01:09:53,390 --> 01:09:55,570
+regularization in the same function?
+
+1480
+01:09:55,570 --> 01:09:57,400
+PROFESSOR: Correct.
+
+1481
+01:09:57,400 --> 01:09:59,950
+Sometimes you use a combination of
+regularizers, with two different
+
+1482
+01:09:59,950 --> 01:10:03,710
+parameters, depending
+on the performance.
+
+1483
+01:10:03,710 --> 01:10:10,020
+As I mentioned, it is an experimental
+activity, more than a completely
+
+1484
+01:10:10,020 --> 01:10:10,950
+principled activity.
+
+1485
+01:10:10,950 --> 01:10:13,470
+There are guidelines, and there
+are regularizers that
+
+1486
+01:10:13,470 --> 01:10:14,790
+stood the test of time.
+
+1487
+01:10:14,790 --> 01:10:18,190
+And you can look at the problem, and
+you realize that, I'd better use
+
+1488
+01:10:18,190 --> 01:10:20,510
+these two regularizers, because they
+behave differently in different parts
+
+1489
+01:10:20,510 --> 01:10:23,170
+of the space, or something of that
+sort, and then decide to have
+
+1490
+01:10:23,170 --> 01:10:26,130
+a combination.
+
+1491
+01:10:26,130 --> 01:10:30,120
+MODERATOR: In the examples, you were
+using Legendre polynomials as the
+
+1492
+01:10:30,120 --> 01:10:32,290
+orthogonal functions.
+
+1493
+01:10:32,290 --> 01:10:33,840
+Was there any reason for these?
+
+1494
+01:10:33,840 --> 01:10:36,680
+Or can you choose other functions?
+
+1495
+01:10:36,680 --> 01:10:39,900
+PROFESSOR: They give me a level
+of generality, which is pretty
+
+1496
+01:10:39,900 --> 01:10:40,620
+interesting.
+
+1497
+01:10:40,620 --> 01:10:42,250
+And the solution is very simple.
+
+1498
+01:10:42,250 --> 01:10:46,280
+So it's the analytic appeal of
+it that got me into this.
+
+1499
+01:10:46,280 --> 01:10:50,310
+The typical situation in machine
+learning-- machine learning is
+
+1500
+01:10:50,310 --> 01:10:52,930
+somewhere between theory and practice.
+
+1501
+01:10:52,930 --> 01:10:55,640
+And it really has very strong
+grounding in both.
+
+1502
+01:10:55,640 --> 01:10:59,400
+So the way to use theory is that,
+because you cannot really model every
+
+1503
+01:10:59,400 --> 01:11:01,845
+situation such that you can get
+the closed-form solution.
+
+1504
+01:11:01,845 --> 01:11:03,500
+You are far from that.
+
+1505
+01:11:03,500 --> 01:11:08,560
+What you do is you get an idealized
+situation, but a situation as general
+
+1506
+01:11:08,560 --> 01:11:09,390
+as you can get it.
+
+1507
+01:11:09,390 --> 01:11:11,650
+With polynomials, you can
+do a lot of things.
+
+1508
+01:11:11,650 --> 01:11:15,740
+So because I can get the solution in
+this case, when I look at the form of
+
+1509
+01:11:15,740 --> 01:11:20,790
+the solution, I may be able to read off
+some intuitive properties that I can
+
+1510
+01:11:20,790 --> 01:11:24,410
+extrapolate, and apply as a leap of
+faith, to situations where my
+
+1511
+01:11:24,410 --> 01:11:25,870
+assumptions don't hold.
+
+1512
+01:11:25,870 --> 01:11:30,040
+In this case, after getting this, we had
+a specific form for weight decay.
+
+1513
+01:11:30,040 --> 01:11:32,810
+And when we look at the performance,
+we realize that
+
+1514
+01:11:32,810 --> 01:11:34,490
+smoothness is a good criterion.
+
+1515
+01:11:34,490 --> 01:11:38,080
+And then we look for smoothness or
+simplicity, and we interpret that in
+
+1516
+01:11:38,080 --> 01:11:41,580
+terms of, oh, smoothness is actually
+good because of the properties of
+
+1517
+01:11:41,580 --> 01:11:43,300
+noise, and so on.
+
+1518
+01:11:43,300 --> 01:11:47,780
+So there is a formal part, where we can
+develop it completely, and try to make
+
+1519
+01:11:47,780 --> 01:11:50,330
+it as general as possible while
+mathematically tractable.
+
+1520
+01:11:50,330 --> 01:11:54,110
+But then try to see if the lessons
+learned from the solution, that you got
+
+1521
+01:11:54,110 --> 01:11:58,000
+analytically, can apply to a situation
+in a heuristic way, where you don't
+
+1522
+01:11:58,000 --> 01:12:02,790
+have the full mathematical benefit
+because the assumptions don't hold.
+
+1523
+01:12:02,790 --> 01:12:06,170
+MODERATOR: Could noise be
+an indicator of missing input?
+
+1524
+01:12:06,170 --> 01:12:09,540
+
+
+1525
+01:12:09,540 --> 01:12:13,910
+PROFESSOR: Missing input is
+a big deal in machine learning.
+
+1526
+01:12:13,910 --> 01:12:17,530
+Sometimes you are missing some
+attributes of the input.
+
+1527
+01:12:17,530 --> 01:12:20,260
+And it can be treated
+in a number of ways.
+
+1528
+01:12:20,260 --> 01:12:23,550
+One of them is as if it's noise.
+
+1529
+01:12:23,550 --> 01:12:27,520
+But missing inputs are sufficiently
+well defined, that they are treated
+
+1530
+01:12:27,520 --> 01:12:30,070
+with their own methodology, rather
+than being generic noise.
+
+1531
+01:12:30,070 --> 01:12:34,150
+
+
+1532
+01:12:34,150 --> 01:12:40,380
+MODERATOR: How do you trade off
+choosing more features in your
+
+1533
+01:12:40,380 --> 01:12:42,510
+transformation, with the
+regularization?
+
+1534
+01:12:42,510 --> 01:12:45,825
+
+
+1535
+01:12:45,825 --> 01:12:47,620
+PROFESSOR: It's a good question.
+
+1536
+01:12:47,620 --> 01:12:51,900
+The first question was a question that
+we addressed, even before we heard of
+
+1537
+01:12:51,900 --> 01:12:53,290
+overfitting and regularization.
+
+1538
+01:12:53,290 --> 01:12:55,540
+And it was a question
+of generalization.
+
+1539
+01:12:55,540 --> 01:12:58,340
+What is the dimensionality that
+we can afford, given the
+
+1540
+01:12:58,340 --> 01:13:00,090
+resources of the data?
+
+1541
+01:13:00,090 --> 01:13:03,740
+What regularization adds to the
+equation is that, maybe you can afford
+
+1542
+01:13:03,740 --> 01:13:08,020
+a little bit of a bigger dimension,
+provided that you do the proper
+
+1543
+01:13:08,020 --> 01:13:09,010
+regularization.
+
+1544
+01:13:09,010 --> 01:13:09,600
+
+
+1545
+01:13:09,600 --> 01:13:13,180
+So again, it's the question of instead
+of having discrete steps-- I'm going
+
+1546
+01:13:13,180 --> 01:13:17,010
+from this hypothesis set, to this
+hypothesis set, to this hypothesis set.
+
+1547
+01:13:17,010 --> 01:13:21,650
+Let me try to find a continuum, such
+that, by the validation or by other
+
+1548
+01:13:21,650 --> 01:13:25,820
+methods, I'll be able to find a sweet
+spot where I get the best performance.
+
+1549
+01:13:25,820 --> 01:13:27,905
+And the best performance could
+be lying between two of
+
+1550
+01:13:27,905 --> 01:13:29,420
+the discrete steps.
+
+1551
+01:13:29,420 --> 01:13:33,000
+In this case, I can say, I couldn't
+initially afford to go to the
+
+1552
+01:13:33,000 --> 01:13:33,990
+bigger hypothesis set.
+
+1553
+01:13:33,990 --> 01:13:36,570
+Because if I go for it, and
+I go unconstrained, the
+
+1554
+01:13:36,570 --> 01:13:38,470
+generalization just kills me.
+
+1555
+01:13:38,470 --> 01:13:41,480
+But now what I'm going to do, I'm going
+to go to it anyway, and apply
+
+1556
+01:13:41,480 --> 01:13:42,180
+regularization.
+
+1557
+01:13:42,180 --> 01:13:46,540
+So I go this, and then I'm tracking
+back in continuous steps using
+
+1558
+01:13:46,540 --> 01:13:47,660
+regularization.
+
+1559
+01:13:47,660 --> 01:13:51,210
+And I will end up with a situation, maybe,
+that I can afford, that wasn't
+
+1560
+01:13:51,210 --> 01:13:53,780
+accessible to me without regularization,
+because it didn't
+
+1561
+01:13:53,780 --> 01:13:56,640
+belong to the discrete grid
+that I used to work in.
+
+1562
+01:13:56,640 --> 01:14:07,990
+
+
+1563
+01:14:07,990 --> 01:14:13,310
+MODERATOR: When regularization is done,
+will it depend on the data set
+
+1564
+01:14:13,310 --> 01:14:14,680
+that you use for training?
+
+1565
+01:14:14,680 --> 01:14:17,755
+
+
+1566
+01:14:17,755 --> 01:14:21,150
+PROFESSOR: The regularization
+is a term added.
+
+1567
+01:14:21,150 --> 01:14:24,780
+So there is no explicit dependency of
+the regularization on the data set.
+
+1568
+01:14:24,780 --> 01:14:26,250
+The data set goes into
+the in-sample error.
+
+1569
+01:14:26,250 --> 01:14:28,780
+The regularization goes into
+a property of the hypothesis.
+
+1570
+01:14:28,780 --> 01:14:30,980
+That is fairly independent--
+
+1571
+01:14:30,980 --> 01:14:35,290
+actually, in the examples we gave,
+were independent of the inputs.
+
+1572
+01:14:35,290 --> 01:14:39,680
+The dependency comes from the fact that
+the optimal parameter, lambda,
+
+1573
+01:14:39,680 --> 01:14:41,410
+does depend on the training set.
+
+1574
+01:14:41,410 --> 01:14:43,820
+But I said that we were not going to
+worry about that analytically.
+
+1575
+01:14:43,820 --> 01:14:46,760
+Because when all is said and done,
+lambda will be determined by
+
+1576
+01:14:46,760 --> 01:14:47,730
+validation.
+
+1577
+01:14:47,730 --> 01:14:50,415
+So it will inherit any properties
+just because of that.
+
+1578
+01:14:50,415 --> 01:14:51,665
+
+
+1579
+01:14:51,665 --> 01:14:56,670
+
+
+1580
+01:14:56,670 --> 01:14:58,350
+MODERATOR: I think that's it.
+
+1581
+01:14:58,350 --> 01:14:58,360
+
+
+1582
+01:14:58,360 --> 01:15:00,070
+PROFESSOR: We'll see you next week.
+
+1583
+01:15:00,070 --> 01:15:00,080
+
+
+1584
+01:15:00,080 --> 01:15:13,380
+
