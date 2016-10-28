@@ -1,0 +1,6839 @@
+1
+00:00:00,000 --> 00:00:00,580
+
+
+2
+00:00:00,580 --> 00:00:03,270
+ANNOUNCER: The following program
+is brought to you by Caltech.
+
+3
+00:00:03,270 --> 00:00:17,890
+
+
+4
+00:00:17,890 --> 00:00:19,140
+YASER ABU-MOSTAFA: Welcome back.
+
+5
+00:00:19,140 --> 00:00:21,230
+
+
+6
+00:00:21,230 --> 00:00:25,490
+Last time, we introduced
+the learning problem.
+
+7
+00:00:25,490 --> 00:00:30,820
+And if you have an application in your
+domain that you wonder if machine
+
+8
+00:00:30,820 --> 00:00:34,360
+learning is the right technique for
+it, we found that there are three
+
+9
+00:00:34,360 --> 00:00:37,320
+criteria that you should check.
+
+10
+00:00:37,320 --> 00:00:40,460
+You should ask yourself: is
+there a pattern to begin
+
+11
+00:00:40,460 --> 00:00:42,430
+with that we can learn?
+
+12
+00:00:42,430 --> 00:00:49,230
+And we realize that this condition can be
+intuitively met in many applications,
+
+13
+00:00:49,230 --> 00:00:52,270
+even if we don't know mathematically
+what the pattern is.
+
+14
+00:00:52,270 --> 00:00:55,290
+The example we gave was the
+credit card approval.
+
+15
+00:00:55,290 --> 00:00:58,380
+There is clearly a pattern-- if someone
+has a particular salary, has
+
+16
+00:00:58,380 --> 00:01:02,420
+been in a residence for so long, has
+that much debt, and so on, that this
+
+17
+00:01:02,420 --> 00:01:06,520
+is somewhat correlated to
+their credit behavior.
+
+18
+00:01:06,520 --> 00:01:09,610
+And therefore, we know that the pattern
+exists in spite of the fact
+
+19
+00:01:09,610 --> 00:01:13,230
+that we don't know exactly
+what the pattern is.
+
+20
+00:01:13,230 --> 00:01:18,520
+The second item is that we cannot pin
+down the pattern mathematically, like
+
+21
+00:01:18,520 --> 00:01:19,990
+the example I just gave.
+
+22
+00:01:19,990 --> 00:01:23,240
+And this is why we resort
+to machine learning.
+
+23
+00:01:23,240 --> 00:01:27,570
+The third one is that we have data
+that represents that pattern.
+
+24
+00:01:27,570 --> 00:01:30,970
+In the case of the credit application,
+for example, there are historical
+
+25
+00:01:30,970 --> 00:01:35,940
+records of previous customers, and we
+have the data they wrote in their
+
+26
+00:01:35,940 --> 00:01:40,400
+application when they applied, and we
+have some years' worth of record of
+
+27
+00:01:40,400 --> 00:01:41,910
+their credit behavior.
+
+28
+00:01:41,910 --> 00:01:46,500
+So we have data that are going to enable
+us to correlate what they wrote in the
+
+29
+00:01:46,500 --> 00:01:50,210
+application to their eventual credit
+behavior, and that is what we are
+
+30
+00:01:50,210 --> 00:01:52,090
+going to learn from.
+
+31
+00:01:52,090 --> 00:01:55,960
+Now, if you look at the three criteria,
+basically there are two that
+
+32
+00:01:55,960 --> 00:02:00,130
+you can do without, and one that
+is absolutely essential.
+
+33
+00:02:00,130 --> 00:02:02,020
+What do I mean?
+
+34
+00:02:02,020 --> 00:02:04,890
+Let's say that you don't
+have a pattern.
+
+35
+00:02:04,890 --> 00:02:10,038
+Well, if you don't have a pattern,
+then you can try learning.
+
+36
+00:02:10,038 --> 00:02:13,290
+And the only problem is
+that you will fail.
+
+37
+00:02:13,290 --> 00:02:16,050
+That doesn't sound very encouraging.
+
+38
+00:02:16,050 --> 00:02:20,340
+But the idea here is that, when we develop
+the theory of learning, we will
+
+39
+00:02:20,340 --> 00:02:24,370
+realize that you can apply the technique
+regardless of whether there
+
+40
+00:02:24,370 --> 00:02:26,010
+is a pattern or not.
+
+41
+00:02:26,010 --> 00:02:30,070
+And you are going to determine whether
+there's a pattern or not.
+
+42
+00:02:30,070 --> 00:02:33,360
+So you are not going to be fooled and
+think, I learned, and then give the
+
+43
+00:02:33,360 --> 00:02:36,330
+system to your customer, and the
+customer will be disappointed.
+
+44
+00:02:36,330 --> 00:02:39,460
+There is something you can actually
+measure that will tell you whether you
+
+45
+00:02:39,460 --> 00:02:40,710
+learned or not.
+
+46
+00:02:40,710 --> 00:02:46,110
+So if there's no pattern, there is no
+harm done in trying machine learning.
+
+47
+00:02:46,110 --> 00:02:48,860
+The other one, also,
+you can do without.
+
+48
+00:02:48,860 --> 00:02:51,950
+Let's say that we can pin the
+thing down mathematically.
+
+49
+00:02:51,950 --> 00:02:52,760
+
+
+50
+00:02:52,760 --> 00:02:55,580
+Well, in that case, machine learning
+is not the recommended technique.
+
+51
+00:02:55,580 --> 00:02:57,120
+It will still work.
+
+52
+00:02:57,120 --> 00:02:58,660
+It may not be the optimal technique.
+
+53
+00:02:58,660 --> 00:03:02,570
+If you can outright program it, and
+find the result perfectly, then why
+
+54
+00:03:02,570 --> 00:03:06,720
+bother generate examples, and try to
+learn, and go through all of that?
+
+55
+00:03:06,720 --> 00:03:09,010
+But machine learning is
+not going to refuse.
+
+56
+00:03:09,010 --> 00:03:11,520
+It is going to learn, and it is
+going to give you a system.
+
+57
+00:03:11,520 --> 00:03:15,570
+It may not be the best system in this
+case, but it's a system nonetheless.
+
+58
+00:03:15,570 --> 00:03:19,040
+The third one, I'm afraid
+you cannot do without.
+
+59
+00:03:19,040 --> 00:03:20,960
+You have to have data.
+
+60
+00:03:20,960 --> 00:03:23,600
+Machine learning is about
+learning from data.
+
+61
+00:03:23,600 --> 00:03:26,920
+And if you don't have data, there is
+absolutely nothing you can do.
+
+62
+00:03:26,920 --> 00:03:31,750
+So this is basically the picture about
+the context of machine learning.
+
+63
+00:03:31,750 --> 00:03:36,650
+Now, we went on to focus on one type,
+which is supervised learning.
+
+64
+00:03:36,650 --> 00:03:41,860
+And in the case of surprised learning,
+we have a target function.
+
+65
+00:03:41,860 --> 00:03:44,780
+The target function we
+are going to call f.
+
+66
+00:03:44,780 --> 00:03:46,830
+That is our standard notation.
+
+67
+00:03:46,830 --> 00:03:49,790
+And this corresponds, for example,
+to the credit application.
+
+68
+00:03:49,790 --> 00:03:55,760
+x is your application, and f of x is
+whether you are a good credit risk or
+
+69
+00:03:55,760 --> 00:03:57,430
+not, for the bank.
+
+70
+00:03:57,430 --> 00:04:02,710
+So if you look at the target function,
+the main criterion about the target
+
+71
+00:04:02,710 --> 00:04:05,140
+function is that it's unknown.
+
+72
+00:04:05,140 --> 00:04:07,970
+This is a property that we
+are going to insist on.
+
+73
+00:04:07,970 --> 00:04:13,140
+And obviously, unknown is a very generous
+assumption, which means that
+
+74
+00:04:13,140 --> 00:04:15,980
+you don't have to worry about what
+pattern you are trying to learn.
+
+75
+00:04:15,980 --> 00:04:19,310
+It could be anything, and you will learn
+it-- if we manage to do that.
+
+76
+00:04:19,310 --> 00:04:21,470
+There's still a question
+mark about that.
+
+77
+00:04:21,470 --> 00:04:25,710
+But it's a good assumption to have, or
+lack of assumption, if you will,
+
+78
+00:04:25,710 --> 00:04:29,740
+because then you know that you don't
+worry about the environment that
+
+79
+00:04:29,740 --> 00:04:30,660
+generated the examples.
+
+80
+00:04:30,660 --> 00:04:35,396
+You only worry about the system that you
+use to implement machine learning.
+
+81
+00:04:35,396 --> 00:04:37,840
+Now, you are going to be given data.
+
+82
+00:04:37,840 --> 00:04:40,660
+And the reason it's called supervised
+learning is that you are not only
+
+83
+00:04:40,660 --> 00:04:43,370
+given the input x's, as
+you can see here.
+
+84
+00:04:43,370 --> 00:04:45,100
+You're also given the output--
+
+85
+00:04:45,100 --> 00:04:46,590
+the target outputs.
+
+86
+00:04:46,590 --> 00:04:49,810
+So in spite of the fact that the target
+function is generally unknown,
+
+87
+00:04:49,810 --> 00:04:52,380
+it is known on the data
+that I give you.
+
+88
+00:04:52,380 --> 00:04:56,105
+This is the data that you are going to
+use as training examples, and that you
+
+89
+00:04:56,105 --> 00:04:59,440
+are going to use to figure out
+what the target function is.
+
+90
+00:04:59,440 --> 00:05:02,470
+So in the case of supervising learning,
+you have the targets
+
+91
+00:05:02,470 --> 00:05:04,080
+explicitly.
+
+92
+00:05:04,080 --> 00:05:07,150
+In the other cases, you have less
+information than the target, and we
+
+93
+00:05:07,150 --> 00:05:09,280
+talked about it-- like unsupervised
+learning, where you don't have
+
+94
+00:05:09,280 --> 00:05:12,610
+anything, and reinforcement learning,
+where you have partial information,
+
+95
+00:05:12,610 --> 00:05:17,190
+which is just a reward or punishment
+for a choice of a value of y that
+
+96
+00:05:17,190 --> 00:05:19,920
+may or may not be the target.
+
+97
+00:05:19,920 --> 00:05:21,830
+Finally, you have the solution tools.
+
+98
+00:05:21,830 --> 00:05:24,360
+These are the things that you're going
+to choose in order to solve the
+
+99
+00:05:24,360 --> 00:05:28,040
+problem, and they are called the learning
+model, as we discussed.
+
+100
+00:05:28,040 --> 00:05:30,950
+They are the learning algorithm
+and the hypothesis set.
+
+101
+00:05:30,950 --> 00:05:34,390
+And the learning algorithm will
+produce a hypothesis--
+
+102
+00:05:34,390 --> 00:05:38,420
+the final hypothesis, the one that you
+are going to give your customer, and
+
+103
+00:05:38,420 --> 00:05:40,680
+we give the symbol g for that.
+
+104
+00:05:40,680 --> 00:05:44,150
+And hopefully g approximates f,
+the actual target function,
+
+105
+00:05:44,150 --> 00:05:45,590
+which remains unknown.
+
+106
+00:05:45,590 --> 00:05:50,340
+And g is picked from a hypothesis set,
+and the general the symbol for
+
+107
+00:05:50,340 --> 00:05:52,870
+a member of the hypothesis
+set is h.
+
+108
+00:05:52,870 --> 00:05:55,160
+So h is a generic hypothesis.
+
+109
+00:05:55,160 --> 00:05:59,330
+The one you happen to pick,
+you are going to call g.
+
+110
+00:05:59,330 --> 00:06:02,250
+Now, we looked at an example
+of a learning algorithm.
+
+111
+00:06:02,250 --> 00:06:07,140
+First, the learning model-- the
+perceptron itself, which is a linear
+
+112
+00:06:07,140 --> 00:06:08,560
+function, thresholded.
+
+113
+00:06:08,560 --> 00:06:10,730
+That happens to be the hypothesis set.
+
+114
+00:06:10,730 --> 00:06:14,700
+And then, there is an algorithm that
+goes with it that chooses which
+
+115
+00:06:14,700 --> 00:06:17,130
+hypothesis to report
+based on the data.
+
+116
+00:06:17,130 --> 00:06:20,220
+And the hypothesis in this case is
+represented by the purple line.
+
+117
+00:06:20,220 --> 00:06:24,970
+Different hypotheses in the
+set H will result
+
+118
+00:06:24,970 --> 00:06:25,660
+in different lines.
+
+119
+00:06:25,660 --> 00:06:28,440
+Some of them are good and some of them
+are bad, in terms of separating
+
+120
+00:06:28,440 --> 00:06:32,830
+correctly the examples which
+are the pluses and minuses.
+
+121
+00:06:32,830 --> 00:06:36,510
+And we found that there's a very simple
+rule to adjust the current
+
+122
+00:06:36,510 --> 00:06:39,890
+hypothesis, while the algorithm is still
+running, in order to get a better
+
+123
+00:06:39,890 --> 00:06:40,790
+hypothesis.
+
+124
+00:06:40,790 --> 00:06:43,780
+And once you have all the points
+classified correctly, which is
+
+125
+00:06:43,780 --> 00:06:46,730
+guaranteed in the case of the perceptron
+learning algorithm if the
+
+126
+00:06:46,730 --> 00:06:49,510
+data was linearly separable
+in the first place,
+
+127
+00:06:49,510 --> 00:06:54,960
+then you will get there, and that will
+be the g that you are going to report.
+
+128
+00:06:54,960 --> 00:06:59,050
+Now, we ended the lecture on sort of
+a sad note, because after all of this
+
+129
+00:06:59,050 --> 00:07:01,900
+encouragement about learning,
+we asked ourselves: well,
+
+130
+00:07:01,900 --> 00:07:04,270
+can we actually learn?
+
+131
+00:07:04,270 --> 00:07:06,755
+So we said
+it's an unknown function.
+
+132
+00:07:06,755 --> 00:07:10,050
+Unknown function is an attractive
+assumption, as I said.
+
+133
+00:07:10,050 --> 00:07:13,000
+But can we learn an unknown
+function, really?
+
+134
+00:07:13,000 --> 00:07:16,580
+And then we realized that if you look at
+it, it's really impossible.
+
+135
+00:07:16,580 --> 00:07:18,120
+Why is it impossible?
+
+136
+00:07:18,120 --> 00:07:22,360
+Because I'm going to give you a finite
+data set, and I'm going to give you
+
+137
+00:07:22,360 --> 00:07:24,500
+the value of the function on this set.
+
+138
+00:07:24,500 --> 00:07:25,830
+Good.
+
+139
+00:07:25,830 --> 00:07:30,100
+Now, I'm going to ask you what is
+the function outside that set?
+
+140
+00:07:30,100 --> 00:07:33,710
+How in the world are you going to tell
+what the function is outside, if the
+
+141
+00:07:33,710 --> 00:07:35,735
+function is genuinely unknown?
+
+142
+00:07:35,735 --> 00:07:38,900
+Couldn't it assume any value it wants?
+
+143
+00:07:38,900 --> 00:07:40,270
+Yes, it can.
+
+144
+00:07:40,270 --> 00:07:46,170
+I can give you 1000 points, a million
+points, and on the million-and-first point,
+
+145
+00:07:46,170 --> 00:07:49,300
+still the function can behave
+any way it wants.
+
+146
+00:07:49,300 --> 00:07:53,850
+So it doesn't look like the statement
+we made is feasible in terms of
+
+147
+00:07:53,850 --> 00:07:57,190
+learning, and therefore we have
+to do something about it.
+
+148
+00:07:57,190 --> 00:08:03,220
+And what we are going to do about it
+is the subject of this lecture.
+
+149
+00:08:03,220 --> 00:08:06,300
+Now, the lecture is called
+Is Learning Feasible?
+
+150
+00:08:06,300 --> 00:08:13,040
+And I am going to address this question
+in extreme detail from
+
+151
+00:08:13,040 --> 00:08:14,590
+beginning to end.
+
+152
+00:08:14,590 --> 00:08:17,410
+This is the only topic
+for this lecture.
+
+153
+00:08:17,410 --> 00:08:19,170
+
+
+154
+00:08:19,170 --> 00:08:21,100
+Now, if you want an outline--
+
+155
+00:08:21,100 --> 00:08:22,920
+it's really a logical flow.
+
+156
+00:08:22,920 --> 00:08:25,010
+But if you want to cluster
+it into points--
+
+157
+00:08:25,010 --> 00:08:28,210
+we are going to start with
+a probabilistic situation, that is a very
+
+158
+00:08:28,210 --> 00:08:29,880
+simple probabilistic situation.
+
+159
+00:08:29,880 --> 00:08:32,058
+It doesn't seem to relate to learning.
+
+160
+00:08:32,058 --> 00:08:34,500
+But it will capture the idea--
+
+161
+00:08:34,500 --> 00:08:39,429
+can we say something outside the
+sample data that we have?
+
+162
+00:08:39,429 --> 00:08:42,820
+So we're going to answer it in a way
+that is concrete, and where the
+
+163
+00:08:42,820 --> 00:08:44,990
+mathematics is very friendly.
+
+164
+00:08:44,990 --> 00:08:48,670
+And then after that, I'm going to be
+able to relate that probabilistic
+
+165
+00:08:48,670 --> 00:08:51,360
+situation to learning as we stated.
+
+166
+00:08:51,360 --> 00:08:52,790
+It will take two stages.
+
+167
+00:08:52,790 --> 00:08:56,220
+First, I will just translate the
+expressions into something that
+
+168
+00:08:56,220 --> 00:09:01,610
+relates to learning, and then we will
+move forward and make it correspond to
+
+169
+00:09:01,610 --> 00:09:03,300
+real learning.
+
+170
+00:09:03,300 --> 00:09:04,320
+That's the last one.
+
+171
+00:09:04,320 --> 00:09:07,520
+And then after we do that, and we think
+we are done, we find that there is
+
+172
+00:09:07,520 --> 00:09:09,450
+a serious dilemma that we have.
+
+173
+00:09:09,450 --> 00:09:13,290
+And we will find a solution to that
+dilemma, and then declare victory-- that
+
+174
+00:09:13,290 --> 00:09:18,130
+indeed, learning is feasible
+in a very particular sense.
+
+175
+00:09:18,130 --> 00:09:18,640
+
+
+176
+00:09:18,640 --> 00:09:22,310
+So let's start with the experiment
+that I talked about.
+
+177
+00:09:22,310 --> 00:09:24,716
+Consider the following situation.
+
+178
+00:09:24,716 --> 00:09:28,350
+You have a bin, and the
+bin has marbles.
+
+179
+00:09:28,350 --> 00:09:32,740
+The marbles are either red or green.
+
+180
+00:09:32,740 --> 00:09:34,950
+That's what it looks like.
+
+181
+00:09:34,950 --> 00:09:40,170
+And we are going to do an experiment
+with this bin.
+
+182
+00:09:40,170 --> 00:09:43,510
+And the experiment is to pick
+a sample from the bin--
+
+183
+00:09:43,510 --> 00:09:44,790
+some marbles.
+
+184
+00:09:44,790 --> 00:09:48,020
+Let's formalize what the probability
+distribution is.
+
+185
+00:09:48,020 --> 00:09:52,410
+There is a probability of picking
+a red marble, and let's call it mu.
+
+186
+00:09:52,410 --> 00:09:55,320
+
+
+187
+00:09:55,320 --> 00:09:59,180
+So now you think of mu as the
+probability of a red marble.
+
+188
+00:09:59,180 --> 00:10:03,110
+Now, the bin is really just a visual
+aid to make us relate to the
+
+189
+00:10:03,110 --> 00:10:03,830
+experiment.
+
+190
+00:10:03,830 --> 00:10:07,560
+You can think of this abstractly
+as a binary experiment--
+
+191
+00:10:07,560 --> 00:10:09,360
+two outcomes, red or green.
+
+192
+00:10:09,360 --> 00:10:11,530
+Probability of red is mu,
+independently from
+
+193
+00:10:11,530 --> 00:10:13,040
+one point to another.
+
+194
+00:10:13,040 --> 00:10:16,100
+If you want to stick to the bin, you can
+say the bin has an infinite number
+
+195
+00:10:16,100 --> 00:10:19,250
+of marbles and the fraction
+of red marbles is mu.
+
+196
+00:10:19,250 --> 00:10:22,410
+Or maybe it has a finite number of
+marbles, and you are going to pick the
+
+197
+00:10:22,410 --> 00:10:24,740
+marbles, but replace them.
+
+198
+00:10:24,740 --> 00:10:28,310
+But the idea now is that every time you
+reach in the bin, the probability
+
+199
+00:10:28,310 --> 00:10:30,440
+of picking a red marble is mu.
+
+200
+00:10:30,440 --> 00:10:31,690
+That's the rule.
+
+201
+00:10:31,690 --> 00:10:33,630
+
+
+202
+00:10:33,630 --> 00:10:35,930
+Now, there's a probability of
+picking a green marble.
+
+203
+00:10:35,930 --> 00:10:38,670
+And what might that be?
+
+204
+00:10:38,670 --> 00:10:41,360
+That must be 1 minus mu.
+
+205
+00:10:41,360 --> 00:10:42,610
+So that's the setup.
+
+206
+00:10:42,610 --> 00:10:44,950
+
+
+207
+00:10:44,950 --> 00:10:47,680
+Now, the value of mu is unknown to us.
+
+208
+00:10:47,680 --> 00:10:50,550
+So in spite of the fact that you can
+look at this particular bin and see
+
+209
+00:10:50,550 --> 00:10:54,010
+there's less red than green,
+so mu must be small.
+
+210
+00:10:54,010 --> 00:10:54,790
+and all of that.
+
+211
+00:10:54,790 --> 00:10:57,930
+You don't have that advantage in real.
+
+212
+00:10:57,930 --> 00:11:03,200
+The bin is opaque-- it's sitting there,
+and I reach for it like this.
+
+213
+00:11:03,200 --> 00:11:06,370
+So now that I declare mu is unknown,
+you probably see
+
+214
+00:11:06,370 --> 00:11:08,190
+where this is going.
+
+215
+00:11:08,190 --> 00:11:11,800
+Unknown is a famous word from last lecture,
+and that will be the link to
+
+216
+00:11:11,800 --> 00:11:14,340
+what we have.
+
+217
+00:11:14,340 --> 00:11:18,910
+Now, we pick N marbles independently.
+
+218
+00:11:18,910 --> 00:11:22,450
+Capital N. And I'm using the same
+notation for N, which is the
+
+219
+00:11:22,450 --> 00:11:26,180
+number of data points in
+learning, deliberately.
+
+220
+00:11:26,180 --> 00:11:29,070
+So the sample will look like this.
+
+221
+00:11:29,070 --> 00:11:31,020
+And it will have some
+red and some green.
+
+222
+00:11:31,020 --> 00:11:33,430
+It's a probabilistic situation.
+
+223
+00:11:33,430 --> 00:11:40,940
+And we are going to call the fraction
+of marbles in the sample--
+
+224
+00:11:40,940 --> 00:11:42,830
+this now is a probabilistic
+quantity.
+
+225
+00:11:42,830 --> 00:11:45,660
+mu is an unknown constant
+sitting there.
+
+226
+00:11:45,660 --> 00:11:49,210
+If you pick a sample, someone else picks
+a sample, you will have a different
+
+227
+00:11:49,210 --> 00:11:51,540
+frequency in sample from
+the other person.
+
+228
+00:11:51,540 --> 00:11:56,120
+And we are going to call it nu.
+
+229
+00:11:56,120 --> 00:12:00,740
+Now, interestingly enough, nu also
+should appear in the figure.
+
+230
+00:12:00,740 --> 00:12:03,780
+So it says nu equals fraction
+of red marbles.
+
+231
+00:12:03,780 --> 00:12:05,570
+So that's where it lies.
+
+232
+00:12:05,570 --> 00:12:05,790
+
+
+233
+00:12:05,790 --> 00:12:07,270
+Here is nu!
+
+234
+00:12:07,270 --> 00:12:10,740
+For some reason that I don't understand,
+the app wouldn't show nu
+
+235
+00:12:10,740 --> 00:12:13,070
+in the figures.
+
+236
+00:12:13,070 --> 00:12:16,700
+So I decided maybe the app is actually
+a machine learning expert.
+
+237
+00:12:16,700 --> 00:12:18,950
+It doesn't like things in sample.
+
+238
+00:12:18,950 --> 00:12:21,010
+It only likes things that are real.
+
+239
+00:12:21,010 --> 00:12:22,930
+So it knows that nu is not important.
+
+240
+00:12:22,930 --> 00:12:23,860
+It's not an indication.
+
+241
+00:12:23,860 --> 00:12:25,910
+We are really interested in
+knowing what's outside.
+
+242
+00:12:25,910 --> 00:12:28,500
+So it kept the mu, but actually
+deleted the nu.
+
+243
+00:12:28,500 --> 00:12:32,720
+At least that's what we are going to
+believe for the rest of the lecture.
+
+244
+00:12:32,720 --> 00:12:35,380
+Now, this is the bin.
+
+245
+00:12:35,380 --> 00:12:40,290
+So now, the next step is to ask ourselves
+the question we asked in
+
+246
+00:12:40,290 --> 00:12:41,740
+machine learning.
+
+247
+00:12:41,740 --> 00:12:47,810
+Does nu, which is the sample frequency,
+tell us anything about mu,
+
+248
+00:12:47,810 --> 00:12:53,790
+which is the actual frequency in the bin
+that we are interested in knowing?
+
+249
+00:12:53,790 --> 00:12:56,690
+The short answer--
+
+250
+00:12:56,690 --> 00:12:58,080
+this is to remind you what it is.
+
+251
+00:12:58,080 --> 00:13:02,490
+The short answer is no.
+
+252
+00:13:02,490 --> 00:13:04,890
+Why?
+
+253
+00:13:04,890 --> 00:13:14,870
+Because the sample can be mostly green,
+while the bin is mostly red.
+
+254
+00:13:14,870 --> 00:13:18,880
+Anybody doubts that?
+
+255
+00:13:18,880 --> 00:13:26,310
+The thing could have 90% red,
+and I pick 100 marbles, and all
+
+256
+00:13:26,310 --> 00:13:28,640
+of them happen to be green.
+
+257
+00:13:28,640 --> 00:13:31,570
+This is possible, correct?
+
+258
+00:13:31,570 --> 00:13:35,400
+So if I ask you what is actually mu, you
+really don't know from the sample.
+
+259
+00:13:35,400 --> 00:13:38,020
+You don't know anything about the
+marbles you did not pick.
+
+260
+00:13:38,020 --> 00:13:40,595
+
+
+261
+00:13:40,595 --> 00:13:40,950
+
+
+262
+00:13:40,950 --> 00:13:42,420
+Well, that's the short answer.
+
+263
+00:13:42,420 --> 00:13:47,840
+The long answer is yes.
+
+264
+00:13:47,840 --> 00:13:50,480
+Not because no and yes, but
+this is more elaborate.
+
+265
+00:13:50,480 --> 00:13:54,020
+We have to really discuss a lot
+in order to get there.
+
+266
+00:13:54,020 --> 00:13:55,960
+So why is it yes?
+
+267
+00:13:55,960 --> 00:14:03,330
+Because if you know a little bit about
+probability, you realize that if the
+
+268
+00:14:03,330 --> 00:14:09,090
+sample is big enough, the sample
+frequency, which is nu-- the mysterious
+
+269
+00:14:09,090 --> 00:14:16,800
+disappearing quantity here-- that
+is likely to be close to mu.
+
+270
+00:14:16,800 --> 00:14:19,810
+Think of a presidential poll.
+
+271
+00:14:19,810 --> 00:14:25,230
+There are maybe 100 million or more
+voters in the US, and you make a poll
+
+272
+00:14:25,230 --> 00:14:26,740
+of 3000 people.
+
+273
+00:14:26,740 --> 00:14:29,660
+You have 3000 marbles, so to speak.
+
+274
+00:14:29,660 --> 00:14:32,460
+And you look at the result in the
+marbles, and you tell me how the 100
+
+275
+00:14:32,460 --> 00:14:33,610
+million will vote.
+
+276
+00:14:33,610 --> 00:14:36,240
+How the heck did you know that?
+
+277
+00:14:36,240 --> 00:14:37,880
+So now the statistics come in.
+
+278
+00:14:37,880 --> 00:14:40,450
+That's where the probability
+plays a role.
+
+279
+00:14:40,450 --> 00:14:43,510
+And the main distinction between
+the two answers is
+
+280
+00:14:43,510 --> 00:14:46,620
+possible versus probable.
+
+281
+00:14:46,620 --> 00:14:52,060
+In science and in engineering, you go
+a huge distance by settling for not
+
+282
+00:14:52,060 --> 00:14:55,000
+absolutely certain, but
+almost certain.
+
+283
+00:14:55,000 --> 00:14:57,950
+It opens a world of possibilities,
+and this is one of the
+
+284
+00:14:57,950 --> 00:14:59,200
+possibilities that it opens.
+
+285
+00:14:59,200 --> 00:15:01,980
+
+
+286
+00:15:01,980 --> 00:15:06,920
+So now we know that, from
+a probabilistic point of view, nu does
+
+287
+00:15:06,920 --> 00:15:08,070
+tell me something about mu.
+
+288
+00:15:08,070 --> 00:15:10,610
+The sample frequency tells me
+something about the bin.
+
+289
+00:15:10,610 --> 00:15:13,500
+So what does it exactly say?
+
+290
+00:15:13,500 --> 00:15:15,985
+Now we go into a mathematical
+formulation.
+
+291
+00:15:15,985 --> 00:15:19,110
+
+
+292
+00:15:19,110 --> 00:15:24,370
+In words, it says: in a big sample,
+nu, the sample frequency,
+
+293
+00:15:24,370 --> 00:15:27,940
+should be close to mu,
+the bin frequency.
+
+294
+00:15:27,940 --> 00:15:28,690
+
+
+295
+00:15:28,690 --> 00:15:32,690
+So now, the symbols that go with
+that-- what is a big sample?
+
+296
+00:15:32,690 --> 00:15:35,690
+Large N, our parameter N.
+
+297
+00:15:35,690 --> 00:15:39,100
+And how do we say that
+nu is close to mu?
+
+298
+00:15:39,100 --> 00:15:43,720
+We say that they are within epsilon.
+
+299
+00:15:43,720 --> 00:15:45,780
+That is our criterion.
+
+300
+00:15:45,780 --> 00:15:50,130
+Now, with this in mind, we are
+going to formalize this.
+
+301
+00:15:50,130 --> 00:15:54,500
+The formula that I'm going to show
+you is a formula that is going to
+
+302
+00:15:54,500 --> 00:15:56,330
+stay with us for the
+rest of the course.
+
+303
+00:15:56,330 --> 00:15:57,840
+I would like you to pay attention.
+
+304
+00:15:57,840 --> 00:16:01,440
+And I'm going to build it gradually.
+
+305
+00:16:01,440 --> 00:16:09,580
+We are going to say that the probability
+of something is small.
+
+306
+00:16:09,580 --> 00:16:12,120
+So we're going to say that it's less
+than or equal to, and hopefully the
+
+307
+00:16:12,120 --> 00:16:15,000
+right-hand side will be
+a small quantity.
+
+308
+00:16:15,000 --> 00:16:18,880
+Now if I am claiming that the
+probability of something is small, it
+
+309
+00:16:18,880 --> 00:16:22,110
+must be that that thing is a bad event.
+
+310
+00:16:22,110 --> 00:16:24,030
+I don't want it to happen.
+
+311
+00:16:24,030 --> 00:16:28,760
+So we have a probability of something
+bad happening being small.
+
+312
+00:16:28,760 --> 00:16:32,180
+What is a bad event in the context
+we are talking about?
+
+313
+00:16:32,180 --> 00:16:35,860
+
+
+314
+00:16:35,860 --> 00:16:40,220
+It is that nu does not
+approximate mu well.
+
+315
+00:16:40,220 --> 00:16:42,810
+They are not within epsilon
+of each other.
+
+316
+00:16:42,810 --> 00:16:47,510
+And if you look at it, here you have
+nu minus mu in absolute value, so
+
+317
+00:16:47,510 --> 00:16:49,840
+that's the difference
+in absolute value.
+
+318
+00:16:49,840 --> 00:16:51,670
+That happens to be bigger
+than epsilon.
+
+319
+00:16:51,670 --> 00:16:56,110
+So that's bad, because that tells us
+that they are further away from our
+
+320
+00:16:56,110 --> 00:16:57,700
+tolerance epsilon.
+
+321
+00:16:57,700 --> 00:16:59,460
+We don't want that to happen.
+
+322
+00:16:59,460 --> 00:17:02,120
+And we would like the probability
+of that happening to
+
+323
+00:17:02,120 --> 00:17:04,079
+be as small as possible.
+
+324
+00:17:04,079 --> 00:17:06,569
+Well, how small can we guarantee it?
+
+325
+00:17:06,569 --> 00:17:09,230
+
+
+326
+00:17:09,230 --> 00:17:11,670
+Good news.
+
+327
+00:17:11,670 --> 00:17:13,990
+It's e to the minus N.
+
+328
+00:17:13,990 --> 00:17:16,060
+It's a negative exponential.
+
+329
+00:17:16,060 --> 00:17:20,190
+That is great, because negative
+exponentials tend to die very fast.
+
+330
+00:17:20,190 --> 00:17:23,230
+So if you get a bigger sample, this
+will be diminishingly small
+
+331
+00:17:23,230 --> 00:17:24,240
+probability.
+
+332
+00:17:24,240 --> 00:17:27,630
+So the probability of something bad
+happening will be very small, and we
+
+333
+00:17:27,630 --> 00:17:33,530
+can claims that, indeed, nu will be
+within epsilon from mu, and we will be
+
+334
+00:17:33,530 --> 00:17:36,820
+wrong for a very minute
+amount of the time.
+
+335
+00:17:36,820 --> 00:17:39,680
+But that's the good news.
+
+336
+00:17:39,680 --> 00:17:41,310
+Now the bad news--
+
+337
+00:17:41,310 --> 00:17:43,610
+ouch!
+
+338
+00:17:43,610 --> 00:17:45,630
+Epsilon is our tolerance.
+
+339
+00:17:45,630 --> 00:17:47,670
+If you're a very tolerant
+person, you say:
+
+340
+00:17:47,670 --> 00:17:52,080
+I just want nu and mu to be
+within, let's say, 0.1.
+
+341
+00:17:52,080 --> 00:17:54,630
+That's not very much to ask.
+
+342
+00:17:54,630 --> 00:17:59,220
+Now, the price you pay for that is
+that you plug in the exponent
+
+343
+00:17:59,220 --> 00:18:01,650
+not epsilon, but epsilon squared.
+
+344
+00:18:01,650 --> 00:18:04,140
+So that becomes 0.01.
+
+345
+00:18:04,140 --> 00:18:09,170
+0.01 will dampen N significantly, and
+you lose a lot of the benefit of the
+
+346
+00:18:09,170 --> 00:18:11,290
+negative exponential.
+
+347
+00:18:11,290 --> 00:18:15,045
+And if you are more stringent and
+you say, I really want nu
+
+348
+00:18:15,045 --> 00:18:15,660
+to be close to mu.
+
+349
+00:18:15,660 --> 00:18:17,480
+I am not fooling around here.
+
+350
+00:18:17,480 --> 00:18:20,790
+So I am going to pick epsilon
+to be 10 to the minus 6.
+
+351
+00:18:20,790 --> 00:18:22,020
+Good for you.
+
+352
+00:18:22,020 --> 00:18:23,150
+10 to the minus 6?
+
+353
+00:18:23,150 --> 00:18:24,510
+Pay the price for it.
+
+354
+00:18:24,510 --> 00:18:27,950
+You go here, and now that's
+10 to the minus 12.
+
+355
+00:18:27,950 --> 00:18:31,260
+That will completely kill any
+N you will ever encounter.
+
+356
+00:18:31,260 --> 00:18:34,170
+So the exponent now will
+be around zero.
+
+357
+00:18:34,170 --> 00:18:37,360
+So this probability will be around
+1, if that was the final answer.
+
+358
+00:18:37,360 --> 00:18:38,850
+That's not yet the final answer.
+
+359
+00:18:38,850 --> 00:18:41,830
+So now, you know that the probability
+is less than or equal to 1.
+
+360
+00:18:41,830 --> 00:18:43,170
+Congratulations!
+
+361
+00:18:43,170 --> 00:18:44,960
+You knew that already.
+[LAUGHTER]
+
+362
+00:18:44,960 --> 00:18:46,300
+
+
+363
+00:18:46,300 --> 00:18:51,520
+Well, this is almost the formula,
+but it's not quite.
+
+364
+00:18:51,520 --> 00:18:54,590
+What we need is fairly trivial.
+
+365
+00:18:54,590 --> 00:18:57,810
+We just put 2 here, and 2 there.
+
+366
+00:18:57,810 --> 00:19:01,400
+Now, between you and me, I prefer
+the original formula
+
+367
+00:19:01,400 --> 00:19:03,400
+better, without the 2's.
+
+368
+00:19:03,400 --> 00:19:11,150
+However, the formula with the 2's has the
+distinct advantage of being: true. [LAUGHTER]
+
+369
+00:19:11,150 --> 00:19:13,550
+So we have to settle for that.
+
+370
+00:19:13,550 --> 00:19:20,720
+Now that inequality is called
+Hoeffding's Inequality.
+
+371
+00:19:20,720 --> 00:19:24,730
+It is the main inequality we are going
+to be using in the course.
+
+372
+00:19:24,730 --> 00:19:26,910
+You can look for the proof.
+
+373
+00:19:26,910 --> 00:19:28,350
+It's a basic proof in mathematics.
+
+374
+00:19:28,350 --> 00:19:31,380
+It's not that difficult, but
+definitely not trivial.
+
+375
+00:19:31,380 --> 00:19:35,790
+And we are going to use it all the way--
+and this is the same formula
+
+376
+00:19:35,790 --> 00:19:38,265
+that will get us to prove something
+about the VC dimension.
+
+377
+00:19:38,265 --> 00:19:42,200
+If the buzzword 'VC dimension' means
+anything to you, it will come from
+
+378
+00:19:42,200 --> 00:19:44,590
+this after a lot of derivation.
+
+379
+00:19:44,590 --> 00:19:48,235
+So this is the building block that
+you have to really know cold.
+
+380
+00:19:48,235 --> 00:19:51,980
+
+
+381
+00:19:51,980 --> 00:19:56,970
+Now, if you want to translate the
+Hoeffding Inequality into words, what
+
+382
+00:19:56,970 --> 00:20:00,280
+we have been talking about is that
+we would like to make the
+
+383
+00:20:00,280 --> 00:20:03,020
+statement: mu equals nu.
+
+384
+00:20:03,020 --> 00:20:04,140
+That would be the ultimate.
+
+385
+00:20:04,140 --> 00:20:06,780
+I look at the in-sample frequency, that's
+the out-of-sample frequency.
+
+386
+00:20:06,780 --> 00:20:09,150
+That's the real frequency out there.
+
+387
+00:20:09,150 --> 00:20:10,880
+But that's not the case.
+
+388
+00:20:10,880 --> 00:20:15,380
+We actually are making the statement
+mu equals nu, but we're not
+
+389
+00:20:15,380 --> 00:20:16,170
+making the statement--
+
+390
+00:20:16,170 --> 00:20:19,690
+we are making a PAC statement.
+
+391
+00:20:19,690 --> 00:20:30,520
+And that stands for: this statement is
+probably, approximately, correct.
+
+392
+00:20:30,520 --> 00:20:34,590
+Probably because of this.
+
+393
+00:20:34,590 --> 00:20:37,740
+This is small, so the probability
+of violation is small.
+
+394
+00:20:37,740 --> 00:20:39,530
+Approximately because of this.
+
+395
+00:20:39,530 --> 00:20:42,050
+We are not saying that mu equals nu.
+
+396
+00:20:42,050 --> 00:20:44,950
+We are saying that they are
+close to each other.
+
+397
+00:20:44,950 --> 00:20:48,010
+And that theme will remain
+with us in learning.
+
+398
+00:20:48,010 --> 00:20:51,020
+
+
+399
+00:20:51,020 --> 00:20:55,190
+So we put the glorified Hoeffding's
+Inequality at the top, and we spend
+
+400
+00:20:55,190 --> 00:20:59,130
+a viewgraph analyzing what it means.
+
+401
+00:20:59,130 --> 00:21:02,610
+In case you forgot what nu and
+mu are, I put the figure.
+
+402
+00:21:02,610 --> 00:21:08,040
+So mu is the frequency within the bin.
+
+403
+00:21:08,040 --> 00:21:10,510
+This is the unknown quantity
+that we want to tell.
+
+404
+00:21:10,510 --> 00:21:13,990
+And nu is the disappearing quantity
+which happens to be the frequency in
+
+405
+00:21:13,990 --> 00:21:15,660
+the sample you have.
+
+406
+00:21:15,660 --> 00:21:16,920
+
+
+407
+00:21:16,920 --> 00:21:20,470
+So what about the Hoeffding
+Inequality?
+
+408
+00:21:20,470 --> 00:21:25,560
+Well, one attraction of this
+inequality is that it is valid for
+
+409
+00:21:25,560 --> 00:21:31,590
+every N, positive integer, and every
+epsilon which is greater than zero.
+
+410
+00:21:31,590 --> 00:21:35,370
+Pick any tolerance you want, and
+for any number of examples you
+
+411
+00:21:35,370 --> 00:21:36,730
+want, this is true.
+
+412
+00:21:36,730 --> 00:21:38,600
+It's not an asymptotic result.
+
+413
+00:21:38,600 --> 00:21:41,180
+It's a result that holds for
+every N and epsilon.
+
+414
+00:21:41,180 --> 00:21:43,640
+That's a very attractive proposition
+for something that has
+
+415
+00:21:43,640 --> 00:21:46,060
+an exponential in it.
+
+416
+00:21:46,060 --> 00:21:50,690
+Now, Hoeffding Inequality belongs to
+a large class of mathematical laws,
+
+417
+00:21:50,690 --> 00:21:54,170
+which are called the Laws
+of Large Numbers.
+
+418
+00:21:54,170 --> 00:21:57,120
+So this is one law of large numbers,
+one form of it, and
+
+419
+00:21:57,120 --> 00:21:58,710
+there are tons of them.
+
+420
+00:21:58,710 --> 00:22:01,100
+This happens to be one of the
+friendliest, because it's not
+
+421
+00:22:01,100 --> 00:22:03,290
+asymptotic, and happens to have
+an exponential in it.
+
+422
+00:22:03,290 --> 00:22:06,630
+
+
+423
+00:22:06,630 --> 00:22:12,470
+Now, one observation here is that if you
+look at the left-hand side, we are
+
+424
+00:22:12,470 --> 00:22:14,080
+computing this probability.
+
+425
+00:22:14,080 --> 00:22:17,680
+This probability patently
+depends on mu.
+
+426
+00:22:17,680 --> 00:22:22,430
+mu appears explicitly in it, and
+also mu affects the probability
+
+427
+00:22:22,430 --> 00:22:23,680
+distribution of nu.
+
+428
+00:22:23,680 --> 00:22:26,830
+Nu is the sample, in N
+marbles you picked.
+
+429
+00:22:26,830 --> 00:22:29,400
+That's a very simple binomial
+distribution.
+
+430
+00:22:29,400 --> 00:22:33,150
+You can find the probability that
+nu equals anything based on
+
+431
+00:22:33,150 --> 00:22:34,760
+the value of mu.
+
+432
+00:22:34,760 --> 00:22:40,220
+So the probability that this quantity,
+which depends on mu, exceeds epsilon--
+
+433
+00:22:40,220 --> 00:22:43,340
+the probability itself
+does depend on mu.
+
+434
+00:22:43,340 --> 00:22:46,330
+However, we are not interested
+in the exact probability.
+
+435
+00:22:46,330 --> 00:22:47,900
+We just want to bound it.
+
+436
+00:22:47,900 --> 00:22:50,360
+And in this case, we are
+bounding it uniformly.
+
+437
+00:22:50,360 --> 00:22:53,800
+As you see, the right-hand side
+does not have mu in it.
+
+438
+00:22:53,800 --> 00:22:59,580
+And that gives us a great tool, because
+now we don't use the quantity
+
+439
+00:22:59,580 --> 00:23:02,000
+that, we already declared, is unknown.
+
+440
+00:23:02,000 --> 00:23:02,690
+mu is unknown.
+
+441
+00:23:02,690 --> 00:23:07,310
+It would be a vicious cycle if I go
+and say that it depends on mu,
+
+442
+00:23:07,310 --> 00:23:08,640
+but I don't know what mu is.
+
+443
+00:23:08,640 --> 00:23:12,360
+Now you know uniformly, regardless of
+the value of mu-- mu could be anything
+
+444
+00:23:12,360 --> 00:23:16,820
+between 0 and 1, and this will still
+be bounding the deviation of the
+
+445
+00:23:16,820 --> 00:23:20,180
+sample frequency from
+the real frequency.
+
+446
+00:23:20,180 --> 00:23:21,430
+That's a good advantage.
+
+447
+00:23:21,430 --> 00:23:23,760
+
+
+448
+00:23:23,760 --> 00:23:28,590
+Now, the other point is that there is
+a trade-off that you can read off the
+
+449
+00:23:28,590 --> 00:23:29,340
+inequality.
+
+450
+00:23:29,340 --> 00:23:32,280
+What is the trade-off?
+
+451
+00:23:32,280 --> 00:23:35,780
+The trade-off is between
+N and epsilon.
+
+452
+00:23:35,780 --> 00:23:39,430
+In a typical situation, if we think of N
+as the number of examples that are
+
+453
+00:23:39,430 --> 00:23:43,040
+given to you-- the amount of data-- in
+this case, the number of marbles out
+
+454
+00:23:43,040 --> 00:23:44,560
+of the bin,
+
+455
+00:23:44,560 --> 00:23:45,840
+N is usually dictated.
+
+456
+00:23:45,840 --> 00:23:49,380
+Someone comes and gives you a certain
+resource of examples.
+
+457
+00:23:49,380 --> 00:23:52,800
+Epsilon is your taste in tolerance.
+
+458
+00:23:52,800 --> 00:23:55,900
+You are very tolerant. You
+pick epsilon equals 0.5.
+
+459
+00:23:55,900 --> 00:23:58,080
+That will be very easy to satisfy.
+
+460
+00:23:58,080 --> 00:24:01,570
+And if you are very stringent, you can
+pick epsilon smaller and smaller.
+
+461
+00:24:01,570 --> 00:24:08,670
+Now, because they get multiplied here,
+the smaller the epsilon is, the bigger
+
+462
+00:24:08,670 --> 00:24:12,490
+than N you need in order to compensate
+for it and come up with the same level
+
+463
+00:24:12,490 --> 00:24:15,280
+of probability bound.
+
+464
+00:24:15,280 --> 00:24:17,510
+And that makes a lot of sense.
+
+465
+00:24:17,510 --> 00:24:22,620
+If you have more examples, you are more
+sure that nu and mu will be close
+
+466
+00:24:22,620 --> 00:24:25,230
+together, even closer and
+closer and closer,
+
+467
+00:24:25,230 --> 00:24:27,090
+as you get larger N.
+
+468
+00:24:27,090 --> 00:24:28,340
+So this makes sense.
+
+469
+00:24:28,340 --> 00:24:30,830
+
+
+470
+00:24:30,830 --> 00:24:31,850
+Finally,
+
+471
+00:24:31,850 --> 00:24:34,600
+it's a subtle point, but
+it's worth saying.
+
+472
+00:24:34,600 --> 00:24:40,860
+We are making the statement that nu
+is approximately the same as mu.
+
+473
+00:24:40,860 --> 00:24:47,190
+And this implies that mu is
+approximately the same as nu.
+
+474
+00:24:47,190 --> 00:24:50,600
+What is this?
+
+475
+00:24:50,600 --> 00:24:53,230
+The logic here is a little bit subtle.
+
+476
+00:24:53,230 --> 00:24:56,670
+Obviously, the statement is a tautology,
+but I'm just making
+
+477
+00:24:56,670 --> 00:24:59,130
+a logical point, here.
+
+478
+00:24:59,130 --> 00:25:02,540
+When you run the experiment,
+you don't know what mu is.
+
+479
+00:25:02,540 --> 00:25:03,640
+mu is an unknown.
+
+480
+00:25:03,640 --> 00:25:05,260
+It's a constant.
+
+481
+00:25:05,260 --> 00:25:09,790
+The only random fellow in this
+entire operation is nu.
+
+482
+00:25:09,790 --> 00:25:12,400
+That is what the probability
+is with respect to.
+
+483
+00:25:12,400 --> 00:25:15,510
+You generate different samples, and
+you compute the probability.
+
+484
+00:25:15,510 --> 00:25:16,670
+This is the probabilistic thing.
+
+485
+00:25:16,670 --> 00:25:22,670
+This is a happy constant sitting
+there, albeit unknown.
+
+486
+00:25:22,670 --> 00:25:30,150
+Now, the way you are using the
+inequality is to infer mu, the sample
+
+487
+00:25:30,150 --> 00:25:34,280
+here, from nu.
+
+488
+00:25:34,280 --> 00:25:38,240
+That is not the cause and effect
+that actually takes place.
+
+489
+00:25:38,240 --> 00:25:43,590
+The cause and effect is that mu affects
+nu, not the other way around.
+
+490
+00:25:43,590 --> 00:25:47,200
+But we are using it the
+other way around.
+
+491
+00:25:47,200 --> 00:25:51,640
+Lucky for us, the form of the
+probability is symmetric.
+
+492
+00:25:51,640 --> 00:25:58,620
+Therefore, instead of saying that nu
+tends to be close to mu, which will
+
+493
+00:25:58,620 --> 00:26:03,130
+be the accurate logical statement-- mu
+is there, and nu has a tendency to be
+
+494
+00:26:03,130 --> 00:26:04,420
+close to it.
+
+495
+00:26:04,420 --> 00:26:10,440
+We, instead of that, say that I know
+already nu, and now mu tends to
+
+496
+00:26:10,440 --> 00:26:12,070
+be close to nu.
+
+497
+00:26:12,070 --> 00:26:13,380
+That's the logic we are using.
+
+498
+00:26:13,380 --> 00:26:19,810
+
+
+499
+00:26:19,810 --> 00:26:19,967
+
+
+500
+00:26:19,967 --> 00:26:25,030
+Now, I think we understand what the bin
+situation is, and we know what the
+
+501
+00:26:25,030 --> 00:26:28,330
+mathematical condition that
+corresponds to it is.
+
+502
+00:26:28,330 --> 00:26:29,230
+What I'd like to do,
+
+503
+00:26:29,230 --> 00:26:32,090
+I'd like to connect that to the
+learning problem we have.
+
+504
+00:26:32,090 --> 00:26:34,690
+
+
+505
+00:26:34,690 --> 00:26:35,040
+
+
+506
+00:26:35,040 --> 00:26:42,540
+In the case of a bin, the unknown
+quantity that we want to decipher is
+
+507
+00:26:42,540 --> 00:26:43,840
+a number, mu.
+
+508
+00:26:43,840 --> 00:26:44,580
+Just unknown.
+
+509
+00:26:44,580 --> 00:26:48,080
+What is the frequency inside the bin.
+
+510
+00:26:48,080 --> 00:26:53,160
+In the learning situation that we had,
+the unknown quantity we would like to
+
+511
+00:26:53,160 --> 00:26:57,260
+decipher is a full-fledged function.
+
+512
+00:26:57,260 --> 00:27:02,570
+It has a domain, X, that could be
+a 10th-order Euclidean space.
+
+513
+00:27:02,570 --> 00:27:03,430
+Y could be anything.
+
+514
+00:27:03,430 --> 00:27:04,650
+It could be binary, like
+the perceptron.
+
+515
+00:27:04,650 --> 00:27:06,000
+It could be something else.
+
+516
+00:27:06,000 --> 00:27:08,660
+That's a huge amount of information.
+
+517
+00:27:08,660 --> 00:27:10,060
+The bin has only one number.
+
+518
+00:27:10,060 --> 00:27:13,940
+This one, if you want to specify it,
+that's a lot of specification.
+
+519
+00:27:13,940 --> 00:27:18,240
+So how am I going to be able to relate
+the learning problem to something that
+
+520
+00:27:18,240 --> 00:27:19,490
+simplistic?
+
+521
+00:27:19,490 --> 00:27:23,000
+
+
+522
+00:27:23,000 --> 00:27:29,060
+The way we are going to do it
+is the following.
+
+523
+00:27:29,060 --> 00:27:34,310
+Think of the bin as your input space
+in the learning problem.
+
+524
+00:27:34,310 --> 00:27:35,900
+That's the correspondence.
+
+525
+00:27:35,900 --> 00:27:38,630
+So every marble here is a point x.
+
+526
+00:27:38,630 --> 00:27:41,920
+That is a credit card applicant.
+
+527
+00:27:41,920 --> 00:27:46,030
+So if you look closely at the gray
+thing, you will read: salary, years in
+
+528
+00:27:46,030 --> 00:27:47,330
+residence, and whatnot.
+
+529
+00:27:47,330 --> 00:27:50,710
+You can't see it here because
+it's too small!
+
+530
+00:27:50,710 --> 00:27:57,290
+Now the bin has all the points
+in the space. Therefore, this
+
+531
+00:27:57,290 --> 00:27:59,860
+is really the space.
+
+532
+00:27:59,860 --> 00:28:01,980
+That's the correspondence in our mind.
+
+533
+00:28:01,980 --> 00:28:04,355
+Now we would like to give
+colors to the marbles.
+
+534
+00:28:04,355 --> 00:28:08,930
+
+
+535
+00:28:08,930 --> 00:28:10,225
+So here are the colors.
+
+536
+00:28:10,225 --> 00:28:14,710
+
+
+537
+00:28:14,710 --> 00:28:18,520
+There are green marbles, and they
+correspond to something in the
+
+538
+00:28:18,520 --> 00:28:19,420
+learning problem.
+
+539
+00:28:19,420 --> 00:28:22,870
+What do they correspond to?
+
+540
+00:28:22,870 --> 00:28:30,270
+They correspond to your hypothesis
+getting it right.
+
+541
+00:28:30,270 --> 00:28:31,570
+So what does that mean?
+
+542
+00:28:31,570 --> 00:28:34,300
+There is a target function
+sitting there, right?
+
+543
+00:28:34,300 --> 00:28:35,460
+You have a hypothesis.
+
+544
+00:28:35,460 --> 00:28:39,470
+The hypothesis is a full function,
+like the target function is.
+
+545
+00:28:39,470 --> 00:28:45,550
+You can compare the hypothesis to the
+target function on every point.
+
+546
+00:28:45,550 --> 00:28:48,610
+And they either agree or disagree.
+
+547
+00:28:48,610 --> 00:28:52,210
+If they agree, please color
+the corresponding point
+
+548
+00:28:52,210 --> 00:28:53,605
+in the input space--
+
+549
+00:28:53,605 --> 00:28:56,500
+Color it green.
+
+550
+00:28:56,500 --> 00:28:59,910
+Now, I'm not saying that you know which
+ones are green and which ones
+
+551
+00:28:59,910 --> 00:29:03,120
+are not, because you don't know
+the target function overall.
+
+552
+00:29:03,120 --> 00:29:07,940
+I'm just telling you the mapping that
+takes an unknown target function into
+
+553
+00:29:07,940 --> 00:29:09,880
+an unknown mu.
+
+554
+00:29:09,880 --> 00:29:12,190
+So both of them are unknown,
+admittedly, but that's the
+
+555
+00:29:12,190 --> 00:29:14,840
+correspondence that maps it.
+
+556
+00:29:14,840 --> 00:29:17,660
+And now you go, and there
+are some red ones.
+
+557
+00:29:17,660 --> 00:29:19,280
+And, you guessed it.
+
+558
+00:29:19,280 --> 00:29:25,260
+You color the thing red if your
+hypothesis got the answer wrong.
+
+559
+00:29:25,260 --> 00:29:29,970
+So now I am collapsing the entire
+thing into just agreement and
+
+560
+00:29:29,970 --> 00:29:34,280
+disagreement between your hypothesis
+and the target function, and that's
+
+561
+00:29:34,280 --> 00:29:36,420
+how you get to color the bin.
+
+562
+00:29:36,420 --> 00:29:43,030
+Because of that, you have a mapping for
+every point, whether it's green or
+
+563
+00:29:43,030 --> 00:29:45,860
+red, according to this rule.
+
+564
+00:29:45,860 --> 00:29:49,510
+Now, this will add a component to
+the learning problem that we
+
+565
+00:29:49,510 --> 00:29:52,580
+did not have before.
+
+566
+00:29:52,580 --> 00:29:54,870
+There is a probability associated
+with the bin.
+
+567
+00:29:54,870 --> 00:29:57,010
+There is a probability of
+picking a marble, and
+
+568
+00:29:57,010 --> 00:29:58,760
+independently, and all of that.
+
+569
+00:29:58,760 --> 00:30:01,730
+When we talked about the learning
+problem, there was no probability.
+
+570
+00:30:01,730 --> 00:30:05,770
+I will just give you a sample set,
+and that's what you work with.
+
+571
+00:30:05,770 --> 00:30:09,610
+So let's see what is the addition we
+need to do in order to adjust the
+
+572
+00:30:09,610 --> 00:30:14,140
+statement of the learning problem to
+accommodate the new ingredient.
+
+573
+00:30:14,140 --> 00:30:16,510
+And the new ingredient is important,
+because otherwise we cannot learn.
+
+574
+00:30:16,510 --> 00:30:20,060
+It's not like we have the luxury
+of doing without it.
+
+575
+00:30:20,060 --> 00:30:22,890
+So we go back to the learning
+diagram from last time.
+
+576
+00:30:22,890 --> 00:30:23,770
+Do you remember this one?
+
+577
+00:30:23,770 --> 00:30:25,600
+Let me remind you.
+
+578
+00:30:25,600 --> 00:30:29,610
+Here is your target function,
+and it's unknown.
+
+579
+00:30:29,610 --> 00:30:34,150
+And I promised you last time that it
+will remain unknown, and the promise
+
+580
+00:30:34,150 --> 00:30:34,970
+will be fulfilled.
+
+581
+00:30:34,970 --> 00:30:37,390
+We are not going to touch this box.
+
+582
+00:30:37,390 --> 00:30:41,490
+We're just going to add another box
+to accommodate the probability.
+
+583
+00:30:41,490 --> 00:30:44,290
+And the target function generates
+the training examples.
+
+584
+00:30:44,290 --> 00:30:47,060
+These are the only things that
+the learning algorithm sees.
+
+585
+00:30:47,060 --> 00:30:51,170
+It picks a hypothesis from the
+hypothesis set, and produces it as the
+
+586
+00:30:51,170 --> 00:30:54,360
+final hypothesis, which hopefully
+approximates f.
+
+587
+00:30:54,360 --> 00:30:55,390
+That's the game.
+
+588
+00:30:55,390 --> 00:30:58,880
+So what is the addition
+we are going to do?
+
+589
+00:30:58,880 --> 00:31:03,170
+In the bin analogy, this
+is the input space.
+
+590
+00:31:03,170 --> 00:31:05,320
+Now the input space
+has a probability.
+
+591
+00:31:05,320 --> 00:31:09,290
+So I need to apply this probability to
+the points from the input space that
+
+592
+00:31:09,290 --> 00:31:12,110
+are being generated.
+
+593
+00:31:12,110 --> 00:31:16,490
+I am going to introduce a probability
+distribution over the
+
+594
+00:31:16,490 --> 00:31:17,870
+input space.
+
+595
+00:31:17,870 --> 00:31:20,640
+Now the points in the input space--
+let's say the d-dimensional
+
+596
+00:31:20,640 --> 00:31:21,630
+Euclidean space--
+
+597
+00:31:21,630 --> 00:31:23,620
+are not just generic points now.
+
+598
+00:31:23,620 --> 00:31:26,880
+There is a probability of picking
+one point versus the other.
+
+599
+00:31:26,880 --> 00:31:29,700
+And that is captured by the probability,
+which I'm going to call
+
+600
+00:31:29,700 --> 00:31:31,480
+capital P.
+
+601
+00:31:31,480 --> 00:31:35,990
+Now the interesting thing is that I'm
+making no assumptions about P. P can
+
+602
+00:31:35,990 --> 00:31:36,520
+be anything.
+
+603
+00:31:36,520 --> 00:31:40,310
+I just want a probability.
+
+604
+00:31:40,310 --> 00:31:44,710
+So invoke any probability you want, and
+I am ready with the machinery.
+
+605
+00:31:44,710 --> 00:31:49,260
+I am not going to restrict the
+probability distributions over X.
+
+606
+00:31:49,260 --> 00:31:50,110
+That's number one.
+
+607
+00:31:50,110 --> 00:31:52,610
+So this is not as bad as it looks.
+
+608
+00:31:52,610 --> 00:31:57,780
+Number two, I don't even
+need to know what P is.
+
+609
+00:31:57,780 --> 00:32:02,710
+Of course, the probability choice will
+affect the choice of the probability
+
+610
+00:32:02,710 --> 00:32:06,620
+of getting a green marble or a red
+marble, because now the probability of
+
+611
+00:32:06,620 --> 00:32:11,450
+different marbles changed, so it
+could change the value mu.
+
+612
+00:32:11,450 --> 00:32:14,900
+But the good news with the Hoeffding is
+that I could bound the performance
+
+613
+00:32:14,900 --> 00:32:16,860
+independently of mu.
+
+614
+00:32:16,860 --> 00:32:22,470
+So I can get away with not only any P,
+but with a P that I don't know, and
+
+615
+00:32:22,470 --> 00:32:25,140
+I'll still be able to make the
+mathematical statement.
+
+616
+00:32:25,140 --> 00:32:28,970
+So this is a very benign addition
+to the problem.
+
+617
+00:32:28,970 --> 00:32:31,370
+And it will give us very high
+dividends, which is the
+
+618
+00:32:31,370 --> 00:32:33,590
+feasibility of learning.
+
+619
+00:32:33,590 --> 00:32:36,050
+So what do you do with
+the probability?
+
+620
+00:32:36,050 --> 00:32:43,190
+You use the probability to generate the
+points x_1 up to x_N. So now
+
+621
+00:32:43,190 --> 00:32:47,290
+x_1 up to x_N are assumed to be
+generated by that probability
+
+622
+00:32:47,290 --> 00:32:49,000
+independently.
+
+623
+00:32:49,000 --> 00:32:51,600
+That's the only assumption
+that is made.
+
+624
+00:32:51,600 --> 00:32:54,950
+If you make that assumption,
+we are in business.
+
+625
+00:32:54,950 --> 00:32:57,220
+But the good news is, as
+I mentioned before,
+
+626
+00:32:57,220 --> 00:32:59,800
+we did not compromise about
+the target function.
+
+627
+00:32:59,800 --> 00:33:02,505
+You don't need to make assumptions about
+the function you don't know and
+
+628
+00:33:02,505 --> 00:33:04,690
+you want to learn, which is good news.
+
+629
+00:33:04,690 --> 00:33:07,610
+And the addition is almost technical.
+
+630
+00:33:07,610 --> 00:33:10,060
+That there is a probability somewhere,
+generating the points.
+
+631
+00:33:10,060 --> 00:33:12,700
+If I know that, then I can make
+a statement in probability.
+
+632
+00:33:12,700 --> 00:33:15,550
+Obviously, you can make that statement
+only to the extent that the assumption
+
+633
+00:33:15,550 --> 00:33:18,840
+is valid, and we can discuss that
+in later lectures when the
+
+634
+00:33:18,840 --> 00:33:20,240
+assumption is not valid.
+
+635
+00:33:20,240 --> 00:33:23,500
+
+
+636
+00:33:23,500 --> 00:33:23,800
+So, OK.
+
+637
+00:33:23,800 --> 00:33:24,640
+Happy ending.
+
+638
+00:33:24,640 --> 00:33:27,320
+We are done, and we now have
+the correspondence.
+
+639
+00:33:27,320 --> 00:33:28,570
+Are we done?
+
+640
+00:33:28,570 --> 00:33:31,170
+
+
+641
+00:33:31,170 --> 00:33:33,740
+Well, not quite.
+
+642
+00:33:33,740 --> 00:33:36,330
+Why are we not done?
+
+643
+00:33:36,330 --> 00:33:42,190
+Because the analogy I gave
+you requires a particular
+
+644
+00:33:42,190 --> 00:33:44,720
+hypothesis in mind.
+
+645
+00:33:44,720 --> 00:33:48,940
+I told you that the red and green marbles
+correspond to the agreement between h
+
+646
+00:33:48,940 --> 00:33:50,850
+and the target function.
+
+647
+00:33:50,850 --> 00:33:56,250
+So when you tell me what h is,
+you dictate the colors here.
+
+648
+00:33:56,250 --> 00:33:57,330
+All of these colors.
+
+649
+00:33:57,330 --> 00:34:01,190
+This is green not because it's
+inherently green, not because of
+
+650
+00:34:01,190 --> 00:34:03,620
+anything inherent about
+the target function.
+
+651
+00:34:03,620 --> 00:34:07,380
+It's because of the agreement between
+the target function and your
+
+652
+00:34:07,380 --> 00:34:09,980
+hypothesis, h.
+
+653
+00:34:09,980 --> 00:34:12,300
+That's fine, but what is the problem?
+
+654
+00:34:12,300 --> 00:34:21,739
+The problem is that I know that
+for this h, nu generalizes to mu.
+
+655
+00:34:21,739 --> 00:34:24,130
+You're probably saying, yeah,
+but h could be anything.
+
+656
+00:34:24,130 --> 00:34:25,780
+I don't see the problem yet.
+
+657
+00:34:25,780 --> 00:34:27,989
+
+
+658
+00:34:27,989 --> 00:34:30,370
+Now here is the problem.
+
+659
+00:34:30,370 --> 00:34:34,600
+What we have actually discussed is
+not learning, it's verification.
+
+660
+00:34:34,600 --> 00:34:36,199
+The situation as I describe it--
+
+661
+00:34:36,199 --> 00:34:39,070
+you have a single bin and you have red
+and green marbles, and this and that,
+
+662
+00:34:39,070 --> 00:34:40,530
+corresponds to the following.
+
+663
+00:34:40,530 --> 00:34:41,949
+A bank comes to my office.
+
+664
+00:34:41,949 --> 00:34:45,679
+We would like a formula
+for credit approval.
+
+665
+00:34:45,679 --> 00:34:47,500
+And we have data.
+
+666
+00:34:47,500 --> 00:34:51,239
+So instead of actually taking the data,
+and searching hypotheses, and picking
+
+667
+00:34:51,239 --> 00:34:54,699
+one, like the perceptron learning
+algorithm, here is what I do that
+
+668
+00:34:54,699 --> 00:34:56,780
+corresponds to what I just described.
+
+669
+00:34:56,780 --> 00:34:57,080
+
+
+670
+00:34:57,080 --> 00:34:58,945
+You guys want a linear formula?
+
+671
+00:34:58,945 --> 00:34:59,200
+OK.
+
+672
+00:34:59,200 --> 00:35:01,170
+I guess the salary should
+have a big weight.
+
+673
+00:35:01,170 --> 00:35:02,410
+Let's say 2.
+
+674
+00:35:02,410 --> 00:35:06,530
+The outstanding debt is negative, so
+that should be a weight minus 0.5.
+
+675
+00:35:06,530 --> 00:35:09,560
+And years in residence are important,
+but not that important.
+
+676
+00:35:09,560 --> 00:35:11,250
+So let's give them a 0.1.
+
+677
+00:35:11,250 --> 00:35:14,050
+And let's pick a threshold
+that is high, in order for
+
+678
+00:35:14,050 --> 00:35:14,890
+you not to lose money.
+
+679
+00:35:14,890 --> 00:35:17,520
+Let's pick a threshold of 0.5.
+
+680
+00:35:17,520 --> 00:35:20,870
+Sitting down, improvising an h.
+
+681
+00:35:20,870 --> 00:35:27,190
+Now, after I fix the h, I ask you for
+the data and just verify whether the h
+
+682
+00:35:27,190 --> 00:35:29,690
+I picked is good or bad.
+
+683
+00:35:29,690 --> 00:35:34,080
+That I can do with the bin, because
+I'm going to look at the data.
+
+684
+00:35:34,080 --> 00:35:37,720
+If I miraculously agree with everything
+in your data, I can
+
+685
+00:35:37,720 --> 00:35:40,390
+definitely declare victory
+by Hoeffding.
+
+686
+00:35:40,390 --> 00:35:43,570
+But what are the chances that this
+will happen in the first place?
+
+687
+00:35:43,570 --> 00:35:47,050
+I have no control over whether I will
+be good on the data or not.
+
+688
+00:35:47,050 --> 00:35:51,170
+The whole idea of learning is that I'm
+searching the space to deliberately
+
+689
+00:35:51,170 --> 00:35:54,250
+find a hypothesis that
+works well on the data.
+
+690
+00:35:54,250 --> 00:35:57,300
+In this case, I just dictated
+a hypothesis.
+
+691
+00:35:57,300 --> 00:36:00,470
+And I was able to tell you for sure
+what happens out-of-sample.
+
+692
+00:36:00,470 --> 00:36:03,550
+But I have no control of what news
+I'm going to tell you.
+
+693
+00:36:03,550 --> 00:36:04,430
+You can come to my office.
+
+694
+00:36:04,430 --> 00:36:05,490
+I improvise this.
+
+695
+00:36:05,490 --> 00:36:06,560
+I go to the data.
+
+696
+00:36:06,560 --> 00:36:08,750
+And I tell you, I have
+a fantastic system.
+
+697
+00:36:08,750 --> 00:36:13,580
+It generalizes perfectly, and
+it does a terrible job.
+
+698
+00:36:13,580 --> 00:36:16,840
+That's what I have, because when
+I tested it, nu was terrible.
+
+699
+00:36:16,840 --> 00:36:19,090
+So that's not what we are looking for.
+
+700
+00:36:19,090 --> 00:36:23,430
+What we are looking for is
+to make it learning.
+
+701
+00:36:23,430 --> 00:36:26,020
+So how do we do that?
+
+702
+00:36:26,020 --> 00:36:28,280
+No guarantee that nu will be small.
+
+703
+00:36:28,280 --> 00:36:36,430
+And we need to choose the hypothesis
+from multiple h's.
+
+704
+00:36:36,430 --> 00:36:37,340
+That's the game.
+
+705
+00:36:37,340 --> 00:36:41,250
+And in that case, you are going to go for
+the sample, so to speak, generated
+
+706
+00:36:41,250 --> 00:36:44,790
+by every hypothesis, and then you pick
+the hypothesis that is most favorable,
+
+707
+00:36:44,790 --> 00:36:46,320
+that gives you the least error.
+
+708
+00:36:46,320 --> 00:36:47,060
+
+
+709
+00:36:47,060 --> 00:36:50,490
+So now, that doesn't look
+like a difficult thing.
+
+710
+00:36:50,490 --> 00:36:52,140
+It worked with one bin.
+
+711
+00:36:52,140 --> 00:36:56,120
+Maybe I can have more than one bin, to
+accommodate the situation where I have
+
+712
+00:36:56,120 --> 00:36:57,860
+more than one hypothesis.
+
+713
+00:36:57,860 --> 00:36:59,630
+It looks plausible.
+
+714
+00:36:59,630 --> 00:37:01,290
+So let's do that.
+
+715
+00:37:01,290 --> 00:37:02,800
+We will just take multiple bins.
+
+716
+00:37:02,800 --> 00:37:05,540
+
+
+717
+00:37:05,540 --> 00:37:08,180
+So here is the first bin.
+
+718
+00:37:08,180 --> 00:37:11,380
+Now you can see that
+this is a bad bin.
+
+719
+00:37:11,380 --> 00:37:14,830
+So that hypothesis is terrible.
+
+720
+00:37:14,830 --> 00:37:18,250
+And the sample reflects
+that, to some extent.
+
+721
+00:37:18,250 --> 00:37:22,120
+But we are going to have other bins,
+so let's call this something.
+
+722
+00:37:22,120 --> 00:37:26,120
+So this bin corresponds
+to a particular h.
+
+723
+00:37:26,120 --> 00:37:31,340
+And since we are going to have other
+hypotheses, we are going to call this
+
+724
+00:37:31,340 --> 00:37:34,310
+h_1 in preparation
+for the next guy.
+
+725
+00:37:34,310 --> 00:37:38,900
+The next guy comes in,
+and you have h_2.
+
+726
+00:37:38,900 --> 00:37:41,150
+And you have another mu_2.
+
+727
+00:37:41,150 --> 00:37:45,200
+This one looks like a good hypothesis,
+and it's also reflected in the sample.
+
+728
+00:37:45,200 --> 00:37:48,450
+And it's important to look
+at the correspondence.
+
+729
+00:37:48,450 --> 00:37:54,500
+If you look at the top red point here
+and the top green point here, this is
+
+730
+00:37:54,500 --> 00:37:56,950
+the same point in the input space.
+
+731
+00:37:56,950 --> 00:38:00,460
+It just was colored red here
+and colored green here.
+
+732
+00:38:00,460 --> 00:38:01,800
+Why did that happen?
+
+733
+00:38:01,800 --> 00:38:07,110
+Because the target function disagrees
+with this h, and the target function
+
+734
+00:38:07,110 --> 00:38:08,960
+happens to agree with this h.
+
+735
+00:38:08,960 --> 00:38:11,690
+That's what got this the color green.
+
+736
+00:38:11,690 --> 00:38:15,000
+And when you pick a sample, the sample
+also will have different colors,
+
+737
+00:38:15,000 --> 00:38:17,290
+because the colors depend
+on which hypothesis.
+
+738
+00:38:17,290 --> 00:38:19,720
+And these are different hypotheses.
+
+739
+00:38:19,720 --> 00:38:21,200
+That looks simple enough.
+
+740
+00:38:21,200 --> 00:38:22,620
+So let's continue.
+
+741
+00:38:22,620 --> 00:38:25,640
+And we can have M of them.
+
+742
+00:38:25,640 --> 00:38:29,520
+I am going to consider a finite number
+of hypotheses, just to make the math
+
+743
+00:38:29,520 --> 00:38:31,020
+easy for this lecture.
+
+744
+00:38:31,020 --> 00:38:33,500
+And we're going to go more sophisticated
+when we get into the
+
+745
+00:38:33,500 --> 00:38:36,160
+theory of generalization.
+
+746
+00:38:36,160 --> 00:38:37,670
+So now I have this.
+
+747
+00:38:37,670 --> 00:38:38,550
+This is good.
+
+748
+00:38:38,550 --> 00:38:42,540
+I have samples, and the samples
+here are different.
+
+749
+00:38:42,540 --> 00:38:47,180
+And I can do the learning, and the
+learning now, abstractly, is to scan
+
+750
+00:38:47,180 --> 00:38:50,510
+these samples looking
+for a good sample.
+
+751
+00:38:50,510 --> 00:38:54,770
+And when you find a good sample, you
+declare victory, because of Hoeffding,
+
+752
+00:38:54,770 --> 00:38:59,210
+and you say that it must be that the
+corresponding bin is good, and the
+
+753
+00:38:59,210 --> 00:39:02,320
+corresponding bin happens to be
+the hypothesis you chose.
+
+754
+00:39:02,320 --> 00:39:05,200
+So that is an abstraction of learning.
+
+755
+00:39:05,200 --> 00:39:08,160
+That was easy enough.
+
+756
+00:39:08,160 --> 00:39:11,820
+Now, because this is going to stay with
+us, I am now going to introduce
+
+757
+00:39:11,820 --> 00:39:17,460
+the notation that will survive with us
+for the entire discussion of learning.
+
+758
+00:39:17,460 --> 00:39:19,670
+So here is the notation.
+
+759
+00:39:19,670 --> 00:39:24,860
+We realize that both mu, which
+happens to be inside the bin,
+
+760
+00:39:24,860 --> 00:39:27,200
+and nu, which happens to be
+the sample frequency--
+
+761
+00:39:27,200 --> 00:39:31,580
+in this case, the sample frequency of
+error-- both of them depend on h.
+
+762
+00:39:31,580 --> 00:39:35,100
+So I'd like to give a notation
+that makes that explicit.
+
+763
+00:39:35,100 --> 00:39:36,230
+The first thing,
+
+764
+00:39:36,230 --> 00:39:40,850
+I am going to call mu and nu
+with a descriptive name.
+
+765
+00:39:40,850 --> 00:39:45,910
+So nu, which is the frequency in the
+sample you have, is in-sample.
+
+766
+00:39:45,910 --> 00:39:49,390
+That is a standard definition for what
+happens in the data that I give you.
+
+767
+00:39:49,390 --> 00:39:52,900
+If you perform well in-sample, it means
+that your error in the sample
+
+768
+00:39:52,900 --> 00:39:55,190
+that I give you is small.
+
+769
+00:39:55,190 --> 00:40:02,210
+And because it is called in-sample,
+we are going to denote it by E_in.
+
+770
+00:40:02,210 --> 00:40:08,310
+I think this is worth blowing up,
+because it's an important one.
+
+771
+00:40:08,310 --> 00:40:11,980
+This is our standard notation for
+the error that you have in-sample.
+
+772
+00:40:11,980 --> 00:40:15,020
+
+
+773
+00:40:15,020 --> 00:40:19,660
+Now, we go and get the other one,
+which happens to be mu.
+
+774
+00:40:19,660 --> 00:40:22,320
+And that is called out-of-sample.
+
+775
+00:40:22,320 --> 00:40:26,930
+So if you are in this field, I guess
+what matters is the out-of-sample
+
+776
+00:40:26,930 --> 00:40:27,510
+performance.
+
+777
+00:40:27,510 --> 00:40:28,430
+That's the lesson.
+
+778
+00:40:28,430 --> 00:40:31,920
+Out-of-sample means something
+that you haven't seen.
+
+779
+00:40:31,920 --> 00:40:35,180
+And if you perform out-of-sample, on
+something that you haven't seen, then
+
+780
+00:40:35,180 --> 00:40:36,690
+you must have really learned.
+
+781
+00:40:36,690 --> 00:40:39,940
+That's the standard for it,
+and the name for it is E_out.
+
+782
+00:40:39,940 --> 00:40:43,430
+
+
+783
+00:40:43,430 --> 00:40:44,010
+
+
+784
+00:40:44,010 --> 00:40:49,550
+With this in mind, we realize that we
+don't yet have the dependency on h
+
+785
+00:40:49,550 --> 00:40:51,070
+which we need.
+
+786
+00:40:51,070 --> 00:40:56,925
+So we are going to make the notation a little
+bit more elaborate, by calling
+
+787
+00:40:56,925 --> 00:40:59,270
+E_in and E_out--
+
+788
+00:40:59,270 --> 00:41:05,670
+calling them E_in of h, and E_out of h.
+
+789
+00:41:05,670 --> 00:41:06,880
+Why is that?
+
+790
+00:41:06,880 --> 00:41:10,920
+Well, the in-sample performance-- you
+are trying to see the error of
+
+791
+00:41:10,920 --> 00:41:14,400
+approximating the target function
+by your hypothesis.
+
+792
+00:41:14,400 --> 00:41:15,760
+That's what E_in is.
+
+793
+00:41:15,760 --> 00:41:18,330
+So obviously, it depends
+on your hypothesis.
+
+794
+00:41:18,330 --> 00:41:19,780
+So it's E_in of h.
+
+795
+00:41:19,780 --> 00:41:25,050
+Someone else picks another h, they will
+get another E_in of their h.
+
+796
+00:41:25,050 --> 00:41:28,490
+Similarly E_out, the corresponding
+one is E_out of h.
+
+797
+00:41:28,490 --> 00:41:32,170
+So now, what used to be
+nu is now E_in of h.
+
+798
+00:41:32,170 --> 00:41:36,010
+What used to be mu, inside
+the bin, is E_out of h.
+
+799
+00:41:36,010 --> 00:41:39,980
+
+
+800
+00:41:39,980 --> 00:41:43,600
+Now, the Hoeffding Inequality,
+which we know all too well
+
+801
+00:41:43,600 --> 00:41:45,730
+by now, said that.
+
+802
+00:41:45,730 --> 00:41:50,270
+So all I'm going to do is just
+replace the notation.
+
+803
+00:41:50,270 --> 00:41:52,310
+And now it looks a little bit
+more crowded, but it's
+
+804
+00:41:52,310 --> 00:41:54,580
+exactly the same thing.
+
+805
+00:41:54,580 --> 00:42:00,440
+The probability that your in-sample
+performance deviates from your out-of-
+
+806
+00:42:00,440 --> 00:42:05,440
+sample performance by more than your
+prescribed tolerance is less than or
+
+807
+00:42:05,440 --> 00:42:09,060
+equal to a number that
+is hopefully small.
+
+808
+00:42:09,060 --> 00:42:12,720
+And you can go back and forth.
+
+809
+00:42:12,720 --> 00:42:18,050
+There's nu and mu, or you can go here
+and you get the new notation.
+
+810
+00:42:18,050 --> 00:42:20,220
+So we're settled on the notation now.
+
+811
+00:42:20,220 --> 00:42:25,710
+Now, let's go for the multiple
+bins and use this notation.
+
+812
+00:42:25,710 --> 00:42:27,820
+These are the multiple
+bins as we left them.
+
+813
+00:42:27,820 --> 00:42:32,350
+We have the hypotheses h_1 up to h_M,
+and we have the mu_1 and mu_M.
+
+814
+00:42:32,350 --> 00:42:35,100
+And if you see 1, 2, M, again,
+this is a disappearing nu--
+
+815
+00:42:35,100 --> 00:42:37,890
+the symbol that the app doesn't like.
+
+816
+00:42:37,890 --> 00:42:40,070
+But thank God we switched
+notations, so that
+
+817
+00:42:40,070 --> 00:42:42,180
+something will appear.
+
+818
+00:42:42,180 --> 00:42:42,840
+Yeah!
+
+819
+00:42:42,840 --> 00:42:43,280
+
+
+820
+00:42:43,280 --> 00:42:46,640
+So right now, that's what we have.
+
+821
+00:42:46,640 --> 00:42:50,400
+Every bin has an out-of-sample
+performance, and out-of-
+
+822
+00:42:50,400 --> 00:42:54,310
+sample is: Out. Of. Sample.
+
+823
+00:42:54,310 --> 00:42:55,200
+So this is a sample.
+
+824
+00:42:55,200 --> 00:42:56,670
+What's in it is in-sample.
+
+825
+00:42:56,670 --> 00:42:58,510
+What is not in it is out-of-sample.
+
+826
+00:42:58,510 --> 00:43:02,760
+And the out-of-sample depends on
+h_1 here, h_2 here, and h_M here.
+
+827
+00:43:02,760 --> 00:43:05,860
+And obviously, these quantities will be
+different according to the sample, and
+
+828
+00:43:05,860 --> 00:43:08,960
+these quantities will be different
+according to the ultimate performance
+
+829
+00:43:08,960 --> 00:43:12,072
+of your hypothesis.
+
+830
+00:43:12,072 --> 00:43:12,510
+
+
+831
+00:43:12,510 --> 00:43:13,860
+So we solved the problem.
+
+832
+00:43:13,860 --> 00:43:16,040
+It's not verification.
+It's not a single bin.
+
+833
+00:43:16,040 --> 00:43:16,940
+It's real learning.
+
+834
+00:43:16,940 --> 00:43:18,330
+I'm going to scan these.
+
+835
+00:43:18,330 --> 00:43:20,640
+So that's pretty good.
+
+836
+00:43:20,640 --> 00:43:21,890
+Are we done already?
+
+837
+00:43:21,890 --> 00:43:25,358
+
+
+838
+00:43:25,358 --> 00:43:27,220
+Not so fast.
+
+839
+00:43:27,220 --> 00:43:27,610
+[LAUGHING]
+
+840
+00:43:27,610 --> 00:43:28,800
+
+
+841
+00:43:28,800 --> 00:43:30,830
+What's wrong?
+
+842
+00:43:30,830 --> 00:43:34,190
+Let me tell you what's wrong.
+
+843
+00:43:34,190 --> 00:43:39,940
+The Hoeffding Inequality, that we have
+happily studied and declared important
+
+844
+00:43:39,940 --> 00:43:43,465
+and all of that, doesn't apply
+to multiple bins.
+
+845
+00:43:43,465 --> 00:43:47,780
+
+
+846
+00:43:47,780 --> 00:43:49,700
+What?
+
+847
+00:43:49,700 --> 00:43:52,970
+You told us mathematics, and you go
+read the proof, and all of that.
+
+848
+00:43:52,970 --> 00:43:55,260
+Are you just pulling tricks on us?
+
+849
+00:43:55,260 --> 00:43:57,430
+What is the deal here?
+
+850
+00:43:57,430 --> 00:43:59,390
+And you even can complain.
+
+851
+00:43:59,390 --> 00:44:04,960
+We sat for 40 minutes now going from
+a single bin, mapping it to
+
+852
+00:44:04,960 --> 00:44:08,450
+the learning diagram, mapping it to
+multiple bins, and now you tell us
+
+853
+00:44:08,450 --> 00:44:12,350
+that the main tool we developed
+doesn't apply.
+
+854
+00:44:12,350 --> 00:44:17,070
+Why doesn't it apply, and what
+can we do about it?
+
+855
+00:44:17,070 --> 00:44:23,360
+Let me start by saying why it doesn't
+apply, and then we can go for what we
+
+856
+00:44:23,360 --> 00:44:25,330
+can do about it.
+
+857
+00:44:25,330 --> 00:44:27,890
+Now, everybody has a coin.
+
+858
+00:44:27,890 --> 00:44:32,370
+I hope the online audience
+have a coin ready.
+
+859
+00:44:32,370 --> 00:44:38,110
+I'd like to ask you to take
+the coin out and flip it,
+
+860
+00:44:38,110 --> 00:44:40,800
+let's say, five times.
+
+861
+00:44:40,800 --> 00:44:42,260
+And record what happens.
+
+862
+00:44:42,260 --> 00:44:45,085
+
+
+863
+00:44:45,085 --> 00:44:49,360
+And when you at home flip the
+coin five times, please,
+
+864
+00:44:49,360 --> 00:44:55,660
+if you happen to get all five heads in
+your experiment, then text us that you
+
+865
+00:44:55,660 --> 00:44:56,750
+got all five heads.
+
+866
+00:44:56,750 --> 00:44:59,300
+If you get anything else,
+don't bother text us.
+
+867
+00:44:59,300 --> 00:45:02,050
+We just want to know if someone
+will get five heads.
+
+868
+00:45:02,050 --> 00:45:09,140
+
+
+869
+00:45:09,140 --> 00:45:10,730
+Everybody is done flipping the coin.
+
+870
+00:45:10,730 --> 00:45:14,070
+
+
+871
+00:45:14,070 --> 00:45:17,715
+Because you have been so generous and
+cooperative, you can keep the coin!
+
+872
+00:45:17,715 --> 00:45:20,640
+[LAUGHTER]
+
+873
+00:45:20,640 --> 00:45:24,110
+Now, did anybody get five heads?
+
+874
+00:45:24,110 --> 00:45:25,360
+All five heads?
+
+875
+00:45:25,360 --> 00:45:28,006
+
+
+876
+00:45:28,006 --> 00:45:28,480
+
+
+877
+00:45:28,480 --> 00:45:29,810
+Congratulations, sir.
+
+878
+00:45:29,810 --> 00:45:32,090
+You have a biased coin, right?
+
+879
+00:45:32,090 --> 00:45:35,420
+We just argued that in-sample
+corresponds to out-of-sample, and we
+
+880
+00:45:35,420 --> 00:45:38,250
+have this Hoeffding thing, and therefore
+if you get five heads, it
+
+881
+00:45:38,250 --> 00:45:40,470
+must be that this coin
+gives you heads.
+
+882
+00:45:40,470 --> 00:45:40,910
+
+
+883
+00:45:40,910 --> 00:45:41,600
+We know better.
+
+884
+00:45:41,600 --> 00:45:43,980
+So in the online audience,
+what happened?
+
+885
+00:45:43,980 --> 00:45:46,040
+MODERATOR: Yeah, in the online audience,
+there's also five heads.
+
+886
+00:45:46,040 --> 00:45:46,050
+
+
+887
+00:45:46,050 --> 00:45:48,870
+PROFESSOR: There are lots of
+biased coins out there.
+
+888
+00:45:48,870 --> 00:45:51,920
+Are they really biased coins?
+
+889
+00:45:51,920 --> 00:45:54,000
+No.
+
+890
+00:45:54,000 --> 00:45:56,580
+What is the deal here?
+
+891
+00:45:56,580 --> 00:45:58,440
+Let's look at it.
+
+892
+00:45:58,440 --> 00:46:03,870
+Here, with the audience here, I didn't
+want to push my luck with 10 flips,
+
+893
+00:46:03,870 --> 00:46:05,810
+because it's a live broadcast.
+
+894
+00:46:05,810 --> 00:46:07,880
+So I said five will work.
+
+895
+00:46:07,880 --> 00:46:11,360
+For the analytical example,
+let's take 10 flips.
+
+896
+00:46:11,360 --> 00:46:14,410
+Let's say you have a fair coin,
+which every coin is.
+
+897
+00:46:14,410 --> 00:46:15,740
+You have a fair coin.
+
+898
+00:46:15,740 --> 00:46:18,100
+And you toss it 10 times.
+
+899
+00:46:18,100 --> 00:46:22,170
+What is the probability that you
+will get all 10 heads?
+
+900
+00:46:22,170 --> 00:46:23,845
+Pretty easy.
+
+901
+00:46:23,845 --> 00:46:27,210
+One half, times one half,
+10 times, and that will give
+
+902
+00:46:27,210 --> 00:46:30,240
+you about 1 in 1000.
+
+903
+00:46:30,240 --> 00:46:32,511
+No chance that you will get it--
+
+904
+00:46:32,511 --> 00:46:35,540
+not no chance, but very little chance.
+
+905
+00:46:35,540 --> 00:46:40,080
+Now, the second question is the one we
+actually ran the experiment for.
+
+906
+00:46:40,080 --> 00:46:44,890
+If you toss 1000 fair coins-- it wasn't
+1000 here. It's how many there.
+
+907
+00:46:44,890 --> 00:46:47,370
+Maybe out there is 1000.
+
+908
+00:46:47,370 --> 00:46:54,500
+What is the probability that some
+coin will give you all 10 heads?
+
+909
+00:46:54,500 --> 00:46:56,510
+Not difficult at all to compute.
+
+910
+00:46:56,510 --> 00:47:01,250
+And when you get the answer, the answer
+will be it's actually more
+
+911
+00:47:01,250 --> 00:47:02,500
+likely than not.
+
+912
+00:47:02,500 --> 00:47:06,020
+
+
+913
+00:47:06,020 --> 00:47:13,500
+So now it means that the 10 heads in
+this case are no indication at all of
+
+914
+00:47:13,500 --> 00:47:14,710
+the real probability.
+
+915
+00:47:14,710 --> 00:47:16,050
+That is the game we are playing.
+
+916
+00:47:16,050 --> 00:47:18,620
+Can I look at the sample and infer
+something about the real probability?
+
+917
+00:47:18,620 --> 00:47:19,460
+No.
+
+918
+00:47:19,460 --> 00:47:23,570
+In this case, you will get 10
+heads, and the coin is fair.
+
+919
+00:47:23,570 --> 00:47:25,060
+Why did this happen?
+
+920
+00:47:25,060 --> 00:47:28,020
+This happened because
+you tried too hard.
+
+921
+00:47:28,020 --> 00:47:29,700
+Eventually what will happen is--
+
+922
+00:47:29,700 --> 00:47:32,710
+Hoeffding applies to any one of them.
+
+923
+00:47:32,710 --> 00:47:36,260
+But there is a probability, let's
+say half a percent, that you
+
+924
+00:47:36,260 --> 00:47:37,160
+will be off here.
+
+925
+00:47:37,160 --> 00:47:39,830
+Another half a percent that
+you will be off here.
+
+926
+00:47:39,830 --> 00:47:42,770
+If you do it often enough, and you are
+lucky enough that the half percents
+
+927
+00:47:42,770 --> 00:47:47,300
+are disjoint, you will end up with
+extremely high probability that
+
+928
+00:47:47,300 --> 00:47:50,130
+something bad will happen, somewhere.
+
+929
+00:47:50,130 --> 00:47:52,000
+That's the key.
+
+930
+00:47:52,000 --> 00:47:56,530
+So let's translate this into
+the learning situation.
+
+931
+00:47:56,530 --> 00:47:57,780
+Here are your coins.
+
+932
+00:47:57,780 --> 00:47:59,980
+
+
+933
+00:47:59,980 --> 00:48:02,440
+And how do they correspond
+to the bins?
+
+934
+00:48:02,440 --> 00:48:05,950
+Well, it's a binary experiment, whether
+you are picking a red marble
+
+935
+00:48:05,950 --> 00:48:09,610
+or a green marble, or you are flipping
+a coin getting heads or tails.
+
+936
+00:48:09,610 --> 00:48:11,000
+It's a binary situation.
+
+937
+00:48:11,000 --> 00:48:12,550
+So there's a direct correspondence.
+
+938
+00:48:12,550 --> 00:48:16,750
+Just get the probability of heads being
+mu, which is the probability of
+
+939
+00:48:16,750 --> 00:48:18,860
+a red marble, corresponding to them.
+
+940
+00:48:18,860 --> 00:48:20,880
+So because the coins are fair,
+
+941
+00:48:20,880 --> 00:48:24,940
+actually all the bins in this case
+are half red, half green.
+
+942
+00:48:24,940 --> 00:48:26,780
+That's really bad news
+for a hypothesis.
+
+943
+00:48:26,780 --> 00:48:28,470
+The hypothesis is completely random.
+
+944
+00:48:28,470 --> 00:48:30,450
+Half the time it agrees with
+the target function.
+
+945
+00:48:30,450 --> 00:48:31,560
+Half the time it disagrees.
+
+946
+00:48:31,560 --> 00:48:33,560
+No information at all.
+
+947
+00:48:33,560 --> 00:48:37,020
+Now you apply the learning paradigm we
+mentioned, and you say: let me
+
+948
+00:48:37,020 --> 00:48:41,020
+generate a sample from
+the first hypothesis.
+
+949
+00:48:41,020 --> 00:48:43,290
+I get this, I look at it,
+and I don't like that.
+
+950
+00:48:43,290 --> 00:48:43,990
+It has some reds.
+
+951
+00:48:43,990 --> 00:48:46,700
+I want really a clean hypothesis
+that performs perfectly--
+
+952
+00:48:46,700 --> 00:48:47,700
+all green.
+
+953
+00:48:47,700 --> 00:48:48,350
+
+
+954
+00:48:48,350 --> 00:48:49,960
+You move on.
+
+955
+00:48:49,960 --> 00:48:51,490
+And, OK.
+
+956
+00:48:51,490 --> 00:48:52,300
+This one--
+
+957
+00:48:52,300 --> 00:48:53,450
+even, I don't know.
+
+958
+00:48:53,450 --> 00:48:54,940
+This is even worse.
+
+959
+00:48:54,940 --> 00:48:55,990
+You go on and on and on.
+
+960
+00:48:55,990 --> 00:49:02,140
+And eventually, lo and behold,
+I have all greens.
+
+961
+00:49:02,140 --> 00:49:03,030
+Bingo.
+
+962
+00:49:03,030 --> 00:49:04,570
+I have the perfect hypothesis.
+
+963
+00:49:04,570 --> 00:49:07,520
+I am going to report this to my
+customer, and if my customer is in
+
+964
+00:49:07,520 --> 00:49:10,400
+financial forecasting, we are going
+to beat the stock market and
+
+965
+00:49:10,400 --> 00:49:11,170
+make a lot of money.
+
+966
+00:49:11,170 --> 00:49:15,890
+And you start thinking about the car you
+are going to buy, and all of that.
+
+967
+00:49:15,890 --> 00:49:19,760
+Well, is it bingo?
+
+968
+00:49:19,760 --> 00:49:21,720
+No, it isn't.
+
+969
+00:49:21,720 --> 00:49:24,190
+And that is the problem.
+
+970
+00:49:24,190 --> 00:49:29,350
+So now, we have to find something
+that makes us deal with
+
+971
+00:49:29,350 --> 00:49:31,670
+multiple bins properly.
+
+972
+00:49:31,670 --> 00:49:35,770
+Hoeffding Inequality-- if you have one
+experiment, it has a guarantee.
+
+973
+00:49:35,770 --> 00:49:41,150
+The guarantee gets terribly diluted as
+you go, and we want to know exactly
+
+974
+00:49:41,150 --> 00:49:43,480
+how the dilution goes.
+
+975
+00:49:43,480 --> 00:49:46,550
+So here is a simple solution.
+
+976
+00:49:46,550 --> 00:49:49,280
+This is a mathematical slide.
+I'll do it step-by-step.
+
+977
+00:49:49,280 --> 00:49:53,890
+There is absolutely nothing
+mysterious about it.
+
+978
+00:49:53,890 --> 00:49:57,350
+This is the quantity we've
+been talking about.
+
+979
+00:49:57,350 --> 00:50:01,340
+This is the probability
+of a bad event.
+
+980
+00:50:01,340 --> 00:50:03,800
+But in this case, you realize
+that I'm putting g.
+
+981
+00:50:03,800 --> 00:50:06,830
+Remember, g was our final hypothesis.
+
+982
+00:50:06,830 --> 00:50:11,260
+So this corresponds to a process where
+you had a bunch of h's, and you picked
+
+983
+00:50:11,260 --> 00:50:15,140
+one according to a criterion, that
+happens to be an in-sample criterion,
+
+984
+00:50:15,140 --> 00:50:18,700
+minimizing the error there, and
+then you report the g as the
+
+985
+00:50:18,700 --> 00:50:20,090
+one that you chose.
+
+986
+00:50:20,090 --> 00:50:23,897
+And you would like to make a statement
+that the probability for the g you
+
+987
+00:50:23,897 --> 00:50:29,220
+chose-- the in-sample error-- happens to
+be close to the out-of-sample error.
+
+988
+00:50:29,220 --> 00:50:32,260
+So you'd like the probability of the
+deviation being bigger than your
+
+989
+00:50:32,260 --> 00:50:35,040
+tolerance to be, again, small.
+
+990
+00:50:35,040 --> 00:50:39,620
+All we need to do is find a Hoeffding
+counterpart to this, because
+
+991
+00:50:39,620 --> 00:50:41,350
+now this fellow is loaded.
+
+992
+00:50:41,350 --> 00:50:44,310
+It's not just a fixed hypothesis
+and a fixed bin.
+
+993
+00:50:44,310 --> 00:50:48,240
+It actually corresponds to a large
+number of bins, and I am visiting the
+
+994
+00:50:48,240 --> 00:50:50,060
+random samples in order to pick one.
+
+995
+00:50:50,060 --> 00:50:54,060
+So clearly the assumptions of Hoeffding
+don't apply-- that correspond
+
+996
+00:50:54,060 --> 00:50:56,460
+to a single bin.
+
+997
+00:50:56,460 --> 00:50:59,930
+This probability is less
+than or equal to the
+
+998
+00:50:59,930 --> 00:51:01,690
+probability of the following.
+
+999
+00:51:01,690 --> 00:51:03,890
+I have M hypotheses--
+
+1000
+00:51:03,890 --> 00:51:05,250
+capital M hypotheses.
+
+1001
+00:51:05,250 --> 00:51:08,380
+h_1, h_2, h_3, h_M.
+
+1002
+00:51:08,380 --> 00:51:10,260
+That's my entire learning model.
+
+1003
+00:51:10,260 --> 00:51:14,910
+That's the hypothesis set that I have,
+finite as I said I would assume.
+
+1004
+00:51:14,910 --> 00:51:18,610
+If you look at what is the probability
+that the hypothesis you
+
+1005
+00:51:18,610 --> 00:51:24,930
+pick is bad? Well, this will be less than
+or equal to the probability that the
+
+1006
+00:51:24,930 --> 00:51:35,520
+first hypothesis is bad, or the second
+hypothesis is bad, or, or, or the last
+
+1007
+00:51:35,520 --> 00:51:37,620
+hypothesis is bad.
+
+1008
+00:51:37,620 --> 00:51:39,580
+That is obvious.
+
+1009
+00:51:39,580 --> 00:51:41,800
+g is one of them.
+
+1010
+00:51:41,800 --> 00:51:44,680
+If it's bad, one of them is bad.
+
+1011
+00:51:44,680 --> 00:51:46,300
+So less than or equal to that.
+
+1012
+00:51:46,300 --> 00:51:49,100
+This is called the union
+bound in probability.
+
+1013
+00:51:49,100 --> 00:51:51,950
+It's a very loose bound, in general,
+because it doesn't
+
+1014
+00:51:51,950 --> 00:51:53,170
+consider the overlap.
+
+1015
+00:51:53,170 --> 00:51:56,330
+Remember when I told you that the half
+a percent here, half a percent here,
+
+1016
+00:51:56,330 --> 00:51:57,340
+half a percent here--
+
+1017
+00:51:57,340 --> 00:52:02,260
+if you are very unlucky and these are
+non-overlapping, they add up.
+
+1018
+00:52:02,260 --> 00:52:05,850
+The non-overlapping is the worst-case
+assumption, and it is the assumption
+
+1019
+00:52:05,850 --> 00:52:07,670
+used by the union bound.
+
+1020
+00:52:07,670 --> 00:52:08,940
+So you get this.
+
+1021
+00:52:08,940 --> 00:52:12,400
+And the good news about this is that I
+have a handle on each term of them.
+
+1022
+00:52:12,400 --> 00:52:13,660
+The union bound is coming up.
+
+1023
+00:52:13,660 --> 00:52:14,770
+So I put the OR's.
+
+1024
+00:52:14,770 --> 00:52:20,720
+And then I use the union bound to say that this
+is less than or equal to, and simply sum
+
+1025
+00:52:20,720 --> 00:52:22,890
+the individual probabilities.
+
+1026
+00:52:22,890 --> 00:52:26,600
+So the half a percent plus half a percent
+plus half a percent--
+
+1027
+00:52:26,600 --> 00:52:28,710
+this will be an upper bound
+on all of them.
+
+1028
+00:52:28,710 --> 00:52:31,870
+The probability that one of them goes
+wrong, the probability that someone
+
+1029
+00:52:31,870 --> 00:52:35,400
+gets all heads, and I add the
+probability for all of you, and that
+
+1030
+00:52:35,400 --> 00:52:37,730
+makes it a respectable probability.
+
+1031
+00:52:37,730 --> 00:52:40,940
+So this event here is implied.
+
+1032
+00:52:40,940 --> 00:52:44,990
+Therefore, I have the implication because
+of the OR, and this one
+
+1033
+00:52:44,990 --> 00:52:50,110
+because of the union bound, where I have
+the pessimistic assumption that I
+
+1034
+00:52:50,110 --> 00:52:52,200
+just need to add the probabilities.
+
+1035
+00:52:52,200 --> 00:52:56,510
+Now, all of this-- again, we make
+simplistic assumptions, which is
+
+1036
+00:52:56,510 --> 00:53:01,380
+really not simplistic as in trivially
+restricting, but rather the opposite.
+
+1037
+00:53:01,380 --> 00:53:03,760
+We just don't want to make any
+assumptions that restrict the
+
+1038
+00:53:03,760 --> 00:53:05,720
+applicability of our result.
+
+1039
+00:53:05,720 --> 00:53:07,800
+So we took the worst case.
+
+1040
+00:53:07,800 --> 00:53:09,800
+It cannot get worse than that.
+
+1041
+00:53:09,800 --> 00:53:12,320
+If you look at this, now
+I have good news for you.
+
+1042
+00:53:12,320 --> 00:53:15,830
+Because each term here is
+a fixed hypothesis.
+
+1043
+00:53:15,830 --> 00:53:17,240
+I didn't choose anything.
+
+1044
+00:53:17,240 --> 00:53:20,290
+Every one of them has a hypothesis
+that was declared ahead of time.
+
+1045
+00:53:20,290 --> 00:53:22,030
+Every one of them is a bin.
+
+1046
+00:53:22,030 --> 00:53:26,960
+So if I look at a term by itself,
+Hoeffding applies to this, exactly the
+
+1047
+00:53:26,960 --> 00:53:29,550
+same way it applied before.
+
+1048
+00:53:29,550 --> 00:53:31,330
+So this is a mathematical
+statement now.
+
+1049
+00:53:31,330 --> 00:53:33,090
+I'm not looking at the
+bigger experiment.
+
+1050
+00:53:33,090 --> 00:53:35,550
+I reduced the bigger experimental
+to a bunch of quantities.
+
+1051
+00:53:35,550 --> 00:53:39,860
+Each of them corresponds to a simple
+experiment that we already solved.
+
+1052
+00:53:39,860 --> 00:53:42,860
+So I can substitute for each of
+these by the bound that the
+
+1053
+00:53:42,860 --> 00:53:44,110
+Hoeffding gives me.
+
+1054
+00:53:44,110 --> 00:53:47,280
+
+
+1055
+00:53:47,280 --> 00:53:49,560
+So what is the bound that
+the Hoeffding gives me?
+
+1056
+00:53:49,560 --> 00:53:55,460
+
+
+1057
+00:53:55,460 --> 00:53:56,530
+That's the one.
+
+1058
+00:53:56,530 --> 00:54:00,860
+For every one of them, each of
+these guys was less than or
+
+1059
+00:54:00,860 --> 00:54:03,980
+equal to this quantity.
+
+1060
+00:54:03,980 --> 00:54:04,850
+One by one.
+
+1061
+00:54:04,850 --> 00:54:07,200
+All of them are obviously the same.
+
+1062
+00:54:07,200 --> 00:54:08,820
+So each of them is smaller
+than this quantity.
+
+1063
+00:54:08,820 --> 00:54:10,470
+Each of them is smaller than this quantity.
+
+1064
+00:54:10,470 --> 00:54:16,140
+Now I can be confident that the
+probability that I'm interested in,
+
+1065
+00:54:16,140 --> 00:54:21,610
+which is the probability that
+the in-sample error
+
+1066
+00:54:21,610 --> 00:54:25,140
+being close to the out-of-sample error--
+the closeness of them is bigger
+
+1067
+00:54:25,140 --> 00:54:27,050
+than my tolerance, the bad event.
+
+1068
+00:54:27,050 --> 00:54:33,340
+Under the genuine learning scenario-- you
+generate marbles from every bin,
+
+1069
+00:54:33,340 --> 00:54:41,250
+and you look deliberately for a sample
+that happens to be all green or as
+
+1070
+00:54:41,250 --> 00:54:43,560
+green as possible, and
+you pick this one.
+
+1071
+00:54:43,560 --> 00:54:46,470
+And you want an assurance that
+whatever that might be, the
+
+1072
+00:54:46,470 --> 00:54:49,390
+corresponding bin will genuinely
+be good out-of-sample.
+
+1073
+00:54:49,390 --> 00:54:51,590
+That is what is captured
+by this probability.
+
+1074
+00:54:51,590 --> 00:54:55,790
+That is still bounded by something,
+which also has that exponential in it,
+
+1075
+00:54:55,790 --> 00:54:56,680
+which is good.
+
+1076
+00:54:56,680 --> 00:55:03,660
+But it has an added factor that will be
+a very bothersome factor, which is:
+
+1077
+00:55:03,660 --> 00:55:08,080
+I have M of them.
+
+1078
+00:55:08,080 --> 00:55:10,250
+Now, this is the bad event.
+
+1079
+00:55:10,250 --> 00:55:12,200
+I'd like the probability to be small.
+
+1080
+00:55:12,200 --> 00:55:16,720
+I don't like to magnify the right-hand
+side, because that is the probability
+
+1081
+00:55:16,720 --> 00:55:19,210
+of something bad happening.
+
+1082
+00:55:19,210 --> 00:55:22,220
+Now, with M, you realize that
+
+1083
+00:55:22,220 --> 00:55:27,540
+if you use 10 hypotheses, this
+probability is probably tight.
+
+1084
+00:55:27,540 --> 00:55:33,240
+If you use a million hypotheses, we
+probably are already in trouble.
+
+1085
+00:55:33,240 --> 00:55:38,440
+There is no guarantee, because now the
+million gets multiplied by what used
+
+1086
+00:55:38,440 --> 00:55:42,470
+to be a respectable probability, which
+is 1 in 100,000, and now you can make
+
+1087
+00:55:42,470 --> 00:55:45,290
+the statement that the probability
+that something bad happens
+
+1088
+00:55:45,290 --> 00:55:47,266
+is less than 10.
+
+1089
+00:55:47,266 --> 00:55:47,670
+[LAUGHING]
+
+1090
+00:55:47,670 --> 00:55:50,260
+Yeah, thank you very much.
+
+1091
+00:55:50,260 --> 00:55:53,880
+We have to take a graduate
+course to learn that!
+
+1092
+00:55:53,880 --> 00:55:55,630
+Now you see what the problem is.
+
+1093
+00:55:55,630 --> 00:55:58,250
+And the problem is extremely
+intuitive.
+
+1094
+00:55:58,250 --> 00:56:03,230
+In that Q&amp;A session after the last
+lecture, we all got through the
+
+1095
+00:56:03,230 --> 00:56:08,130
+discussion the assertion that if you
+have a more sophisticated model, the
+
+1096
+00:56:08,130 --> 00:56:11,780
+chances are you will memorize in-sample,
+and you are not going to
+
+1097
+00:56:11,780 --> 00:56:14,600
+really generalize well out-of-sample,
+because you have so many
+
+1098
+00:56:14,600 --> 00:56:16,070
+parameters to work with.
+
+1099
+00:56:16,070 --> 00:56:20,820
+There are so many ways to look at that
+intuitively, and this is one of them.
+
+1100
+00:56:20,820 --> 00:56:24,900
+If you have a very sophisticated model--
+M is huge, let alone infinite.
+
+1101
+00:56:24,900 --> 00:56:26,520
+That's later to come.
+
+1102
+00:56:26,520 --> 00:56:29,060
+That's what the theory of
+generalization is about.
+
+1103
+00:56:29,060 --> 00:56:34,340
+But if you pick a very sophisticated
+example with a large M, you lose the
+
+1104
+00:56:34,340 --> 00:56:38,730
+link between the in-sample
+and the out-of-sample.
+
+1105
+00:56:38,730 --> 00:56:41,580
+So you look at here.
+
+1106
+00:56:41,580 --> 00:56:46,370
+[LAUGHING], I didn't mean it this
+way, but let me go back just to show
+
+1107
+00:56:46,370 --> 00:56:47,750
+you what it is.
+
+1108
+00:56:47,750 --> 00:56:50,500
+At least you know it's
+over, so that's good.
+
+1109
+00:56:50,500 --> 00:56:54,220
+So this fellow is supposed
+to track this fellow.
+
+1110
+00:56:54,220 --> 00:56:57,290
+The in-sample is supposed to
+track the out-of-sample.
+
+1111
+00:56:57,290 --> 00:57:02,900
+The more sophisticated the model you
+use, the looser that in-sample will
+
+1112
+00:57:02,900 --> 00:57:03,980
+track the out-of-sample.
+
+1113
+00:57:03,980 --> 00:57:06,940
+Because the probability of them
+deviating becomes bigger and bigger
+
+1114
+00:57:06,940 --> 00:57:07,790
+and bigger.
+
+1115
+00:57:07,790 --> 00:57:11,090
+And that is exactly the
+intuition we have.
+
+1116
+00:57:11,090 --> 00:57:12,110
+Now, surprise.
+
+1117
+00:57:12,110 --> 00:57:16,645
+The next one is for the Q&amp;A. We will
+take a short break, and then we will
+
+1118
+00:57:16,645 --> 00:57:17,895
+go to the questions and answers.
+
+1119
+00:57:17,895 --> 00:57:21,980
+
+
+1120
+00:57:21,980 --> 00:57:24,760
+We are now in the Q&amp;A session.
+
+1121
+00:57:24,760 --> 00:57:28,450
+And if anybody wants to ask a question,
+they can go to the
+
+1122
+00:57:28,450 --> 00:57:32,840
+microphone and ask, and we can start
+with the online audience questions, if
+
+1123
+00:57:32,840 --> 00:57:34,090
+there are any.
+
+1124
+00:57:34,090 --> 00:57:36,390
+
+
+1125
+00:57:36,390 --> 00:57:38,240
+MODERATOR: The first question is
+
+1126
+00:57:38,240 --> 00:57:40,600
+what happens when
+the Hoeffding Inequality
+
+1127
+00:57:40,600 --> 00:57:43,390
+gives you something trivial,
+like less than 2?
+
+1128
+00:57:43,390 --> 00:57:48,400
+PROFESSOR: Well, it means that
+either the resources of the examples
+
+1129
+00:57:48,400 --> 00:57:51,690
+you have, the amount of data you have,
+is not sufficient to guarantee any
+
+1130
+00:57:51,690 --> 00:57:54,400
+generalization, or--
+
+1131
+00:57:54,400 --> 00:57:56,960
+which is somewhat equivalent--
+
+1132
+00:57:56,960 --> 00:58:00,720
+that your tolerance is too stringent.
+
+1133
+00:58:00,720 --> 00:58:03,160
+The situation is not
+really mysterious.
+
+1134
+00:58:03,160 --> 00:58:08,420
+Let's say that you'd like to take
+a poll for the president.
+
+1135
+00:58:08,420 --> 00:58:12,870
+And let's say that you ask
+five people at random.
+
+1136
+00:58:12,870 --> 00:58:15,060
+How can you interpret the result?
+
+1137
+00:58:15,060 --> 00:58:16,420
+Nothing.
+
+1138
+00:58:16,420 --> 00:58:20,650
+You need a certain amount of respondents
+in order for the
+
+1139
+00:58:20,650 --> 00:58:23,180
+right-hand side to start
+becoming interesting.
+
+1140
+00:58:23,180 --> 00:58:24,680
+Other than that, it's
+completely trivial.
+
+1141
+00:58:24,680 --> 00:58:28,470
+It's very likely that what you have seen
+in-sample doesn't correspond to
+
+1142
+00:58:28,470 --> 00:58:29,720
+anything out-of-sample.
+
+1143
+00:58:29,720 --> 00:58:32,720
+
+
+1144
+00:58:32,720 --> 00:58:36,450
+MODERATOR: So in the case
+of the perceptron--
+
+1145
+00:58:36,450 --> 00:58:42,970
+the question is would each set
+of w's be considered a new m?
+
+1146
+00:58:42,970 --> 00:58:45,850
+PROFESSOR: The perceptron and, as
+
+1147
+00:58:45,850 --> 00:58:49,490
+a matter of fact, every
+learning model of interest
+
+1148
+00:58:49,490 --> 00:58:53,890
+that we're going to encounter, the
+number of hypotheses, M,
+
+1149
+00:58:53,890 --> 00:58:56,640
+happens to be infinite.
+
+1150
+00:58:56,640 --> 00:58:59,490
+We were just talking about the
+right-hand side not being meaningful
+
+1151
+00:58:59,490 --> 00:59:03,340
+because it's bigger than 1. If you take
+an infinite hypothesis set and
+
+1152
+00:59:03,340 --> 00:59:07,640
+verbatim apply what I said, then you
+find that the probability is actually
+
+1153
+00:59:07,640 --> 00:59:10,210
+less than infinity.
+
+1154
+00:59:10,210 --> 00:59:12,000
+That's very important.
+
+1155
+00:59:12,000 --> 00:59:14,670
+However, this is our first step.
+
+1156
+00:59:14,670 --> 00:59:18,260
+There will be another step, where we deal
+with infinite hypothesis sets.
+
+1157
+00:59:18,260 --> 00:59:21,850
+And we are going to be able to describe
+them with an abstract quantity
+
+1158
+00:59:21,850 --> 00:59:25,670
+that happens to be finite, and that
+abstract quantity will be the one we
+
+1159
+00:59:25,670 --> 00:59:28,710
+are going to use in the counterpart
+for the Hoeffding Inequality.
+
+1160
+00:59:28,710 --> 00:59:32,110
+That's why there is mathematics
+that needs to be done.
+
+1161
+00:59:32,110 --> 00:59:39,650
+Obviously, the perceptron has an infinite
+number of hypotheses because
+
+1162
+00:59:39,650 --> 00:59:46,550
+you have real space, and here is your
+hypothesis, and you can perturb this
+
+1163
+00:59:46,550 --> 00:59:47,730
+continuously as you want.
+
+1164
+00:59:47,730 --> 00:59:50,430
+Even just by doing this, you already
+have an infinite number of hypotheses
+
+1165
+00:59:50,430 --> 00:59:53,820
+without even exploring further.
+
+1166
+00:59:53,820 --> 00:59:55,390
+MODERATOR: OK,
+and this is a popular one.
+
+1167
+00:59:55,390 --> 00:59:55,400
+
+
+1168
+00:59:55,400 --> 01:00:00,240
+Could you go over again in slide 6, of
+the implication of nu equals mu and
+
+1169
+01:00:00,240 --> 01:00:01,180
+vice versa.
+
+1170
+01:00:01,180 --> 01:00:01,610
+PROFESSOR: Six.
+
+1171
+01:00:01,610 --> 01:00:02,860
+
+
+1172
+01:00:02,860 --> 01:00:07,680
+
+
+1173
+01:00:07,680 --> 01:00:11,170
+It's a subtle point, and it's common
+between machine learning and
+
+1174
+01:00:11,170 --> 01:00:11,750
+statistics.
+
+1175
+01:00:11,750 --> 01:00:13,370
+What do you do in statistics?
+
+1176
+01:00:13,370 --> 01:00:16,540
+What is the cause and effect for
+a probability and a sample?
+
+1177
+01:00:16,540 --> 01:00:18,830
+The probability results in a sample.
+
+1178
+01:00:18,830 --> 01:00:22,540
+So if I know the probability, I can
+tell you exactly what is the
+
+1179
+01:00:22,540 --> 01:00:26,700
+likelihood that you'll get one
+sample or another or another.
+
+1180
+01:00:26,700 --> 01:00:29,520
+Now, what you do in statistics
+is the reverse of that.
+
+1181
+01:00:29,520 --> 01:00:34,140
+You already have the sample, and you are
+trying to infer which probability
+
+1182
+01:00:34,140 --> 01:00:35,810
+gave rise to it.
+
+1183
+01:00:35,810 --> 01:00:39,410
+So you are using the effect to
+decide the cause rather than
+
+1184
+01:00:39,410 --> 01:00:41,510
+the other way around.
+
+1185
+01:00:41,510 --> 01:00:43,680
+So the same situation here.
+
+1186
+01:00:43,680 --> 01:00:45,760
+The bin is the cause.
+
+1187
+01:00:45,760 --> 01:00:48,980
+The frequency in the sample
+is the effect.
+
+1188
+01:00:48,980 --> 01:00:53,260
+I can definitely tell you what the
+distribution is like in the sample,
+
+1189
+01:00:53,260 --> 01:00:55,380
+based on the bin.
+
+1190
+01:00:55,380 --> 01:00:58,780
+The utility, in terms of learning,
+is that I look at the sample
+
+1191
+01:00:58,780 --> 01:01:00,130
+and infer the bin.
+
+1192
+01:01:00,130 --> 01:01:04,360
+So I infer the cause based
+on the effect.
+
+1193
+01:01:04,360 --> 01:01:07,040
+There's absolutely nothing
+terrible about that.
+
+1194
+01:01:07,040 --> 01:01:12,260
+I just wanted to make the point clear,
+that when we write the Hoeffding
+
+1195
+01:01:12,260 --> 01:01:19,570
+Inequality, which you can see here,
+we are talking about this event.
+
+1196
+01:01:19,570 --> 01:01:24,090
+You should always remember that nu is
+the thing that plays around
+
+1197
+01:01:24,090 --> 01:01:27,770
+and causes the probability to happen,
+and mu is a constant.
+
+1198
+01:01:27,770 --> 01:01:32,500
+When we use it to predict that the
+out-of-sample will be the same as the in-
+
+1199
+01:01:32,500 --> 01:01:37,215
+sample, we are really taking nu as
+fixed, because this is the in-
+
+1200
+01:01:37,215 --> 01:01:39,370
+sample we've got.
+
+1201
+01:01:39,370 --> 01:01:42,530
+And then we are trying to interpret
+what mu gave rise to it.
+
+1202
+01:01:42,530 --> 01:01:45,900
+And I'm just saying that, in this case,
+since the statement is of the
+
+1203
+01:01:45,900 --> 01:01:50,320
+form that the difference between them,
+which is symmetric, is greater than
+
+1204
+01:01:50,320 --> 01:01:56,640
+epsilon, then if you look at this as
+saying mu is there and I know that nu
+
+1205
+01:01:56,640 --> 01:02:00,120
+will be approximately the same,
+you can also flip that.
+
+1206
+01:02:00,120 --> 01:02:04,970
+And you can say, nu is here, and I
+know that mu that gave rise to it must
+
+1207
+01:02:04,970 --> 01:02:05,520
+be the same.
+
+1208
+01:02:05,520 --> 01:02:06,940
+That's the whole idea.
+
+1209
+01:02:06,940 --> 01:02:10,640
+It's a logical thing rather
+than a mathematical thing.
+
+1210
+01:02:10,640 --> 01:02:11,120
+MODERATOR: OK.
+
+1211
+01:02:11,120 --> 01:02:16,580
+Another conceptual question that is
+arising is that a more complicated
+
+1212
+01:02:16,580 --> 01:02:19,800
+model corresponds to
+a larger number of h's.
+
+1213
+01:02:19,800 --> 01:02:21,670
+And some people are asking--
+
+1214
+01:02:21,670 --> 01:02:24,080
+they thought each h was a model.
+
+1215
+01:02:24,080 --> 01:02:25,905
+PROFESSOR: OK.
+
+1216
+01:02:25,905 --> 01:02:28,200
+Each h is a hypothesis.
+
+1217
+01:02:28,200 --> 01:02:31,630
+A particular function, one of them you
+are going to pick, which is going to
+
+1218
+01:02:31,630 --> 01:02:35,130
+be equal to g, and this is the g that
+you're going to report as your best
+
+1219
+01:02:35,130 --> 01:02:37,280
+guess as an approximation for f.
+
+1220
+01:02:37,280 --> 01:02:41,630
+The model is the hypotheses that you're
+allowed to visit in order to
+
+1221
+01:02:41,630 --> 01:02:42,610
+choose one.
+
+1222
+01:02:42,610 --> 01:02:46,660
+So that's the hypothesis
+set, which is H.
+
+1223
+01:02:46,660 --> 01:02:48,490
+And again, but there is
+an interesting point.
+
+1224
+01:02:48,490 --> 01:02:52,850
+I'm using the number of hypotheses as
+a measure for the complexity in the
+
+1225
+01:02:52,850 --> 01:02:55,106
+intuitive argument that I gave you.
+
+1226
+01:02:55,106 --> 01:02:59,022
+It's not clear at all that the pure number
+corresponds to the complexity.
+
+1227
+01:02:59,022 --> 01:03:02,190
+It's not clear that anything that has
+to do with the size, really, is the
+
+1228
+01:03:02,190 --> 01:03:02,610
+complexity.
+
+1229
+01:03:02,610 --> 01:03:05,650
+Maybe the complexity has to do with
+the structure of individual
+
+1230
+01:03:05,650 --> 01:03:07,130
+hypotheses.
+
+1231
+01:03:07,130 --> 01:03:08,710
+And that's a very interesting point.
+
+1232
+01:03:08,710 --> 01:03:11,650
+And that will be discussed at some
+point-- the complexity of individual
+
+1233
+01:03:11,650 --> 01:03:14,940
+hypotheses versus the complexity of
+the model that captures all the
+
+1234
+01:03:14,940 --> 01:03:15,830
+hypotheses.
+
+1235
+01:03:15,830 --> 01:03:19,760
+This will be a topic that we will
+discuss much later in the course.
+
+1236
+01:03:19,760 --> 01:03:21,700
+MODERATOR: Some people are
+getting ahead.
+
+1237
+01:03:21,700 --> 01:03:21,710
+
+
+1238
+01:03:21,710 --> 01:03:23,834
+So how do you pick g?
+
+1239
+01:03:23,834 --> 01:03:24,890
+PROFESSOR: OK.
+
+1240
+01:03:24,890 --> 01:03:27,820
+We have one way of picking g-- that
+already was established last time--
+
+1241
+01:03:27,820 --> 01:03:30,540
+which is the perceptron
+learning algorithm.
+
+1242
+01:03:30,540 --> 01:03:33,920
+So your hypothesis set is H.
+
+1243
+01:03:33,920 --> 01:03:34,620
+Script H.
+
+1244
+01:03:34,620 --> 01:03:37,810
+It has a bunch of h's, which are the
+different lines in the plane.
+
+1245
+01:03:37,810 --> 01:03:43,080
+And you pick g by applying the PLA,
+the perceptron learning algorithm,
+
+1246
+01:03:43,080 --> 01:03:46,720
+playing around with this boundary,
+according to the update rule, until it
+
+1247
+01:03:46,720 --> 01:03:49,540
+classifies the inputs correctly,
+assuming they are linearly separable,
+
+1248
+01:03:49,540 --> 01:03:53,160
+and the one you end up with
+is what is declared g.
+
+1249
+01:03:53,160 --> 01:03:56,890
+So g is just a matter of notation,
+a name for whichever one we settle on,
+
+1250
+01:03:56,890 --> 01:03:58,590
+the final hypothesis.
+
+1251
+01:03:58,590 --> 01:04:02,280
+How you pick g depends on what
+algorithm you use, and what
+
+1252
+01:04:02,280 --> 01:04:03,630
+hypothesis set you use.
+
+1253
+01:04:03,630 --> 01:04:06,700
+So it depends on the learning model,
+and obviously on the data.
+
+1254
+01:04:06,700 --> 01:04:09,364
+
+
+1255
+01:04:09,364 --> 01:04:10,350
+MODERATOR: OK.
+
+1256
+01:04:10,350 --> 01:04:12,310
+This is a popular question.
+
+1257
+01:04:12,310 --> 01:04:16,930
+So it says: how would you extend the
+equation to support an output that
+
+1258
+01:04:16,930 --> 01:04:20,946
+is a valid range of responses
+and not a binary response?
+
+1259
+01:04:20,946 --> 01:04:22,380
+PROFESSOR: It can be done.
+
+1260
+01:04:22,380 --> 01:04:22,390
+
+
+1261
+01:04:22,390 --> 01:04:29,410
+One of the things that I mentioned
+here is that this fellow, the
+
+1262
+01:04:29,410 --> 01:04:31,980
+probability here, is uniform.
+
+1263
+01:04:31,980 --> 01:04:36,260
+Now, let's say that you are not talking
+about a binary experiment.
+
+1264
+01:04:36,260 --> 01:04:41,202
+Instead of taking the frequency of error
+versus the probability of error,
+
+1265
+01:04:41,202 --> 01:04:44,680
+you take the expected value
+of something versus the
+
+1266
+01:04:44,680 --> 01:04:46,890
+sample average of it.
+
+1267
+01:04:46,890 --> 01:04:51,490
+And they will be close to each other,
+and some, obviously technical,
+
+1268
+01:04:51,490 --> 01:04:53,840
+modification is needed to be here.
+
+1269
+01:04:53,840 --> 01:05:00,920
+And basically, the set of laws of large
+numbers, from which this is one member,
+
+1270
+01:05:00,920 --> 01:05:06,540
+has a bunch of members that actually
+have to do with expected value and
+
+1271
+01:05:06,540 --> 01:05:10,800
+sample average, rather than just the
+specific case of probability and
+
+1272
+01:05:10,800 --> 01:05:12,360
+sample average.
+
+1273
+01:05:12,360 --> 01:05:16,150
+If you take your function as being 1,
+0, and you take the expected value,
+
+1274
+01:05:16,150 --> 01:05:20,830
+that will give you the sample as the
+sample average, and the probability as
+
+1275
+01:05:20,830 --> 01:05:21,610
+the expected value.
+
+1276
+01:05:21,610 --> 01:05:23,530
+So it's not a different animal.
+
+1277
+01:05:23,530 --> 01:05:25,770
+It's just a special case that
+is easier to handle.
+
+1278
+01:05:25,770 --> 01:05:29,080
+And in the other case, one of the things
+that matters is the variance of
+
+1279
+01:05:29,080 --> 01:05:30,750
+your variable.
+
+1280
+01:05:30,750 --> 01:05:32,650
+So it will affect the bounds.
+
+1281
+01:05:32,650 --> 01:05:37,310
+Here, I'm choosing epsilon in general,
+because the variance of this variable
+
+1282
+01:05:37,310 --> 01:05:39,740
+is very limited.
+
+1283
+01:05:39,740 --> 01:05:42,760
+Let's say that the probability
+is mu, so the variance is mu
+
+1284
+01:05:42,760 --> 01:05:43,710
+times 1 minus mu.
+
+1285
+01:05:43,710 --> 01:05:45,900
+It goes from a certain value
+to a certain value.
+
+1286
+01:05:45,900 --> 01:05:46,900
+So it can be absorbed.
+
+1287
+01:05:46,900 --> 01:05:48,470
+It's bounded above and below.
+
+1288
+01:05:48,470 --> 01:05:50,370
+And this is the reason why the
+right-hand side here can
+
+1289
+01:05:50,370 --> 01:05:51,550
+be uniformly done.
+
+1290
+01:05:51,550 --> 01:05:54,550
+If you have something that has variance
+that can be huge or small,
+
+1291
+01:05:54,550 --> 01:05:58,290
+then that will play a role in your
+choice of epsilon, such that
+
+1292
+01:05:58,290 --> 01:06:00,040
+this will be valid.
+
+1293
+01:06:00,040 --> 01:06:02,690
+So the short answer is: it can be done.
+
+1294
+01:06:02,690 --> 01:06:05,810
+There is a technical modification, and
+the main aspect of the technical
+
+1295
+01:06:05,810 --> 01:06:10,130
+modification, that needs to be taken into
+consideration, is the variance of
+
+1296
+01:06:10,130 --> 01:06:12,296
+the variable I'm talking about.
+
+1297
+01:06:12,296 --> 01:06:13,290
+MODERATOR: OK.
+
+1298
+01:06:13,290 --> 01:06:14,750
+There's also a common confusion.
+
+1299
+01:06:14,750 --> 01:06:18,540
+Why are there are multiple bins?
+
+1300
+01:06:18,540 --> 01:06:19,015
+PROFESSOR: OK.
+
+1301
+01:06:19,015 --> 01:06:24,990
+The bin was only our conceptual
+tool to argue that learning is
+
+1302
+01:06:24,990 --> 01:06:28,870
+feasible in a probabilistic sense.
+
+1303
+01:06:28,870 --> 01:06:33,570
+When we used a single bin, we had
+a correspondence with a hypothesis, and
+
+1304
+01:06:33,570 --> 01:06:37,000
+it looked like we actually captured
+the essence of learning, until we
+
+1305
+01:06:37,000 --> 01:06:41,430
+looked closer and we realized that, if
+you restrict yourself to one bin and
+
+1306
+01:06:41,430 --> 01:06:44,650
+apply the Hoeffding Inequality directly
+to it, what you are really
+
+1307
+01:06:44,650 --> 01:06:45,420
+working with--
+
+1308
+01:06:45,420 --> 01:06:48,360
+if you want to put it in
+terms of learning--
+
+1309
+01:06:48,360 --> 01:06:52,870
+is that my hypothesis set
+has only one hypothesis.
+
+1310
+01:06:52,870 --> 01:06:54,760
+And that corresponds to the bin.
+
+1311
+01:06:54,760 --> 01:06:56,380
+So now I am picking it--
+
+1312
+01:06:56,380 --> 01:06:57,630
+which is my only choice.
+
+1313
+01:06:57,630 --> 01:06:58,720
+I don't have everything else.
+
+1314
+01:06:58,720 --> 01:07:03,100
+And all I'm doing now is verifying that
+its in-sample performance will
+
+1315
+01:07:03,100 --> 01:07:05,930
+correspond to the out-of-sample
+performance, and that is guaranteed by
+
+1316
+01:07:05,930 --> 01:07:08,130
+the plain-vanilla Hoeffding.
+
+1317
+01:07:08,130 --> 01:07:11,150
+Now, if you have actual learning,
+then you have more than one
+
+1318
+01:07:11,150 --> 01:07:12,140
+hypothesis.
+
+1319
+01:07:12,140 --> 01:07:17,030
+And we realize that the bin changes with
+the hypothesis, because whether
+
+1320
+01:07:17,030 --> 01:07:20,490
+a marble is red or green depends on
+whether the hypothesis agrees or
+
+1321
+01:07:20,490 --> 01:07:22,450
+disagrees with your target function.
+
+1322
+01:07:22,450 --> 01:07:25,250
+Different hypotheses will
+lead to different colors.
+
+1323
+01:07:25,250 --> 01:07:29,130
+Therefore, you need multiple bins to
+represent multiple hypotheses, which
+
+1324
+01:07:29,130 --> 01:07:33,040
+is the only situation that admits
+learning as we know it--
+
+1325
+01:07:33,040 --> 01:07:37,310
+that I'm going to explore the hypotheses,
+based on their performance in-sample,
+
+1326
+01:07:37,310 --> 01:07:41,630
+and pick the one that performs best,
+perhaps, in-sample, and hope that it
+
+1327
+01:07:41,630 --> 01:07:43,010
+will generalize well out-of-sample.
+
+1328
+01:07:43,010 --> 01:07:46,125
+
+
+1329
+01:07:46,125 --> 01:07:46,850
+MODERATOR: OK.
+
+1330
+01:07:46,850 --> 01:07:48,230
+Another confusion.
+
+1331
+01:07:48,230 --> 01:07:54,970
+Can you resolve the relationship
+between the probability and the big H?
+
+1332
+01:07:54,970 --> 01:07:58,970
+so I'm not clear exactly what--
+
+1333
+01:07:58,970 --> 01:08:00,660
+PROFESSOR: We applied the--
+
+1334
+01:08:00,660 --> 01:08:04,630
+there are a bunch of components
+in the learning
+
+1335
+01:08:04,630 --> 01:08:06,160
+situation, so let me get the--
+
+1336
+01:08:06,160 --> 01:08:08,150
+
+
+1337
+01:08:08,150 --> 01:08:11,490
+It's a big diagram, and it
+has lots of components.
+
+1338
+01:08:11,490 --> 01:08:17,710
+So one big space or set is X, and
+another one is H. So if you
+
+1339
+01:08:17,710 --> 01:08:19,580
+look at here.
+
+1340
+01:08:19,580 --> 01:08:21,569
+This is hypothesis set H. It's a set.
+
+1341
+01:08:21,569 --> 01:08:23,109
+OK, fine.
+
+1342
+01:08:23,109 --> 01:08:28,939
+And also, if you look here, the target
+function is defined from X to Y, and
+
+1343
+01:08:28,939 --> 01:08:32,330
+in this case, X is also a set.
+
+1344
+01:08:32,330 --> 01:08:37,779
+The only invocation of probability that
+we needed to do, in order to get
+
+1345
+01:08:37,779 --> 01:08:42,020
+the benefit of the probabilistic
+analysis in learning, was to put
+
+1346
+01:08:42,020 --> 01:08:45,221
+a probability distribution on X.
+
+1347
+01:08:45,221 --> 01:08:51,180
+H, which is down there, is left
+as a fixed hypothesis set.
+
+1348
+01:08:51,180 --> 01:08:53,819
+There is no question of
+a probability on it.
+
+1349
+01:08:53,819 --> 01:08:57,970
+When we talk about the Bayesian
+approach, in the last lecture in
+
+1350
+01:08:57,970 --> 01:09:02,380
+fact, there will be a question of
+putting a probability distribution
+
+1351
+01:09:02,380 --> 01:09:04,990
+here in order to make the whole
+situation probabilistic.
+
+1352
+01:09:04,990 --> 01:09:08,149
+But that is not the approach that is
+followed for the entire course, until
+
+1353
+01:09:08,149 --> 01:09:11,770
+we discuss that specific
+approach at the end.
+
+1354
+01:09:11,770 --> 01:09:12,729
+Question.
+
+1355
+01:09:12,729 --> 01:09:18,950
+STUDENT: What do we do when there
+are many possible hypotheses which
+
+1356
+01:09:18,950 --> 01:09:20,279
+will satisfy my criteria?
+
+1357
+01:09:20,279 --> 01:09:22,120
+Like, in perceptron, for example.
+
+1358
+01:09:22,120 --> 01:09:25,479
+I could have several hyperplanes which
+could be separating the set.
+
+1359
+01:09:25,479 --> 01:09:27,240
+So how do I pick the best--
+
+1360
+01:09:27,240 --> 01:09:27,749
+PROFESSOR: Correct.
+
+1361
+01:09:27,749 --> 01:09:32,240
+Usually, with a pre-specified
+algorithm,
+
+1362
+01:09:32,240 --> 01:09:33,760
+you'll end up with something.
+
+1363
+01:09:33,760 --> 01:09:35,920
+So the algorithm will
+choose it for you.
+
+1364
+01:09:35,920 --> 01:09:37,990
+But your remark now is that,
+
+1365
+01:09:37,990 --> 01:09:42,350
+given that there are many solutions
+that happen to have zero in-sample
+
+1366
+01:09:42,350 --> 01:09:46,160
+error, there is really no distinction
+between them in terms of the out-of-
+
+1367
+01:09:46,160 --> 01:09:47,060
+sample performance.
+
+1368
+01:09:47,060 --> 01:09:49,990
+I'm using the same hypothesis set,
+so M is the same.
+
+1369
+01:09:49,990 --> 01:09:51,990
+And the in-sample error is the same.
+
+1370
+01:09:51,990 --> 01:09:54,880
+So my prediction for the out-of-sample
+error would be the same, as there's no
+
+1371
+01:09:54,880 --> 01:09:56,270
+distinction between them.
+
+1372
+01:09:56,270 --> 01:09:58,860
+The good news is that the learning
+algorithm will solve this for you, because
+
+1373
+01:09:58,860 --> 01:10:01,560
+it will give you one specific,
+the one it ended with.
+
+1374
+01:10:01,560 --> 01:10:07,230
+But even within the ones that achieve
+zero error, there is a method,
+
+1375
+01:10:07,230 --> 01:10:10,210
+that we'll talk about later on when we
+talk about support vector machines,
+
+1376
+01:10:10,210 --> 01:10:13,880
+that prefers one particular solution
+as having a better chance of
+
+1377
+01:10:13,880 --> 01:10:14,700
+generalization.
+
+1378
+01:10:14,700 --> 01:10:18,120
+Not clear at all given what I said
+so far, but I'm just telling you,
+
+1379
+01:10:18,120 --> 01:10:23,086
+as an appetizer, there's something
+to be done in that regard.
+
+1380
+01:10:23,086 --> 01:10:24,946
+MODERATOR: OK.
+
+1381
+01:10:24,946 --> 01:10:30,120
+A question is does the inequality
+hold for any g,
+
+1382
+01:10:30,120 --> 01:10:31,370
+even if g is not optimal?
+
+1383
+01:10:31,370 --> 01:10:34,760
+
+
+1384
+01:10:34,760 --> 01:10:36,250
+PROFESSOR: What about the g?
+
+1385
+01:10:36,250 --> 01:10:39,900
+MODERATOR: Does it hold for any
+g, no matter how you pick g?
+
+1386
+01:10:39,900 --> 01:10:40,260
+PROFESSOR: Yeah.
+
+1387
+01:10:40,260 --> 01:10:41,770
+So the whole idea--
+
+1388
+01:10:41,770 --> 01:10:45,230
+once you write the symbol g, you
+already are talking about any
+
+1389
+01:10:45,230 --> 01:10:45,960
+hypothesis.
+
+1390
+01:10:45,960 --> 01:10:50,490
+Because by definition, g is the final
+hypothesis, and your algorithm is
+
+1391
+01:10:50,490 --> 01:10:55,970
+allowed to pick any h from the
+hypothesis set and call it g.
+
+1392
+01:10:55,970 --> 01:10:59,390
+Therefore, when I say g, don't
+look at a fixed hypothesis.
+
+1393
+01:10:59,390 --> 01:11:03,060
+Look at the entire learning process that
+went through the H, the
+
+1394
+01:11:03,060 --> 01:11:07,760
+set of hypotheses, according to the
+data and according to the learning
+
+1395
+01:11:07,760 --> 01:11:12,050
+rule, and went through and ended up with
+one that is declared the right
+
+1396
+01:11:12,050 --> 01:11:14,990
+one, and now we call this g.
+
+1397
+01:11:14,990 --> 01:11:18,780
+So the answer is patently
+that g can be different.
+
+1398
+01:11:18,780 --> 01:11:21,430
+Patently yes, just by the notation
+that I'm using.
+
+1399
+01:11:21,430 --> 01:11:24,190
+
+
+1400
+01:11:24,190 --> 01:11:26,450
+MODERATOR: Also, some confusion.
+
+1401
+01:11:26,450 --> 01:11:30,210
+With the perceptron algorithm
+or any linear algorithm--
+
+1402
+01:11:30,210 --> 01:11:36,080
+there's a confusion that, at each
+step, there's a hypothesis, but--
+
+1403
+01:11:36,080 --> 01:11:36,460
+PROFESSOR: Correct.
+
+1404
+01:11:36,460 --> 01:11:40,350
+But these are hidden processes for us.
+
+1405
+01:11:40,350 --> 01:11:43,850
+As far as analysis I mentioned,
+you get the data,
+
+1406
+01:11:43,850 --> 01:11:48,110
+the algorithm does something magic, and
+ends up with a final hypothesis.
+
+1407
+01:11:48,110 --> 01:11:50,900
+In the course of doing that, it will
+obviously be visiting lots of
+
+1408
+01:11:50,900 --> 01:11:51,710
+hypotheses.
+
+1409
+01:11:51,710 --> 01:11:55,780
+So the abstraction of having just the
+samples sitting there, and eyeballing
+
+1410
+01:11:55,780 --> 01:11:59,150
+them and picking the one that happens
+to be green, is an abstraction.
+
+1411
+01:11:59,150 --> 01:12:03,700
+In reality, these guys happen in
+a space, and you are moving from one
+
+1412
+01:12:03,700 --> 01:12:06,530
+hypothesis to another by
+moving some parameters.
+
+1413
+01:12:06,530 --> 01:12:10,870
+And in the course of doing that,
+including in the perceptron learning
+
+1414
+01:12:10,870 --> 01:12:14,020
+algorithm, you are moving from
+one hypothesis to another.
+
+1415
+01:12:14,020 --> 01:12:17,550
+But I'm not accounting for that, because
+I haven't found my final
+
+1416
+01:12:17,550 --> 01:12:18,660
+hypothesis yet.
+
+1417
+01:12:18,660 --> 01:12:21,340
+When you find the final hypothesis,
+you call it g.
+
+1418
+01:12:21,340 --> 01:12:25,030
+On the other hand, because I use the
+union bound, I use the worst-case
+
+1419
+01:12:25,030 --> 01:12:29,570
+scenario, the generalization bound
+applies to every single hypothesis you
+
+1420
+01:12:29,570 --> 01:12:32,270
+visited or you didn't visit.
+
+1421
+01:12:32,270 --> 01:12:36,010
+Because what I did to get the bound, of
+deviation between in-sample and out-of-
+
+1422
+01:12:36,010 --> 01:12:41,980
+sample, is that I consider that all the
+hypotheses simultaneously behave from
+
+1423
+01:12:41,980 --> 01:12:46,950
+in-sample to out-of-sample, closely
+according to your epsilon criterion.
+
+1424
+01:12:46,950 --> 01:12:49,950
+And that obviously guarantees that
+whichever one you end up
+
+1425
+01:12:49,950 --> 01:12:52,710
+with will be fine.
+
+1426
+01:12:52,710 --> 01:12:54,980
+But obviously, it could be an overkill.
+
+1427
+01:12:54,980 --> 01:12:59,790
+And among the positive side effects
+of that is that even the
+
+1428
+01:12:59,790 --> 01:13:01,790
+intermediate values have
+good generalization--
+
+1429
+01:13:01,790 --> 01:13:07,050
+not that we look at it or consider it,
+but just to answer the question.
+
+1430
+01:13:07,050 --> 01:13:09,580
+MODERATOR: A question
+about the punchline.
+
+1431
+01:13:09,580 --> 01:13:15,620
+They say that they don't understand
+exactly how the Hoeffding works--
+
+1432
+01:13:15,620 --> 01:13:18,360
+shows that learning is feasible.
+
+1433
+01:13:18,360 --> 01:13:19,130
+PROFESSOR: OK.
+
+1434
+01:13:19,130 --> 01:13:23,350
+Hoeffding shows that verification
+is feasible.
+
+1435
+01:13:23,350 --> 01:13:25,600
+The presidential poll makes sense.
+
+1436
+01:13:25,600 --> 01:13:30,320
+That, if you have a sample and you have
+one question to ask, and you see
+
+1437
+01:13:30,320 --> 01:13:33,450
+how the question is answered in the
+sample, then there is a reason to
+
+1438
+01:13:33,450 --> 01:13:37,230
+believe that the answer in the general
+population, or in the big bin, will be
+
+1439
+01:13:37,230 --> 01:13:39,900
+close to the answer you got in-sample.
+
+1440
+01:13:39,900 --> 01:13:41,280
+So that's the verification.
+
+1441
+01:13:41,280 --> 01:13:45,780
+In order to move from verification to
+learning, you need to be able to make
+
+1442
+01:13:45,780 --> 01:13:50,040
+that statement, simultaneously on
+a number of these guys, and that's why
+
+1443
+01:13:50,040 --> 01:13:55,030
+you had the modified Hoeffding
+Inequality at the end,
+
+1444
+01:13:55,030 --> 01:13:55,960
+which is this one
+
+1445
+01:13:55,960 --> 01:13:58,280
+that has the red M in it.
+
+1446
+01:13:58,280 --> 01:14:00,960
+This is no longer the plain-vanilla
+Hoeffding Inequality.
+
+1447
+01:14:00,960 --> 01:14:02,420
+We'll still call it Hoeffding.
+
+1448
+01:14:02,420 --> 01:14:05,920
+But it basically deals with a situation
+where you have M of these
+
+1449
+01:14:05,920 --> 01:14:08,940
+guys simultaneously, and you want to
+guarantee that all of them are
+
+1450
+01:14:08,940 --> 01:14:10,110
+behaving well.
+
+1451
+01:14:10,110 --> 01:14:13,090
+Under those conditions, this is the
+probability that the guarantee can
+
+1452
+01:14:13,090 --> 01:14:16,420
+give, and the probability, obviously,
+is looser than it used to be.
+
+1453
+01:14:16,420 --> 01:14:18,980
+So the probability that bad thing
+happens when you have many
+
+1454
+01:14:18,980 --> 01:14:22,333
+possibilities is bigger than the
+probability that bad things happen when
+
+1455
+01:14:22,333 --> 01:14:23,340
+you have one of them.
+
+1456
+01:14:23,340 --> 01:14:27,210
+And this is the case where you added up
+as if they happen disjointly, as I
+
+1457
+01:14:27,210 --> 01:14:29,640
+mentioned before.
+
+1458
+01:14:29,640 --> 01:14:32,560
+MODERATOR: Can it be said that the
+bin corresponds to the entire
+
+1459
+01:14:32,560 --> 01:14:34,600
+population in a--
+
+1460
+01:14:34,600 --> 01:14:37,980
+PROFESSOR: The bin corresponds
+to the entire
+
+1461
+01:14:37,980 --> 01:14:40,110
+population before coloring.
+
+1462
+01:14:40,110 --> 01:14:41,340
+So remember the gray bin--
+
+1463
+01:14:41,340 --> 01:14:42,590
+I have it somewhere.
+
+1464
+01:14:42,590 --> 01:14:44,930
+
+
+1465
+01:14:44,930 --> 01:14:49,530
+We had a viewgraph where the
+bin had gray marbles.
+
+1466
+01:14:49,530 --> 01:14:51,990
+So this is my way of saying this
+is a generic input, and we
+
+1467
+01:14:51,990 --> 01:14:53,270
+call it X.
+
+1468
+01:14:53,270 --> 01:14:57,950
+And this is indeed the input space in
+this case, or the general population.
+
+1469
+01:14:57,950 --> 01:15:01,040
+Now, we start coloring it according
+to when you give me a hypothesis.
+
+1470
+01:15:01,040 --> 01:15:06,470
+So now there's more in the process
+than just the input space.
+
+1471
+01:15:06,470 --> 01:15:10,145
+But indeed, the bin can correspond to
+the general population, and the sample
+
+1472
+01:15:10,145 --> 01:15:12,750
+will correspond to the people you polled
+over the phone, in the case of
+
+1473
+01:15:12,750 --> 01:15:16,880
+the presidential thing.
+
+1474
+01:15:16,880 --> 01:15:20,372
+MODERATOR: Is there a relation between
+the Hoeffding Inequality and the
+
+1475
+01:15:20,372 --> 01:15:22,915
+p-values in statistics?
+
+1476
+01:15:22,915 --> 01:15:25,570
+PROFESSOR: Yes.
+
+1477
+01:15:25,570 --> 01:15:29,070
+The area where we are trying to say that
+if I have a sample and I get
+
+1478
+01:15:29,070 --> 01:15:31,840
+an estimate on the sample, the
+estimate is reliable.
+
+1479
+01:15:31,840 --> 01:15:33,810
+The estimate is close to
+the out-of-sample.
+
+1480
+01:15:33,810 --> 01:15:38,550
+The probability that you will deviate--
+is a huge body of work.
+
+1481
+01:15:38,550 --> 01:15:40,660
+And the p-value in statistics
+is one approach.
+
+1482
+01:15:40,660 --> 01:15:45,130
+And there are other laws of large
+numbers that come with it.
+
+1483
+01:15:45,130 --> 01:15:48,250
+I don't want to venture
+too much into that.
+
+1484
+01:15:48,250 --> 01:15:53,630
+I basically picked from that jungle of
+mathematics the single most useful
+
+1485
+01:15:53,630 --> 01:15:56,960
+formula that will get me home when
+I talk about the theory of
+
+1486
+01:15:56,960 --> 01:15:57,960
+generalization.
+
+1487
+01:15:57,960 --> 01:15:59,230
+And I want to focus on it.
+
+1488
+01:15:59,230 --> 01:16:03,850
+I want to understand it-- this specific
+formula-- perfectly, so when we
+
+1489
+01:16:03,850 --> 01:16:07,080
+keep modifying it until we get to the
+VC dimension, things are clear.
+
+1490
+01:16:07,080 --> 01:16:10,750
+And, obviously, if you get curious about
+the law of large numbers, and
+
+1491
+01:16:10,750 --> 01:16:14,070
+different manifestations of in-sample
+being close to out-of-sample and
+
+1492
+01:16:14,070 --> 01:16:17,730
+probabilities of error, that is a very
+fertile ground, and a very useful
+
+1493
+01:16:17,730 --> 01:16:18,610
+ground to study.
+
+1494
+01:16:18,610 --> 01:16:23,360
+But it is not a core subject
+of the course.
+
+1495
+01:16:23,360 --> 01:16:26,320
+The subject is only borrowing
+one piece as a utility
+
+1496
+01:16:26,320 --> 01:16:28,830
+to get what it wants.
+
+1497
+01:16:28,830 --> 01:16:29,630
+
+
+1498
+01:16:29,630 --> 01:16:30,730
+So that ends the questions here?
+
+1499
+01:16:30,730 --> 01:16:32,690
+Let's call it a day, and
+we will see you next week.
+
+1500
+01:16:32,690 --> 01:16:48,041
+

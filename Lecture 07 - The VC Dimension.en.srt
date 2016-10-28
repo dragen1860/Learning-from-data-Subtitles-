@@ -1,0 +1,6938 @@
+1
+00:00:00,000 --> 00:00:00,570
+
+
+2
+00:00:00,570 --> 00:00:03,270
+ANNOUNCER: The following program
+is brought to you by Caltech.
+
+3
+00:00:03,270 --> 00:00:13,980
+
+
+4
+00:00:13,980 --> 00:00:16,730
+YASER ABU-MOSTAFA: Welcome back.
+
+5
+00:00:16,730 --> 00:00:21,730
+Last time, we introduced the main result
+in learning theory, and there
+
+6
+00:00:21,730 --> 00:00:23,850
+were two parts.
+
+7
+00:00:23,850 --> 00:00:29,860
+The first part is to get a handle on the
+growth function m_H of N, which
+
+8
+00:00:29,860 --> 00:00:36,190
+characterizes the hypothesis set H. And
+the way we got a handle on it is
+
+9
+00:00:36,190 --> 00:00:40,670
+by introducing the idea of a break
+point, and then bounding the growth
+
+10
+00:00:40,670 --> 00:00:44,750
+function in terms of a formula that
+depends on that break point.
+
+11
+00:00:44,750 --> 00:00:49,340
+There was a simple recursion that
+you recall by this figure.
+
+12
+00:00:49,340 --> 00:00:54,470
+And then we finally found the formula
+that upper-bounds the growth function,
+
+13
+00:00:54,470 --> 00:00:58,190
+given that it has a break point k.
+
+14
+00:00:58,190 --> 00:01:02,100
+And it's a combinatorial formula that
+is fairly easy to understand.
+
+15
+00:01:02,100 --> 00:01:06,180
+And the most important aspect about it,
+as far as the theory is concerned,
+
+16
+00:01:06,180 --> 00:01:08,020
+is that this is polynomial.
+
+17
+00:01:08,020 --> 00:01:12,550
+It is bounded above by a polynomial
+in N, since k is a constant.
+
+18
+00:01:12,550 --> 00:01:16,200
+And if you look at this, this is indeed
+a polynomial, and the maximum
+
+19
+00:01:16,200 --> 00:01:20,460
+power you have in this expression
+is N to the k minus 1.
+
+20
+00:01:20,460 --> 00:01:24,550
+So not only is it polynomial, but also
+the order of the polynomial depends on
+
+21
+00:01:24,550 --> 00:01:26,620
+the break point.
+
+22
+00:01:26,620 --> 00:01:29,730
+We were interested in the growth function,
+because it was our way of
+
+23
+00:01:29,730 --> 00:01:35,400
+characterizing the redundancy that we
+need to understand, in order to be able
+
+24
+00:01:35,400 --> 00:01:39,670
+to switch from the Hoeffding inequality
+to the VC inequality.
+
+25
+00:01:39,670 --> 00:01:43,630
+And the VC inequality will be the case
+that handles the learning proper.
+
+26
+00:01:43,630 --> 00:01:46,750
+And in order to do that, we looked
+at the bad events that are
+
+27
+00:01:46,750 --> 00:01:49,680
+characterized by a small area
+according to Hoeffding.
+
+28
+00:01:49,680 --> 00:01:53,770
+And then we went here, and looked at the
+redundancy that results from the
+
+29
+00:01:53,770 --> 00:01:57,460
+fact that the different hypotheses
+have, by and large,
+
+30
+00:01:57,460 --> 00:01:59,610
+overlapping bad regions.
+
+31
+00:01:59,610 --> 00:02:03,360
+And the way to characterize this
+was through the growth function.
+
+32
+00:02:03,360 --> 00:02:09,000
+And after an argument that took the
+redundancy and related it to the growth
+
+33
+00:02:09,000 --> 00:02:12,770
+function, and then got rid of a technical
+problem with E_out, if you
+
+34
+00:02:12,770 --> 00:02:16,950
+recall that one, we ended up switching
+completely from the Hoeffding
+
+35
+00:02:16,950 --> 00:02:21,080
+inequality, which is the top one, into
+the VC inequality, which is the final
+
+36
+00:02:21,080 --> 00:02:24,150
+theoretical result in machine learning--
+the characterization of
+
+37
+00:02:24,150 --> 00:02:25,320
+generalization.
+
+38
+00:02:25,320 --> 00:02:30,990
+And they are very similar except for
+a fundamental difference, which is here,
+
+39
+00:02:30,990 --> 00:02:34,100
+and technical differences, which
+are in the constants.
+
+40
+00:02:34,100 --> 00:02:37,030
+So as you go through the proof, you will
+have to change 2's into 4's, and
+
+41
+00:02:37,030 --> 00:02:39,910
+epsilon into a smaller
+epsilon, and whatnot.
+
+42
+00:02:39,910 --> 00:02:43,540
+But the main thing is that instead of
+the number of hypotheses M, we
+
+43
+00:02:43,540 --> 00:02:46,590
+were able to replace it
+by the growth function.
+
+44
+00:02:46,590 --> 00:02:51,810
+And we had a final technical finesse,
+because we took the growth function not
+
+45
+00:02:51,810 --> 00:02:56,190
+on N points, in spite of the fact that
+we have only N points in the sample.
+
+46
+00:02:56,190 --> 00:03:01,030
+We needed to have 2N in order to have
+another sample and carry the argument,
+
+47
+00:03:01,030 --> 00:03:06,100
+not for the single sample that we have,
+but for the difference between
+
+48
+00:03:06,100 --> 00:03:06,990
+two samples.
+
+49
+00:03:06,990 --> 00:03:11,830
+And that got rid of the technicality
+that we alluded to, which is the role
+
+50
+00:03:11,830 --> 00:03:16,040
+of E_out that really destroys the
+utility of the growth function, because
+
+51
+00:03:16,040 --> 00:03:19,230
+the growth function depends on
+dichotomies, and the E_out depends on
+
+52
+00:03:19,230 --> 00:03:21,940
+the full hypothesis itself.
+
+53
+00:03:21,940 --> 00:03:23,610
+So this is where we stand.
+
+54
+00:03:23,610 --> 00:03:28,720
+In today's lecture, I am going to put
+this together in the main notion
+
+55
+00:03:28,720 --> 00:03:30,990
+of the theory, which is
+the VC dimension.
+
+56
+00:03:30,990 --> 00:03:32,470
+It will not be a new notion for you.
+
+57
+00:03:32,470 --> 00:03:34,540
+It's very much related
+to the break point.
+
+58
+00:03:34,540 --> 00:03:37,780
+But it is the quantity that you are
+going to remember from all of this
+
+59
+00:03:37,780 --> 00:03:39,100
+after a while.
+
+60
+00:03:39,100 --> 00:03:40,710
+So you may forget about the recursion.
+
+61
+00:03:40,710 --> 00:03:42,850
+You may forget about
+the growth function.
+
+62
+00:03:42,850 --> 00:03:44,810
+But you will remember
+the VC dimension.
+
+63
+00:03:44,810 --> 00:03:47,610
+And when you are in a learning
+situation, you ask yourself, what is
+
+64
+00:03:47,610 --> 00:03:48,440
+the VC dimension?
+
+65
+00:03:48,440 --> 00:03:49,960
+Is it 7 or 10?
+
+66
+00:03:49,960 --> 00:03:53,350
+And then you say, oh, this guy is
+using a hypothesis set with VC
+
+67
+00:03:53,350 --> 00:03:54,300
+dimension 5000.
+
+68
+00:03:54,300 --> 00:03:55,720
+He must be crazy. And so on.
+
+69
+00:03:55,720 --> 00:04:00,500
+So this will be the currency we use out
+of the theory, in order to use in
+
+70
+00:04:00,500 --> 00:04:03,410
+a real learning situation.
+
+71
+00:04:03,410 --> 00:04:06,630
+The topics for today, first I'm going
+to give the definition, this
+
+72
+00:04:06,630 --> 00:04:07,690
+will be an easy definition.
+
+73
+00:04:07,690 --> 00:04:09,910
+And I'm going to discuss it a little
+bit, to make sure that everybody
+
+74
+00:04:09,910 --> 00:04:11,210
+understands it.
+
+75
+00:04:11,210 --> 00:04:15,870
+And then we are going to spend some
+time getting the VC dimension of
+
+76
+00:04:15,870 --> 00:04:16,750
+perceptrons.
+
+77
+00:04:16,750 --> 00:04:21,260
+We will be able to compute the VC
+dimension exactly for perceptrons, in
+
+78
+00:04:21,260 --> 00:04:22,750
+any-dimensional space.
+
+79
+00:04:22,750 --> 00:04:24,950
+It doesn't have to be two-dimensional
+space, like the one we
+
+80
+00:04:24,950 --> 00:04:25,710
+did before.
+
+81
+00:04:25,710 --> 00:04:29,510
+You take any dimension, and we will get
+the value of the VC dimension exactly.
+
+82
+00:04:29,510 --> 00:04:30,490
+This is a rare case.
+
+83
+00:04:30,490 --> 00:04:34,150
+Because usually, when we get the VC
+dimension, we get a bound on the VC
+
+84
+00:04:34,150 --> 00:04:36,640
+dimension, just out of the practicality
+of the situation.
+
+85
+00:04:36,640 --> 00:04:38,530
+But here, we'll be able
+to get it exactly.
+
+86
+00:04:38,530 --> 00:04:40,640
+And that will help us
+going through the
+
+87
+00:04:40,640 --> 00:04:42,690
+interpretation of the VC dimension.
+
+88
+00:04:42,690 --> 00:04:43,610
+We'll ask ourselves.
+
+89
+00:04:43,610 --> 00:04:46,210
+Now we understand it, and we compute
+it for a complete case that we are
+
+90
+00:04:46,210 --> 00:04:47,210
+familiar with.
+
+91
+00:04:47,210 --> 00:04:51,430
+Then, we would like to understand,
+what does it signify?
+
+92
+00:04:51,430 --> 00:04:53,330
+How do we apply it in practice?
+
+93
+00:04:53,330 --> 00:04:56,550
+And this will be the subject
+of the interpretation.
+
+94
+00:04:56,550 --> 00:05:00,510
+Finally, I will spend the last few
+minutes of the lecture transforming
+
+95
+00:05:00,510 --> 00:05:03,960
+the theory into a form that is
+extremely simple, and it's
+
+96
+00:05:03,960 --> 00:05:05,460
+very easy to remember.
+
+97
+00:05:05,460 --> 00:05:08,440
+And this is the one that will survive
+with us for the rest of the course, and
+
+98
+00:05:08,440 --> 00:05:10,330
+we'll be able to relate it
+to different theories and
+
+99
+00:05:10,330 --> 00:05:14,360
+techniques as we go.
+
+100
+00:05:14,360 --> 00:05:17,120
+So let's start with the definition.
+
+101
+00:05:17,120 --> 00:05:22,080
+The VC dimension is a quantity that
+is defined for a hypothesis set.
+
+102
+00:05:22,080 --> 00:05:26,030
+You give me hypothesis set, I return
+a number which I call the VC dimension.
+
+103
+00:05:26,030 --> 00:05:31,150
+And the notation for it will be d,
+as in dimension, sub VC as in
+
+104
+00:05:31,150 --> 00:05:32,640
+Vapnik-Chervonenkis.
+
+105
+00:05:32,640 --> 00:05:37,390
+And it is applied to H. And every
+now and then, we will drop the
+
+106
+00:05:37,390 --> 00:05:40,620
+dependency on H, where it
+is clear from the context.
+
+107
+00:05:40,620 --> 00:05:42,920
+So we don't have to carry
+this long notation.
+
+108
+00:05:42,920 --> 00:05:46,330
+We will just say d_VC,
+and we'll understand that
+
+109
+00:05:46,330 --> 00:05:47,630
+this is the VC dimension.
+
+110
+00:05:47,630 --> 00:05:48,890
+What is it?
+
+111
+00:05:48,890 --> 00:05:55,700
+In words, it is the most
+points you can shatter.
+
+112
+00:05:55,700 --> 00:05:58,050
+That is not a foreign notion for us.
+
+113
+00:05:58,050 --> 00:06:02,910
+So if you can shatter 20 points, and that
+is the most you can do, then the
+
+114
+00:06:02,910 --> 00:06:05,220
+VC dimension is 20.
+
+115
+00:06:05,220 --> 00:06:09,560
+In terms of the technical quantities we
+defined, this will be the largest
+
+116
+00:06:09,560 --> 00:06:15,410
+value of N such that the growth function
+is 2 to the N. So if you go
+
+117
+00:06:15,410 --> 00:06:17,750
+one above, the 2 to the
+N will be broken.
+
+118
+00:06:17,750 --> 00:06:20,840
+You can think, if VC dimension
+is the maximum, next one
+
+119
+00:06:20,840 --> 00:06:21,980
+must be a break point.
+
+120
+00:06:21,980 --> 00:06:23,870
+And that is, indeed, the case.
+
+121
+00:06:23,870 --> 00:06:27,580
+The most important thing to realize is
+that we are talking about the most
+
+122
+00:06:27,580 --> 00:06:28,910
+points you can shatter.
+
+123
+00:06:28,910 --> 00:06:33,340
+It doesn't guarantee that every N
+points-- let's say that the VC
+
+124
+00:06:33,340 --> 00:06:37,230
+dimension is N. It doesn't say that
+every N points can be shattered.
+
+125
+00:06:37,230 --> 00:06:42,360
+All you need is one set of N points that
+can be shattered, in order to say
+
+126
+00:06:42,360 --> 00:06:44,430
+that you can shatter N points.
+
+127
+00:06:44,430 --> 00:06:48,390
+That has always been the
+case in our analysis.
+
+128
+00:06:48,390 --> 00:06:53,420
+Let's try to take this definition
+and interpret it.
+
+129
+00:06:53,420 --> 00:06:55,220
+Let's say that I computed
+the VC dimension.
+
+130
+00:06:55,220 --> 00:06:58,390
+I told you the VC dimension
+in this case is 15.
+
+131
+00:06:58,390 --> 00:07:03,370
+Now, what can you say about N which is
+at most 15, in terms of the ability to
+
+132
+00:07:03,370 --> 00:07:05,570
+shatter or not?
+
+133
+00:07:05,570 --> 00:07:12,170
+You can say that if N is at most 15, the
+VC dimension, then H is guaranteed to
+
+134
+00:07:12,170 --> 00:07:13,810
+be able to shatter N points.
+
+135
+00:07:13,810 --> 00:07:19,290
+Which N points I haven't said, but there
+has to be N points which the
+
+136
+00:07:19,290 --> 00:07:20,580
+hypothesis set can shatter.
+
+137
+00:07:20,580 --> 00:07:21,600
+Why is that?
+
+138
+00:07:21,600 --> 00:07:26,790
+It's simply because, since the VC
+dimension is this number, there will
+
+139
+00:07:26,790 --> 00:07:29,515
+be that many points that
+can be shattered.
+
+140
+00:07:29,515 --> 00:07:34,240
+Well, any subset of them will have
+to be shattered as well.
+
+141
+00:07:34,240 --> 00:07:36,790
+Therefore, a smaller number
+will also be shattered.
+
+142
+00:07:36,790 --> 00:07:39,950
+Which means that if N is smaller,
+you can shatter it.
+
+143
+00:07:39,950 --> 00:07:42,290
+The other direction is
+also meaningful.
+
+144
+00:07:42,290 --> 00:07:48,200
+If N is greater than the VC dimension,
+now the statement is strong-- N is
+
+145
+00:07:48,200 --> 00:07:48,930
+a break point.
+
+146
+00:07:48,930 --> 00:07:53,090
+You cannot shatter any set
+of that many points.
+
+147
+00:07:53,090 --> 00:07:56,060
+Because by definition, the VC
+dimension was the maximum.
+
+148
+00:07:56,060 --> 00:08:00,810
+And although I called it N here,
+we used to call it small k.
+
+149
+00:08:00,810 --> 00:08:06,070
+So anything above the VC dimension is
+a break point, and anything below, you
+
+150
+00:08:06,070 --> 00:08:07,310
+can shatter.
+
+151
+00:08:07,310 --> 00:08:09,130
+Very simple notion.
+
+152
+00:08:09,130 --> 00:08:14,620
+If you look at the growth function in
+terms of the VC dimension, when we
+
+153
+00:08:14,620 --> 00:08:18,830
+had the break points, in terms of this k,
+we were able to find the bound that
+
+154
+00:08:18,830 --> 00:08:20,660
+I showed in the review.
+
+155
+00:08:20,660 --> 00:08:24,220
+So we know that the growth function is
+bounded above by this formula, and k
+
+156
+00:08:24,220 --> 00:08:30,590
+appears here for the index of summation,
+which gives us the maximum
+
+157
+00:08:30,590 --> 00:08:32,900
+power of this formula.
+
+158
+00:08:32,900 --> 00:08:36,679
+Now, in terms of the VC dimension, it's
+not a big deal because the smallest
+
+159
+00:08:36,679 --> 00:08:40,340
+break point is 1 above
+the VC dimension.
+
+160
+00:08:40,340 --> 00:08:44,870
+So all you need to do is substitute,
+and you will get this formula
+
+161
+00:08:44,870 --> 00:08:46,080
+involving the VC dimension.
+
+162
+00:08:46,080 --> 00:08:48,270
+The VC dimension is unique,
+because it's the maximum.
+
+163
+00:08:48,270 --> 00:08:49,680
+So you get that number.
+
+164
+00:08:49,680 --> 00:08:52,980
+And now you can say that the growth
+function, for any hypothesis set that
+
+165
+00:08:52,980 --> 00:08:57,070
+has VC dimension d_VC, is
+bounded above by this.
+
+166
+00:08:57,070 --> 00:08:58,160
+A nicer formula than this,
+
+167
+00:08:58,160 --> 00:08:59,560
+because it doesn't have
+the annoying 1.
+
+168
+00:08:59,560 --> 00:09:03,730
+And furthermore, when you look at the
+maximum power in this polynomial, the
+
+169
+00:09:03,730 --> 00:09:07,520
+maximum power happens to be
+N to the VC dimension.
+
+170
+00:09:07,520 --> 00:09:11,570
+So the VC dimension will also serve as
+the order of the polynomial, that
+
+171
+00:09:11,570 --> 00:09:14,120
+bounds the growth function
+of a hypothesis set
+
+172
+00:09:14,120 --> 00:09:17,120
+that has that VC dimension.
+
+173
+00:09:17,120 --> 00:09:20,180
+All of this is very simple.
+
+174
+00:09:20,180 --> 00:09:23,410
+Now, let's take examples in order to
+get the VC dimension in some cases.
+
+175
+00:09:23,410 --> 00:09:25,280
+And you have seen this before.
+
+176
+00:09:25,280 --> 00:09:27,570
+Remember positive rays?
+
+177
+00:09:27,570 --> 00:09:30,365
+How many points can positive
+rays shatter?
+
+178
+00:09:30,365 --> 00:09:34,030
+
+
+179
+00:09:34,030 --> 00:09:35,340
+Just one point, right?
+
+180
+00:09:35,340 --> 00:09:37,450
+This is where you can get
+all possible patterns.
+
+181
+00:09:37,450 --> 00:09:38,940
+If you get two, it's a break point.
+
+182
+00:09:38,940 --> 00:09:40,960
+Remember that argument?
+
+183
+00:09:40,960 --> 00:09:45,110
+Therefore, VC dimension here is 1.
+
+184
+00:09:45,110 --> 00:09:47,090
+Good.
+
+185
+00:09:47,090 --> 00:09:49,620
+How about 2D perceptrons?
+
+186
+00:09:49,620 --> 00:09:51,405
+How many can we shatter?
+
+187
+00:09:51,405 --> 00:09:52,830
+We remember that constellation.
+
+188
+00:09:52,830 --> 00:09:55,770
+If we have three points in that
+position, then we can get
+
+189
+00:09:55,770 --> 00:09:57,020
+all possible patterns.
+
+190
+00:09:57,020 --> 00:09:59,630
+And 4 is a break point,
+so we cannot go up.
+
+191
+00:09:59,630 --> 00:10:01,920
+Therefore, the VC dimension is 3.
+
+192
+00:10:01,920 --> 00:10:05,240
+
+
+193
+00:10:05,240 --> 00:10:07,230
+Convex sets.
+
+194
+00:10:07,230 --> 00:10:10,250
+What is the VC dimension of convex sets
+in two dimensions, the example
+
+195
+00:10:10,250 --> 00:10:11,970
+that we gave before?
+
+196
+00:10:11,970 --> 00:10:16,420
+We had this funny construction where,
+if you choose your points on the
+
+197
+00:10:16,420 --> 00:10:20,910
+perimeter of a circle, you can
+shatter any number of points. Right?
+
+198
+00:10:20,910 --> 00:10:24,810
+Therefore, what would be the
+VC dimension in this case?
+
+199
+00:10:24,810 --> 00:10:26,490
+It will be infinite.
+
+200
+00:10:26,490 --> 00:10:28,900
+There is no maximum.
+
+201
+00:10:28,900 --> 00:10:34,860
+Now, we said before that this one is
+particularly pessimistic, which indeed
+
+202
+00:10:34,860 --> 00:10:39,240
+it is, because this is a very specific
+way of getting the points.
+
+203
+00:10:39,240 --> 00:10:43,940
+And in all of the analysis, you will
+find that using the VC dimension
+
+204
+00:10:43,940 --> 00:10:46,500
+always gives an upper
+bound-- worst case.
+
+205
+00:10:46,500 --> 00:10:49,970
+You cannot violate it, but you
+can do better at times.
+
+206
+00:10:49,970 --> 00:10:52,380
+Here, for example, you can do better if
+you choose the points, let's say,
+
+207
+00:10:52,380 --> 00:10:54,120
+uniformly over a space.
+
+208
+00:10:54,120 --> 00:10:55,900
+Therefore, some of them will
+be internal points.
+
+209
+00:10:55,900 --> 00:10:59,200
+And therefore, the corresponding growth
+function, which can be defined
+
+210
+00:10:59,200 --> 00:11:02,480
+in this case, will not be 2 to the N,
+and you may be able to learn.
+
+211
+00:11:02,480 --> 00:11:05,190
+
+
+212
+00:11:05,190 --> 00:11:08,840
+Now, let's look at the VC dimension
+as it relates to learning.
+
+213
+00:11:08,840 --> 00:11:10,550
+This is an important viewgraph.
+
+214
+00:11:10,550 --> 00:11:13,720
+When we talk about learning, we
+have to go back to our friend, the
+
+215
+00:11:13,720 --> 00:11:14,840
+learning diagram.
+
+216
+00:11:14,840 --> 00:11:17,980
+And in case you forgot it, let
+me magnify it a little bit.
+
+217
+00:11:17,980 --> 00:11:21,350
+
+
+218
+00:11:21,350 --> 00:11:22,860
+There are different components.
+
+219
+00:11:22,860 --> 00:11:25,320
+And we have studied the matter
+so well, that we now can
+
+220
+00:11:25,320 --> 00:11:26,440
+relate more to this.
+
+221
+00:11:26,440 --> 00:11:28,790
+Remember, this is the target function,
+gives me the examples.
+
+222
+00:11:28,790 --> 00:11:31,340
+Learning algorithm picks the hypothesis,
+puts it as the final one.
+
+223
+00:11:31,340 --> 00:11:34,120
+We hope that the final hypothesis
+approximates this guy.
+
+224
+00:11:34,120 --> 00:11:36,600
+And we introduced this thing, in order
+to get the probabilistic analysis.
+
+225
+00:11:36,600 --> 00:11:39,000
+We have seen this before.
+
+226
+00:11:39,000 --> 00:11:44,850
+Now, let's look at this diagram, and
+see what the VC dimension says.
+
+227
+00:11:44,850 --> 00:11:51,030
+The main result is that if the VC
+dimension is finite-- that's all you
+
+228
+00:11:51,030 --> 00:11:54,300
+are asking-- then,
+
+229
+00:11:54,300 --> 00:11:58,210
+now the green final hypothesis
+will generalize.
+
+230
+00:11:58,210 --> 00:11:59,990
+That we have established
+by the theory.
+
+231
+00:11:59,990 --> 00:12:02,455
+So you don't even need
+to know its value.
+
+232
+00:12:02,455 --> 00:12:06,250
+You just need to know it's finite, and then
+you can say the g will generalize.
+
+233
+00:12:06,250 --> 00:12:08,250
+That we have in the bag.
+
+234
+00:12:08,250 --> 00:12:12,740
+Now, I'd like to understand the rest
+of the diagram, in terms of the VC
+
+235
+00:12:12,740 --> 00:12:15,960
+dimension. We can understand
+the green part.
+
+236
+00:12:15,960 --> 00:12:19,800
+Here, we'll generalize to
+the target function, for
+
+237
+00:12:19,800 --> 00:12:20,610
+better or for worse.
+
+238
+00:12:20,610 --> 00:12:24,440
+It could be doing very poorly in the
+in-sample, and that will generalize.
+
+239
+00:12:24,440 --> 00:12:27,000
+Or could be doing great in the
+in-sample, and that will generalize.
+
+240
+00:12:27,000 --> 00:12:30,190
+We are only talking about
+generalization here.
+
+241
+00:12:30,190 --> 00:12:37,510
+Now, this statement is independent
+of the learning algorithm.
+
+242
+00:12:37,510 --> 00:12:38,860
+Why is that?
+
+243
+00:12:38,860 --> 00:12:43,520
+Because the learning algorithm here, if
+it picks a hypothesis, it will have
+
+244
+00:12:43,520 --> 00:12:45,650
+to pick it from the hypothesis set.
+
+245
+00:12:45,650 --> 00:12:49,390
+We have gone through all of this trouble,
+in order to guarantee that
+
+246
+00:12:49,390 --> 00:12:53,600
+generalization will happen, uniformly,
+regardless of which
+
+247
+00:12:53,600 --> 00:12:55,420
+hypothesis you pick.
+
+248
+00:12:55,420 --> 00:12:59,240
+Therefore, you can find the craziest
+learning algorithm, and it can pick
+
+249
+00:12:59,240 --> 00:13:02,320
+anything you want, and you still can
+make the statement about the final
+
+250
+00:13:02,320 --> 00:13:03,270
+hypothesis.
+
+251
+00:13:03,270 --> 00:13:05,390
+So the learning algorithm
+doesn't matter, as far as
+
+252
+00:13:05,390 --> 00:13:06,990
+generalization is concerned.
+
+253
+00:13:06,990 --> 00:13:11,640
+Let's punish it by graying it out.
+
+254
+00:13:11,640 --> 00:13:17,880
+Now, it's also independent of
+the input distribution.
+
+255
+00:13:17,880 --> 00:13:19,550
+This is the box.
+
+256
+00:13:19,550 --> 00:13:22,380
+This was technically introduced
+in order to get Hoeffding.
+
+257
+00:13:22,380 --> 00:13:26,620
+And obviously, it has to survive in
+order to get the VC inequality.
+
+258
+00:13:26,620 --> 00:13:29,420
+The reason I am talking about the
+independence here is because of
+
+259
+00:13:29,420 --> 00:13:30,700
+an interesting point.
+
+260
+00:13:30,700 --> 00:13:35,070
+We mentioned that when we define the
+growth function or the VC dimension, I
+
+261
+00:13:35,070 --> 00:13:39,800
+give you the budget N and then you
+choose the points any way you want,
+
+262
+00:13:39,800 --> 00:13:43,890
+with a view to maximizing
+the dichotomies, right?
+
+263
+00:13:43,890 --> 00:13:47,720
+So now there is no probability
+distribution that can beat you.
+
+264
+00:13:47,720 --> 00:13:51,270
+I can pick the weirdest probability
+distribution that has preferences for
+
+265
+00:13:51,270 --> 00:13:55,190
+funny points, and your choice
+of the points will be fine,
+
+266
+00:13:55,190 --> 00:13:57,610
+because you chose the points
+that maximize.
+
+267
+00:13:57,610 --> 00:13:59,690
+So whatever the probability
+distribution does, you
+
+268
+00:13:59,690 --> 00:14:02,130
+will be doing more.
+
+269
+00:14:02,130 --> 00:14:04,950
+And therefore, your bound will hold.
+
+270
+00:14:04,950 --> 00:14:07,620
+Therefore, we don't have to worry
+about probability distributions.
+
+271
+00:14:07,620 --> 00:14:10,710
+The learning statement, that this guy
+will generalize, will hold for any
+
+272
+00:14:10,710 --> 00:14:12,760
+probability distribution.
+
+273
+00:14:12,760 --> 00:14:17,390
+So another guy bites the dust.
+
+274
+00:14:17,390 --> 00:14:20,960
+Now, you look at this and then there
+is a third guy which is an obvious
+
+275
+00:14:20,960 --> 00:14:23,370
+one, which is the target function.
+
+276
+00:14:23,370 --> 00:14:27,920
+All of this analysis, the target
+function didn't matter at all as far
+
+277
+00:14:27,920 --> 00:14:29,020
+as generalization is concerned.
+
+278
+00:14:29,020 --> 00:14:32,330
+We are generalizing to it, but
+we don't care what it is.
+
+279
+00:14:32,330 --> 00:14:36,660
+As long as it generates the examples we
+learn from, and then we test on it,
+
+280
+00:14:36,660 --> 00:14:37,880
+that's all we care about.
+
+281
+00:14:37,880 --> 00:14:40,420
+The generalization statement
+will hold.
+
+282
+00:14:40,420 --> 00:14:42,210
+So it also goes.
+
+283
+00:14:42,210 --> 00:14:45,490
+So now as far as the VC theory
+is concerned, we
+
+284
+00:14:45,490 --> 00:14:48,400
+really have three blocks.
+
+285
+00:14:48,400 --> 00:14:50,250
+The first one is the hypothesis.
+
+286
+00:14:50,250 --> 00:14:53,670
+That is the one that we are claiming
+the generalization with respect to.
+
+287
+00:14:53,670 --> 00:14:56,130
+That's number one.
+
+288
+00:14:56,130 --> 00:14:58,950
+The hypothesis set is where we
+define the VC dimension.
+
+289
+00:14:58,950 --> 00:15:01,800
+And if you remember very early on, I
+told you that the hypothesis set is
+
+290
+00:15:01,800 --> 00:15:05,050
+a little bit of an artificial notion
+to introduce as part of
+
+291
+00:15:05,050 --> 00:15:06,560
+the learning diagram.
+
+292
+00:15:06,560 --> 00:15:08,320
+And I said that we are
+going to introduce it
+
+293
+00:15:08,320 --> 00:15:09,590
+because there is no downside.
+
+294
+00:15:09,590 --> 00:15:11,810
+There is no loss of generality,
+which is true.
+
+295
+00:15:11,810 --> 00:15:13,770
+And there is an upside for the theory.
+
+296
+00:15:13,770 --> 00:15:15,550
+Now, you can see the upside.
+
+297
+00:15:15,550 --> 00:15:20,170
+The entire VC theory deals with
+the hypothesis set by itself.
+
+298
+00:15:20,170 --> 00:15:23,520
+That's what's has a VC dimension, and
+that's what will tell you, you are able to
+
+299
+00:15:23,520 --> 00:15:24,320
+generalize.
+
+300
+00:15:24,320 --> 00:15:27,730
+The rest of the guys that are more
+intuitive, that disappeared here, are not
+
+301
+00:15:27,730 --> 00:15:30,510
+relevant to that theory.
+
+302
+00:15:30,510 --> 00:15:34,420
+Now, that training examples are left,
+because the statement that involves
+
+303
+00:15:34,420 --> 00:15:37,380
+the VC dimension is a probabilistic
+statement.
+
+304
+00:15:37,380 --> 00:15:41,510
+It says that, with high probability,
+you will generalize.
+
+305
+00:15:41,510 --> 00:15:45,080
+With high probability with
+respect to what?
+
+306
+00:15:45,080 --> 00:15:48,100
+It's with respect to generating
+the data.
+
+307
+00:15:48,100 --> 00:15:52,160
+You may get a very unlucky data set,
+for which you are not going to
+
+308
+00:15:52,160 --> 00:15:53,160
+generalize.
+
+309
+00:15:53,160 --> 00:15:56,360
+The guarantee is that this happens
+with a very small probability.
+
+310
+00:15:56,360 --> 00:15:59,890
+So this remains here, just because
+it is part of the statement.
+
+311
+00:15:59,890 --> 00:16:03,730
+And this triangle is where
+the VC inequality lives.
+
+312
+00:16:03,730 --> 00:16:07,100
+
+
+313
+00:16:07,100 --> 00:16:12,050
+Now we go into a fun thing of
+computing the VC dimension for the
+
+314
+00:16:12,050 --> 00:16:12,940
+perceptrons.
+
+315
+00:16:12,940 --> 00:16:14,250
+There are two goals for doing this.
+
+316
+00:16:14,250 --> 00:16:14,970
+We'll do it exactly.
+
+317
+00:16:14,970 --> 00:16:17,140
+We'll get exact formula for it.
+
+318
+00:16:17,140 --> 00:16:21,380
+One thing is to test your
+understanding of the definition.
+
+319
+00:16:21,380 --> 00:16:25,690
+The definition is a little bit tricky
+because I give you N. You choose the
+
+320
+00:16:25,690 --> 00:16:27,000
+points any which way.
+
+321
+00:16:27,000 --> 00:16:27,780
+You maximize this.
+
+322
+00:16:27,780 --> 00:16:32,390
+This is a bound, so what is minimum,
+what is maximum, and whatnot, may be
+
+323
+00:16:32,390 --> 00:16:33,320
+a little bit fuzzy.
+
+324
+00:16:33,320 --> 00:16:37,320
+And trying to get the number for
+a particular case will seal the deal.
+
+325
+00:16:37,320 --> 00:16:39,080
+So that's number one.
+
+326
+00:16:39,080 --> 00:16:42,050
+Number two is that, because we understand
+the perceptron model so
+
+327
+00:16:42,050 --> 00:16:45,980
+well, we will be able to get the result,
+which is the VC dimension of
+
+328
+00:16:45,980 --> 00:16:46,910
+perceptrons.
+
+329
+00:16:46,910 --> 00:16:50,990
+And that will give us insight into
+what the VC dimension signifies.
+
+330
+00:16:50,990 --> 00:16:54,530
+And that will set the stage, when we go
+to interpreting the VC dimension.
+
+331
+00:16:54,530 --> 00:16:57,255
+So this is an important part, that will
+take a little bit of analysis.
+
+332
+00:16:57,255 --> 00:17:00,120
+
+
+333
+00:17:00,120 --> 00:17:05,520
+For the two-dimensional perceptron,
+we already have done the exercise, and
+
+334
+00:17:05,520 --> 00:17:08,180
+we got the VC dimension to be 3.
+
+335
+00:17:08,180 --> 00:17:10,390
+Right?
+
+336
+00:17:10,390 --> 00:17:14,010
+Now, if you go for the general case and
+you have d-dimensional space, you
+
+337
+00:17:14,010 --> 00:17:15,700
+expect the VC dimension to be more.
+
+338
+00:17:15,700 --> 00:17:21,240
+Because even if you just go to three
+dimensions, the troublesome case
+
+339
+00:17:21,240 --> 00:17:25,630
+of four points, that we had before, is
+very easily shattered in this case.
+
+340
+00:17:25,630 --> 00:17:27,890
+Just pick the points not on a plane.
+
+341
+00:17:27,890 --> 00:17:31,570
+And remember the problem with those guys
+is that if you want these guys to
+
+342
+00:17:31,570 --> 00:17:36,630
+be -1 and these guys to be +1,
+it was a problem for the plane.
+
+343
+00:17:36,630 --> 00:17:40,560
+Now, you can very easily separate any
+two points from the other two points
+
+344
+00:17:40,560 --> 00:17:42,110
+and you can shatter four points.
+
+345
+00:17:42,110 --> 00:17:44,270
+So the VC dimension went up for sure.
+
+346
+00:17:44,270 --> 00:17:47,260
+And we ask ourselves:
+how much did it go up?
+
+347
+00:17:47,260 --> 00:17:50,040
+Well, it turns out to be
+a very simple formula.
+
+348
+00:17:50,040 --> 00:17:53,800
+The VC dimension of perceptrons
+is exactly d plus 1.
+
+349
+00:17:53,800 --> 00:17:56,340
+
+
+350
+00:17:56,340 --> 00:17:58,170
+Now we need to prove that.
+
+351
+00:17:58,170 --> 00:18:02,080
+And we are going to prove it in two
+stages, very simple stages.
+
+352
+00:18:02,080 --> 00:18:08,490
+One of them is that we are going to
+show that the VC dimension is
+
+353
+00:18:08,490 --> 00:18:12,380
+at most d plus 1.
+
+354
+00:18:12,380 --> 00:18:17,590
+Then, we are going to show that the
+VC dimension is at least d plus 1.
+
+355
+00:18:17,590 --> 00:18:23,060
+And that leaves the single possibility
+that the VC dimension is d plus 1.
+
+356
+00:18:23,060 --> 00:18:26,040
+So let's go.
+
+357
+00:18:26,040 --> 00:18:27,900
+Here is one direction.
+
+358
+00:18:27,900 --> 00:18:31,390
+And by the way, pay attention because
+I am going to give you a quiz in the
+
+359
+00:18:31,390 --> 00:18:33,910
+middle of the argument, to make sure
+that you are paying attention.
+
+360
+00:18:33,910 --> 00:18:34,870
+This is for real.
+
+361
+00:18:34,870 --> 00:18:37,026
+And for the online audience as well.
+
+362
+00:18:37,026 --> 00:18:39,590
+Here is the first direction.
+
+363
+00:18:39,590 --> 00:18:46,160
+I am going to construct a specific set
+of N points, and that N in this case
+
+364
+00:18:46,160 --> 00:18:51,270
+is d plus 1, because that's the number
+of points I want to shatter.
+
+365
+00:18:51,270 --> 00:18:54,630
+And I am going to construct them
+in the d-dimensional Euclidean
+
+366
+00:18:54,630 --> 00:18:56,690
+space, R to the d.
+
+367
+00:18:56,690 --> 00:19:02,340
+I am going to construct them with a view
+to being able to shatter them.
+
+368
+00:19:02,340 --> 00:19:04,970
+So I get to choose the points,
+which is my privilege.
+
+369
+00:19:04,970 --> 00:19:08,230
+As long as I can shatter
+them, we are OK.
+
+370
+00:19:08,230 --> 00:19:11,070
+So what are these points?
+
+371
+00:19:11,070 --> 00:19:13,790
+I am going to construct
+them using a matrix.
+
+372
+00:19:13,790 --> 00:19:16,520
+And you have seen this matrix before.
+
+373
+00:19:16,520 --> 00:19:19,730
+Remember our old friend
+linear regression?
+
+374
+00:19:19,730 --> 00:19:23,560
+We actually set the input points in
+linear regression this way, in order to
+
+375
+00:19:23,560 --> 00:19:26,550
+get the algorithm, the pseudo-inverse,
+and all of that.
+
+376
+00:19:26,550 --> 00:19:30,940
+And in the case of linear regression,
+this was a very tall matrix where this
+
+377
+00:19:30,940 --> 00:19:37,940
+is one data point, which means that it's
+d plus 1 dimensional vector.
+
+378
+00:19:37,940 --> 00:19:43,260
+The 1 dimension is the constant x_0,
+which is the constant +1 we add to
+
+379
+00:19:43,260 --> 00:19:44,520
+take care of the threshold.
+
+380
+00:19:44,520 --> 00:19:47,540
+And then the rest of the dimensions,
+from 1 to d, are actually the
+
+381
+00:19:47,540 --> 00:19:49,820
+coordinates of the point.
+
+382
+00:19:49,820 --> 00:19:50,440
+So we put these.
+
+383
+00:19:50,440 --> 00:19:51,580
+And this is one data point.
+
+384
+00:19:51,580 --> 00:19:52,400
+This is the second.
+
+385
+00:19:52,400 --> 00:19:53,220
+This is the third.
+
+386
+00:19:53,220 --> 00:19:53,570
+
+
+387
+00:19:53,570 --> 00:19:57,000
+And usually, since we have many, many
+more points than dimensions, this is
+
+388
+00:19:57,000 --> 00:19:58,360
+a tall matrix.
+
+389
+00:19:58,360 --> 00:20:03,420
+In this case, I am choosing
+N to be exactly d plus 1.
+
+390
+00:20:03,420 --> 00:20:06,480
+And since we already established
+that this is d plus 1, this is
+
+391
+00:20:06,480 --> 00:20:10,150
+actually a square matrix in this case.
+
+392
+00:20:10,150 --> 00:20:13,950
+But that's all I need for the purpose
+that I am after here.
+
+393
+00:20:13,950 --> 00:20:15,690
+I need to give you the
+identity of these guys.
+
+394
+00:20:15,690 --> 00:20:17,740
+What are these guys?
+
+395
+00:20:17,740 --> 00:20:21,160
+These guys look like this.
+
+396
+00:20:21,160 --> 00:20:23,140
+This is no mystery.
+
+397
+00:20:23,140 --> 00:20:27,340
+See, if you look at the first
+column, it's all 1's.
+
+398
+00:20:27,340 --> 00:20:28,250
+Well, it has to be.
+
+399
+00:20:28,250 --> 00:20:29,180
+That's dictated.
+
+400
+00:20:29,180 --> 00:20:30,680
+That is the constant coordinate.
+
+401
+00:20:30,680 --> 00:20:31,890
+It has to be +1.
+
+402
+00:20:31,890 --> 00:20:35,710
+If I want a legitimate point in this
+representation, the d plus 1
+
+403
+00:20:35,710 --> 00:20:38,770
+dimensional representation, the
+first coordinate has to be 1.
+
+404
+00:20:38,770 --> 00:20:42,210
+The rest of the guys, I chose the
+simplest possible form I can imagine.
+
+405
+00:20:42,210 --> 00:20:47,390
+You have basically a diagonal matrix
+here, and I added all 0's here.
+
+406
+00:20:47,390 --> 00:20:52,130
+So these are the guys that
+are my data set.
+
+407
+00:20:52,130 --> 00:20:55,740
+Now, you can see that I chose them such
+that X is invertible, because
+
+408
+00:20:55,740 --> 00:20:59,080
+that is the technique I'm going to use
+in order to be able to shatter them.
+
+409
+00:20:59,080 --> 00:21:01,600
+You will see in a moment.
+
+410
+00:21:01,600 --> 00:21:03,960
+Do I know that this is invertible?
+
+411
+00:21:03,960 --> 00:21:07,270
+Yes, the determinant is 1, actually.
+
+412
+00:21:07,270 --> 00:21:09,450
+And that means it's invertible.
+
+413
+00:21:09,450 --> 00:21:12,080
+Can you compute the determinant?
+
+414
+00:21:12,080 --> 00:21:13,610
+This is 1.
+
+415
+00:21:13,610 --> 00:21:16,860
+And then every time you have this guy,
+you have the 0 term wiping out
+
+416
+00:21:16,860 --> 00:21:17,270
+everything.
+
+417
+00:21:17,270 --> 00:21:19,370
+So I get a 1.
+
+418
+00:21:19,370 --> 00:21:21,650
+So this is an invertible matrix.
+
+419
+00:21:21,650 --> 00:21:24,830
+Why am I interested in
+an invertible matrix?
+
+420
+00:21:24,830 --> 00:21:26,900
+Because we can shatter the data set.
+
+421
+00:21:26,900 --> 00:21:29,450
+This is how we are going to do it.
+
+422
+00:21:29,450 --> 00:21:31,930
+Look at any set of labels you want.
+
+423
+00:21:31,930 --> 00:21:34,610
+So this is a dichotomy.
+
+424
+00:21:34,610 --> 00:21:38,720
+This is the value at the first one, +1
+or -1, +1 or -1, and
+
+425
+00:21:38,720 --> 00:21:41,800
++1 or -1, on the x points
+that I just showed you.
+
+426
+00:21:41,800 --> 00:21:45,770
+All of these could be any pattern
+of +1 or -1's.
+
+427
+00:21:45,770 --> 00:21:49,950
+I would like to tell you that any
+dichotomy you pick from this--
+
+428
+00:21:49,950 --> 00:21:55,310
++1, +1, -1, -1, +1, et cetera,
+I can find a perceptron
+
+429
+00:21:55,310 --> 00:21:57,170
+that realizes this dichotomy.
+
+430
+00:21:57,170 --> 00:22:02,270
+If I do that, then I have showed
+you that I can shatter the set.
+
+431
+00:22:02,270 --> 00:22:06,750
+Let us look for the
+w that satisfies--
+
+432
+00:22:06,750 --> 00:22:08,480
+and what does it satisfy?
+
+433
+00:22:08,480 --> 00:22:12,180
+It satisfies this condition.
+
+434
+00:22:12,180 --> 00:22:17,710
+This computes the signal for all the
+points at once, in vector form.
+
+435
+00:22:17,710 --> 00:22:19,130
+You take the sign of that.
+
+436
+00:22:19,130 --> 00:22:22,840
+And you would like the sign of that to
+agree with the particular y you chose.
+
+437
+00:22:22,840 --> 00:22:28,730
+So you give me y, I am supposed to come
+up with w, such that this holds.
+
+438
+00:22:28,730 --> 00:22:32,530
+If I can do that for every choice of
+y you give me, then I am done.
+
+439
+00:22:32,530 --> 00:22:33,870
+I have shattered your set.
+
+440
+00:22:33,870 --> 00:22:36,590
+Or, my set, the set I chose.
+
+441
+00:22:36,590 --> 00:22:38,350
+How am I going to do that?
+
+442
+00:22:38,350 --> 00:22:40,120
+Oh, it's pretty easy.
+
+443
+00:22:40,120 --> 00:22:44,286
+What I am going to do, I am going
+to do even better than this.
+
+444
+00:22:44,286 --> 00:22:50,100
+I am going to actually have X w
+numerically equal y, even before
+
+445
+00:22:50,100 --> 00:22:52,380
+taking the sign.
+
+446
+00:22:52,380 --> 00:22:56,920
+So when you multiply the matrix X by w,
+you are going to get specifically
+
+447
+00:22:56,920 --> 00:22:58,650
+a pattern of +1 or -1's.
+
+448
+00:22:58,650 --> 00:23:01,400
+Well, if you get +1 or -1, guess
+what happens when you take the
+
+449
+00:23:01,400 --> 00:23:03,470
+sign of that?
+
+450
+00:23:03,470 --> 00:23:05,770
+You'll get the same thing,
++1 or -1.
+
+451
+00:23:05,770 --> 00:23:07,420
+So that will satisfy that.
+
+452
+00:23:07,420 --> 00:23:10,680
+But that is easy to handle, because now
+I have algebra working for me.
+
+453
+00:23:10,680 --> 00:23:13,250
+Remember that X was invertible.
+
+454
+00:23:13,250 --> 00:23:14,270
+That's pretty easy.
+
+455
+00:23:14,270 --> 00:23:18,180
+So all you do is just solve for it.
+
+456
+00:23:18,180 --> 00:23:21,540
+w would be the inverse of X times y.
+
+457
+00:23:21,540 --> 00:23:27,450
+And you have a solution that realizes
+any dichotomy you can think of.
+
+458
+00:23:27,450 --> 00:23:28,090
+That's wonderful.
+
+459
+00:23:28,090 --> 00:23:30,100
+So we were able to shatter
+d plus 1 points.
+
+460
+00:23:30,100 --> 00:23:35,990
+Now comes the quiz.
+
+461
+00:23:35,990 --> 00:23:37,330
+We can shatter these points.
+
+462
+00:23:37,330 --> 00:23:38,360
+Wonderful.
+
+463
+00:23:38,360 --> 00:23:41,990
+But we are not really interested
+in shattering for its own sake.
+
+464
+00:23:41,990 --> 00:23:44,850
+We were trying to establish the
+value of the VC dimension.
+
+465
+00:23:44,850 --> 00:23:46,340
+So let's see what we have established.
+
+466
+00:23:46,340 --> 00:23:49,765
+
+
+467
+00:23:49,765 --> 00:23:53,830
+I showed you particular
+d plus 1 points.
+
+468
+00:23:53,830 --> 00:23:57,130
+I showed you that we can shatter them.
+
+469
+00:23:57,130 --> 00:23:59,930
+What is the conclusion?
+
+470
+00:23:59,930 --> 00:24:05,280
+Is it: oh, we have established the
+VC dimension is d plus 1?
+
+471
+00:24:05,280 --> 00:24:06,420
+Thank you.
+
+472
+00:24:06,420 --> 00:24:12,750
+Or, oh, we only established that it's
+greater than or equal to d plus 1?
+
+473
+00:24:12,750 --> 00:24:13,835
+Wait a minute.
+
+474
+00:24:13,835 --> 00:24:17,130
+We actually established that it is
+less than or equal to d plus 1.
+
+475
+00:24:17,130 --> 00:24:21,560
+Or maybe we didn't establish anything
+at all, as far as the
+
+476
+00:24:21,560 --> 00:24:23,920
+value of the VC dimension.
+
+477
+00:24:23,920 --> 00:24:28,760
+I ask you to think about it, and tell
+me which of those can we conclude?
+
+478
+00:24:28,760 --> 00:24:33,460
+And I'd like the online audience to
+text a, b, c, or d, as if you are
+
+479
+00:24:33,460 --> 00:24:34,690
+solving a homework.
+
+480
+00:24:34,690 --> 00:24:38,350
+And tell me, which of these choices
+is a valid conclusion given
+
+481
+00:24:38,350 --> 00:24:39,600
+what we have argued?
+
+482
+00:24:39,600 --> 00:24:45,250
+
+
+483
+00:24:45,250 --> 00:24:47,330
+So let's say by shouting.
+
+484
+00:24:47,330 --> 00:24:50,170
+You just shout a or b or c or d.
+
+485
+00:24:50,170 --> 00:24:52,730
+And I hope that there is enough
+signal that I will be able to
+
+486
+00:24:52,730 --> 00:24:54,030
+decipher the majority.
+
+487
+00:24:54,030 --> 00:24:55,494
+Shout.
+
+488
+00:24:55,494 --> 00:24:56,744
+AUDIENCE: b.
+
+489
+00:24:56,744 --> 00:24:59,700
+
+
+490
+00:24:59,700 --> 00:25:01,420
+PROFESSOR: OK.
+
+491
+00:25:01,420 --> 00:25:03,750
+You guys are a tough crowd!
+
+492
+00:25:03,750 --> 00:25:05,300
+Well, why is that?
+
+493
+00:25:05,300 --> 00:25:09,040
+We were able to shatter
+d plus 1 points.
+
+494
+00:25:09,040 --> 00:25:13,770
+So we are guaranteed that, for at least
+d plus 1 points, we are OK.
+
+495
+00:25:13,770 --> 00:25:16,410
+It is conceivable that we can
+shatter a bigger set.
+
+496
+00:25:16,410 --> 00:25:18,130
+We haven't argued that yet.
+
+497
+00:25:18,130 --> 00:25:22,550
+But if we even fail, at least we
+have the VC dimension to be at
+
+498
+00:25:22,550 --> 00:25:23,720
+least d plus 1.
+
+499
+00:25:23,720 --> 00:25:25,780
+If we shatter a higher set,
+it will be even bigger.
+
+500
+00:25:25,780 --> 00:25:27,120
+If we cannot, it will be equal.
+
+501
+00:25:27,120 --> 00:25:29,700
+So that is what we have established.
+
+502
+00:25:29,700 --> 00:25:33,210
+Since you are very good at this,
+let's do another quiz.
+
+503
+00:25:33,210 --> 00:25:35,340
+So I have now greater than
+or equal to d plus 1.
+
+504
+00:25:35,340 --> 00:25:38,770
+Now I need to show that the
+VC dimension is less than or
+
+505
+00:25:38,770 --> 00:25:40,480
+equal to d plus 1.
+
+506
+00:25:40,480 --> 00:25:44,050
+I wonder what I need to do,
+in order to achieve that.
+
+507
+00:25:44,050 --> 00:25:46,830
+
+
+508
+00:25:46,830 --> 00:25:50,150
+We need to show that--
+
+509
+00:25:50,150 --> 00:25:51,400
+one of several choices.
+
+510
+00:25:51,400 --> 00:25:54,650
+
+
+511
+00:25:54,650 --> 00:26:01,950
+Oh, I need to show that there are
+some points, a set of d
+
+512
+00:26:01,950 --> 00:26:06,590
+plus 1 points, that we cannot shatter.
+
+513
+00:26:06,590 --> 00:26:07,460
+No, no.
+
+514
+00:26:07,460 --> 00:26:11,020
+I need to show that there
+is a set of d plus 2 points
+
+515
+00:26:11,020 --> 00:26:12,300
+that I cannot shatter.
+
+516
+00:26:12,300 --> 00:26:15,320
+Oh. No, no.
+
+517
+00:26:15,320 --> 00:26:23,210
+Maybe we need to show that we cannot
+shatter any set of d plus 1 points.
+
+518
+00:26:23,210 --> 00:26:25,040
+Or, was it d plus 2?
+
+519
+00:26:25,040 --> 00:26:27,160
+I'm confused now.
+
+520
+00:26:27,160 --> 00:26:31,010
+What among those guys will
+establish the premise?
+
+521
+00:26:31,010 --> 00:26:34,460
+The premise that we are trying to
+establish is that the VC dimension is
+
+522
+00:26:34,460 --> 00:26:36,230
+at most d plus 1.
+
+523
+00:26:36,230 --> 00:26:38,930
+Which of these statements
+will establish that?
+
+524
+00:26:38,930 --> 00:26:40,070
+Again, think about it.
+
+525
+00:26:40,070 --> 00:26:43,230
+And similarly, for the online audience
+to text the result.
+
+526
+00:26:43,230 --> 00:26:44,520
+I'll give you 10 seconds.
+
+527
+00:26:44,520 --> 00:26:45,885
+And then, we'll also
+answer by shouting.
+
+528
+00:26:45,885 --> 00:26:50,400
+
+
+529
+00:26:50,400 --> 00:26:51,840
+OK, shout.
+
+530
+00:26:51,840 --> 00:26:53,500
+AUDIENCE: d.
+
+531
+00:26:53,500 --> 00:26:55,110
+PROFESSOR: I like this.
+
+532
+00:26:55,110 --> 00:26:57,220
+How about the online audience? d, OK.
+
+533
+00:26:57,220 --> 00:27:00,740
+So everybody gets the idea.
+
+534
+00:27:00,740 --> 00:27:02,590
+Now, we know what we want to prove.
+
+535
+00:27:02,590 --> 00:27:05,440
+Let's go ahead and prove it.
+
+536
+00:27:05,440 --> 00:27:10,410
+Now it's a question of
+any d plus 2 points.
+
+537
+00:27:10,410 --> 00:27:13,530
+So I don't get to choose the points,
+you get to choose them.
+
+538
+00:27:13,530 --> 00:27:15,390
+So I tell you, choose them please.
+
+539
+00:27:15,390 --> 00:27:17,910
+And give them to me.
+
+540
+00:27:17,910 --> 00:27:20,410
+When you give me your points, I am
+going to make a statement about the
+
+541
+00:27:20,410 --> 00:27:21,745
+points you chose.
+
+542
+00:27:21,745 --> 00:27:23,460
+Well, how can I make a statement?
+
+543
+00:27:23,460 --> 00:27:24,410
+You chose them any which way.
+
+544
+00:27:24,410 --> 00:27:26,280
+I'm going to make a statement.
+
+545
+00:27:26,280 --> 00:27:30,320
+I am going to say that, for those
+particular points that you chose,
+
+546
+00:27:30,320 --> 00:27:36,560
+which I really don't know what they
+are, I can say that you have more
+
+547
+00:27:36,560 --> 00:27:39,480
+points than dimensions.
+
+548
+00:27:39,480 --> 00:27:41,100
+Why is that?
+
+549
+00:27:41,100 --> 00:27:46,230
+Each of these guys still comes from
+a d plus 1 vector, right?
+
+550
+00:27:46,230 --> 00:27:49,240
+Because it's a d-dimensional space
+plus the added coordinate.
+
+551
+00:27:49,240 --> 00:27:51,680
+So each one is d plus 1 dimensions.
+
+552
+00:27:51,680 --> 00:27:53,710
+And I asked you to give me d plus 2.
+
+553
+00:27:53,710 --> 00:27:56,560
+So obviously, d plus 2 is
+bigger than d plus 1.
+
+554
+00:27:56,560 --> 00:28:01,475
+What do you know when you have
+more vectors than dimensions?
+
+555
+00:28:01,475 --> 00:28:05,070
+Oh, I know that they must
+be linearly dependent.
+
+556
+00:28:05,070 --> 00:28:08,250
+
+
+557
+00:28:08,250 --> 00:28:15,580
+Therefore, we must have that one of
+them will be a linear combination from
+
+558
+00:28:15,580 --> 00:28:16,650
+the rest of the guys.
+
+559
+00:28:16,650 --> 00:28:21,410
+So you take j, whichever it might be,
+and this will be equal to the sum over
+
+560
+00:28:21,410 --> 00:28:25,540
+the rest of the guys of some
+coefficients that I don't know, times
+
+561
+00:28:25,540 --> 00:28:26,170
+those guys.
+
+562
+00:28:26,170 --> 00:28:28,540
+This will apply to any set you choose.
+
+563
+00:28:28,540 --> 00:28:31,400
+And this is the property that I am
+actually going to use, in order to
+
+564
+00:28:31,400 --> 00:28:34,520
+establish what I want.
+
+565
+00:28:34,520 --> 00:28:37,250
+Furthermore, I can actually
+make something about the a_i's.
+
+566
+00:28:37,250 --> 00:28:40,790
+The a_i's could be anything for
+this statement to hold.
+
+567
+00:28:40,790 --> 00:28:45,180
+But I'm going to claim that not all
+of them are zeroes, in this case.
+
+568
+00:28:45,180 --> 00:28:48,480
+At least some of the a_i's are nonzero.
+
+569
+00:28:48,480 --> 00:28:49,240
+How do I know that?
+
+570
+00:28:49,240 --> 00:28:51,430
+This is not part of the
+linear dependence.
+
+571
+00:28:51,430 --> 00:28:54,730
+This is actually because of the
+particular form of these guys, where
+
+572
+00:28:54,730 --> 00:28:58,260
+the first coordinate of all
+of these guys is always 1.
+
+573
+00:28:58,260 --> 00:29:02,100
+So when you look at this and apply it
+to the first coordinate, 1 equals--
+
+574
+00:29:02,100 --> 00:29:06,670
+well, these cannot all be zeroes
+because it has to add up to 1.
+
+575
+00:29:06,670 --> 00:29:11,910
+Therefore, some of the a_i's
+will be nonzero.
+
+576
+00:29:11,910 --> 00:29:12,640
+That's all I need.
+
+577
+00:29:12,640 --> 00:29:13,910
+I need this to hold.
+
+578
+00:29:13,910 --> 00:29:17,050
+I need some of the a_i's not to be 0.
+
+579
+00:29:17,050 --> 00:29:18,680
+Everybody buys that this is the case?
+
+580
+00:29:18,680 --> 00:29:19,410
+That's all I need.
+
+581
+00:29:19,410 --> 00:29:23,525
+And then we go and show the dichotomy
+that you cannot implement.
+
+582
+00:29:23,525 --> 00:29:27,040
+
+
+583
+00:29:27,040 --> 00:29:30,202
+We have that, right?
+
+584
+00:29:30,202 --> 00:29:31,440
+
+
+585
+00:29:31,440 --> 00:29:32,690
+Consider the following dichotomy.
+
+586
+00:29:32,690 --> 00:29:35,740
+
+
+587
+00:29:35,740 --> 00:29:40,650
+I am going to take the x_i's
+corresponding to nonzero a_i's.
+
+588
+00:29:40,650 --> 00:29:42,490
+Some of the a_i's are
+nonzero for sure.
+
+589
+00:29:42,490 --> 00:29:43,460
+Maybe some of them are zeroes.
+
+590
+00:29:43,460 --> 00:29:45,560
+I am going to focus only
+on the nonzero guys.
+
+591
+00:29:45,560 --> 00:29:48,990
+I don't care what you do with the
+terms that have a_i equals 0.
+
+592
+00:29:48,990 --> 00:29:49,830
+Do whatever you want.
+
+593
+00:29:49,830 --> 00:29:51,110
+Give them any +1 or -1.
+
+594
+00:29:51,110 --> 00:29:53,130
+Let's not look at them.
+
+595
+00:29:53,130 --> 00:29:57,460
+I'm looking at those guys, and I am
+now constructing a dichotomy that I am
+
+596
+00:29:57,460 --> 00:30:02,340
+going to show you that you cannot
+implement using a perceptron.
+
+597
+00:30:02,340 --> 00:30:08,760
+So for the x_i's with the nonzero a_i,
+I am going to give the label, which
+
+598
+00:30:08,760 --> 00:30:12,710
+happens to be the sign
+of that coefficient.
+
+599
+00:30:12,710 --> 00:30:13,870
+That is a nonzero number.
+
+600
+00:30:13,870 --> 00:30:14,890
+It's positive or negative.
+
+601
+00:30:14,890 --> 00:30:17,110
+So I will give it +1 or -1
+according to whether
+
+602
+00:30:17,110 --> 00:30:18,740
+it's positive or negative.
+
+603
+00:30:18,740 --> 00:30:23,210
+And I will do that for every
+nonzero term here.
+
+604
+00:30:23,210 --> 00:30:25,340
+Everybody sees that?
+
+605
+00:30:25,340 --> 00:30:29,470
+And now I'm going to complete the
+dichotomy, by telling you what will
+
+606
+00:30:29,470 --> 00:30:31,350
+happen with x_j.
+
+607
+00:30:31,350 --> 00:30:35,226
+I'm going to require that
+x_j goes to -1.
+
+608
+00:30:35,226 --> 00:30:40,950
+Now, all you need to realize is
+that this is a dichotomy.
+
+609
+00:30:40,950 --> 00:30:44,400
+These are values of +1 or -1
+on specific points.
+
+610
+00:30:44,400 --> 00:30:47,440
+The other guys, which happened to be
+0, give them any +1 or -1.
+
+611
+00:30:47,440 --> 00:30:48,520
+You choose.
+
+612
+00:30:48,520 --> 00:30:52,270
+And for the final guy which is sitting
+here, I am going to it -1.
+
+613
+00:30:52,270 --> 00:30:53,830
+This is a legitimate dichotomy.
+
+614
+00:30:53,830 --> 00:30:56,350
+And I'm going to show you that you
+cannot implement this particular one.
+
+615
+00:30:56,350 --> 00:31:00,930
+
+
+616
+00:31:00,930 --> 00:31:02,510
+How is that?
+
+617
+00:31:02,510 --> 00:31:03,930
+Because I really don't
+know your points.
+
+618
+00:31:03,930 --> 00:31:08,330
+So I must be using just that algebraic
+property, in order to find this.
+
+619
+00:31:08,330 --> 00:31:11,740
+And the idea is very simple.
+
+620
+00:31:11,740 --> 00:31:16,920
+This is the form we have, x_j happens
+to be the linear sum of these guys.
+
+621
+00:31:16,920 --> 00:31:21,570
+I am going to multiply by any w.
+
+622
+00:31:21,570 --> 00:31:22,480
+For any w--
+
+623
+00:31:22,480 --> 00:31:24,260
+the perceptrons, you multiply by w.
+
+624
+00:31:24,260 --> 00:31:25,630
+That is what makes it a perceptron.
+
+625
+00:31:25,630 --> 00:31:27,200
+So I'm going to multiply by it.
+
+626
+00:31:27,200 --> 00:31:29,900
+And then I realize that
+w transposed times x_j,
+
+627
+00:31:29,900 --> 00:31:32,150
+which would actually be the
+signal for the last guy,
+
+628
+00:31:32,150 --> 00:31:35,580
+is actually the sum of the signals
+for the different guys, with these
+
+629
+00:31:35,580 --> 00:31:38,750
+coefficients. That has to happen.
+
+630
+00:31:38,750 --> 00:31:40,710
+So what is the problem?
+
+631
+00:31:40,710 --> 00:31:45,850
+The problem is that, when you take this
+as your perceptron, then by definition
+
+632
+00:31:45,850 --> 00:31:49,380
+the label is the sign
+of this quantity.
+
+633
+00:31:49,380 --> 00:31:54,290
+For the guys where a_i is nonzero, we
+force this quantity, which is the
+
+634
+00:31:54,290 --> 00:31:58,070
+value y_i, to be the sign of a_i.
+
+635
+00:31:58,070 --> 00:32:00,860
+That's what we constructed.
+
+636
+00:32:00,860 --> 00:32:04,410
+What can you conclude given that the
+sign of this fellow is the same as the
+
+637
+00:32:04,410 --> 00:32:05,340
+sign of this fellow?
+
+638
+00:32:05,340 --> 00:32:08,030
+It must be that these
+guys agree in sign.
+
+639
+00:32:08,030 --> 00:32:11,490
+They are either both positive,
+or both negative, right?
+
+640
+00:32:11,490 --> 00:32:16,100
+Therefore, I can conclude that
+if you multiply them, you
+
+641
+00:32:16,100 --> 00:32:17,330
+get something positive.
+
+642
+00:32:17,330 --> 00:32:19,920
+That is for sure.
+
+643
+00:32:19,920 --> 00:32:23,500
+So now I have a handle on this term.
+
+644
+00:32:23,500 --> 00:32:30,450
+This forces the sum of these
+guys to be greater than 0.
+
+645
+00:32:30,450 --> 00:32:31,520
+Why is that?
+
+646
+00:32:31,520 --> 00:32:34,720
+Because this happens for
+every nonzero a_i.
+
+647
+00:32:34,720 --> 00:32:37,310
+For zero a_i's, they don't contribute
+anything here.
+
+648
+00:32:37,310 --> 00:32:39,900
+So if I add up a bunch of positive
+numbers and zeroes, I am going to get
+
+649
+00:32:39,900 --> 00:32:42,350
+a positive number.
+
+650
+00:32:42,350 --> 00:32:43,310
+What is this quantity?
+
+651
+00:32:43,310 --> 00:32:45,920
+Do I see it anywhere
+else on the slide?
+
+652
+00:32:45,920 --> 00:32:48,060
+Oh, yeah, I can see it here.
+
+653
+00:32:48,060 --> 00:32:54,130
+This actually is the signal
+on the outstanding point.
+
+654
+00:32:54,130 --> 00:32:57,000
+So I know that the signal on the
+outstanding point is positive.
+
+655
+00:32:57,000 --> 00:33:00,580
+What does this force the value of the
+perceptron, your perceptron, the one
+
+656
+00:33:00,580 --> 00:33:03,970
+you had here, to be?
+
+657
+00:33:03,970 --> 00:33:08,120
+It will have to be +1.
+
+658
+00:33:08,120 --> 00:33:14,210
+Therefore, it's impossible to get that
+to be -1, if you chose this.
+
+659
+00:33:14,210 --> 00:33:15,590
+This is a choice that is legitimate.
+
+660
+00:33:15,590 --> 00:33:17,020
+It is a dichotomy.
+
+661
+00:33:17,020 --> 00:33:20,760
+And now if you pick those guys, pick the
+rest of the zero-coefficient guys
+
+662
+00:33:20,760 --> 00:33:25,030
+any way you want, you are forbidden
+from having this as -1.
+
+663
+00:33:25,030 --> 00:33:30,280
+Therefore, you cannot shatter your
+set, for any set you choose.
+
+664
+00:33:30,280 --> 00:33:34,730
+Therefore, you cannot shatter
+any set of d plus 2 points.
+
+665
+00:33:34,730 --> 00:33:35,980
+And I have the result.
+
+666
+00:33:35,980 --> 00:33:38,250
+
+
+667
+00:33:38,250 --> 00:33:41,030
+So let's put it together.
+
+668
+00:33:41,030 --> 00:33:45,370
+First, we showed that the VC dimension
+is at most d plus 1.
+
+669
+00:33:45,370 --> 00:33:49,976
+And then we showed that
+it's at least d plus 1.
+
+670
+00:33:49,976 --> 00:33:53,180
+Or actually, did we do it this
+way, or the other way around?
+
+671
+00:33:53,180 --> 00:33:53,970
+That's another quiz.
+
+672
+00:33:53,970 --> 00:33:57,280
+No, it's not another quiz!
+
+673
+00:33:57,280 --> 00:34:00,660
+The conclusion is that the VC
+dimension is d plus 1.
+
+674
+00:34:00,660 --> 00:34:05,790
+And now, d-dimensional perceptron--
+the VC dimension is d plus 1.
+
+675
+00:34:05,790 --> 00:34:10,889
+Let's ask ourselves the simple question:
+what is exactly d plus 1 in
+
+676
+00:34:10,889 --> 00:34:13,510
+a d-dimensional perceptron?
+
+677
+00:34:13,510 --> 00:34:15,449
+It's one above the dimensions.
+
+678
+00:34:15,449 --> 00:34:17,969
+You can find many interpretations
+for it.
+
+679
+00:34:17,969 --> 00:34:22,540
+But the interpretation of interest to
+us will be the fact that this is
+
+680
+00:34:22,540 --> 00:34:26,250
+actually the number of parameters
+in the perceptron model.
+
+681
+00:34:26,250 --> 00:34:28,170
+What are the parameters in
+the perceptron model?
+
+682
+00:34:28,170 --> 00:34:29,610
+We used to call it the vector w.
+
+683
+00:34:29,610 --> 00:34:31,860
+Let's spell it out, in order to count.
+
+684
+00:34:31,860 --> 00:34:34,225
+This happens to be w.
+
+685
+00:34:34,225 --> 00:34:38,272
+
+
+686
+00:34:38,272 --> 00:34:42,639
+w_0, this is the one for
+the threshold, w_1 up to w_d.
+
+687
+00:34:42,639 --> 00:34:45,300
+These are the parameters you are free
+to choose, and that we have been
+
+688
+00:34:45,300 --> 00:34:46,909
+choosing through this argument.
+
+689
+00:34:46,909 --> 00:34:49,659
+And how many of them there
+are? d plus 1.
+
+690
+00:34:49,659 --> 00:34:54,239
+Why am I attaching the VC dimension
+to the number of parameters?
+
+691
+00:34:54,239 --> 00:34:57,630
+The VC dimension gives
+me the maximum number of
+
+692
+00:34:57,630 --> 00:34:59,170
+points I can shatter.
+
+693
+00:34:59,170 --> 00:35:01,880
+So now I can do any which way.
+
+694
+00:35:01,880 --> 00:35:05,240
+The reason I can do any which way,
+because I have a bunch of parameters
+
+695
+00:35:05,240 --> 00:35:08,810
+that I can set one way or the other,
+in order to achieve that.
+
+696
+00:35:08,810 --> 00:35:13,580
+So it stands to logic that when I have
+more parameters, I will have a higher
+
+697
+00:35:13,580 --> 00:35:14,760
+VC dimension.
+
+698
+00:35:14,760 --> 00:35:17,215
+And that will be the basic part
+of the interpretation that we
+
+699
+00:35:17,215 --> 00:35:18,950
+are going to go into.
+
+700
+00:35:18,950 --> 00:35:24,370
+So let's do now the interpretation
+of the VC dimension.
+
+701
+00:35:24,370 --> 00:35:27,250
+
+
+702
+00:35:27,250 --> 00:35:28,910
+Look at this--
+
+703
+00:35:28,910 --> 00:35:30,670
+we are going to prove two things.
+
+704
+00:35:30,670 --> 00:35:33,360
+No, not prove, but show two things
+in terms of the interpretation.
+
+705
+00:35:33,360 --> 00:35:36,040
+One of them, we understand
+the mathematical
+
+706
+00:35:36,040 --> 00:35:37,490
+definition of the VC dimension.
+
+707
+00:35:37,490 --> 00:35:38,960
+What does it signify?
+
+708
+00:35:38,960 --> 00:35:40,070
+That's number one.
+
+709
+00:35:40,070 --> 00:35:42,360
+And it will relate to the number
+of parameters.
+
+710
+00:35:42,360 --> 00:35:44,750
+And we'll get it a little
+bit more elaborately.
+
+711
+00:35:44,750 --> 00:35:47,180
+The second one, I know
+what it signifies.
+
+712
+00:35:47,180 --> 00:35:48,390
+Is it at all useful for me?
+
+713
+00:35:48,390 --> 00:35:50,066
+I am a learning person.
+
+714
+00:35:50,066 --> 00:35:54,140
+I went through the theory, just because
+you asked us to do that.
+
+715
+00:35:54,140 --> 00:35:56,580
+But when all is said and done, I just
+care about the result and how I'm
+
+716
+00:35:56,580 --> 00:35:57,910
+going to use it in practice.
+
+717
+00:35:57,910 --> 00:36:01,070
+How can we apply the value of
+the VC dimension in practice?
+
+718
+00:36:01,070 --> 00:36:02,450
+That's number two.
+
+719
+00:36:02,450 --> 00:36:03,850
+These are the two parts
+of the interpretation.
+
+720
+00:36:03,850 --> 00:36:07,370
+
+
+721
+00:36:07,370 --> 00:36:12,530
+The main idea of understanding what
+the VC dimension signifies, is to look
+
+722
+00:36:12,530 --> 00:36:15,550
+at the degrees of freedom.
+
+723
+00:36:15,550 --> 00:36:17,880
+What is that?
+
+724
+00:36:17,880 --> 00:36:22,360
+When you have a model, the model is
+characterized by a set of hypotheses.
+
+725
+00:36:22,360 --> 00:36:26,050
+You get one hypothesis or another, by
+setting the set of parameters one way
+
+726
+00:36:26,050 --> 00:36:27,460
+or another.
+
+727
+00:36:27,460 --> 00:36:31,420
+So the parameters give you degrees
+of freedom, in order to create one
+
+728
+00:36:31,420 --> 00:36:34,090
+hypothesis or another hypothesis.
+
+729
+00:36:34,090 --> 00:36:38,750
+So think of this picture.
+
+730
+00:36:38,750 --> 00:36:41,900
+Think of the parameters as knobs.
+
+731
+00:36:41,900 --> 00:36:45,570
+So this is w_0, w_1, w_2, et cetera.
+
+732
+00:36:45,570 --> 00:36:50,580
+When you are actually having
+a hypothesis set, you are given this.
+
+733
+00:36:50,580 --> 00:36:52,610
+And you are able to set the
+knobs any way you want.
+
+734
+00:36:52,610 --> 00:36:54,920
+Increase the volume, decrease
+this, et cetera.
+
+735
+00:36:54,920 --> 00:36:59,150
+Just do this, and you get a setting that
+tells you what the hypothesis is.
+
+736
+00:36:59,150 --> 00:37:01,140
+These are, obviously, degrees of freedom.
+
+737
+00:37:01,140 --> 00:37:02,380
+And it actually has a pleasant thing.
+
+738
+00:37:02,380 --> 00:37:07,350
+Because let's say you are buying
+a big-time audio system.
+
+739
+00:37:07,350 --> 00:37:11,200
+Usually, if you are not very much into
+stereo and stuff, you want a couple of
+
+740
+00:37:11,200 --> 00:37:13,465
+knobs, and you'll adjust
+them and get it right.
+
+741
+00:37:13,465 --> 00:37:18,180
+If I give you 17 channels and this and
+that, and I give you this panel,
+
+742
+00:37:18,180 --> 00:37:22,162
+that's great, if you know
+how to use it.
+
+743
+00:37:22,162 --> 00:37:23,895
+If you don't know how to use it--
+
+744
+00:37:23,895 --> 00:37:24,250
+ah.
+
+745
+00:37:24,250 --> 00:37:24,770
+What?
+
+746
+00:37:24,770 --> 00:37:26,480
+I can't.
+
+747
+00:37:26,480 --> 00:37:29,860
+So now the problem that we are
+facing is actually here.
+
+748
+00:37:29,860 --> 00:37:34,610
+Because now, the specification that
+is needed in order to get you to
+
+749
+00:37:34,610 --> 00:37:37,180
+pick the right hypothesis,
+is pretty elaborate.
+
+750
+00:37:37,180 --> 00:37:39,190
+You need a lot of examples here.
+
+751
+00:37:39,190 --> 00:37:42,870
+That is the relation
+we are going to see.
+
+752
+00:37:42,870 --> 00:37:47,320
+Now, the parameters happen to be
+analog degrees of freedom.
+
+753
+00:37:47,320 --> 00:37:52,150
+When I talk about w_0, w_0 can
+assume a continuous value
+
+754
+00:37:52,150 --> 00:37:54,160
+from R, and it matters--
+
+755
+00:37:54,160 --> 00:37:58,420
+if you pick a different threshold, you
+will get to a different perceptron.
+
+756
+00:37:58,420 --> 00:38:01,510
+It will return different values
+for parts of the space.
+
+757
+00:38:01,510 --> 00:38:05,460
+So this is, genuinely, degrees of freedom
+that happen to be analog.
+
+758
+00:38:05,460 --> 00:38:12,820
+The great thing about the VC dimension
+is that, it translated those into
+
+759
+00:38:12,820 --> 00:38:15,720
+binary, if you will, degrees
+of freedom.
+
+760
+00:38:15,720 --> 00:38:18,780
+Because all you are trying
+to do is get a dichotomy.
+
+761
+00:38:18,780 --> 00:38:22,550
+So I am asking myself: when am I
+free to get any dichotomy I want?
+
+762
+00:38:22,550 --> 00:38:25,310
+For any point, I can get the +1
+or I can get -1,
+
+763
+00:38:25,310 --> 00:38:28,820
+independently of the second point. I
+get +1 or -1 all the way.
+
+764
+00:38:28,820 --> 00:38:32,010
+So you can keep adding the points, and
+see how far you can get away.
+
+765
+00:38:32,010 --> 00:38:34,440
+And the maximum you can get
+is the VC dimension.
+
+766
+00:38:34,440 --> 00:38:39,250
+So by the time you get there, you have
+that number, which is the VC dimension--
+
+767
+00:38:39,250 --> 00:38:40,140
+degrees of freedom.
+
+768
+00:38:40,140 --> 00:38:42,090
+But they are binary degrees
+of freedom,
+
+769
+00:38:42,090 --> 00:38:45,950
+which is what matters here, because
+inside the box that tells you it's
+
+770
+00:38:45,950 --> 00:38:48,440
+a perceptron or a neural network or
+something like that, there may be
+
+771
+00:38:48,440 --> 00:38:50,560
+parameters playing around,
+and whatnot.
+
+772
+00:38:50,560 --> 00:38:53,180
+As far as I am concerned, all
+I'm interested in, how
+
+773
+00:38:53,180 --> 00:38:55,420
+expressive is this model?
+
+774
+00:38:55,420 --> 00:38:58,280
+How many different things
+I can actually get.
+
+775
+00:38:58,280 --> 00:39:02,400
+So the VC dimension now abstracts
+whatever the mathematics that goes
+
+776
+00:39:02,400 --> 00:39:04,190
+inside, et cetera.
+
+777
+00:39:04,190 --> 00:39:05,110
+You go outside.
+
+778
+00:39:05,110 --> 00:39:08,880
+And if I can shatter 20
+points, that's good.
+
+779
+00:39:08,880 --> 00:39:12,770
+If someone else can shatter 30 points,
+they have more degrees of freedom to
+
+780
+00:39:12,770 --> 00:39:15,200
+be able to do that, regardless
+of where this came from.
+
+781
+00:39:15,200 --> 00:39:19,330
+
+
+782
+00:39:19,330 --> 00:39:22,750
+So now, let's look at the usual suspects,
+and see if the correspondence
+
+783
+00:39:22,750 --> 00:39:26,900
+between degrees of freedom
+and VC dimension holds.
+
+784
+00:39:26,900 --> 00:39:30,160
+Who are the usual suspects?
+
+785
+00:39:30,160 --> 00:39:33,440
+I think this is the last lecture where
+we're going to see the positive rays
+
+786
+00:39:33,440 --> 00:39:35,090
+and the rest of the gang.
+
+787
+00:39:35,090 --> 00:39:36,400
+So don't despair!
+
+788
+00:39:36,400 --> 00:39:37,890
+So, positive rays.
+
+789
+00:39:37,890 --> 00:39:38,730
+What are positive rays?
+
+790
+00:39:38,730 --> 00:39:39,630
+What is the VC dimension?
+
+791
+00:39:39,630 --> 00:39:40,710
+That was 1.
+
+792
+00:39:40,710 --> 00:39:44,000
+I can shatter at most one point.
+
+793
+00:39:44,000 --> 00:39:45,930
+What were positive rays
+in the first place?
+
+794
+00:39:45,930 --> 00:39:47,910
+Oh, yeah, that was the diagram.
+
+795
+00:39:47,910 --> 00:39:52,530
+We had this thing, and I present +1
+here, and we take -1 here.
+
+796
+00:39:52,530 --> 00:39:55,650
+And what determines one hypothesis
+versus the other within this model is
+
+797
+00:39:55,650 --> 00:39:57,590
+the choice of 'a'.
+
+798
+00:39:57,590 --> 00:39:59,000
+Oh, the choice of 'a'?
+
+799
+00:39:59,000 --> 00:40:06,090
+One parameter, one degree of freedom
+corresponds to VC dimension equals 1.
+
+800
+00:40:06,090 --> 00:40:06,490
+That's nice.
+
+801
+00:40:06,490 --> 00:40:09,220
+Let's see if this survives.
+
+802
+00:40:09,220 --> 00:40:10,240
+Positive intervals.
+
+803
+00:40:10,240 --> 00:40:12,160
+OK, the positive intervals.
+
+804
+00:40:12,160 --> 00:40:13,460
+The VC dimension was 2.
+
+805
+00:40:13,460 --> 00:40:15,200
+That is the most I can shatter.
+
+806
+00:40:15,200 --> 00:40:16,420
+What do they look like?
+
+807
+00:40:16,420 --> 00:40:17,730
+Oh, in this case.
+
+808
+00:40:17,730 --> 00:40:20,720
+I have this guy, the small blue guy.
+
+809
+00:40:20,720 --> 00:40:22,520
+And there is a beginning and an end.
+
+810
+00:40:22,520 --> 00:40:25,310
+And between them I return +1,
+and here I return -1.
+
+811
+00:40:25,310 --> 00:40:26,800
+So, depending on the choice
+of the beginning
+
+812
+00:40:26,800 --> 00:40:30,230
+and the end, I will get one
+hypothesis versus another.
+
+813
+00:40:30,230 --> 00:40:33,040
+How many parameters, or how
+many degrees of freedom?
+
+814
+00:40:33,040 --> 00:40:34,190
+2.
+
+815
+00:40:34,190 --> 00:40:35,980
+And what is the VC dimension?
+
+816
+00:40:35,980 --> 00:40:36,720
+2.
+
+817
+00:40:36,720 --> 00:40:39,230
+Then by induction, it's true.
+
+818
+00:40:39,230 --> 00:40:40,830
+No, induction is not true!
+
+819
+00:40:40,830 --> 00:40:42,750
+This is just to illustrate the idea.
+
+820
+00:40:42,750 --> 00:40:45,430
+
+
+821
+00:40:45,430 --> 00:40:50,650
+Now, let's go back and
+contradict ourselves.
+
+822
+00:40:50,650 --> 00:40:52,340
+It's not just parameters.
+
+823
+00:40:52,340 --> 00:40:53,930
+It's really degrees of freedom.
+
+824
+00:40:53,930 --> 00:40:56,490
+And I'd like to make the distinction.
+
+825
+00:40:56,490 --> 00:41:01,440
+So let's take an example, where the
+parameters are not contributing to
+
+826
+00:41:01,440 --> 00:41:03,156
+degrees of freedom.
+
+827
+00:41:03,156 --> 00:41:05,900
+I'll construct an artificial example
+just to give you the idea.
+
+828
+00:41:05,900 --> 00:41:09,890
+In more complicated models, it may be
+difficult to argue what is a parameter
+
+829
+00:41:09,890 --> 00:41:12,770
+that is contributing and what is not,
+but at least we are establishing the
+
+830
+00:41:12,770 --> 00:41:15,690
+principle that a parameter may
+not necessarily contribute
+
+831
+00:41:15,690 --> 00:41:16,900
+a degree of freedom.
+
+832
+00:41:16,900 --> 00:41:21,270
+And since the VC dimension is a bottom
+line-- it looks at what you were able
+
+833
+00:41:21,270 --> 00:41:22,340
+to achieve,
+
+834
+00:41:22,340 --> 00:41:25,390
+it will be a more reliable way of
+measuring what is the actual degrees
+
+835
+00:41:25,390 --> 00:41:29,230
+of freedom you have, instead of going
+through the analysis of your model.
+
+836
+00:41:29,230 --> 00:41:32,790
+Let's take one-dimensional
+perceptron.
+
+837
+00:41:32,790 --> 00:41:33,780
+Very simple model.
+
+838
+00:41:33,780 --> 00:41:36,540
+You have only one variable and
+you are going to give it
+
+839
+00:41:36,540 --> 00:41:38,760
+a weight, that's one parameter.
+
+840
+00:41:38,760 --> 00:41:41,160
+And then you are going to compare
+it with a threshold w_0,
+
+841
+00:41:41,160 --> 00:41:42,360
+that's the second parameter.
+
+842
+00:41:42,360 --> 00:41:45,080
+And then you are going to
+give me +1 or -1.
+
+843
+00:41:45,080 --> 00:41:48,350
+So this fellow has two parameters.
+
+844
+00:41:48,350 --> 00:41:50,210
+Indeed, two degrees of freedom.
+
+845
+00:41:50,210 --> 00:41:53,900
+And I get the VC dimension to
+be 2, because it's d plus 1.
+
+846
+00:41:53,900 --> 00:41:55,120
+We proved it generally.
+
+847
+00:41:55,120 --> 00:41:55,970
+And here, d--
+
+848
+00:41:55,970 --> 00:41:57,670
+the dimensionality of the space, is 1.
+
+849
+00:41:57,670 --> 00:42:00,340
+This is just a real number.
+
+850
+00:42:00,340 --> 00:42:01,600
+Now, this is not my model.
+
+851
+00:42:01,600 --> 00:42:03,100
+Actually, this is only
+part of the model.
+
+852
+00:42:03,100 --> 00:42:07,260
+What I'm going to do, I am going to take
+that output, and feed it into
+
+853
+00:42:07,260 --> 00:42:09,530
+a perceptron.
+
+854
+00:42:09,530 --> 00:42:13,980
+And then get that output, and
+feed it into a perceptron.
+
+855
+00:42:13,980 --> 00:42:19,360
+And then get that output, and feed
+it into yet another perceptron.
+
+856
+00:42:19,360 --> 00:42:23,420
+And that will give me the
+output of the model.
+
+857
+00:42:23,420 --> 00:42:26,700
+Now, let's see how many
+parameters I have.
+
+858
+00:42:26,700 --> 00:42:31,560
+This guy has 2, one for the weight
+here and one for the threshold.
+
+859
+00:42:31,560 --> 00:42:34,670
+Whatever the output here, gets weighted
+by something. That's a third
+
+860
+00:42:34,670 --> 00:42:40,580
+parameter. Compared to a threshold-- fourth.
+Fifth, sixth, seventh, eighth.
+
+861
+00:42:40,580 --> 00:42:43,320
+I have eight parameters in this model.
+
+862
+00:42:43,320 --> 00:42:46,610
+Anybody would argue at all about this?
+
+863
+00:42:46,610 --> 00:42:47,550
+I have eight parameters.
+
+864
+00:42:47,550 --> 00:42:49,290
+There's no question about it.
+
+865
+00:42:49,290 --> 00:42:52,530
+Do I get eight degrees of freedom?
+
+866
+00:42:52,530 --> 00:42:55,680
+No, because these guys are
+horribly redundant.
+
+867
+00:42:55,680 --> 00:42:58,220
+By the time I did this, I am done.
+
+868
+00:42:58,220 --> 00:42:59,950
+This doesn't add anything.
+
+869
+00:42:59,950 --> 00:43:03,850
+Take +1 or -1, give it a weight,
+compare to a threshold, what
+
+870
+00:43:03,850 --> 00:43:04,380
+are you going to get?
+
+871
+00:43:04,380 --> 00:43:08,250
+You are either going to get +1 for
++1, and -1 for -1, or the
+
+872
+00:43:08,250 --> 00:43:09,390
+vice-versa.
+
+873
+00:43:09,390 --> 00:43:11,260
+So we are just replicating a function,
+and doing it again,
+
+874
+00:43:11,260 --> 00:43:12,250
+and again, and again.
+
+875
+00:43:12,250 --> 00:43:19,710
+This whole thing is a very, very
+elaborate perceptron in one dimension.
+
+876
+00:43:19,710 --> 00:43:20,810
+That's all.
+
+877
+00:43:20,810 --> 00:43:23,570
+I know that I constructed it in
+a very funny way, but that's
+
+878
+00:43:23,570 --> 00:43:25,540
+the function it does.
+
+879
+00:43:25,540 --> 00:43:28,640
+So if you are counting the number of
+parameters, you will say I have
+
+880
+00:43:28,640 --> 00:43:30,320
+a bunch of parameters.
+
+881
+00:43:30,320 --> 00:43:33,200
+But if you are resorting to the
+VC dimension, you don't
+
+882
+00:43:33,200 --> 00:43:34,210
+care about this box.
+
+883
+00:43:34,210 --> 00:43:35,120
+You don't even know it.
+
+884
+00:43:35,120 --> 00:43:36,460
+It's a black box.
+
+885
+00:43:36,460 --> 00:43:40,920
+You look at x and y and ask yourself,
+how many points can I shatter?
+
+886
+00:43:40,920 --> 00:43:45,090
+And you get the answer that you will get
+for one of these blocks by itself.
+
+887
+00:43:45,090 --> 00:43:48,370
+The rest of the guys don't matter.
+
+888
+00:43:48,370 --> 00:43:52,780
+So you can think of now the VC dimension
+as measuring the effective
+
+889
+00:43:52,780 --> 00:43:56,460
+number of parameters, rather than
+the raw number of parameters.
+
+890
+00:43:56,460 --> 00:44:00,670
+And I gave you a case, where the
+effective number of parameters is
+
+891
+00:44:00,670 --> 00:44:03,160
+smaller, which seems to be the case.
+
+892
+00:44:03,160 --> 00:44:07,360
+Believe it or not, you can construct,
+mathematically, a case where you have
+
+893
+00:44:07,360 --> 00:44:09,070
+one parameter, literal parameter.
+
+894
+00:44:09,070 --> 00:44:11,760
+A number that is a real
+number--
+
+895
+00:44:11,760 --> 00:44:17,040
+and then you can milk out of it so many
+degrees of freedom, that you can
+
+896
+00:44:17,040 --> 00:44:20,410
+get more than one degree to freedom.
+Many more than the degree of freedom,
+
+897
+00:44:20,410 --> 00:44:22,050
+from one parameter.
+
+898
+00:44:22,050 --> 00:44:26,480
+But the other case is really--
+you construct it because you want to.
+
+899
+00:44:26,480 --> 00:44:30,090
+But the message here is that, you don't
+look at the number of parameters, you
+
+900
+00:44:30,090 --> 00:44:32,190
+look at the effective number
+of parameters.
+
+901
+00:44:32,190 --> 00:44:34,450
+And effective, for us, is
+as far as the result.
+
+902
+00:44:34,450 --> 00:44:38,030
+And the result is captured by the VC
+dimension, so this is our quantity for
+
+903
+00:44:38,030 --> 00:44:39,280
+measuring the degrees of freedom.
+
+904
+00:44:39,280 --> 00:44:43,170
+
+
+905
+00:44:43,170 --> 00:44:46,890
+Now, let's look at the number of data
+points needed, which a practitioner
+
+906
+00:44:46,890 --> 00:44:50,550
+would be interested in, and doesn't care
+about the rest of the story
+
+907
+00:44:50,550 --> 00:44:52,000
+that I told you.
+
+908
+00:44:52,000 --> 00:44:53,630
+So you have a system.
+
+909
+00:44:53,630 --> 00:44:58,550
+Let's say that you manage a learning
+system, and you look at the hypothesis
+
+910
+00:44:58,550 --> 00:45:01,460
+set, and you say VC dimension is 7.
+
+911
+00:45:01,460 --> 00:45:03,680
+I want a certain performance.
+Could you please tell me how
+
+912
+00:45:03,680 --> 00:45:05,670
+many examples I need?
+
+913
+00:45:05,670 --> 00:45:08,320
+First, we know that the most important
+theoretical thing is the fact
+
+914
+00:45:08,320 --> 00:45:10,810
+that there is a VC dimension,
+finite one.
+
+915
+00:45:10,810 --> 00:45:12,150
+It means that you can learn.
+
+916
+00:45:12,150 --> 00:45:15,770
+That is the biggest achievement that
+we have done in theory.
+
+917
+00:45:15,770 --> 00:45:18,240
+But now we go a little bit closer.
+
+918
+00:45:18,240 --> 00:45:21,810
+And ask yourself, the value of the VC
+dimension, how does it affect the
+
+919
+00:45:21,810 --> 00:45:25,060
+number of examples you need?
+
+920
+00:45:25,060 --> 00:45:30,180
+In order to do that, let's
+do the following.
+
+921
+00:45:30,180 --> 00:45:35,750
+We notice that the VC inequality, in
+which the VC dimension arose, has two small
+
+922
+00:45:35,750 --> 00:45:38,380
+quantities-- performance quantities
+that we'd like to be small.
+
+923
+00:45:38,380 --> 00:45:40,540
+Let's remind ourselves.
+
+924
+00:45:40,540 --> 00:45:42,610
+One of them is this fellow.
+
+925
+00:45:42,610 --> 00:45:45,420
+You didn't want E_in to
+be far from E_out.
+
+926
+00:45:45,420 --> 00:45:47,840
+So you said that they should be
+tracking, within epsilon.
+
+927
+00:45:47,840 --> 00:45:50,680
+And therefore, the probability that they
+are not tracking within epsilon,
+
+928
+00:45:50,680 --> 00:45:52,100
+the small number, should be small.
+
+929
+00:45:52,100 --> 00:45:53,485
+The probability is small.
+
+930
+00:45:53,485 --> 00:45:56,830
+The other quantity is the
+other small quantity.
+
+931
+00:45:56,830 --> 00:45:59,380
+And we are just going to
+call it something now.
+
+932
+00:45:59,380 --> 00:46:00,830
+It's a small quantity, delta.
+
+933
+00:46:00,830 --> 00:46:03,400
+It's not small because of the
+expression, expression is long!
+
+934
+00:46:03,400 --> 00:46:04,800
+It's small in value.
+
+935
+00:46:04,800 --> 00:46:08,550
+Hopefully that when you get large N,
+this will reduce to a small number.
+
+936
+00:46:08,550 --> 00:46:10,870
+So we're just going to call
+it delta for now.
+
+937
+00:46:10,870 --> 00:46:15,280
+Try to phase out the details
+of this and look at: I
+
+938
+00:46:15,280 --> 00:46:16,440
+have two quantities.
+
+939
+00:46:16,440 --> 00:46:17,370
+This is the probability.
+
+940
+00:46:17,370 --> 00:46:18,410
+This is the approximation.
+
+941
+00:46:18,410 --> 00:46:22,750
+And we are making a statement that is
+probably approximately correct, as we
+
+942
+00:46:22,750 --> 00:46:23,510
+said before.
+
+943
+00:46:23,510 --> 00:46:25,340
+These are our two guys.
+
+944
+00:46:25,340 --> 00:46:29,260
+In a normal situation, what you are
+trying to do is that you are trying to
+
+945
+00:46:29,260 --> 00:46:32,830
+say, I want a particular
+epsilon and delta.
+
+946
+00:46:32,830 --> 00:46:37,310
+I want to be at most 10%
+away from E_out.
+
+947
+00:46:37,310 --> 00:46:41,240
+And I want that statement to
+be correct 95% of the time.
+
+948
+00:46:41,240 --> 00:46:42,680
+That's your starting point.
+
+949
+00:46:42,680 --> 00:46:46,505
+And then after you said that, you ask
+yourself, how many examples do I need?
+
+950
+00:46:46,505 --> 00:46:48,370
+Fair enough.
+
+951
+00:46:48,370 --> 00:46:53,490
+When you say I want to be 10% away from
+E_out, what you are really saying
+
+952
+00:46:53,490 --> 00:46:56,510
+is that epsilon is 0.1.
+
+953
+00:46:56,510 --> 00:47:00,220
+When you say that I want to be
+95% sure that the statement is
+
+954
+00:47:00,220 --> 00:47:04,760
+correct, you are picking delta
+to be 5%, or 0.05.
+
+955
+00:47:04,760 --> 00:47:05,860
+So that's what you do.
+
+956
+00:47:05,860 --> 00:47:08,130
+You want certain epsilon and delta.
+
+957
+00:47:08,130 --> 00:47:13,260
+And then you ask yourself, how does
+N depend on the VC dimension?
+
+958
+00:47:13,260 --> 00:47:14,750
+You are competing with someone else.
+
+959
+00:47:14,750 --> 00:47:15,860
+You are solving the same problem.
+
+960
+00:47:15,860 --> 00:47:17,980
+The guy gives you the same data.
+
+961
+00:47:17,980 --> 00:47:21,750
+And you look at it and you say, I
+am using a VC dimension and they are
+
+962
+00:47:21,750 --> 00:47:23,710
+using a VC dimension.
+
+963
+00:47:23,710 --> 00:47:27,350
+If I achieve this with this VC
+dimension, can he also achieve it with
+
+964
+00:47:27,350 --> 00:47:28,480
+the bigger VC dimension?
+
+965
+00:47:28,480 --> 00:47:31,780
+Because a bigger VC dimension will
+give them more flexibility.
+
+966
+00:47:31,780 --> 00:47:33,520
+They might be able to
+fit the data better.
+
+967
+00:47:33,520 --> 00:47:35,270
+They will get a better E_in.
+
+968
+00:47:35,270 --> 00:47:37,610
+So if they can get the same
+generalization bound,
+
+969
+00:47:37,610 --> 00:47:38,520
+they are better off.
+
+970
+00:47:38,520 --> 00:47:40,020
+So I really am interested
+in this question.
+
+971
+00:47:40,020 --> 00:47:43,590
+I just want to know how they relate.
+
+972
+00:47:43,590 --> 00:47:48,350
+In order to do this, we are going to
+look at this function, which is
+
+973
+00:47:48,350 --> 00:47:48,890
+a polynomial.
+
+974
+00:47:48,890 --> 00:47:51,300
+A very simple polynomial,
+just one term.
+
+975
+00:47:51,300 --> 00:47:52,940
+It's not polynomial.
+
+976
+00:47:52,940 --> 00:47:54,360
+It's monomial I guess.
+
+977
+00:47:54,360 --> 00:47:56,590
+N to the d.
+
+978
+00:47:56,590 --> 00:47:57,565
+I'm just writing it as d.
+
+979
+00:47:57,565 --> 00:47:59,660
+It will play the role of the VC
+dimension. I just want the
+
+980
+00:47:59,660 --> 00:48:00,660
+notation to be simple.
+
+981
+00:48:00,660 --> 00:48:05,780
+So N to a certain power times e to the
+minus N. What is this quantity?
+
+982
+00:48:05,780 --> 00:48:09,800
+This quantity is a caricature
+of this quantity.
+
+983
+00:48:09,800 --> 00:48:11,360
+There are constants here.
+
+984
+00:48:11,360 --> 00:48:13,640
+I have here multiple terms.
+
+985
+00:48:13,640 --> 00:48:16,410
+I'm just taking the biggest of them,
+because it's the dominant.
+
+986
+00:48:16,410 --> 00:48:20,940
+I have a negative exponential, but
+it has this terribly damping
+
+987
+00:48:20,940 --> 00:48:21,870
+coefficients, et cetera.
+
+988
+00:48:21,870 --> 00:48:23,340
+I am leaving them out.
+
+989
+00:48:23,340 --> 00:48:26,810
+I am just trying to understand
+the behavior of functions
+
+990
+00:48:26,810 --> 00:48:27,920
+that look like this.
+
+991
+00:48:27,920 --> 00:48:31,140
+I am taking the simplest case, because
+this will give me the tradeoff
+
+992
+00:48:31,140 --> 00:48:35,980
+between d and N, which is the
+tradeoff I want here.
+
+993
+00:48:35,980 --> 00:48:38,220
+So let's look at it.
+
+994
+00:48:38,220 --> 00:48:40,360
+This is our quantity.
+
+995
+00:48:40,360 --> 00:48:45,390
+And what I am going to do, I am
+going to plot it for you.
+
+996
+00:48:45,390 --> 00:48:50,455
+Let's plot it for the case of
+d, the power, equals 4.
+
+997
+00:48:50,455 --> 00:48:53,310
+
+
+998
+00:48:53,310 --> 00:48:55,300
+Here is what it looks like.
+
+999
+00:48:55,300 --> 00:48:58,310
+Basically, the initial part
+is mostly N to the 4.
+
+1000
+00:48:58,310 --> 00:49:00,160
+If there wasn't exponential,
+this would be going up and
+
+1001
+00:49:00,160 --> 00:49:01,880
+up and up and up.
+
+1002
+00:49:01,880 --> 00:49:05,180
+The negative exponential is
+just warming up here.
+
+1003
+00:49:05,180 --> 00:49:08,050
+And then it starts becoming really,
+really effective here.
+
+1004
+00:49:08,050 --> 00:49:11,350
+And then it wins over,
+and keeps doing it.
+
+1005
+00:49:11,350 --> 00:49:13,510
+And by then, you will forget
+that it was N to the 4.
+
+1006
+00:49:13,510 --> 00:49:16,610
+You will just remember that there
+is a negative exponential.
+
+1007
+00:49:16,610 --> 00:49:19,220
+And the interesting part here is,
+obviously, this will play the
+
+1008
+00:49:19,220 --> 00:49:21,630
+role of the right-hand side
+of the VC inequality.
+
+1009
+00:49:21,630 --> 00:49:23,180
+So this will be a probability.
+
+1010
+00:49:23,180 --> 00:49:25,440
+And we'd like the probability
+to be small.
+
+1011
+00:49:25,440 --> 00:49:29,480
+So obviously, the initial part of the
+curve is completely meaningless.
+
+1012
+00:49:29,480 --> 00:49:30,410
+You tell the probability--
+
+1013
+00:49:30,410 --> 00:49:32,360
+the probability now is less than 5.
+
+1014
+00:49:32,360 --> 00:49:34,010
+That's very nice.
+
+1015
+00:49:34,010 --> 00:49:37,440
+But it's only interesting once you cross
+back to the interesting region,
+
+1016
+00:49:37,440 --> 00:49:38,320
+which is less than 1.
+
+1017
+00:49:38,320 --> 00:49:40,220
+And then you are actually
+making a statement.
+
+1018
+00:49:40,220 --> 00:49:42,740
+So this will be the interesting part.
+
+1019
+00:49:42,740 --> 00:49:44,470
+Let's look at the next one.
+
+1020
+00:49:44,470 --> 00:49:45,570
+This is N to the 4.
+
+1021
+00:49:45,570 --> 00:49:49,070
+Let's look at N to the 5, just to
+get a feel for these quantities.
+
+1022
+00:49:49,070 --> 00:49:51,790
+Uh!
+
+1023
+00:49:51,790 --> 00:49:53,800
+Well, this one--
+
+1024
+00:49:53,800 --> 00:49:55,560
+it will peak at a different point.
+
+1025
+00:49:55,560 --> 00:49:57,370
+But the main point is, it's huge now.
+
+1026
+00:49:57,370 --> 00:49:58,650
+The probability now is, what?
+
+1027
+00:49:58,650 --> 00:50:00,170
+Less than 20 something.
+
+1028
+00:50:00,170 --> 00:50:01,240
+That's nice.
+
+1029
+00:50:01,240 --> 00:50:04,550
+But eventually, the exponential wins.
+
+1030
+00:50:04,550 --> 00:50:05,360
+That's the good part.
+
+1031
+00:50:05,360 --> 00:50:08,310
+So it goes down, and then it goes here.
+
+1032
+00:50:08,310 --> 00:50:10,880
+You can see that this
+is the interesting region.
+
+1033
+00:50:10,880 --> 00:50:14,140
+And I'm going to ask myself, in order
+to get to this region, which is the
+
+1034
+00:50:14,140 --> 00:50:15,830
+performance you want,
+
+1035
+00:50:15,830 --> 00:50:19,430
+how many examples, which is this
+coordinate, do I need given the
+
+1036
+00:50:19,430 --> 00:50:23,330
+different VC dimensions, which
+supposedly is 4 here and 5 here?
+
+1037
+00:50:23,330 --> 00:50:26,390
+Again, this is a caricature, because
+this is not the function I have.
+
+1038
+00:50:26,390 --> 00:50:29,060
+If you start adding the real
+constants here, this
+
+1039
+00:50:29,060 --> 00:50:30,090
+thing, instead of becoming--
+
+1040
+00:50:30,090 --> 00:50:31,560
+what, 5 examples, 10 examples?
+
+1041
+00:50:31,560 --> 00:50:34,150
+It probably will be 5,000
+example, 10,000 example.
+
+1042
+00:50:34,150 --> 00:50:36,590
+It's a pessimistic estimate, because
+it's an upper bound.
+
+1043
+00:50:36,590 --> 00:50:38,770
+But the shape will remain the same.
+
+1044
+00:50:38,770 --> 00:50:42,850
+And similarly, if you add the other
+probabilities, the probability
+
+1045
+00:50:42,850 --> 00:50:43,430
+will not be 1.
+
+1046
+00:50:43,430 --> 00:50:45,160
+It will be 2, et cetera, but
+
+1047
+00:50:45,160 --> 00:50:49,150
+all you need to do is just shift a little bit,
+and you will be getting here.
+
+1048
+00:50:49,150 --> 00:50:51,850
+So if you understand this quantity, you
+will be able to translate it to
+
+1049
+00:50:51,850 --> 00:50:52,920
+the other one.
+
+1050
+00:50:52,920 --> 00:50:55,460
+But because it's going up
+so fast, I have to do
+
+1051
+00:50:55,460 --> 00:50:57,540
+something to make it visible.
+
+1052
+00:50:57,540 --> 00:50:59,300
+And I'll do that in a second.
+
+1053
+00:50:59,300 --> 00:51:00,530
+So let's now look at it.
+
+1054
+00:51:00,530 --> 00:51:05,250
+You fix the value here
+at a small value.
+
+1055
+00:51:05,250 --> 00:51:06,050
+Whatever the value is.
+
+1056
+00:51:06,050 --> 00:51:10,480
+Not 1, maybe 0.5 or 0.1
+or 0.01, et cetera.
+
+1057
+00:51:10,480 --> 00:51:17,410
+And you would like to see
+how N changes with d.
+
+1058
+00:51:17,410 --> 00:51:20,600
+What I am going to now, I am
+going to switch plots on you.
+
+1059
+00:51:20,600 --> 00:51:24,900
+And I am going to have the y-coordinate
+here, which is the
+
+1060
+00:51:24,900 --> 00:51:28,480
+probability, drawn on
+a logarithmic scale.
+
+1061
+00:51:28,480 --> 00:51:31,230
+The reason I'm doing that is because, 
+obviously, if I know N equals
+
+1062
+00:51:31,230 --> 00:51:35,830
+4 and N equals 5 get me that, if I get
+to N equals 10, that will go upstairs.
+
+1063
+00:51:35,830 --> 00:51:38,150
+So I really want to keep
+a handle on it.
+
+1064
+00:51:38,150 --> 00:51:40,870
+So I am going to do this in order
+to keep a handle on it.
+
+1065
+00:51:40,870 --> 00:51:43,530
+And more importantly, because
+this is really--
+
+1066
+00:51:43,530 --> 00:51:45,770
+you see this very, very thin slice?
+
+1067
+00:51:45,770 --> 00:51:47,420
+That's all I'm interested in.
+
+1068
+00:51:47,420 --> 00:51:49,220
+So I want to magnify
+it and look at it.
+
+1069
+00:51:49,220 --> 00:51:50,800
+And this happens to be
+less than the value of 1.
+
+1070
+00:51:50,800 --> 00:51:53,230
+So all the negative logarithms will
+be here, and I'll be able
+
+1071
+00:51:53,230 --> 00:51:54,730
+to look at it clearly.
+
+1072
+00:51:54,730 --> 00:51:59,740
+So let's go and plot the N equals 5
+on a logarithmic scale.
+
+1073
+00:51:59,740 --> 00:52:00,690
+That's what it looks like.
+
+1074
+00:52:00,690 --> 00:52:02,100
+This is exactly--
+
+1075
+00:52:02,100 --> 00:52:04,860
+I can afford to have
+more examples because I
+
+1076
+00:52:04,860 --> 00:52:06,520
+will have more curves.
+
+1077
+00:52:06,520 --> 00:52:08,680
+But this is the blue curve
+we had before.
+
+1078
+00:52:08,680 --> 00:52:11,570
+It peaks at a certain point
+and then goes down.
+
+1079
+00:52:11,570 --> 00:52:16,630
+And 10 to the 0 here, that's
+the probability 1.
+
+1080
+00:52:16,630 --> 00:52:17,490
+This is the interesting region.
+
+1081
+00:52:17,490 --> 00:52:20,900
+Below the line here is the
+interesting region that, when you tell
+
+1082
+00:52:20,900 --> 00:52:24,060
+me what delta is, you are
+telling me a level.
+
+1083
+00:52:24,060 --> 00:52:26,250
+And these levels are not going
+to be very much different.
+
+1084
+00:52:26,250 --> 00:52:27,920
+On this scale, this is 1.
+
+1085
+00:52:27,920 --> 00:52:28,870
+This is, what?
+
+1086
+00:52:28,870 --> 00:52:31,410
+This is 10 to the minus 5.
+
+1087
+00:52:31,410 --> 00:52:33,440
+That's a very, very, very
+small probability.
+
+1088
+00:52:33,440 --> 00:52:37,660
+So the play here is very small, as
+you vary delta significantly.
+
+1089
+00:52:37,660 --> 00:52:41,590
+And the play with epsilon, which will
+affect the exponent, is that these
+
+1090
+00:52:41,590 --> 00:52:42,320
+guys will be spread.
+
+1091
+00:52:42,320 --> 00:52:46,340
+Instead of being 20, 40, it will
+be 2000, 4000, and so on.
+
+1092
+00:52:46,340 --> 00:52:48,430
+But this will be the shape.
+
+1093
+00:52:48,430 --> 00:52:50,120
+So now, let's add the other curve.
+
+1094
+00:52:50,120 --> 00:52:51,900
+So this is N to the 5.
+
+1095
+00:52:51,900 --> 00:52:53,180
+How about N to the 10.
+
+1096
+00:52:53,180 --> 00:52:55,120
+What does it look like?
+
+1097
+00:52:55,120 --> 00:52:56,140
+Now, it didn't go upstairs.
+
+1098
+00:52:56,140 --> 00:52:58,810
+Well, it went upstairs if you had it
+linearly, because now, look at the
+
+1099
+00:52:58,810 --> 00:52:59,770
+value of the top.
+
+1100
+00:52:59,770 --> 00:53:02,160
+This is really serious business.
+
+1101
+00:53:02,160 --> 00:53:05,330
+And you get this one.
+
+1102
+00:53:05,330 --> 00:53:06,260
+Varying the VC dimension,
+
+1103
+00:53:06,260 --> 00:53:09,100
+I am getting a different curve, and
+I'm getting the behavior in the
+
+1104
+00:53:09,100 --> 00:53:10,250
+interesting region.
+
+1105
+00:53:10,250 --> 00:53:11,100
+You see the point here.
+
+1106
+00:53:11,100 --> 00:53:12,620
+And I keep adding.
+
+1107
+00:53:12,620 --> 00:53:15,360
+and I will add up to 30.
+
+1108
+00:53:15,360 --> 00:53:18,740
+So these are the curves that I get by
+varying the VC dimension, the alleged
+
+1109
+00:53:18,740 --> 00:53:20,020
+VC dimension here.
+
+1110
+00:53:20,020 --> 00:53:24,950
+5, 10, 15, 20, 25, 30.
+
+1111
+00:53:24,950 --> 00:53:28,780
+Something very nice is
+observable here.
+
+1112
+00:53:28,780 --> 00:53:32,230
+These guys are extremely regular
+in their progression.
+
+1113
+00:53:32,230 --> 00:53:33,730
+They are very much linear.
+
+1114
+00:53:33,730 --> 00:53:36,970
+I mean, they are not exactly linear,
+but very close to linear.
+
+1115
+00:53:36,970 --> 00:53:41,130
+And indeed, you will find that,
+theoretically, the bound in terms of
+
+1116
+00:53:41,130 --> 00:53:43,965
+the number of examples to achieve
+a certain level-- let's say you cut
+
+1117
+00:53:43,965 --> 00:53:47,510
+the level here, and you are increasing
+the VC dimension.
+
+1118
+00:53:47,510 --> 00:53:50,860
+It basically is proportional
+to the VC dimension.
+
+1119
+00:53:50,860 --> 00:53:53,900
+You go from 5 to 10 to
+15 to 20, et cetera.
+
+1120
+00:53:53,900 --> 00:53:55,310
+This is the number of
+examples you want.
+
+1121
+00:53:55,310 --> 00:53:58,250
+And they are pretty much
+proportional to this.
+
+1122
+00:53:58,250 --> 00:54:00,950
+Now, this is in terms of the bound.
+
+1123
+00:54:00,950 --> 00:54:03,420
+The problem with the bound is that,
+
+1124
+00:54:03,420 --> 00:54:06,680
+if I am using a system and the
+other guy is using a system,
+
+1125
+00:54:06,680 --> 00:54:09,230
+I have a VC dimension and he has his.
+
+1126
+00:54:09,230 --> 00:54:12,980
+Now, I know that my performance is less
+than or equal to something, and
+
+1127
+00:54:12,980 --> 00:54:15,220
+his performance is less than
+or equal to something.
+
+1128
+00:54:15,220 --> 00:54:18,560
+And let's say that this
+thing is this way.
+
+1129
+00:54:18,560 --> 00:54:22,020
+He has a better bound than mine.
+
+1130
+00:54:22,020 --> 00:54:23,590
+That's the bound.
+
+1131
+00:54:23,590 --> 00:54:28,000
+There is no guarantee that, when we get
+the actual quantity that is bounded,
+
+1132
+00:54:28,000 --> 00:54:30,490
+they will also follow that
+same monotonicity.
+
+1133
+00:54:30,490 --> 00:54:35,030
+It is conceivable that the two
+quantities are this way.
+
+1134
+00:54:35,030 --> 00:54:39,140
+
+
+1135
+00:54:39,140 --> 00:54:41,480
+The bounds were this way.
+
+1136
+00:54:41,480 --> 00:54:43,970
+The quantities are this way.
+
+1137
+00:54:43,970 --> 00:54:48,960
+Under those conditions, the bounds
+are satisfied, correct?
+
+1138
+00:54:48,960 --> 00:54:51,340
+And the bounds are monotonic in one
+direction, and the quantity is
+
+1139
+00:54:51,340 --> 00:54:53,070
+monotonic in the other.
+
+1140
+00:54:53,070 --> 00:54:55,950
+That is a pretty annoying feature.
+
+1141
+00:54:55,950 --> 00:54:59,430
+So what I am going to make now is
+a statement that is not a mathematical
+
+1142
+00:54:59,430 --> 00:55:03,160
+statement, but a practical
+observation.
+
+1143
+00:55:03,160 --> 00:55:07,860
+That is almost as good as
+a mathematical statement.
+
+1144
+00:55:07,860 --> 00:55:13,320
+The practical observation is that, the
+actual quantity we are trying to bound
+
+1145
+00:55:13,320 --> 00:55:16,850
+follows the same monotonicity
+as the bound.
+
+1146
+00:55:16,850 --> 00:55:18,850
+That is the observation.
+
+1147
+00:55:18,850 --> 00:55:24,250
+You use bigger VC dimension, the
+quantities you will get are bigger.
+
+1148
+00:55:24,250 --> 00:55:26,950
+And actually, very close
+to proportional.
+
+1149
+00:55:26,950 --> 00:55:32,010
+This is an observation by trying this
+N times, where N is very large! That
+
+1150
+00:55:32,010 --> 00:55:35,310
+is the observation I got, and
+many other people got.
+
+1151
+00:55:35,310 --> 00:55:39,490
+So in spite of the fact that we cannot
+get an absolute value, because this is
+
+1152
+00:55:39,490 --> 00:55:44,170
+just the bound, the relative aspect
+of the VC dimension holds.
+
+1153
+00:55:44,170 --> 00:55:46,990
+And therefore, if you have
+a bigger VC dimension, you
+
+1154
+00:55:46,990 --> 00:55:49,410
+will need more examples.
+
+1155
+00:55:49,410 --> 00:55:52,770
+And in that case, you can even-- there
+are some estimates, practical
+
+1156
+00:55:52,770 --> 00:55:55,990
+estimate, that if you take the ratio of
+the VC dimension to the number of
+
+1157
+00:55:55,990 --> 00:55:59,400
+examples, this will give you a handle on
+the error. And we will see provable
+
+1158
+00:55:59,400 --> 00:56:03,120
+versions of that, when we get to the
+bias-variance tradeoff next time, in
+
+1159
+00:56:03,120 --> 00:56:06,050
+a different theoretical
+line of analysis.
+
+1160
+00:56:06,050 --> 00:56:10,210
+So the first lesson is that there is
+a proportionality between the VC
+
+1161
+00:56:10,210 --> 00:56:14,170
+dimension and the number of examples
+needed, in order to achieve a certain
+
+1162
+00:56:14,170 --> 00:56:16,210
+level of performance.
+
+1163
+00:56:16,210 --> 00:56:21,180
+That is a theoretical observance for
+the bound, and a practical observance
+
+1164
+00:56:21,180 --> 00:56:23,050
+for the actual quantity you get.
+
+1165
+00:56:23,050 --> 00:56:25,160
+That's number one.
+
+1166
+00:56:25,160 --> 00:56:29,530
+Number two is that, give us just
+a guide-- proportional, not
+
+1167
+00:56:29,530 --> 00:56:29,950
+proportional.
+
+1168
+00:56:29,950 --> 00:56:33,400
+I just want to know, if I have just
+a reasonable epsilon and a reasonable
+
+1169
+00:56:33,400 --> 00:56:37,480
+delta, how many example does it
+take me to get over this hump?
+
+1170
+00:56:37,480 --> 00:56:40,760
+How many examples does it take me to
+get to the comfort zone of the VC
+
+1171
+00:56:40,760 --> 00:56:43,710
+inequality, where I'm actually
+making a statement?
+
+1172
+00:56:43,710 --> 00:56:47,380
+So now I have the probability
+is less than 1.
+
+1173
+00:56:47,380 --> 00:56:48,950
+Do I take the VC dimension?
+
+1174
+00:56:48,950 --> 00:56:49,970
+Twice the VC dimension?
+
+1175
+00:56:49,970 --> 00:56:51,500
+A hundred times the VC dimension?
+
+1176
+00:56:51,500 --> 00:56:52,630
+This is a practical observation.
+
+1177
+00:56:52,630 --> 00:56:55,150
+And again, it's the practical
+observation. Obviously, this depends on
+
+1178
+00:56:55,150 --> 00:56:56,570
+your epsilon and delta.
+
+1179
+00:56:56,570 --> 00:56:58,650
+And this depends on the particular
+application.
+
+1180
+00:56:58,650 --> 00:57:02,850
+So the statement I am making is that, for
+a huge range of reasonable epsilon
+
+1181
+00:57:02,850 --> 00:57:07,900
+and delta, and for a huge
+range of practical
+
+1182
+00:57:07,900 --> 00:57:12,880
+applications, the following
+rule of thumb holds.
+
+1183
+00:57:12,880 --> 00:57:15,780
+You have a VC dimension and you are
+asking for a number of examples, in
+
+1184
+00:57:15,780 --> 00:57:19,200
+order to get reasonable
+generalization.
+
+1185
+00:57:19,200 --> 00:57:22,960
+The rule is, you need 10 times
+the VC dimension.
+
+1186
+00:57:22,960 --> 00:57:25,480
+
+
+1187
+00:57:25,480 --> 00:57:25,940
+No proof.
+
+1188
+00:57:25,940 --> 00:57:27,990
+It's not a mathematical statement.
+
+1189
+00:57:27,990 --> 00:57:30,290
+And I'm saying greater than or equal,
+obviously. Because if you get more, you
+
+1190
+00:57:30,290 --> 00:57:32,470
+will get better performance.
+
+1191
+00:57:32,470 --> 00:57:35,940
+But that will get you in the middle
+of the interesting region.
+
+1192
+00:57:35,940 --> 00:57:39,410
+That will get you in the region where
+the probability statement is
+
+1193
+00:57:39,410 --> 00:57:42,540
+meaningful, rather than completely
+unknown-- what the
+
+1194
+00:57:42,540 --> 00:57:43,800
+generalization will be like.
+
+1195
+00:57:43,800 --> 00:57:48,130
+
+
+1196
+00:57:48,130 --> 00:57:51,370
+Now, I'll spend just a couple
+of minutes to talk about the
+
+1197
+00:57:51,370 --> 00:57:54,530
+generalization bounds, which is a form
+of the theory we have, that will
+
+1198
+00:57:54,530 --> 00:57:55,670
+survive with us.
+
+1199
+00:57:55,670 --> 00:57:58,220
+We are not going to talk about
+growth functions anymore.
+
+1200
+00:57:58,220 --> 00:57:59,560
+We are not going to go through this.
+
+1201
+00:57:59,560 --> 00:58:02,920
+We are only going to remember that
+the VC dimension is there, and it
+
+1202
+00:58:02,920 --> 00:58:04,700
+determines the number of examples.
+
+1203
+00:58:04,700 --> 00:58:07,420
+And it also corresponds to
+the degrees of freedom.
+
+1204
+00:58:07,420 --> 00:58:11,210
+And the form of the theoretical bound
+we are going to carry will be the
+
+1205
+00:58:11,210 --> 00:58:12,770
+following form.
+
+1206
+00:58:12,770 --> 00:58:14,080
+I am just rearranging things.
+
+1207
+00:58:14,080 --> 00:58:17,340
+There is absolutely nothing new
+introduced here, except simplification.
+
+1208
+00:58:17,340 --> 00:58:22,360
+But it's an important simplification,
+because it's surviving with us.
+
+1209
+00:58:22,360 --> 00:58:25,300
+We start with the VC inequality.
+
+1210
+00:58:25,300 --> 00:58:26,060
+We can bid farewell.
+
+1211
+00:58:26,060 --> 00:58:29,220
+This is the last time we'll see it in
+this form. It's complex and all,
+
+1212
+00:58:29,220 --> 00:58:31,390
+but we will now simplify it.
+
+1213
+00:58:31,390 --> 00:58:33,190
+So now we have epsilon
+and delta again.
+
+1214
+00:58:33,190 --> 00:58:34,640
+And I give them different color.
+
+1215
+00:58:34,640 --> 00:58:38,690
+And the logic we were using is
+that, you specify epsilon,
+
+1216
+00:58:38,690 --> 00:58:42,260
+and then I will compute what delta is,
+depending on the number of examples.
+
+1217
+00:58:42,260 --> 00:58:44,280
+So you tell me what your tolerance
+is, and I'll tell you what
+
+1218
+00:58:44,280 --> 00:58:46,230
+the probability is.
+
+1219
+00:58:46,230 --> 00:58:50,800
+Another way of looking at it
+is the other way around.
+
+1220
+00:58:50,800 --> 00:58:52,670
+You tell me what delta is.
+
+1221
+00:58:52,670 --> 00:58:57,120
+You would like to make a statement
+with reliability 95%.
+
+1222
+00:58:57,120 --> 00:59:02,380
+Can you tell me what tolerance can
+you guarantee, under the 95%?
+
+1223
+00:59:02,380 --> 00:59:06,690
+You start with the delta, and
+you go to the epsilon.
+
+1224
+00:59:06,690 --> 00:59:09,090
+That's not very difficult.
+
+1225
+00:59:09,090 --> 00:59:10,970
+There is nothing mysterious
+about this.
+
+1226
+00:59:10,970 --> 00:59:12,800
+delta equals that.
+
+1227
+00:59:12,800 --> 00:59:14,130
+Can I solve for epsilon?
+
+1228
+00:59:14,130 --> 00:59:17,460
+If I start with delta, can
+I solve for epsilon?
+
+1229
+00:59:17,460 --> 00:59:20,740
+I will get this part, put
+it on the other side.
+
+1230
+00:59:20,740 --> 00:59:23,590
+That makes this ready to take
+a logarithm of both sides.
+
+1231
+00:59:23,590 --> 00:59:25,320
+So this now goes down.
+
+1232
+00:59:25,320 --> 00:59:28,040
+Now I need to get rid of
+the extra constants.
+
+1233
+00:59:28,040 --> 00:59:29,210
+They go on the other side.
+
+1234
+00:59:29,210 --> 00:59:32,060
+But now, there is a logarithm on the other
+side, because I took a logarithm here.
+
+1235
+00:59:32,060 --> 00:59:35,020
+And finally, I take a square root.
+
+1236
+00:59:35,020 --> 00:59:38,510
+So that's what you get.
+
+1237
+00:59:38,510 --> 00:59:40,150
+Very straightforward.
+
+1238
+00:59:40,150 --> 00:59:44,060
+Now, I can start with this
+fellow and get epsilon.
+
+1239
+00:59:44,060 --> 00:59:47,040
+I'm going to call this formula
+capital Omega, which is the notation
+
+1240
+00:59:47,040 --> 00:59:49,010
+that will survive with us.
+
+1241
+00:59:49,010 --> 00:59:51,390
+It's a formula that depends
+on several things.
+
+1242
+00:59:51,390 --> 00:59:55,100
+And as you can see, if the growth
+function is bigger-- the VC dimension
+
+1243
+00:59:55,100 --> 00:59:57,230
+is bigger, Omega is worse.
+
+1244
+00:59:57,230 --> 01:00:01,770
+That's understood, because the bigger
+the VC dimension, the worse the guarantee
+
+1245
+01:00:01,770 --> 01:00:04,870
+on generalization, which is
+this approximation thing.
+
+1246
+01:00:04,870 --> 01:00:07,720
+And if I have more examples,
+I am in good shape.
+
+1247
+01:00:07,720 --> 01:00:10,020
+Because now, the growth function
+is polynomial.
+
+1248
+01:00:10,020 --> 01:00:14,600
+By the time you take the natural
+logarithm, this guy becomes
+
+1249
+01:00:14,600 --> 01:00:15,670
+logarithmic.
+
+1250
+01:00:15,670 --> 01:00:19,730
+And logarithmic gets killed by linear,
+as much as linear gets killed by
+
+1251
+01:00:19,730 --> 01:00:20,430
+an exponential.
+
+1252
+01:00:20,430 --> 01:00:24,190
+So this is just a one step down,
+in the exponential scale, of
+
+1253
+01:00:24,190 --> 01:00:25,320
+the previous statement.
+
+1254
+01:00:25,320 --> 01:00:28,550
+Indeed, if I have more examples, I
+will get a smaller value of Omega.
+
+1255
+01:00:28,550 --> 01:00:32,020
+And obviously, if you are more finicky,
+if you want the guarantee to be 99%
+
+1256
+01:00:32,020 --> 01:00:33,500
+instead of 95%.
+
+1257
+01:00:33,500 --> 01:00:36,210
+So now delta is 0.01, instead of 0.05.
+
+1258
+01:00:36,210 --> 01:00:39,870
+Well, then epsilon will be looser,
+because you are making a statement
+
+1259
+01:00:39,870 --> 01:00:41,750
+that is true for more of the time.
+
+1260
+01:00:41,750 --> 01:00:43,760
+So you will have to accommodate
+bigger epsilon.
+
+1261
+01:00:43,760 --> 01:00:46,370
+That's what we have.
+
+1262
+01:00:46,370 --> 01:00:48,740
+So the statement now
+is a positive one.
+
+1263
+01:00:48,740 --> 01:00:51,870
+It used to be that we are characterizing
+bad events, right?
+
+1264
+01:00:51,870 --> 01:00:53,850
+Now we are going to state
+the good event.
+
+1265
+01:00:53,850 --> 01:00:56,480
+The good event happens
+most of the time.
+
+1266
+01:00:56,480 --> 01:00:59,640
+It happens with probability greater
+than or equal to 1 minus delta.
+
+1267
+01:00:59,640 --> 01:01:03,610
+And that statement is that,
+E_in tracks E_out.
+
+1268
+01:01:03,610 --> 01:01:09,420
+They are within this Omega, and Omega
+happens to be a function of the number
+
+1269
+01:01:09,420 --> 01:01:10,270
+of examples--
+
+1270
+01:01:10,270 --> 01:01:13,310
+this goes down with it, of
+the hypothesis set--
+
+1271
+01:01:13,310 --> 01:01:15,190
+it goes up with its VC dimension,
+
+1272
+01:01:15,190 --> 01:01:19,320
+and of the delta, the probability you
+chose to make the statement about.
+
+1273
+01:01:19,320 --> 01:01:22,670
+And this guy will go up
+with smaller delta.
+
+1274
+01:01:22,670 --> 01:01:24,570
+I'm just keeping it in this
+form, because we don't
+
+1275
+01:01:24,570 --> 01:01:26,430
+worry about this anymore.
+
+1276
+01:01:26,430 --> 01:01:27,890
+We just want to understand this fellow.
+
+1277
+01:01:27,890 --> 01:01:29,950
+So let's look at it.
+
+1278
+01:01:29,950 --> 01:01:32,870
+And that will be called the
+generalization bound.
+
+1279
+01:01:32,870 --> 01:01:35,250
+With probability greater than
+1 minus delta,
+
+1280
+01:01:35,250 --> 01:01:37,070
+we have this fellow.
+
+1281
+01:01:37,070 --> 01:01:39,820
+So now I'm going to simplify this.
+
+1282
+01:01:39,820 --> 01:01:42,150
+Here's the first simplification.
+
+1283
+01:01:42,150 --> 01:01:47,960
+Instead of the absolute value of E_out
+minus E_in, I am going to have just
+
+1284
+01:01:47,960 --> 01:01:51,470
+E_out minus E_in.
+
+1285
+01:01:51,470 --> 01:01:53,010
+Why is that?
+
+1286
+01:01:53,010 --> 01:01:55,790
+Well, because I can.
+
+1287
+01:01:55,790 --> 01:01:59,170
+If I have the absolute value, I
+guarantee this one and its opposite.
+
+1288
+01:01:59,170 --> 01:02:02,560
+So among other things, I guarantee this
+one, so I can make the statement.
+
+1289
+01:02:02,560 --> 01:02:04,730
+The reason I'm making it is twofold.
+
+1290
+01:02:04,730 --> 01:02:07,490
+First, this is really the
+direction that matters.
+
+1291
+01:02:07,490 --> 01:02:11,340
+Because invariably, E_in will
+be much smaller than E_out.
+
+1292
+01:02:11,340 --> 01:02:12,640
+At least, smaller than E_out.
+
+1293
+01:02:12,640 --> 01:02:16,180
+Because E_in is the guy you
+minimize deliberately.
+
+1294
+01:02:16,180 --> 01:02:19,830
+In terms of a sample, this is E_out.
+
+1295
+01:02:19,830 --> 01:02:23,280
+And there is a sample, so the sample
+will have values here.
+
+1296
+01:02:23,280 --> 01:02:27,040
+Now, you start deliberately
+pulling this down.
+
+1297
+01:02:27,040 --> 01:02:28,020
+The other guy--
+
+1298
+01:02:28,020 --> 01:02:30,690
+there is an elastic band, but the
+elastic band is getting looser and
+
+1299
+01:02:30,690 --> 01:02:32,270
+looser as you make more effort.
+
+1300
+01:02:32,270 --> 01:02:36,970
+But invariably, E_in now has a bias,
+which is an optimistic bias.
+
+1301
+01:02:36,970 --> 01:02:38,960
+And therefore, this will be
+the quantity that actually
+
+1302
+01:02:38,960 --> 01:02:41,490
+happens to be positive.
+
+1303
+01:02:41,490 --> 01:02:45,490
+Well, that doesn't say that E_out
+is always less than E_in.
+
+1304
+01:02:45,490 --> 01:02:48,440
+Once in a blue moon, maybe on your
+birthday or something, you will get
+
+1305
+01:02:48,440 --> 01:02:50,160
+E_out that is smaller than E_in.
+
+1306
+01:02:50,160 --> 01:02:54,860
+But the rule in general is the fact,
+E_out is bigger than E_in.
+
+1307
+01:02:54,860 --> 01:02:56,530
+So they are less than
+or equal to that.
+
+1308
+01:02:56,530 --> 01:02:59,170
+In spite of the fact that they have
+all of these dependencies, I am just
+
+1309
+01:02:59,170 --> 01:03:02,050
+going to forget about these
+dependencies for the moment.
+
+1310
+01:03:02,050 --> 01:03:03,970
+I know that Omega is
+an elaborate quantity.
+
+1311
+01:03:03,970 --> 01:03:05,350
+I don't want to carry the details.
+
+1312
+01:03:05,350 --> 01:03:08,540
+I understand its general behavior,
+so I have this fellow.
+
+1313
+01:03:08,540 --> 01:03:10,170
+Now we rearrange this thing.
+
+1314
+01:03:10,170 --> 01:03:15,140
+By the way, this fellow is called the
+generalization error, because it's the
+
+1315
+01:03:15,140 --> 01:03:18,810
+difference between what you did
+out of sample versus in sample.
+
+1316
+01:03:18,810 --> 01:03:21,840
+So this is a bound on the
+generalization error.
+
+1317
+01:03:21,840 --> 01:03:25,320
+And when you rearrange it, you can say
+with probability greater than or equal
+
+1318
+01:03:25,320 --> 01:03:25,980
+to 1 minus delta,
+
+1319
+01:03:25,980 --> 01:03:28,620
+and this is the form that
+will survive with us.
+
+1320
+01:03:28,620 --> 01:03:32,160
+You just take E_in and put
+it on the other side.
+
+1321
+01:03:32,160 --> 01:03:35,700
+Now, this is a generalization bound.
+
+1322
+01:03:35,700 --> 01:03:37,740
+And it is very interesting
+to look at it.
+
+1323
+01:03:37,740 --> 01:03:43,130
+It bounds E_out, on the left-hand
+side, with E_in plus Omega.
+
+1324
+01:03:43,130 --> 01:03:45,666
+This guy we don't know.
+
+1325
+01:03:45,666 --> 01:03:49,520
+Both of these guys we know, and
+have some control over.
+
+1326
+01:03:49,520 --> 01:03:51,190
+This one we are minimizing.
+
+1327
+01:03:51,190 --> 01:03:54,690
+This one is according to the choice
+of our hypothesis set.
+
+1328
+01:03:54,690 --> 01:03:56,960
+So it tells us something
+about E_out, in terms of
+
+1329
+01:03:56,960 --> 01:03:59,640
+quantities that we control.
+
+1330
+01:03:59,640 --> 01:04:02,520
+Furthermore, it shows that--
+
+1331
+01:04:02,520 --> 01:04:04,200
+remember when we talked
+about a tradeoff.
+
+1332
+01:04:04,200 --> 01:04:08,310
+Remember when someone asked: bigger
+hypothesis set is good or bad?
+
+1333
+01:04:08,310 --> 01:04:11,880
+It's good for E_in, but bad
+for generalization.
+
+1334
+01:04:11,880 --> 01:04:12,670
+Now you can see why.
+
+1335
+01:04:12,670 --> 01:04:16,520
+This guy goes down with
+a bigger hypothesis set.
+
+1336
+01:04:16,520 --> 01:04:19,250
+This guy goes up with
+a bigger hypothesis set.
+
+1337
+01:04:19,250 --> 01:04:20,920
+Poorer generalization.
+
+1338
+01:04:20,920 --> 01:04:25,240
+Therefore, it's not clear that it's
+a good idea to pick a bigger hypothesis
+
+1339
+01:04:25,240 --> 01:04:27,210
+set, or a smaller hypothesis set.
+
+1340
+01:04:27,210 --> 01:04:30,760
+There may be a balance between them that
+will make the sum the smallest
+
+1341
+01:04:30,760 --> 01:04:34,160
+possible, and that affects the
+quantity I care about.
+
+1342
+01:04:34,160 --> 01:04:35,820
+So this will translate to that.
+
+1343
+01:04:35,820 --> 01:04:38,750
+The other thing is that, now that I got
+rid of the absolute value, we'll
+
+1344
+01:04:38,750 --> 01:04:41,920
+be able to take expected values in
+certain cases, and compare it with
+
+1345
+01:04:41,920 --> 01:04:42,500
+other stuff.
+
+1346
+01:04:42,500 --> 01:04:45,120
+So this will be a very friendly
+quantity to do.
+
+1347
+01:04:45,120 --> 01:04:49,580
+It's so friendly, that we are going to
+derive a technique, one of the most
+
+1348
+01:04:49,580 --> 01:04:52,410
+important techniques in machine
+learning, based on this.
+
+1349
+01:04:52,410 --> 01:04:54,325
+It's called regularization.
+
+1350
+01:04:54,325 --> 01:04:59,700
+And the idea here is that I
+use E_in as a proxy for E_out.
+
+1351
+01:04:59,700 --> 01:05:03,600
+Now, after all of this analysis, I
+realize that it's not E_in only that
+
+1352
+01:05:03,600 --> 01:05:04,760
+affects the game.
+
+1353
+01:05:04,760 --> 01:05:07,190
+It's also the choice of this guy.
+
+1354
+01:05:07,190 --> 01:05:11,940
+So maybe, instead of using E_in as
+a proxy, I'm going to use E_in plus
+
+1355
+01:05:11,940 --> 01:05:17,100
+something else as a proxy, hoping that
+this will be a better reflection that
+
+1356
+01:05:17,100 --> 01:05:18,820
+will get me the E_out I want.
+
+1357
+01:05:18,820 --> 01:05:21,550
+And that will be the subject
+of regularization.
+
+1358
+01:05:21,550 --> 01:05:25,110
+We'll stop here and take questions
+and answers after a short break.
+
+1359
+01:05:25,110 --> 01:05:30,150
+
+
+1360
+01:05:30,150 --> 01:05:34,000
+Let's go for the Q&amp;A.
+Are there questions?
+
+1361
+01:05:34,000 --> 01:05:34,450
+MODERATOR: Yeah.
+
+1362
+01:05:34,450 --> 01:05:35,650
+There was one confusion.
+
+1363
+01:05:35,650 --> 01:05:44,460
+Why is the VC dimension
+exactly k minus 1?
+
+1364
+01:05:44,460 --> 01:05:45,710
+PROFESSOR: OK.
+
+1365
+01:05:45,710 --> 01:05:47,850
+
+
+1366
+01:05:47,850 --> 01:05:54,920
+When we defined the break point, we
+defined that, I can call k break
+
+1367
+01:05:54,920 --> 01:06:01,610
+point if I cannot get all dichotomies
+on any k points.
+
+1368
+01:06:01,610 --> 01:06:05,460
+That means really, that if I have
+a break point, then any bigger point is
+
+1369
+01:06:05,460 --> 01:06:07,060
+also a break point.
+
+1370
+01:06:07,060 --> 01:06:10,305
+And most of the discussion deals
+with the smallest break point.
+
+1371
+01:06:10,305 --> 01:06:13,160
+
+
+1372
+01:06:13,160 --> 01:06:18,280
+So the notion of a break point
+covers a lot of values.
+
+1373
+01:06:18,280 --> 01:06:22,040
+The VC dimension is a unique one, which
+happens to be the biggest value just
+
+1374
+01:06:22,040 --> 01:06:23,926
+short of the first break point.
+
+1375
+01:06:23,926 --> 01:06:26,820
+
+
+1376
+01:06:26,820 --> 01:06:28,570
+Does this cover it?
+
+1377
+01:06:28,570 --> 01:06:30,380
+MODERATOR: Yeah.
+
+1378
+01:06:30,380 --> 01:06:34,130
+Yeah, because people were wondering if
+it was the break point for some set
+
+1379
+01:06:34,130 --> 01:06:36,240
+of N points, or for all sets.
+
+1380
+01:06:36,240 --> 01:06:39,340
+PROFESSOR: It's always the
+case that when I say you are able to
+
+1381
+01:06:39,340 --> 01:06:44,300
+shatter, I give you the privilege
+of picking the points to shatter.
+
+1382
+01:06:44,300 --> 01:06:48,420
+So I insist that you get all possible
+dichotomies, but you get to choose
+
+1383
+01:06:48,420 --> 01:06:50,340
+which points to shatter.
+
+1384
+01:06:50,340 --> 01:06:53,520
+That is always the
+logic in those guys.
+
+1385
+01:06:53,520 --> 01:06:56,410
+This does not affect a break
+point versus the VC
+
+1386
+01:06:56,410 --> 01:06:56,990
+dimension, or whatever.
+
+1387
+01:06:56,990 --> 01:06:59,680
+This is always the case when we talk
+about shattering N points.
+
+1388
+01:06:59,680 --> 01:07:03,410
+It means that you shatter
+some set of N points.
+
+1389
+01:07:03,410 --> 01:07:06,970
+Now, the only distinction between
+a break point and a VC dimension is that
+
+1390
+01:07:06,970 --> 01:07:11,360
+a break point poses it negatively, and
+the VC dimension poses it positively.
+
+1391
+01:07:11,360 --> 01:07:15,400
+Break point is a failure to shatter,
+and VC dimension is
+
+1392
+01:07:15,400 --> 01:07:17,340
+an ability to shatter.
+
+1393
+01:07:17,340 --> 01:07:20,100
+And obviously, if you take the maximum
+ability to shatter, which will give
+
+1394
+01:07:20,100 --> 01:07:23,200
+you the value of the VC dimension, that
+will be one short of the next
+
+1395
+01:07:23,200 --> 01:07:25,180
+guy, which you failed to shatter.
+
+1396
+01:07:25,180 --> 01:07:27,780
+So that is your smallest break point
+and the other ones would be other
+
+1397
+01:07:27,780 --> 01:07:29,460
+break points.
+
+1398
+01:07:29,460 --> 01:07:33,460
+MODERATOR: Also, can you repeat
+the practical interpretation
+
+1399
+01:07:33,460 --> 01:07:35,070
+of epsilon and delta?
+
+1400
+01:07:35,070 --> 01:07:36,200
+PROFESSOR: epsilon and delta.
+
+1401
+01:07:36,200 --> 01:07:40,380
+So the epsilon and delta as two
+quantities, they are the performance
+
+1402
+01:07:40,380 --> 01:07:42,450
+parameters of learning.
+
+1403
+01:07:42,450 --> 01:07:45,230
+There are two things that
+I want to make sure of.
+
+1404
+01:07:45,230 --> 01:07:48,450
+I want to make sure that
+E_in tracks E_out.
+
+1405
+01:07:48,450 --> 01:07:50,560
+The level of tracking is epsilon.
+
+1406
+01:07:50,560 --> 01:07:53,450
+That's the approximation parameter.
+
+1407
+01:07:53,450 --> 01:07:56,260
+Now, I cannot guarantee that
+statement absolutely.
+
+1408
+01:07:56,260 --> 01:07:58,370
+I can only guarantee it in
+a probabilistic sense.
+
+1409
+01:07:58,370 --> 01:08:01,400
+But I'd like that probability
+to be as high as possible.
+
+1410
+01:08:01,400 --> 01:08:05,790
+So the probability that that statement
+doesn't hold is small.
+
+1411
+01:08:05,790 --> 01:08:08,930
+And that happens to be delta, which is
+the probability measure. So there are
+
+1412
+01:08:08,930 --> 01:08:12,760
+always these two quantities, and that
+is an integral part of this
+
+1413
+01:08:12,760 --> 01:08:13,660
+type of analysis.
+
+1414
+01:08:13,660 --> 01:08:17,569
+I think we have an in-house question.
+
+1415
+01:08:17,569 --> 01:08:21,170
+STUDENT: I wanted to know, what is
+the affect of error measure on the
+
+1416
+01:08:21,170 --> 01:08:23,109
+number of points that
+you have to choose?
+
+1417
+01:08:23,109 --> 01:08:25,250
+PROFESSOR: OK.
+
+1418
+01:08:25,250 --> 01:08:29,140
+Obviously, as you can see from the VC
+analysis, the error measure has always
+
+1419
+01:08:29,140 --> 01:08:31,069
+been a probability of error.
+
+1420
+01:08:31,069 --> 01:08:32,920
+So it was always a binary error.
+
+1421
+01:08:32,920 --> 01:08:36,870
+When you go to other co-domains,
+
+1422
+01:08:36,870 --> 01:08:38,040
+real-valued or multi-valued.
+
+1423
+01:08:38,040 --> 01:08:40,700
+Or you go to other error
+measures, you need to
+
+1424
+01:08:40,700 --> 01:08:41,930
+modify these things.
+
+1425
+01:08:41,930 --> 01:08:44,810
+Some variances will come in,
+and some other aspects.
+
+1426
+01:08:44,810 --> 01:08:48,200
+So for example, in case of the error
+measure, the binary error measure
+
+1427
+01:08:48,200 --> 01:08:50,720
+happens to be bounded.
+
+1428
+01:08:50,720 --> 01:08:53,970
+Therefore, you never worry about the
+variance, because there is an upper
+
+1429
+01:08:53,970 --> 01:08:55,310
+bound on the variance.
+
+1430
+01:08:55,310 --> 01:08:59,069
+If you talk about, let's say, mean squared
+error, depending on the probability
+
+1431
+01:08:59,069 --> 01:09:02,590
+distribution you put on things,
+this could be very big.
+
+1432
+01:09:02,590 --> 01:09:05,550
+So you need first to say that
+the variance is finite.
+
+1433
+01:09:05,550 --> 01:09:08,220
+And then, actually the value of the
+variance will come into these
+
+1434
+01:09:08,220 --> 01:09:09,930
+inequalities, to go through.
+
+1435
+01:09:09,930 --> 01:09:13,790
+However, the reason I didn't venture
+into that is very simple.
+
+1436
+01:09:13,790 --> 01:09:16,439
+There is really nothing
+added, conceptually.
+
+1437
+01:09:16,439 --> 01:09:19,000
+And as you can see from the utility
+we're using, we are not going to go
+
+1438
+01:09:19,000 --> 01:09:22,660
+back and unravel the mathematics, and
+apply it to a practical situation.
+
+1439
+01:09:22,660 --> 01:09:24,359
+We borrowed the following.
+
+1440
+01:09:24,359 --> 01:09:27,950
+We borrowed that: finite, I can learn.
+
+1441
+01:09:27,950 --> 01:09:30,660
+The value is proportional to
+the number of examples.
+
+1442
+01:09:30,660 --> 01:09:32,359
+And the rest are rules of thumb.
+
+1443
+01:09:32,359 --> 01:09:33,300
+That's where we stand.
+
+1444
+01:09:33,300 --> 01:09:36,740
+So it's not worth sweating bullets over
+the other technicalities, when
+
+1445
+01:09:36,740 --> 01:09:38,149
+this is the message we are getting.
+
+1446
+01:09:38,149 --> 01:09:40,479
+And that message will hold intact
+in other situations.
+
+1447
+01:09:40,479 --> 01:09:46,130
+
+
+1448
+01:09:46,130 --> 01:09:47,399
+MODERATOR: A question about--
+
+1449
+01:09:47,399 --> 01:09:53,290
+when you're mentioning the bound,
+you usually say the VC
+
+1450
+01:09:53,290 --> 01:09:54,430
+dimension is known.
+
+1451
+01:09:54,430 --> 01:10:00,350
+Is it true that for most hypotheses,
+this is really known?
+
+1452
+01:10:00,350 --> 01:10:04,080
+PROFESSOR: To get the VC
+dimension exactly is an exception, not
+
+1453
+01:10:04,080 --> 01:10:04,950
+the rule, as I mentioned.
+
+1454
+01:10:04,950 --> 01:10:07,620
+So getting it for perceptrons is really
+a great achievement, because the
+
+1455
+01:10:07,620 --> 01:10:09,350
+perceptron is a real
+model that you use.
+
+1456
+01:10:09,350 --> 01:10:11,180
+And we know the VC dimension, exactly.
+
+1457
+01:10:11,180 --> 01:10:15,270
+When you go to neural networks, we
+will get a VC dimension estimate.
+
+1458
+01:10:15,270 --> 01:10:17,180
+We'll say the VC dimension
+cannot be above--
+
+1459
+01:10:17,180 --> 01:10:20,690
+for the same reason that we had, when
+we talked about parameter versus
+
+1460
+01:10:20,690 --> 01:10:22,270
+effective number of parameters.
+
+1461
+01:10:22,270 --> 01:10:25,160
+Because in a neural network, the
+parameters will go from one layer to
+
+1462
+01:10:25,160 --> 01:10:28,170
+another, and there will be some
+cancellation or redundancy.
+
+1463
+01:10:28,170 --> 01:10:30,470
+And therefore, you can't really--
+
+1464
+01:10:30,470 --> 01:10:31,940
+keep track of these redundancies
+exactly,
+
+1465
+01:10:31,940 --> 01:10:35,040
+or say it cannot be more than the
+number of parameters because-- even
+
+1466
+01:10:35,040 --> 01:10:36,320
+taking into consideration.
+
+1467
+01:10:36,320 --> 01:10:39,690
+So in many of the cases, the VC
+dimension is estimated as a bound.
+
+1468
+01:10:39,690 --> 01:10:41,490
+But again, we are already in a bound.
+
+1469
+01:10:41,490 --> 01:10:44,010
+Even if you know it exactly, it's not
+like we know what the generalization
+
+1470
+01:10:44,010 --> 01:10:44,680
+error will be like.
+
+1471
+01:10:44,680 --> 01:10:46,900
+We know a bound on the
+generalization error.
+
+1472
+01:10:46,900 --> 01:10:51,440
+So in this series of logical
+development, we get a bound on a bound
+
+1473
+01:10:51,440 --> 01:10:53,230
+on a bound on a bound.
+
+1474
+01:10:53,230 --> 01:10:57,610
+So by the time we are done, the bound
+is so loose that, in absolute value,
+
+1475
+01:10:57,610 --> 01:11:00,020
+it's really not indicative at all.
+
+1476
+01:11:00,020 --> 01:11:03,030
+But the good news is that, in relative
+value, it maintains
+
+1477
+01:11:03,030 --> 01:11:04,210
+its conceptual meaning.
+
+1478
+01:11:04,210 --> 01:11:07,640
+We can use it as a guide to compare
+models, and to get a general number of
+
+1479
+01:11:07,640 --> 01:11:12,020
+examples, notwithstanding the fact that
+if you decide to say, I'm going to
+
+1480
+01:11:12,020 --> 01:11:15,010
+go for a perceptron in two dimensions.
+
+1481
+01:11:15,010 --> 01:11:19,080
+And I'm going to want epsilon to
+be 0.1 and delta to be 0.05.
+
+1482
+01:11:19,080 --> 01:11:21,560
+Could you please tell me how
+many examples I need?
+
+1483
+01:11:21,560 --> 01:11:26,340
+If you actually go and solve the VC
+inequality and try to get a bound, the
+
+1484
+01:11:26,340 --> 01:11:28,670
+bound will be ridiculously high.
+
+1485
+01:11:28,670 --> 01:11:30,780
+Much higher than you will actually
+need in practice.
+
+1486
+01:11:30,780 --> 01:11:32,790
+But you don't use it as
+an absolute indication.
+
+1487
+01:11:32,790 --> 01:11:36,860
+You use it only as
+a relative indication.
+
+1488
+01:11:36,860 --> 01:11:40,460
+MODERATOR: Have you come across any
+interesting examples, where N has to be
+
+1489
+01:11:40,460 --> 01:11:42,430
+much bigger than 10 times
+the VC dimension?
+
+1490
+01:11:42,430 --> 01:11:45,440
+
+
+1491
+01:11:45,440 --> 01:11:47,570
+PROFESSOR: The interesting example
+is when the customer is very finicky,
+
+1492
+01:11:47,570 --> 01:11:49,750
+and wants a very small
+epsilon and delta.
+
+1493
+01:11:49,750 --> 01:11:52,640
+Because the smaller epsilon and delta,
+
+1494
+01:11:52,640 --> 01:11:54,290
+the more number of examples you had.
+
+1495
+01:11:54,290 --> 01:11:59,220
+So the rule of thumb is not to tell
+you: use 10 times the VC dimension.
+
+1496
+01:11:59,220 --> 01:12:03,970
+It tells you that you are in the thick
+of the game, when you have 10 times--
+
+1497
+01:12:03,970 --> 01:12:06,010
+now we are talking.
+
+1498
+01:12:06,010 --> 01:12:07,380
+There is actually generalization.
+
+1499
+01:12:07,380 --> 01:12:08,200
+There is a certain level.
+
+1500
+01:12:08,200 --> 01:12:10,330
+There is some compromise between
+epsilon and delta.
+
+1501
+01:12:10,330 --> 01:12:13,910
+Now you can tighten the screws,
+and try to get it better.
+
+1502
+01:12:13,910 --> 01:12:18,120
+This is just a rule of thumb, for
+getting into the interesting region of
+
+1503
+01:12:18,120 --> 01:12:19,510
+the VC inequality.
+
+1504
+01:12:19,510 --> 01:12:20,810
+And that has stood the test of time.
+
+1505
+01:12:20,810 --> 01:12:24,570
+
+
+1506
+01:12:24,570 --> 01:12:30,720
+MODERATOR: Is there a relation between
+this material and the topic of design
+
+1507
+01:12:30,720 --> 01:12:34,160
+of experiments, and the number of
+experiments you require to achieve
+
+1508
+01:12:34,160 --> 01:12:35,150
+a certain confidence?
+
+1509
+01:12:35,150 --> 01:12:36,690
+PROFESSOR: Yeah, there
+is a relationship.
+
+1510
+01:12:36,690 --> 01:12:40,720
+Some of the experimental
+design and whatnot--
+
+1511
+01:12:40,720 --> 01:12:43,840
+there are lots of commonalities
+between here.
+
+1512
+01:12:43,840 --> 01:12:49,260
+You have control over certain things
+that you may not have here, but some
+
+1513
+01:12:49,260 --> 01:12:51,390
+of the principles definitely
+extend to that.
+
+1514
+01:12:51,390 --> 01:12:54,250
+As I mentioned, when we talked about
+the premise of learning, it's so
+
+1515
+01:12:54,250 --> 01:12:58,140
+general, that it would not be a surprise
+at all that many of the
+
+1516
+01:12:58,140 --> 01:13:04,580
+concepts go and tackle situations that
+are not strictly learning, but have the
+
+1517
+01:13:04,580 --> 01:13:06,350
+same theme as learning.
+
+1518
+01:13:06,350 --> 01:13:12,780
+
+
+1519
+01:13:12,780 --> 01:13:14,150
+MODERATOR: I think that's it.
+
+1520
+01:13:14,150 --> 01:13:15,210
+There's no more.
+
+1521
+01:13:15,210 --> 01:13:16,790
+PROFESSOR: So we will
+see you on Thursday.
+
+1522
+01:13:16,790 --> 01:13:30,811
+

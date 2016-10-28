@@ -1,0 +1,8148 @@
+1
+00:00:00,000 --> 00:00:01,580
+
+
+2
+00:00:01,580 --> 00:00:04,275
+ANNOUNCER: The following program
+is brought to you by Caltech.
+
+3
+00:00:04,275 --> 00:00:16,780
+
+
+4
+00:00:16,780 --> 00:00:19,540
+YASER ABU-MOSTAFA: Welcome back.
+
+5
+00:00:19,540 --> 00:00:24,880
+Last time, we talked about the bias-variance
+decomposition of the
+
+6
+00:00:24,880 --> 00:00:27,550
+out-of-sample error.
+
+7
+00:00:27,550 --> 00:00:32,509
+And we managed, by taking the expected
+value of the out-of-sample with
+
+8
+00:00:32,509 --> 00:00:37,350
+respect to the identity of the data
+points-- the size is fixed at N--
+
+9
+00:00:37,350 --> 00:00:41,710
+to get rid of the variation
+due to the data set.
+
+10
+00:00:41,710 --> 00:00:45,580
+And we ended up with a very clean
+decomposition of the expected value of
+
+11
+00:00:45,580 --> 00:00:49,280
+the E_out, into a bias term and
+a variance term, that have very
+
+12
+00:00:49,280 --> 00:00:51,330
+interesting interpretation.
+
+13
+00:00:51,330 --> 00:00:54,690
+And they're illustrated here
+in terms of a tradeoff.
+
+14
+00:00:54,690 --> 00:00:58,300
+If you have a small hypothesis set,
+the chances are the target
+
+15
+00:00:58,300 --> 00:01:00,030
+function is far away.
+
+16
+00:01:00,030 --> 00:01:03,890
+And therefore, there is a significant
+bias term, which is the blue one.
+
+17
+00:01:03,890 --> 00:01:07,670
+And if you have a bigger hypothesis
+set, perhaps big enough to include
+
+18
+00:01:07,670 --> 00:01:12,120
+your target, you don't have very much
+of a bias, perhaps none at all.
+
+19
+00:01:12,120 --> 00:01:17,660
+But on the other hand, you do have
+variance depending on which hypothesis
+
+20
+00:01:17,660 --> 00:01:20,610
+you zoom in based on the
+data set you have.
+
+21
+00:01:20,610 --> 00:01:26,160
+So in the bias-variance decomposition,
+we basically had two hops from the
+
+22
+00:01:26,160 --> 00:01:31,170
+final hypothesis you produced based on
+a particular data set, into the target
+
+23
+00:01:31,170 --> 00:01:33,800
+function which is what we're
+trying to approximate.
+
+24
+00:01:33,800 --> 00:01:37,190
+The intermediate step was the new
+notion, which is the expected value
+
+25
+00:01:37,190 --> 00:01:42,000
+of the hypothesis set with respect to
+D. And the jump, from your actual
+
+26
+00:01:42,000 --> 00:01:47,040
+hypothesis to that fictitious hypothesis,
+describes the variance,
+
+27
+00:01:47,040 --> 00:01:51,670
+because here is the centroid of this,
+which is the g bar, and you are
+
+28
+00:01:51,670 --> 00:01:52,880
+somewhere here.
+
+29
+00:01:52,880 --> 00:01:55,720
+So in order to get there, that is
+described by the size of the red
+
+30
+00:01:55,720 --> 00:01:58,210
+region, and that is the variance.
+
+31
+00:01:58,210 --> 00:02:01,470
+And then there is another one, which is
+inevitable for a given hypothesis
+
+32
+00:02:01,470 --> 00:02:05,000
+set, which is the hop from that
+one, which designates the best
+
+33
+00:02:05,000 --> 00:02:09,120
+approximation, in a certain sense, within
+the hypothesis set, of your target
+
+34
+00:02:09,120 --> 00:02:10,949
+function, into your target function.
+
+35
+00:02:10,949 --> 00:02:15,680
+And that difference is the bias,
+which is captured here.
+
+36
+00:02:15,680 --> 00:02:18,480
+After doing the bias-variance
+decomposition, we went into
+
+37
+00:02:18,480 --> 00:02:22,750
+an illustrative tool called the learning
+curves, where we plot the expected
+
+38
+00:02:22,750 --> 00:02:27,280
+value of the in-sample error and the
+out-of-sample error, as you increase
+
+39
+00:02:27,280 --> 00:02:29,140
+the sample size.
+
+40
+00:02:29,140 --> 00:02:31,680
+If you look at the curve-- let's
+look at the bottom one here.
+
+41
+00:02:31,680 --> 00:02:36,240
+Not surprisingly, as you increase the
+number of examples, the out-of-sample
+
+42
+00:02:36,240 --> 00:02:37,110
+error goes down.
+
+43
+00:02:37,110 --> 00:02:40,250
+If you have more examples to learn from,
+you are likely to perform better
+
+44
+00:02:40,250 --> 00:02:41,710
+out-of-sample.
+
+45
+00:02:41,710 --> 00:02:46,935
+And another interesting observation is
+that when you have fewer examples, the
+
+46
+00:02:46,935 --> 00:02:48,690
+in-sample error goes down.
+
+47
+00:02:48,690 --> 00:02:52,480
+And that is because you are fitting fewer
+examples, and you have the same
+
+48
+00:02:52,480 --> 00:02:53,640
+resources to fit.
+
+49
+00:02:53,640 --> 00:02:55,430
+So you tend to fit them better.
+
+50
+00:02:55,430 --> 00:02:59,460
+And the discrepancy between them
+describes the generalization error.
+
+51
+00:02:59,460 --> 00:03:03,230
+Then we contrasted the analysis of the
+bias-variance decomposition, which is
+
+52
+00:03:03,230 --> 00:03:06,810
+the top curve, to the VC analysis,
+which we have done before.
+
+53
+00:03:06,810 --> 00:03:09,790
+And we realized that both of them
+describe a tradeoff between
+
+54
+00:03:09,790 --> 00:03:11,790
+approximation and generalization.
+
+55
+00:03:11,790 --> 00:03:15,260
+In the bias-variance case, the
+approximation is an absolute
+
+56
+00:03:15,260 --> 00:03:16,280
+approximation--
+
+57
+00:03:16,280 --> 00:03:19,700
+how your best hypothesis approximates
+the target.
+
+58
+00:03:19,700 --> 00:03:25,020
+And that is described by g bar, again
+with certain liberty.
+
+59
+00:03:25,020 --> 00:03:29,410
+And in the case of the VC analysis, the
+approximation was approximation
+
+60
+00:03:29,410 --> 00:03:30,800
+in sample only.
+
+61
+00:03:30,800 --> 00:03:32,160
+So it was E_in.
+
+62
+00:03:32,160 --> 00:03:35,600
+And then the jump from the approximation
+to the final performance
+
+63
+00:03:35,600 --> 00:03:38,800
+describes the generalization, whether it's
+this red region or this red region,
+
+64
+00:03:38,800 --> 00:03:42,830
+which have basically the same
+monotonicity, except that they have
+
+65
+00:03:42,830 --> 00:03:44,660
+different terms.
+
+66
+00:03:44,660 --> 00:03:48,630
+The final lesson from the theory, which
+is really what we're going to
+
+67
+00:03:48,630 --> 00:03:51,600
+carry out through the techniques, which
+start today until the end of the
+
+68
+00:03:51,600 --> 00:03:56,300
+course, is that the number of examples
+needed to achieve a certain
+
+69
+00:03:56,300 --> 00:03:58,860
+performance is proportional
+to the VC dimension.
+
+70
+00:03:58,860 --> 00:04:02,070
+And I'm putting it between quotes,
+because we defined it formally only for
+
+71
+00:04:02,070 --> 00:04:03,220
+classification.
+
+72
+00:04:03,220 --> 00:04:06,710
+But then we took the linear regression
+case, which is not classification, and
+
+73
+00:04:06,710 --> 00:04:09,730
+we found out that the corresponding
+quantity, which is the degrees of
+
+74
+00:04:09,730 --> 00:04:12,010
+freedom-- same thing, d plus 1--
+
+75
+00:04:12,010 --> 00:04:16,750
+happens to also describe the
+generalization property.
+
+76
+00:04:16,750 --> 00:04:20,180
+And therefore, we basically have
+a certain rule that you need examples
+
+77
+00:04:20,180 --> 00:04:23,760
+in proportion to the VC dimension,
+or to the effective degrees of
+
+78
+00:04:23,760 --> 00:04:27,400
+freedom, in order to
+do generalization.
+
+79
+00:04:27,400 --> 00:04:30,000
+And the more you have, the better
+performance you get.
+
+80
+00:04:30,000 --> 00:04:33,240
+This is the key observation.
+
+81
+00:04:33,240 --> 00:04:36,690
+Today, I'm going to start
+a series of techniques.
+
+82
+00:04:36,690 --> 00:04:41,900
+And today is special, because the
+techniques of the linear models have
+
+83
+00:04:41,900 --> 00:04:43,190
+already been covered in part.
+
+84
+00:04:43,190 --> 00:04:46,060
+Remember, this is the part that was
+split into two portions.
+
+85
+00:04:46,060 --> 00:04:49,770
+And we got a portion very early on,
+out of sequence, just to give you
+
+86
+00:04:49,770 --> 00:04:51,480
+something to work with.
+
+87
+00:04:51,480 --> 00:04:57,590
+And then, I'm going to complete the
+exposition of the linear models today.
+
+88
+00:04:57,590 --> 00:05:01,010
+So let's see where we are.
+
+89
+00:05:01,010 --> 00:05:04,240
+This is the big picture
+of linear models.
+
+90
+00:05:04,240 --> 00:05:08,070
+And they start with linear
+classification-- perceptrons.
+
+91
+00:05:08,070 --> 00:05:09,910
+We have seen that.
+
+92
+00:05:09,910 --> 00:05:11,960
+And then go on to linear regression.
+
+93
+00:05:11,960 --> 00:05:13,050
+We have also seen that.
+
+94
+00:05:13,050 --> 00:05:15,680
+That was the part that was covered.
+
+95
+00:05:15,680 --> 00:05:20,480
+There is a third one, which is another
+linear model that is neither linear
+
+96
+00:05:20,480 --> 00:05:23,180
+classification nor linear regression,
+which will be the bulk of
+
+97
+00:05:23,180 --> 00:05:24,370
+the lecture today.
+
+98
+00:05:24,370 --> 00:05:27,060
+It will be called logistic regression.
+
+99
+00:05:27,060 --> 00:05:31,220
+And then, for all of these linear models,
+we have this nice trick called
+
+100
+00:05:31,220 --> 00:05:37,320
+nonlinear transforms that allows us to
+use the learning algorithms
+
+101
+00:05:37,320 --> 00:05:41,320
+of linear models, which are
+very simple ones, and apply
+
+102
+00:05:41,320 --> 00:05:43,200
+them to nonlinear transformation.
+
+103
+00:05:43,200 --> 00:05:46,110
+And if you remember, that the observation
+here was that linearity in the
+
+104
+00:05:46,110 --> 00:05:50,330
+parameters was the key issue
+for deriving the algorithm.
+
+105
+00:05:50,330 --> 00:05:55,670
+So let's see what we finished, and what
+we didn't finish in these topics.
+
+106
+00:05:55,670 --> 00:05:58,020
+Linear classification
+is pretty much done.
+
+107
+00:05:58,020 --> 00:06:00,410
+We know the algorithm,
+perceptron or pocket.
+
+108
+00:06:00,410 --> 00:06:02,850
+There are obviously more sophisticated
+algorithms.
+
+109
+00:06:02,850 --> 00:06:05,390
+And we did the generalization
+analysis.
+
+110
+00:06:05,390 --> 00:06:07,930
+We got the VC dimension of
+perceptrons explicitly.
+
+111
+00:06:07,930 --> 00:06:11,510
+And therefore, we are able to predict
+the generalization ability of linear
+
+112
+00:06:11,510 --> 00:06:12,290
+classification.
+
+113
+00:06:12,290 --> 00:06:15,240
+So this is a done deal.
+
+114
+00:06:15,240 --> 00:06:16,970
+Linear regression is also a done deal.
+
+115
+00:06:16,970 --> 00:06:19,820
+We have the algorithm, remember, that
+was the pseudo-inverse, the
+
+116
+00:06:19,820 --> 00:06:21,310
+one-step learning.
+
+117
+00:06:21,310 --> 00:06:25,515
+And last time, we did a very brief
+analysis of generalization ability.
+
+118
+00:06:25,515 --> 00:06:28,630
+And we found that it parallels that
+of the perceptron, d plus 1 is the
+
+119
+00:06:28,630 --> 00:06:31,860
+operative point, the operative
+quantity in this case.
+
+120
+00:06:31,860 --> 00:06:34,920
+And therefore, we have linear regression
+as a technique, and as
+
+121
+00:06:34,920 --> 00:06:37,640
+a generalization ability.
+
+122
+00:06:37,640 --> 00:06:40,540
+In the case of nonlinear transforms,
+we are almost done.
+
+123
+00:06:40,540 --> 00:06:44,960
+We did the techniques, but remember, we
+left at a point where we say
+
+124
+00:06:44,960 --> 00:06:47,910
+nonlinear transforms are
+a very useful tool.
+
+125
+00:06:47,910 --> 00:06:51,920
+And they actually can make us separate
+any data points, by going to
+
+126
+00:06:51,920 --> 00:06:54,290
+a sufficiently high-dimensional space.
+
+127
+00:06:54,290 --> 00:07:00,060
+And we had a suspicion that this is not
+really a safe process to follow.
+
+128
+00:07:00,060 --> 00:07:02,590
+We have to worry about generalization
+issues.
+
+129
+00:07:02,590 --> 00:07:05,070
+So the generalization issues
+were left out.
+
+130
+00:07:05,070 --> 00:07:09,110
+And I'm going to start this lecture by
+tying up the loose ends in
+
+131
+00:07:09,110 --> 00:07:12,690
+generalization for nonlinear transforms,
+before I go into the main
+
+132
+00:07:12,690 --> 00:07:14,290
+topic, which is the third one.
+
+133
+00:07:14,290 --> 00:07:16,220
+That is logistic regression.
+
+134
+00:07:16,220 --> 00:07:16,650
+So.
+
+135
+00:07:16,650 --> 00:07:22,200
+Very brief analysis of nonlinear
+transforms in terms of generalization,
+
+136
+00:07:22,200 --> 00:07:24,420
+then logistic regression
+beginning to end.
+
+137
+00:07:24,420 --> 00:07:26,400
+That's the plan.
+
+138
+00:07:26,400 --> 00:07:27,500
+OK.
+
+139
+00:07:27,500 --> 00:07:28,480
+Nonlinear transforms.
+
+140
+00:07:28,480 --> 00:07:30,020
+Let's remind ourselves.
+
+141
+00:07:30,020 --> 00:07:32,150
+We were working in an X space.
+
+142
+00:07:32,150 --> 00:07:35,180
+And we had a d-dimensional vector
+that represented the input.
+
+143
+00:07:35,180 --> 00:07:37,720
+And we added the constant
++1 coordinate, to
+
+144
+00:07:37,720 --> 00:07:39,220
+take care of the threshold.
+
+145
+00:07:39,220 --> 00:07:43,040
+And now, we are going to transform
+this into another space using
+
+146
+00:07:43,040 --> 00:07:45,440
+a transformation we called phi.
+
+147
+00:07:45,440 --> 00:07:49,160
+This takes us into the Z space,
+or the feature space.
+
+148
+00:07:49,160 --> 00:07:54,240
+So each of these guys is derived
+from the raw input x.
+
+149
+00:07:54,240 --> 00:07:59,460
+And the transformation we have can be
+quite general. If you
+
+150
+00:07:59,460 --> 00:08:00,650
+look at it,
+
+151
+00:08:00,650 --> 00:08:06,080
+any one of these coordinates can be
+an arbitrary nonlinear transformation of
+
+152
+00:08:06,080 --> 00:08:07,530
+the entire vector x.
+
+153
+00:08:07,530 --> 00:08:08,760
+It doesn't take one coordinate.
+
+154
+00:08:08,760 --> 00:08:11,030
+It takes the entire vector--
+
+155
+00:08:11,030 --> 00:08:12,310
+so all of these guys--
+
+156
+00:08:12,310 --> 00:08:17,890
+computes any formula you want, and then
+puts it as the feature here.
+
+157
+00:08:17,890 --> 00:08:20,140
+So you can imagine how
+general this can be.
+
+158
+00:08:20,140 --> 00:08:22,150
+And also, the length of
+this can be arbitrary.
+
+159
+00:08:22,150 --> 00:08:24,230
+You can have this as long as you want.
+
+160
+00:08:24,230 --> 00:08:27,320
+As a matter of fact, when we move to
+support vector machines, we will be
+
+161
+00:08:27,320 --> 00:08:31,350
+able to go to infinite-dimensional
+feature space, which is an interesting
+
+162
+00:08:31,350 --> 00:08:32,289
+generalization.
+
+163
+00:08:32,289 --> 00:08:35,490
+So, each of them is
+a general transformation.
+
+164
+00:08:35,490 --> 00:08:40,870
+And therefore, the small phi_i is
+a member of the big transformation,
+
+165
+00:08:40,870 --> 00:08:44,830
+capital phi, that takes the vector x,
+and produces the vector z working in
+
+166
+00:08:44,830 --> 00:08:45,800
+the Z space.
+
+167
+00:08:45,800 --> 00:08:47,900
+That's that transform.
+
+168
+00:08:47,900 --> 00:08:51,210
+An example for that, which we
+used, was 2nd order.
+
+169
+00:08:51,210 --> 00:08:56,600
+Instead of using linear surfaces here,
+we wanted to use quadratic surfaces.
+
+170
+00:08:56,600 --> 00:09:01,880
+And quadratic surfaces in the X space
+correspond to linear surfaces in
+
+171
+00:09:01,880 --> 00:09:04,850
+a quadratic-transformed space, Z.
+
+172
+00:09:04,850 --> 00:09:06,680
+So this would be the transformation.
+
+173
+00:09:06,680 --> 00:09:11,460
+We got all possible factors that
+contribute to a 2nd-order
+
+174
+00:09:11,460 --> 00:09:12,000
+term.
+
+175
+00:09:12,000 --> 00:09:14,790
+And now if you put coefficients to each
+of these and sum them up, you
+
+176
+00:09:14,790 --> 00:09:19,030
+will get a general 2nd-order
+surface in the X space.
+
+177
+00:09:19,030 --> 00:09:24,760
+Now the final hypothesis for us
+will always live in the X space.
+
+178
+00:09:24,760 --> 00:09:27,850
+The Z space is transparent
+to the user.
+
+179
+00:09:27,850 --> 00:09:33,530
+This is our tool in order to get more
+sophisticated surfaces in the X space,
+
+180
+00:09:33,530 --> 00:09:37,060
+while we are able to use the
+linear techniques.
+
+181
+00:09:37,060 --> 00:09:43,230
+So the final hypothesis will be
+mentioned as g of x equals--
+
+182
+00:09:43,230 --> 00:09:46,400
+So you have the linear thing, but you
+have that transformed version of x.
+
+183
+00:09:46,400 --> 00:09:47,740
+That's what you get the
+dot product with.
+
+184
+00:09:47,740 --> 00:09:49,700
+So this is z.
+
+185
+00:09:49,700 --> 00:09:52,760
+And in the case of classification, you
+take the sign, +1 or -1,
+
+186
+00:09:52,760 --> 00:09:55,110
+according to the signal whether
+it is positive or negative.
+
+187
+00:09:55,110 --> 00:10:00,230
+And in the case of linear regression,
+you get the raw signal itself.
+
+188
+00:10:00,230 --> 00:10:04,190
+And as we will see, we will have a third
+one, which is in-between taking
+
+189
+00:10:04,190 --> 00:10:07,360
+the sign and leaving the quantity alone,
+when we talk about logistic
+
+190
+00:10:07,360 --> 00:10:08,190
+regression.
+
+191
+00:10:08,190 --> 00:10:12,870
+That's the summary of nonlinear
+transforms that we have seen so far.
+
+192
+00:10:12,870 --> 00:10:14,500
+And now we talk about generalization,
+
+193
+00:10:14,500 --> 00:10:19,860
+and ask ourselves: what is the price we pay
+when we do a nonlinear transform?
+
+194
+00:10:19,860 --> 00:10:23,460
+The price we will pay, obviously,
+in terms of generalization.
+
+195
+00:10:23,460 --> 00:10:25,710
+So this is the transform.
+
+196
+00:10:25,710 --> 00:10:29,790
+Now if you look at the X space, and
+ask: what is the generalization
+
+197
+00:10:29,790 --> 00:10:31,460
+behavior in the X space?
+
+198
+00:10:31,460 --> 00:10:34,130
+Let's say that you don't do
+the nonlinear transform.
+
+199
+00:10:34,130 --> 00:10:36,940
+You do the linear model
+in the X space.
+
+200
+00:10:36,940 --> 00:10:41,420
+Well, in that case, you are going to
+get a weight vector in the X space.
+
+201
+00:10:41,420 --> 00:10:44,190
+And the dimensionality of the weight
+vector is the same as here, so it will
+
+202
+00:10:44,190 --> 00:10:45,070
+be d plus 1.
+
+203
+00:10:45,070 --> 00:10:47,740
+There is a weight corresponding
+to each of these coordinates.
+
+204
+00:10:47,740 --> 00:10:51,780
+And then you take the dot product, and
+whether you use threshold, or report it,
+
+205
+00:10:51,780 --> 00:10:54,850
+depending on which type of linear
+model you are talking about.
+
+206
+00:10:54,850 --> 00:10:58,030
+But basically, you have d plus 1
+free parameters.
+
+207
+00:10:58,030 --> 00:11:00,560
+And we realize that d plus 1
+free parameters correspond
+
+208
+00:11:00,560 --> 00:11:04,150
+directly to a VC dimension.
+
+209
+00:11:04,150 --> 00:11:10,040
+In the case of the Z space, the
+feature space, we have
+
+210
+00:11:10,040 --> 00:11:11,840
+potentially a longer vector--
+
+211
+00:11:11,840 --> 00:11:13,550
+much longer, possibly.
+
+212
+00:11:13,550 --> 00:11:16,870
+And the dimensionality
+here is d tilde.
+
+213
+00:11:16,870 --> 00:11:18,960
+That's the notation we give for it.
+
+214
+00:11:18,960 --> 00:11:21,440
+And the vector that will apply
+here will be w tilde.
+
+215
+00:11:21,440 --> 00:11:25,110
+That will be a much longer vector
+in general than w.
+
+216
+00:11:25,110 --> 00:11:29,450
+So for example, in our case, if we
+used the linear with x_0, x_1, x_2,
+
+217
+00:11:29,450 --> 00:11:31,020
+we would have 3.
+
+218
+00:11:31,020 --> 00:11:34,720
+If we did the full 2nd order,
+we would get 6.
+
+219
+00:11:34,720 --> 00:11:36,320
+So we get more there.
+
+220
+00:11:36,320 --> 00:11:41,105
+And we have seen that the VC dimension
+is, in this case, for the perceptron,
+
+221
+00:11:41,105 --> 00:11:42,560
+d plus 1.
+
+222
+00:11:42,560 --> 00:11:45,040
+So this is the price you pay
+for the generalization.
+
+223
+00:11:45,040 --> 00:11:47,330
+And here, the price you pay for
+the generalization can be
+
+224
+00:11:47,330 --> 00:11:49,850
+pretty serious.
+
+225
+00:11:49,850 --> 00:11:54,870
+Now you see that if I want to separate
+the points, and then I go to
+
+226
+00:11:54,870 --> 00:11:56,660
+a 17th-order polynomial,
+
+227
+00:11:56,660 --> 00:11:59,160
+general 17th-order polynomial, and
+then you count the number of
+
+228
+00:11:59,160 --> 00:12:02,690
+coordinates you have gone to, the VC
+dimension would be so large that, in
+
+229
+00:12:02,690 --> 00:12:05,180
+spite of the fact that you were able
+to fit-- because you went to a 17th
+
+230
+00:12:05,180 --> 00:12:06,160
+order polynomial--
+
+231
+00:12:06,160 --> 00:12:09,310
+you don't really have a real
+chance of generalization.
+
+232
+00:12:09,310 --> 00:12:13,710
+Just to be accurate, this is really not
+equality here, because we always
+
+233
+00:12:13,710 --> 00:12:16,650
+measure the VC dimension
+in the X space.
+
+234
+00:12:16,650 --> 00:12:19,690
+Again, the Z space is transparent
+to the user.
+
+235
+00:12:19,690 --> 00:12:22,700
+So we go here, and we come back, and we
+ask ourselves what can we shatter
+
+236
+00:12:22,700 --> 00:12:24,230
+here and whatnot.
+
+237
+00:12:24,230 --> 00:12:27,780
+So in spite of the fact that in this
+case, if you had the full space, and
+
+238
+00:12:27,780 --> 00:12:31,310
+you were able to choose the points any
+which way you want, you will be able to get
+
+239
+00:12:31,310 --> 00:12:35,510
+exactly that VC dimension, it is
+possible that there are certain
+
+240
+00:12:35,510 --> 00:12:39,000
+combinations of points here that
+are impossible to come by as
+
+241
+00:12:39,000 --> 00:12:41,540
+transformations of legal points here.
+
+242
+00:12:41,540 --> 00:12:45,330
+If you want a simple case, let me just
+take two coordinates to be identical--
+
+243
+00:12:45,330 --> 00:12:47,300
+same transformation.
+
+244
+00:12:47,300 --> 00:12:48,580
+So obviously, now I'm stuck.
+
+245
+00:12:48,580 --> 00:12:51,310
+I don't have the full benefit of the
+coordinates, because if I choose one,
+
+246
+00:12:51,310 --> 00:12:53,080
+the other one is dictated.
+
+247
+00:12:53,080 --> 00:12:57,100
+So just because of that fact, in order
+to be accurate, we will say that it is
+
+248
+00:12:57,100 --> 00:12:58,790
+actually, at most d plus 1.
+
+249
+00:12:58,790 --> 00:13:00,620
+Usually, it's very close to d plus 1--
+
+250
+00:13:00,620 --> 00:13:03,020
+d tilde plus 1.
+
+251
+00:13:03,020 --> 00:13:03,050
+
+
+252
+00:13:03,050 --> 00:13:07,490
+So let's apply this to two cases where
+we use nonlinear transformations, in
+
+253
+00:13:07,490 --> 00:13:12,940
+order to appreciate, in practical
+terms, what is the price we pay.
+
+254
+00:13:12,940 --> 00:13:17,080
+The first non-separable
+case is a pretty easy one.
+
+255
+00:13:17,080 --> 00:13:23,340
+It's almost separable, except for some points
+that you can consider, maybe, outliers.
+
+256
+00:13:23,340 --> 00:13:26,940
+This red point is in the blue region,
+this blue in the red region.
+
+257
+00:13:26,940 --> 00:13:29,670
+But otherwise, everything can
+be classified linearly.
+
+258
+00:13:29,670 --> 00:13:32,110
+So one may think of this case--
+this case is really linearly
+
+259
+00:13:32,110 --> 00:13:37,160
+separable, and we just have a bunch of
+outliers, maybe we shouldn't use
+
+260
+00:13:37,160 --> 00:13:39,670
+nonlinear transform, just settle
+for the linear--
+
+261
+00:13:39,670 --> 00:13:40,950
+We will talk about that.
+
+262
+00:13:40,950 --> 00:13:44,850
+So this is one class of things,
+when we look at nonlinear
+
+263
+00:13:44,850 --> 00:13:46,320
+transforms.
+
+264
+00:13:46,320 --> 00:13:49,890
+The other one is genuinely nonlinear.
+
+265
+00:13:49,890 --> 00:13:54,630
+This thing-- I really don't stand
+a chance if I use a line, and therefore,
+
+266
+00:13:54,630 --> 00:13:57,710
+I'm really talking about something
+that needs to be transformed.
+
+267
+00:13:57,710 --> 00:14:01,760
+So let's see how the generalization
+behavior goes, for both of them when we
+
+268
+00:14:01,760 --> 00:14:04,935
+apply the nonlinear transforms.
+
+269
+00:14:04,935 --> 00:14:08,580
+The first case is pretty easy.
+
+270
+00:14:08,580 --> 00:14:10,370
+It's almost linearly separable.
+
+271
+00:14:10,370 --> 00:14:12,550
+So here are the choices.
+
+272
+00:14:12,550 --> 00:14:17,860
+You can use a linear model in X space,
+in the input space that you have, and
+
+273
+00:14:17,860 --> 00:14:22,190
+then accept that the in-sample
+error will be positive.
+
+274
+00:14:22,190 --> 00:14:24,160
+It's not going to be 0.
+
+275
+00:14:24,160 --> 00:14:25,950
+In this case, here's the picture.
+
+276
+00:14:25,950 --> 00:14:29,220
+There is an in-sample error, because this
+guy is erroneously classified, and
+
+277
+00:14:29,220 --> 00:14:33,220
+this guy is erroneously classified
+by your hypothesis.
+
+278
+00:14:33,220 --> 00:14:35,470
+So this is option number one.
+
+279
+00:14:35,470 --> 00:14:39,530
+Now, option number two is to say I
+would like to get E_in to be 0, so you
+
+280
+00:14:39,530 --> 00:14:44,260
+insist on E_in being zero.
+
+281
+00:14:44,260 --> 00:14:47,510
+And in order to do that, you have
+to go to another space.
+
+282
+00:14:47,510 --> 00:14:51,790
+So you decide to go to
+a high-dimensional space.
+
+283
+00:14:51,790 --> 00:14:55,750
+Now you can see what the problem is
+here, because we are just taking care
+
+284
+00:14:55,750 --> 00:14:58,250
+of two points, for crying
+out loud!
+
+285
+00:14:58,250 --> 00:15:01,490
+And in order to actually be able to classify
+them using a surface, believe it
+
+286
+00:15:01,490 --> 00:15:05,400
+or not, you're not going to be able to
+do it with a 2nd-order surface, or
+
+287
+00:15:05,400 --> 00:15:07,340
+a 3rd-order surface.
+
+288
+00:15:07,340 --> 00:15:11,050
+You will have to go to a 4th-order
+surface in order to get it all right.
+
+289
+00:15:11,050 --> 00:15:13,440
+And when you do that, this
+is what you get.
+
+290
+00:15:13,440 --> 00:15:16,600
+
+
+291
+00:15:16,600 --> 00:15:21,680
+Now, you don't need the VC analysis to
+realize that this is an overkill, and
+
+292
+00:15:21,680 --> 00:15:24,680
+this doesn't have a very good
+chance of generalizing.
+
+293
+00:15:24,680 --> 00:15:25,900
+Of course, you can do
+the formal thing.
+
+294
+00:15:25,900 --> 00:15:27,380
+You see 4th order.
+
+295
+00:15:27,380 --> 00:15:30,880
+Instead of having 3, I
+have however many there are.
+
+296
+00:15:30,880 --> 00:15:34,150
+And therefore, for the limited number
+of examples I have, when I see the
+
+297
+00:15:34,150 --> 00:15:38,360
+generalization behavior, I am
+completely in the dark.
+
+298
+00:15:38,360 --> 00:15:41,730
+So in this case, that is
+a straightforward application of the
+
+299
+00:15:41,730 --> 00:15:44,270
+approximation-generalization
+tradeoff.
+
+300
+00:15:44,270 --> 00:15:46,400
+We went to a more complex model.
+
+301
+00:15:46,400 --> 00:15:51,420
+We were able to approximate the data
+better, but we are generalizing worse.
+
+302
+00:15:51,420 --> 00:15:54,580
+This has been completely covered
+already, so there is no surprise in
+
+303
+00:15:54,580 --> 00:15:58,870
+this, other than to understand the fact
+that at times, you might as
+
+304
+00:15:58,870 --> 00:16:04,670
+well settle for a small training error,
+in order not to use too high
+
+305
+00:16:04,670 --> 00:16:09,490
+a complexity for the hypothesis set.
+
+306
+00:16:09,490 --> 00:16:14,640
+The other one is the case where
+you really don't stand
+
+307
+00:16:14,640 --> 00:16:15,770
+a chance with linear.
+
+308
+00:16:15,770 --> 00:16:19,160
+It will be very, very poor
+approximation and generalization.
+
+309
+00:16:19,160 --> 00:16:23,610
+The data seems to be coming from
+inherently a nonlinear surface.
+
+310
+00:16:23,610 --> 00:16:28,460
+And in this case, we used
+this transformation.
+
+311
+00:16:28,460 --> 00:16:31,220
+And this transformation is my
+way of putting a general
+
+312
+00:16:31,220 --> 00:16:33,180
+2nd-order surface.
+
+313
+00:16:33,180 --> 00:16:38,670
+And if you look at it, if we use only the
+x, which would be conveniently the
+
+314
+00:16:38,670 --> 00:16:42,100
+first three guys-- that would be
+the vector x, get weights--
+
+315
+00:16:42,100 --> 00:16:45,460
+I have 3 weights, so I pay
+for the price of 3.
+
+316
+00:16:45,460 --> 00:16:49,500
+Whereas if I use this, I have 6,
+so I pay for a price of 6.
+
+317
+00:16:49,500 --> 00:16:53,050
+So basically, in our mind, you need
+twice as many examples to do the same
+
+318
+00:16:53,050 --> 00:16:54,270
+level of performance.
+
+319
+00:16:54,270 --> 00:16:56,840
+Not that we have a choice in this case,
+because the linear doesn't work,
+
+320
+00:16:56,840 --> 00:16:59,830
+but this is basically the
+formula we have in mind.
+
+321
+00:16:59,830 --> 00:17:03,100
+Now comes an interesting
+discussion.
+
+322
+00:17:03,100 --> 00:17:05,098
+I don't want to pay the 6.
+
+323
+00:17:05,098 --> 00:17:08,960
+I want to go to the nonlinear space,
+but I don't want to pay the 6.
+
+324
+00:17:08,960 --> 00:17:11,220
+I want to get a discount!
+
+325
+00:17:11,220 --> 00:17:13,980
+Here is a way to get a discount--
+
+326
+00:17:13,980 --> 00:17:17,130
+not necessarily legitimate, but let's
+pursue it and see why it would be
+
+327
+00:17:17,130 --> 00:17:19,400
+legitimate or not.
+
+328
+00:17:19,400 --> 00:17:26,069
+Why not transform x into
+this guy only?
+
+329
+00:17:26,069 --> 00:17:29,840
+The idea here, this
+is the origin.
+
+330
+00:17:29,840 --> 00:17:34,870
+x_1 goes like this, x_2 goes like this,
+so it seems that I only need x_1
+
+331
+00:17:34,870 --> 00:17:36,530
+squared and x_2 squared.
+
+332
+00:17:36,530 --> 00:17:41,010
+These guys are just making me pay,
+without really contributing.
+
+333
+00:17:41,010 --> 00:17:43,690
+So I'm just going to
+use this model.
+
+334
+00:17:43,690 --> 00:17:46,500
+Well, if I use this model, it looks
+like I have now 3.
+
+335
+00:17:46,500 --> 00:17:49,960
+So I have exactly the same number of
+examples as if this was linear, and as
+
+336
+00:17:49,960 --> 00:17:53,540
+if I was doing it in the X space.
+
+337
+00:17:53,540 --> 00:17:56,590
+If you are smelling a rat,
+you are correct!
+
+338
+00:17:56,590 --> 00:18:00,010
+And in order to make it clear,
+let's just pursue this line.
+
+339
+00:18:00,010 --> 00:18:01,650
+I can do even better than this.
+
+340
+00:18:01,650 --> 00:18:04,310
+
+
+341
+00:18:04,310 --> 00:18:08,070
+Why not take 2 guys
+instead of 3?
+
+342
+00:18:08,070 --> 00:18:11,100
+I have the second guy being x_1 squared
+plus x_2 squared, because I really don't
+
+343
+00:18:11,100 --> 00:18:13,660
+care about x_1 squared and x_2
+squared being independent.
+
+344
+00:18:13,660 --> 00:18:15,300
+They are just the radius in my mind.
+
+345
+00:18:15,300 --> 00:18:17,890
+So I need to do this.
+
+346
+00:18:17,890 --> 00:18:22,160
+Now we have achieved a lot, because now
+we have even fewer parameters than
+
+347
+00:18:22,160 --> 00:18:25,330
+if we use the linear guy, so the
+generalization must be getting better
+
+348
+00:18:25,330 --> 00:18:27,330
+and better.
+
+349
+00:18:27,330 --> 00:18:34,980
+Now let's get carried away,
+and go for the ultimate.
+
+350
+00:18:34,980 --> 00:18:35,870
+I have one guy.
+
+351
+00:18:35,870 --> 00:18:40,230
+I even let go of the mandatory
+constant.
+
+352
+00:18:40,230 --> 00:18:42,060
+I just have this guy.
+
+353
+00:18:42,060 --> 00:18:44,830
+And all I'm learning in this case is
+just what is outside and what is
+
+354
+00:18:44,830 --> 00:18:46,190
+inside the circle, really.
+
+355
+00:18:46,190 --> 00:18:49,450
+It doesn't even need a parameter,
+just needs a binary one.
+
+356
+00:18:49,450 --> 00:18:52,180
+Now I have one guy, and
+the VC dimension is 1.
+
+357
+00:18:52,180 --> 00:18:53,590
+And I can generalize greatly--
+
+358
+00:18:53,590 --> 00:18:55,840
+dot, dot, dot.
+
+359
+00:18:55,840 --> 00:18:58,710
+Well, something is wrong.
+
+360
+00:18:58,710 --> 00:19:01,200
+Now it's clear that something is wrong,
+but it's very important to
+
+361
+00:19:01,200 --> 00:19:03,720
+articulate what is wrong.
+
+362
+00:19:03,720 --> 00:19:11,400
+What is wrong is that you're charging
+the VC dimension of this hypothesis
+
+363
+00:19:11,400 --> 00:19:13,410
+set, right?
+
+364
+00:19:13,410 --> 00:19:20,430
+Think of the VC inequality as providing
+you with a warranty.
+
+365
+00:19:20,430 --> 00:19:26,700
+Now in order for the warranty to be
+valid, you cannot look at the data
+
+366
+00:19:26,700 --> 00:19:29,020
+before you choose the model.
+
+367
+00:19:29,020 --> 00:19:31,960
+That will forfeit the warranty.
+
+368
+00:19:31,960 --> 00:19:34,700
+why does it forfeit it?
+
+369
+00:19:34,700 --> 00:19:37,690
+Because of the following.
+
+370
+00:19:37,690 --> 00:19:41,450
+I am going to charge you-- if I
+do the analysis correctly--
+
+371
+00:19:41,450 --> 00:19:45,980
+not the VC dimension of
+the final guy you got.
+
+372
+00:19:45,980 --> 00:19:50,310
+I'm not going to get the VC dimension
+of this fellow.
+
+373
+00:19:50,310 --> 00:19:55,450
+I'm going to charge you the VC dimension
+of the entire hypothesis
+
+374
+00:19:55,450 --> 00:20:02,200
+space, that you explored in your mind
+in getting there, because you have
+
+375
+00:20:02,200 --> 00:20:06,130
+acted as a learning algorithm,
+unknowingly.
+
+376
+00:20:06,130 --> 00:20:08,430
+You looked at the data.
+
+377
+00:20:08,430 --> 00:20:11,030
+Before you looked at the
+data, you had no idea.
+
+378
+00:20:11,030 --> 00:20:13,000
+Let's say that you decided ahead
+of time, I'm going to use
+
+379
+00:20:13,000 --> 00:20:14,180
+a 2nd-order set.
+
+380
+00:20:14,180 --> 00:20:15,470
+2nd order, OK?
+
+381
+00:20:15,470 --> 00:20:19,880
+Now you look at the data, and you
+realize that some coefficients are 0.
+
+382
+00:20:19,880 --> 00:20:21,850
+That's called learning, right?
+
+383
+00:20:21,850 --> 00:20:22,530
+I don't need this.
+
+384
+00:20:22,530 --> 00:20:23,160
+I don't need this.
+
+385
+00:20:23,160 --> 00:20:23,820
+I don't need this.
+
+386
+00:20:23,820 --> 00:20:26,390
+You did it very quickly
+in your mind.
+
+387
+00:20:26,390 --> 00:20:30,270
+So the hypothesis that was learned
+was a hierarchical learning.
+
+388
+00:20:30,270 --> 00:20:34,340
+First, you learned, and then you passed
+it on to the algorithm to
+
+389
+00:20:34,340 --> 00:20:36,090
+complete the learning.
+
+390
+00:20:36,090 --> 00:20:40,560
+So the effective hypothesis set
+is what you started with.
+
+391
+00:20:40,560 --> 00:20:42,380
+You see where the point is.
+
+392
+00:20:42,380 --> 00:20:51,310
+And the lesson learned from this is that,
+if you look at the data before
+
+393
+00:20:51,310 --> 00:20:56,480
+you choose the model, this can be
+hazardous to your health.
+
+394
+00:20:56,480 --> 00:21:02,450
+Not your health, but the generalization
+health.
+
+395
+00:21:02,450 --> 00:21:03,690
+Why is that?
+
+396
+00:21:03,690 --> 00:21:08,620
+Because now, the quantity that
+describes generalization
+
+397
+00:21:08,620 --> 00:21:09,740
+becomes very vague.
+
+398
+00:21:09,740 --> 00:21:13,150
+When we propose a particular model, I can
+go and mathematically estimate the
+
+399
+00:21:13,150 --> 00:21:14,630
+VC dimension.
+
+400
+00:21:14,630 --> 00:21:17,470
+If you look at the data, we said
+that you did learning.
+
+401
+00:21:17,470 --> 00:21:21,070
+Now I'm asking, what is exactly the
+full hypothesis space that you
+
+402
+00:21:21,070 --> 00:21:22,410
+explored in the beginning?
+
+403
+00:21:22,410 --> 00:21:23,650
+That's a little bit vague--
+
+404
+00:21:23,650 --> 00:21:25,210
+very difficult to pin down.
+
+405
+00:21:25,210 --> 00:21:28,250
+Definitely bigger than what you are
+going to use if you use the VC
+
+406
+00:21:28,250 --> 00:21:32,610
+dimension of the hypothesis set
+that you ended up with.
+
+407
+00:21:32,610 --> 00:21:36,080
+And this is a manifestation
+of the biggest trap that
+
+408
+00:21:36,080 --> 00:21:37,970
+practitioners fall into.
+
+409
+00:21:37,970 --> 00:21:40,960
+When you go into machine learning, I want
+you to learn from the data, and
+
+410
+00:21:40,960 --> 00:21:43,310
+choosing the model is very tricky.
+
+411
+00:21:43,310 --> 00:21:45,640
+Some model may work, some
+model may not work.
+
+412
+00:21:45,640 --> 00:21:47,580
+So it's tempting.
+
+413
+00:21:47,580 --> 00:21:50,820
+Let me just look at the data, and
+pick something suitable.
+
+414
+00:21:50,820 --> 00:21:52,360
+Well, you are allowed to do that.
+
+415
+00:21:52,360 --> 00:21:54,250
+I'm not saying that this
+is against the law.
+
+416
+00:21:54,250 --> 00:21:55,200
+You can do it.
+
+417
+00:21:55,200 --> 00:21:58,250
+Just charge accordingly.
+
+418
+00:21:58,250 --> 00:22:01,880
+Remember that if you do this, and
+you end up with a small hypothesis
+
+419
+00:22:01,880 --> 00:22:06,650
+set, and you have a VC dimension, you have
+already forfeited the warranty that is
+
+420
+00:22:06,650 --> 00:22:09,300
+given by the VC inequality
+according to that.
+
+421
+00:22:09,300 --> 00:22:12,310
+It applies only to the VC
+dimension to begin with.
+
+422
+00:22:12,310 --> 00:22:15,650
+And this is a manifestation
+of basically snooping.
+
+423
+00:22:15,650 --> 00:22:16,950
+You snooped into the data.
+
+424
+00:22:16,950 --> 00:22:20,460
+You looked at it in a way
+that is not allowed.
+
+425
+00:22:20,460 --> 00:22:24,480
+And when you do this,
+bad things happen.
+
+426
+00:22:24,480 --> 00:22:28,850
+And the formal term for it, actually,
+in machine learning, is called data
+
+427
+00:22:28,850 --> 00:22:30,110
+snooping.
+
+428
+00:22:30,110 --> 00:22:34,710
+And we will dedicate one third of
+a lecture just describing data snooping.
+
+429
+00:22:34,710 --> 00:22:37,740
+This is the most obvious manifestation
+of data snooping.
+
+430
+00:22:37,740 --> 00:22:39,900
+You look at the data before
+you choose the model.
+
+431
+00:22:39,900 --> 00:22:44,310
+But there are other ways that are so
+subtle, that it's very likely that even
+
+432
+00:22:44,310 --> 00:22:46,880
+a smart person may fall
+into those traps.
+
+433
+00:22:46,880 --> 00:22:50,090
+And it's very important to understand
+what these traps are, in order to avoid
+
+434
+00:22:50,090 --> 00:22:53,200
+them, and make sure that when you apply
+the theory, after all of the
+
+435
+00:22:53,200 --> 00:22:55,920
+sweat we had in order to get
+these things, they might as
+
+436
+00:22:55,920 --> 00:22:57,360
+well be valid.
+
+437
+00:22:57,360 --> 00:23:02,560
+And you can immediately make them not
+valid by doing these things.
+
+438
+00:23:02,560 --> 00:23:07,200
+So this is the subject
+of data snooping.
+
+439
+00:23:07,200 --> 00:23:11,790
+And I'm not minimizing the idea of
+choosing a model. There will be ways to
+
+440
+00:23:11,790 --> 00:23:12,400
+choose a model.
+
+441
+00:23:12,400 --> 00:23:14,650
+When we talk about validation,
+model selection will be the
+
+442
+00:23:14,650 --> 00:23:15,500
+order of the day.
+
+443
+00:23:15,500 --> 00:23:18,360
+But it will be a legitimate
+means of model section.
+
+444
+00:23:18,360 --> 00:23:21,630
+It's a model selection that does
+not contaminate the data.
+
+445
+00:23:21,630 --> 00:23:23,420
+The data here was used
+to choose the model.
+
+446
+00:23:23,420 --> 00:23:24,540
+Therefore, it's contaminated.
+
+447
+00:23:24,540 --> 00:23:28,090
+It's no longer trusted to reflect the
+real performance, because you have
+
+448
+00:23:28,090 --> 00:23:30,770
+already used it in learning.
+
+449
+00:23:30,770 --> 00:23:32,530
+This is the lesson we get.
+
+450
+00:23:32,530 --> 00:23:36,750
+And if you remember when I said linear
+models are an economy car, nonlinear
+
+451
+00:23:36,750 --> 00:23:38,610
+transforms give you a truck.
+
+452
+00:23:38,610 --> 00:23:40,660
+And we saw that the truck
+is very strong.
+
+453
+00:23:40,660 --> 00:23:42,320
+I can go to very high-dimensional space.
+
+454
+00:23:42,320 --> 00:23:44,320
+I can have very sophisticated surface.
+
+455
+00:23:44,320 --> 00:23:48,030
+And then I warned you that, be careful
+when you drive a truck.
+
+456
+00:23:48,030 --> 00:23:50,670
+And this is what I meant by that.
+
+457
+00:23:50,670 --> 00:23:51,950
+That there are dangers.
+
+458
+00:23:51,950 --> 00:23:56,630
+You could be well meaning, and you could
+simply crash, instead of having
+
+459
+00:23:56,630 --> 00:24:00,040
+the smaller car that may not be as
+impressive, but it will definitely get
+
+460
+00:24:00,040 --> 00:24:01,390
+you where you want.
+
+461
+00:24:01,390 --> 00:24:06,940
+Now we move into the main topic
+of the lecture, which is logistic
+
+462
+00:24:06,940 --> 00:24:10,350
+regression, which is a very
+important linear model.
+
+463
+00:24:10,350 --> 00:24:13,090
+And it complements the two models
+we have seen so far--
+
+464
+00:24:13,090 --> 00:24:16,630
+linear classification-- the perceptron,
+and linear regression.
+
+465
+00:24:16,630 --> 00:24:18,190
+And there are three pieces.
+
+466
+00:24:18,190 --> 00:24:19,620
+First, I'm going to describe
+the model.
+
+467
+00:24:19,620 --> 00:24:22,360
+What is the hypothesis set that
+I'm trying to implement.
+
+468
+00:24:22,360 --> 00:24:24,970
+And then we're going to devise
+an error measure for it, which is
+
+469
+00:24:24,970 --> 00:24:27,020
+a pretty interesting error measure.
+
+470
+00:24:27,020 --> 00:24:29,040
+And finally, we are going to go
+for the learning algorithm
+
+471
+00:24:29,040 --> 00:24:29,800
+that goes with it.
+
+472
+00:24:29,800 --> 00:24:32,190
+It turns out that the model is
+different, the error measure is
+
+473
+00:24:32,190 --> 00:24:34,540
+different, and the learning algorithm
+is different from what
+
+474
+00:24:34,540 --> 00:24:35,690
+we have seen before.
+
+475
+00:24:35,690 --> 00:24:38,350
+So by the time we have done this, we
+will have covered enough territory in
+
+476
+00:24:38,350 --> 00:24:39,400
+these variations.
+
+477
+00:24:39,400 --> 00:24:41,800
+And this will really be
+very representative of
+
+478
+00:24:41,800 --> 00:24:43,140
+machine learning at large.
+
+479
+00:24:43,140 --> 00:24:46,230
+So linear models will not only be
+a very useful model to use.
+
+480
+00:24:46,230 --> 00:24:48,390
+They also cover the concepts
+in many techniques that
+
+481
+00:24:48,390 --> 00:24:49,490
+you will see otherwise.
+
+482
+00:24:49,490 --> 00:24:52,470
+For example, the learning algorithm here
+is the same learning algorithm we
+
+483
+00:24:52,470 --> 00:24:55,840
+are going to use in neural
+networks next time.
+
+484
+00:24:55,840 --> 00:24:58,570
+So let's start with the model.
+
+485
+00:24:58,570 --> 00:25:00,930
+Here's the third linear model.
+
+486
+00:25:00,930 --> 00:25:05,880
+Being linear means that we take your
+inputs, compute a signal that is
+
+487
+00:25:05,880 --> 00:25:09,050
+a linear combination of the
+input with weights, s.
+
+488
+00:25:09,050 --> 00:25:12,230
+And then I take s, and
+do stuff with it.
+
+489
+00:25:12,230 --> 00:25:17,160
+And the stuff could be linear
+classification, perceptrons.
+
+490
+00:25:17,160 --> 00:25:18,920
+And what was that?
+
+491
+00:25:18,920 --> 00:25:23,090
+In this case, you take your
+hypothesis to be a decision,
+
+492
+00:25:23,090 --> 00:25:24,360
++1 or -1.
+
+493
+00:25:24,360 --> 00:25:28,360
+And that decision is a direct
+thresholding, with
+
+494
+00:25:28,360 --> 00:25:30,090
+respect to 0, of the signal.
+
+495
+00:25:30,090 --> 00:25:32,620
+So you take this linear signal, and this
+is what you do to it in order to
+
+496
+00:25:32,620 --> 00:25:35,300
+get the output, and that will
+give you the perceptron.
+
+497
+00:25:35,300 --> 00:25:35,920
+
+
+498
+00:25:35,920 --> 00:25:37,170
+Let's put it in a picture.
+
+499
+00:25:37,170 --> 00:25:41,940
+
+
+500
+00:25:41,940 --> 00:25:43,750
+Here are your inputs.
+
+501
+00:25:43,750 --> 00:25:46,110
+x_1 up to x_d, this is
+the genuine input.
+
+502
+00:25:46,110 --> 00:25:49,000
+This is the +1 that takes
+care of the threshold.
+
+503
+00:25:49,000 --> 00:25:55,240
+They go with these into the sum, so
+this would be weights going, attached
+
+504
+00:25:55,240 --> 00:25:56,360
+to these guys.
+
+505
+00:25:56,360 --> 00:25:59,500
+And then they are summed,
+in order to give me s.
+
+506
+00:25:59,500 --> 00:26:03,040
+And then one linear model or another
+will be doing different things to s.
+
+507
+00:26:03,040 --> 00:26:06,310
+The first model will take s and
+pass it through this threshold, in
+
+508
+00:26:06,310 --> 00:26:08,600
+order to get +1 or -1.
+
+509
+00:26:08,600 --> 00:26:11,380
+
+
+510
+00:26:11,380 --> 00:26:15,530
+Now the second guy
+was linear regression.
+
+511
+00:26:15,530 --> 00:26:18,470
+What did we do to the signal in
+the case of linear regression?
+
+512
+00:26:18,470 --> 00:26:21,530
+
+
+513
+00:26:21,530 --> 00:26:22,300
+Nothing.
+
+514
+00:26:22,300 --> 00:26:23,340
+We left it alone.
+
+515
+00:26:23,340 --> 00:26:25,800
+That was our output, right?
+
+516
+00:26:25,800 --> 00:26:28,890
+So if you want to put it in
+the same diagram, you can.
+
+517
+00:26:28,890 --> 00:26:32,990
+And in this case, you do the linear
+sum, et cetera, and you
+
+518
+00:26:32,990 --> 00:26:33,520
+get the signal.
+
+519
+00:26:33,520 --> 00:26:36,720
+And then you have the identity
+function, if you want.
+
+520
+00:26:36,720 --> 00:26:38,690
+You output what you input.
+
+521
+00:26:38,690 --> 00:26:40,720
+And that's what you get.
+
+522
+00:26:40,720 --> 00:26:43,440
+Now when you go to the third guy, the
+new guy, which is called logistic
+
+523
+00:26:43,440 --> 00:26:49,920
+regression, we are going to take s
+and apply a nonlinearity to it.
+
+524
+00:26:49,920 --> 00:26:50,880
+The nonlinearity,
+
+525
+00:26:50,880 --> 00:26:53,630
+which we're going to call theta,
+the logistic function--
+
+526
+00:26:53,630 --> 00:26:56,750
+it is not as harsh as
+this nonlinearity.
+
+527
+00:26:56,750 --> 00:27:00,930
+It is somewhere between this
+and leaving it alone.
+
+528
+00:27:00,930 --> 00:27:03,810
+And it looks like this.
+
+529
+00:27:03,810 --> 00:27:06,540
+You can see that's
+an interesting thing.
+
+530
+00:27:06,540 --> 00:27:08,320
+I am bounded.
+
+531
+00:27:08,320 --> 00:27:09,760
+This is the least I can report.
+
+532
+00:27:09,760 --> 00:27:10,960
+This is the most I can report.
+
+533
+00:27:10,960 --> 00:27:12,450
+It looks bounded like this.
+
+534
+00:27:12,450 --> 00:27:15,820
+It actually looks pretty much like this,
+except for the softening of it.
+
+535
+00:27:15,820 --> 00:27:19,360
+But it's a real value, I can return any
+real value between this value and
+
+536
+00:27:19,360 --> 00:27:23,010
+this value, so it has something
+of the linear regression.
+
+537
+00:27:23,010 --> 00:27:26,330
+And the main utility of logistic
+regression is that the output is going
+
+538
+00:27:26,330 --> 00:27:29,100
+to be interpreted as a probability.
+
+539
+00:27:29,100 --> 00:27:31,710
+And that will cover a lot of problems,
+where we want to estimate the
+
+540
+00:27:31,710 --> 00:27:34,330
+probability of something.
+
+541
+00:27:34,330 --> 00:27:36,940
+Let's be specific.
+
+542
+00:27:36,940 --> 00:27:38,870
+Let's look at the logistic
+function theta, the
+
+543
+00:27:38,870 --> 00:27:41,320
+nonlinearity I talked about.
+
+544
+00:27:41,320 --> 00:27:43,780
+It looks like this.
+
+545
+00:27:43,780 --> 00:27:49,520
+It can serve as a probability,
+because it goes here from 0 to 1.
+
+546
+00:27:49,520 --> 00:27:52,890
+And if you look at the signal, if the
+signal is very, very negative, you're
+
+547
+00:27:52,890 --> 00:27:54,300
+close to probability 0.
+
+548
+00:27:54,300 --> 00:27:54,330
+
+
+549
+00:27:54,330 --> 00:27:57,270
+If the signal is very, very
+positive, it's close to 1.
+
+550
+00:27:57,270 --> 00:28:00,120
+And at signal 0, it's probability half.
+
+551
+00:28:00,120 --> 00:28:01,930
+So that actually corresponds
+to something meaningful.
+
+552
+00:28:01,930 --> 00:28:06,270
+The signal corresponds to the level
+of certainty I have about something.
+
+553
+00:28:06,270 --> 00:28:10,510
+If I have a huge signal, I'm pretty sure
+that a binary event will happen.
+
+554
+00:28:10,510 --> 00:28:13,660
+And if the signal is very negative,
+I'm pretty sure that it will not
+
+555
+00:28:13,660 --> 00:28:16,230
+happen, so the probability is 0.
+
+556
+00:28:16,230 --> 00:28:20,150
+Now there are many formulas that I can
+have that we give you this shape.
+
+557
+00:28:20,150 --> 00:28:22,810
+This shape is what I'm
+interested in.
+
+558
+00:28:22,810 --> 00:28:25,500
+And I'm going to choose
+a particular formula.
+
+559
+00:28:25,500 --> 00:28:29,570
+And the formula is this.
+
+560
+00:28:29,570 --> 00:28:30,780
+
+
+561
+00:28:30,780 --> 00:28:32,310
+It's not that difficult.
+
+562
+00:28:32,310 --> 00:28:34,540
+I have an exponential
+here and here.
+
+563
+00:28:34,540 --> 00:28:38,250
+Let's say that you take s to go to
+plus infinity-- very large signal.
+
+564
+00:28:38,250 --> 00:28:39,500
+This will be huge.
+
+565
+00:28:39,500 --> 00:28:40,940
+And this will be the same amount, huge.
+
+566
+00:28:40,940 --> 00:28:43,450
+The 1 will be negligible, so
+the ratio will get closer
+
+567
+00:28:43,450 --> 00:28:45,210
+and closer to 1.
+
+568
+00:28:45,210 --> 00:28:47,930
+If this s is negative, this is very
+small, and this is very small.
+
+569
+00:28:47,930 --> 00:28:51,110
+So the 1 dominates, and you will get
+something small divided by 1, which is
+
+570
+00:28:51,110 --> 00:28:52,090
+very close to 0.
+
+571
+00:28:52,090 --> 00:28:53,240
+That's what I get here.
+
+572
+00:28:53,240 --> 00:28:57,100
+And indeed, if you get s equals 0, you
+will get 1 over 1 plus 1, which is
+
+573
+00:28:57,100 --> 00:28:58,370
+a half, so it will give you this.
+
+574
+00:28:58,370 --> 00:29:00,060
+This is a nice function.
+
+575
+00:29:00,060 --> 00:29:02,890
+It's indeed odd around
+half, if you will.
+
+576
+00:29:02,890 --> 00:29:05,260
+This part is the same
+as this part.
+
+577
+00:29:05,260 --> 00:29:09,420
+And the reason for taking this
+particular form is that, when we plug
+
+578
+00:29:09,420 --> 00:29:13,160
+it in, and we get the error measure, and
+then we go for the optimization,
+
+579
+00:29:13,160 --> 00:29:15,440
+it will be a very friendly formula.
+
+580
+00:29:15,440 --> 00:29:18,540
+You can have another formula that has
+the same shape, and then you run into
+
+581
+00:29:18,540 --> 00:29:21,150
+trouble when you go into
+the next steps.
+
+582
+00:29:21,150 --> 00:29:24,300
+So this is with a view to
+what is going to happen.
+
+583
+00:29:24,300 --> 00:29:26,650
+
+
+584
+00:29:26,650 --> 00:29:30,110
+This thing is called soft threshold,
+for obvious reasons.
+
+585
+00:29:30,110 --> 00:29:34,150
+That is, the hard version would
+be, just decide this or this.
+
+586
+00:29:34,150 --> 00:29:37,020
+So this softens it, and gives you
+a reliability of a decision.
+
+587
+00:29:37,020 --> 00:29:40,520
+If you think that we are talking about
+the credit card application, it
+
+588
+00:29:40,520 --> 00:29:43,380
+used to be that I want to know
+if a customer is good or bad.
+
+589
+00:29:43,380 --> 00:29:45,500
+Instead of deciding if the customer
+is good or bad, which is
+
+590
+00:29:45,500 --> 00:29:48,500
+a binary classification, I ask
+myself: what is the probability
+
+591
+00:29:48,500 --> 00:29:50,410
+that this customer will be good?
+
+592
+00:29:50,410 --> 00:29:52,000
+Or what is the probability
+that they will be bad?
+
+593
+00:29:52,000 --> 00:29:54,670
+That is, what is the probability
+of default?
+
+594
+00:29:54,670 --> 00:29:59,870
+And then I can say 0.8, 0.7, 0.3, and
+let the bank decide what to do
+
+595
+00:29:59,870 --> 00:30:03,140
+according to this probability, to extend
+credit, how much credit to do,
+
+596
+00:30:03,140 --> 00:30:04,150
+and so on.
+
+597
+00:30:04,150 --> 00:30:06,270
+So there is a utility for that.
+
+598
+00:30:06,270 --> 00:30:08,880
+And the soft threshold
+reflects the uncertainty.
+
+599
+00:30:08,880 --> 00:30:12,810
+Seldom do we know the binary decision
+with certainty, and it might be more
+
+600
+00:30:12,810 --> 00:30:15,720
+information to give you the uncertainty
+as part of the deal.
+
+601
+00:30:15,720 --> 00:30:19,070
+And that is reflected in
+this soft threshold.
+
+602
+00:30:19,070 --> 00:30:24,270
+It's also called sigmoid, for a simple
+reason-- because it looks like
+
+603
+00:30:24,270 --> 00:30:26,460
+a flattened out s.
+
+604
+00:30:26,460 --> 00:30:27,810
+This is an s, so you call it sigmoid.
+
+605
+00:30:27,810 --> 00:30:30,590
+You'll hear sigmoidal function, or soft
+threshold, and whatnot.
+
+606
+00:30:30,590 --> 00:30:33,390
+And there's more than one sigmoidal
+function or soft threshold.
+
+607
+00:30:33,390 --> 00:30:34,870
+I told you this was one formula.
+
+608
+00:30:34,870 --> 00:30:36,350
+There are other formulas.
+
+609
+00:30:36,350 --> 00:30:38,930
+In fact, when we go to neural networks,
+there will be another formula that is
+
+610
+00:30:38,930 --> 00:30:40,150
+very closely related.
+
+611
+00:30:40,150 --> 00:30:42,320
+And you can invent other
+formulas, as well.
+
+612
+00:30:42,320 --> 00:30:44,100
+So this is the logistic function.
+
+613
+00:30:44,100 --> 00:30:44,560
+This is the model.
+
+614
+00:30:44,560 --> 00:30:46,540
+We know what the model does.
+
+615
+00:30:46,540 --> 00:30:51,130
+The main idea is the probability
+interpretation.
+
+616
+00:30:51,130 --> 00:30:56,530
+We have the model-- the model is:
+you take the linear signal, pass it
+
+617
+00:30:56,530 --> 00:31:00,090
+through this logistic function, and
+that will be your value of the
+
+618
+00:31:00,090 --> 00:31:05,200
+hypothesis at the x that gave
+rise to that signal.
+
+619
+00:31:05,200 --> 00:31:08,140
+And we are going to interpret
+it as a probability.
+
+620
+00:31:08,140 --> 00:31:10,350
+So we think that there is a probability
+sitting out there,
+
+621
+00:31:10,350 --> 00:31:11,630
+generating examples.
+
+622
+00:31:11,630 --> 00:31:18,550
+Let's say a probability of default,
+based on credit information.
+
+623
+00:31:18,550 --> 00:31:21,180
+I'm going to give you an example
+where it's patent that you
+
+624
+00:31:21,180 --> 00:31:22,280
+actually need a probability.
+
+625
+00:31:22,280 --> 00:31:26,550
+It would be absurd to try to predict the
+thing outright as a decision.
+
+626
+00:31:26,550 --> 00:31:31,330
+And that is the unfortunate
+prediction of heart attacks.
+
+627
+00:31:31,330 --> 00:31:34,320
+Now heart attacks, or the risk of heart
+attacks, depends on a number of
+
+628
+00:31:34,320 --> 00:31:35,510
+factors.
+
+629
+00:31:35,510 --> 00:31:38,280
+And you would like to predict whether
+there is a big risk or
+
+630
+00:31:38,280 --> 00:31:39,990
+a small risk.
+
+631
+00:31:39,990 --> 00:31:45,410
+The kind of input you will have is
+data that are relevant to having
+
+632
+00:31:45,410 --> 00:31:46,120
+a heart attack.
+
+633
+00:31:46,120 --> 00:31:49,830
+You can look at cholesterol level,
+the age, the weight-- the weight of
+
+634
+00:31:49,830 --> 00:31:51,650
+the person, not the weight
+of the input--
+
+635
+00:31:51,650 --> 00:31:52,370
+and so on.
+
+636
+00:31:52,370 --> 00:32:01,240
+And then the output here would be
+a probability, because if I told you
+
+637
+00:32:01,240 --> 00:32:03,720
+to predict whether the person will have
+a heart attack or not, and you
+
+638
+00:32:03,720 --> 00:32:07,160
+say +1 or -1, I think this will
+be laughable, because there are
+
+639
+00:32:07,160 --> 00:32:11,860
+so many factors that affect it. You
+will be correct very, very small
+
+640
+00:32:11,860 --> 00:32:15,070
+amount of the time, and it's very difficult
+to tell that your predictions are
+
+641
+00:32:15,070 --> 00:32:15,900
+better than another one.
+
+642
+00:32:15,900 --> 00:32:18,490
+Both of you are wrong most
+of the time.
+
+643
+00:32:18,490 --> 00:32:21,820
+What we are doing here, we are actually
+predicting the probability of
+
+644
+00:32:21,820 --> 00:32:23,770
+a heart attack within
+a time horizon.
+
+645
+00:32:23,770 --> 00:32:27,130
+Let's say that you take this data today,
+and I'm asking: what is the
+
+646
+00:32:27,130 --> 00:32:30,110
+probability that you will get a heart
+attack within the next 12 months?
+
+647
+00:32:30,110 --> 00:32:31,000
+That's the game.
+
+648
+00:32:31,000 --> 00:32:33,940
+You return a number, and that will be
+reflected by the output of logistic
+
+649
+00:32:33,940 --> 00:32:37,660
+regression.
+
+650
+00:32:37,660 --> 00:32:41,550
+Now if you look at the signal that
+goes into this thing, the signal
+
+651
+00:32:41,550 --> 00:32:43,480
+goes from minus infinity
+to plus infinity.
+
+652
+00:32:43,480 --> 00:32:47,640
+And that's a linear sum of those guys,
+that we take and process in order to
+
+653
+00:32:47,640 --> 00:32:49,150
+make it a probability.
+
+654
+00:32:49,150 --> 00:32:50,530
+Two things to observe.
+
+655
+00:32:50,530 --> 00:32:53,600
+First, this remains linear.
+
+656
+00:32:53,600 --> 00:32:57,390
+That is, you are actually
+giving an importance--
+
+657
+00:32:57,390 --> 00:32:59,260
+I'm going to call it "importance"
+because there's a weight here.
+
+658
+00:32:59,260 --> 00:33:02,210
+So you're going to give an importance
+for the age, an importance for the
+
+659
+00:33:02,210 --> 00:33:04,560
+cholesterol level, an importance
+for the other factor.
+
+660
+00:33:04,560 --> 00:33:11,250
+But from then on, all you do is just
+give the importance weight, and
+
+661
+00:33:11,250 --> 00:33:12,600
+sum them up.
+
+662
+00:33:12,600 --> 00:33:14,620
+Now it's conceivable, obviously,
+that this is bad, because
+
+663
+00:33:14,620 --> 00:33:15,260
+you look at the age.
+
+664
+00:33:15,260 --> 00:33:19,790
+In terms of risk, basically 40
+is critical for these things.
+
+665
+00:33:19,790 --> 00:33:21,310
+So it's not really linear.
+
+666
+00:33:21,310 --> 00:33:22,060
+
+
+667
+00:33:22,060 --> 00:33:24,590
+Above 40 or below 40 makes
+a big difference.
+
+668
+00:33:24,590 --> 00:33:26,120
+So there is a non-linearity there.
+
+669
+00:33:26,120 --> 00:33:27,810
+Does this bother us?
+
+670
+00:33:27,810 --> 00:33:28,520
+No.
+
+671
+00:33:28,520 --> 00:33:31,610
+We know that we can study
+the clean linear system.
+
+672
+00:33:31,610 --> 00:33:35,510
+And when the time comes to apply it,
+we can always transform those to
+
+673
+00:33:35,510 --> 00:33:39,900
+relevant features, and we have the
+same machinery in place.
+
+674
+00:33:39,900 --> 00:33:42,280
+The other aspect of the signal is
+that this can be interpreted.
+
+675
+00:33:42,280 --> 00:33:45,880
+You can think of it as a risk
+score, if you will.
+
+676
+00:33:45,880 --> 00:33:47,660
+Remember the credit score?
+
+677
+00:33:47,660 --> 00:33:49,800
+We have the credit score, and then
+compare it to a threshold to decide
+
+678
+00:33:49,800 --> 00:33:51,810
+to extend credit, or
+not to extend credit.
+
+679
+00:33:51,810 --> 00:33:53,360
+This is a risk score.
+
+680
+00:33:53,360 --> 00:33:55,880
+Although it's translated to probability
+to make it meaningful, I
+
+681
+00:33:55,880 --> 00:34:00,755
+can tell you, you add this up, and you
+are 700, you're in trouble.
+
+682
+00:34:00,755 --> 00:34:04,040
+You're minus 200, you're in
+good shape, in general.
+
+683
+00:34:04,040 --> 00:34:06,840
+But obviously, in order to interpret
+them in an operational way, you need
+
+684
+00:34:06,840 --> 00:34:09,260
+to put them through the logistic, in
+order to get a probability which can
+
+685
+00:34:09,260 --> 00:34:10,080
+be interpreted.
+
+686
+00:34:10,080 --> 00:34:12,429
+This is the probability that someone
+will get a heart attack within
+
+687
+00:34:12,429 --> 00:34:14,070
+a certain time horizon.
+
+688
+00:34:14,070 --> 00:34:19,190
+Now I'd like to make the point
+that this is genuine probability.
+
+689
+00:34:19,190 --> 00:34:21,310
+What do I mean by that?
+
+690
+00:34:21,310 --> 00:34:25,610
+You have a hypothesis that
+goes from 0 to 1.
+
+691
+00:34:25,610 --> 00:34:28,110
+I'm interpreting it as a probability.
+
+692
+00:34:28,110 --> 00:34:32,900
+But you could just think of it as
+a function between 0 and 1.
+
+693
+00:34:32,900 --> 00:34:36,030
+If I give you examples-- here is x, and
+here is the probability, which is
+
+694
+00:34:36,030 --> 00:34:37,040
+a number between 0 and 1--
+
+695
+00:34:37,040 --> 00:34:38,420
+I'm going to learn it.
+
+696
+00:34:38,420 --> 00:34:41,590
+And the fact that you are using it as
+a probability is your business.
+
+697
+00:34:41,590 --> 00:34:44,230
+I'm just going to take two functions,
+try to get the difference between
+
+698
+00:34:44,230 --> 00:34:46,880
+them, let's say mean squared
+error, and learn.
+
+699
+00:34:46,880 --> 00:34:50,260
+The main point here is that the output
+of the logistic regression is
+
+700
+00:34:50,260 --> 00:34:54,550
+treated genuinely as a probability,
+even during learning.
+
+701
+00:34:54,550 --> 00:34:56,630
+Why is that?
+
+702
+00:34:56,630 --> 00:34:59,940
+This is because the data that is
+given to you does not tell you the
+
+703
+00:34:59,940 --> 00:35:01,570
+probability.
+
+704
+00:35:01,570 --> 00:35:07,080
+I don't give you the first patient,
+and here are the data.
+
+705
+00:35:07,080 --> 00:35:10,000
+And-- this is supervised learning,
+right, so I have to give
+
+706
+00:35:10,000 --> 00:35:11,600
+you the label--
+
+707
+00:35:11,600 --> 00:35:17,650
+the probability of getting a heart
+attack in 12 months is 25%.
+
+708
+00:35:17,650 --> 00:35:20,050
+How the heck would I know that?
+
+709
+00:35:20,050 --> 00:35:22,590
+I can only get whether someone
+got a heart attack or
+
+710
+00:35:22,590 --> 00:35:24,190
+didn't get a heart attack.
+
+711
+00:35:24,190 --> 00:35:26,860
+Well, that is affected by the
+probability, but I don't have access
+
+712
+00:35:26,860 --> 00:35:28,140
+to the probability.
+
+713
+00:35:28,140 --> 00:35:31,680
+So this is a noisy case, where the nature
+of the example is that I give
+
+714
+00:35:31,680 --> 00:35:35,450
+you a binary output that is affected
+by the probability.
+
+715
+00:35:35,450 --> 00:35:39,610
+This is generated by a noisy target,
+so let's put the noisy target
+
+716
+00:35:39,610 --> 00:35:43,460
+in order to understand where the
+examples are coming from.
+
+717
+00:35:43,460 --> 00:35:45,690
+It's the probability of y given x.
+
+718
+00:35:45,690 --> 00:35:48,450
+That is what noisy targets are.
+
+719
+00:35:48,450 --> 00:35:54,340
+And they have the form of a certain
+probability that the person gets heart
+
+720
+00:35:54,340 --> 00:35:58,960
+attack, and a certain probability that
+they don't get a heart attack, given
+
+721
+00:35:58,960 --> 00:36:01,910
+their data.
+
+722
+00:36:01,910 --> 00:36:05,420
+And this is generated by the target
+that I want to learn.
+
+723
+00:36:05,420 --> 00:36:09,470
+So I'm going to call the probability
+the target function itself.
+
+724
+00:36:09,470 --> 00:36:14,050
+The probability that someone
+gets heart attack is f of x.
+
+725
+00:36:14,050 --> 00:36:16,890
+And the probability that they don't--
+it's a binary thing-- has to be 1
+
+726
+00:36:16,890 --> 00:36:19,050
+minus f of x.
+
+727
+00:36:19,050 --> 00:36:23,610
+And I'm trying to learn f,
+notwithstanding the fact that the
+
+728
+00:36:23,610 --> 00:36:29,420
+examples that I am getting are giving me
+just sample values of y, that happen
+
+729
+00:36:29,420 --> 00:36:31,260
+to be generated by f.
+
+730
+00:36:31,260 --> 00:36:35,950
+I want to take the examples, and then
+generate h that approximates the
+
+731
+00:36:35,950 --> 00:36:38,360
+hidden target function.
+
+732
+00:36:38,360 --> 00:36:39,580
+Understood the game?
+
+733
+00:36:39,580 --> 00:36:41,210
+That's why it's genuine probability.
+
+734
+00:36:41,210 --> 00:36:45,310
+It's not only 0,1, it's also that the
+examples that I am given have already,
+
+735
+00:36:45,310 --> 00:36:48,260
+inherently, a probabilistic
+interpretation.
+
+736
+00:36:48,260 --> 00:36:52,130
+So the target is from
+
+737
+00:36:52,130 --> 00:36:55,720
+the d-dimensional Euclidean space
+to 0,1, the interval.
+
+738
+00:36:55,720 --> 00:36:58,890
+And it is interpreted
+as a probability.
+
+739
+00:36:58,890 --> 00:37:03,950
+And now, you want to learn the final
+hypothesis, which will be called g of
+
+740
+00:37:03,950 --> 00:37:08,380
+x, which happens to have the
+form of logistic regression.
+
+741
+00:37:08,380 --> 00:37:09,850
+That's the model we are talking about.
+
+742
+00:37:09,850 --> 00:37:14,310
+So you are going to find the weights,
+and then you're going to
+
+743
+00:37:14,310 --> 00:37:16,880
+dot-product it with x, and pass
+it through the nonlinearity.
+
+744
+00:37:16,880 --> 00:37:20,590
+And the claim you are going to end
+up saying is that this is
+
+745
+00:37:20,590 --> 00:37:22,420
+approximately f of x--
+
+746
+00:37:22,420 --> 00:37:26,610
+the real guy, the probability
+here.
+
+747
+00:37:26,610 --> 00:37:29,840
+And you are going to try to make that as
+true as possible, according to some
+
+748
+00:37:29,840 --> 00:37:32,110
+error measure that we
+are going to define.
+
+749
+00:37:32,110 --> 00:37:34,140
+And what is under your control?
+
+750
+00:37:34,140 --> 00:37:37,850
+As always with linear models, what
+is under your control are
+
+751
+00:37:37,850 --> 00:37:39,630
+the parameters.
+
+752
+00:37:39,630 --> 00:37:42,370
+You change the parameters in order
+to get one hypothesis or another.
+
+753
+00:37:42,370 --> 00:37:46,730
+So the question now becomes, how do
+I choose the weights such that the
+
+754
+00:37:46,730 --> 00:37:50,990
+logistic regression hypothesis reflects
+the target function, knowing
+
+755
+00:37:50,990 --> 00:37:54,860
+that the target function is the way
+the examples were generated?
+
+756
+00:37:54,860 --> 00:37:56,720
+That's the game.
+
+757
+00:37:56,720 --> 00:38:00,740
+So let's talk about
+the error measure.
+
+758
+00:38:00,740 --> 00:38:05,630
+Now again, remember in error measures,
+we had the proper way of generating
+
+759
+00:38:05,630 --> 00:38:11,000
+an error measure, and then we had plan B.
+In the absence of very specific way of
+
+760
+00:38:11,000 --> 00:38:11,960
+paying a price--
+
+761
+00:38:11,960 --> 00:38:17,030
+if you predict a heart attack and
+it doesn't happen, what is the cost?
+
+762
+00:38:17,030 --> 00:38:18,610
+The guy is alarmed, et cetera.
+
+763
+00:38:18,610 --> 00:38:21,430
+If you don't predict it, and it happens,
+then maybe you should have
+
+764
+00:38:21,430 --> 00:38:22,640
+taken precautions and whatnot.
+
+765
+00:38:22,640 --> 00:38:24,782
+And you can put prices, and do
+all of the analysis.
+
+766
+00:38:24,782 --> 00:38:26,050
+That is not done.
+
+767
+00:38:26,050 --> 00:38:29,440
+Now we are resorting to the case where
+we use analytic properties,
+
+768
+00:38:29,440 --> 00:38:32,650
+something plausible that makes this
+look like an error measure--
+
+769
+00:38:32,650 --> 00:38:34,590
+Yeah, if I actually minimize
+this error measure, I'm
+
+770
+00:38:34,590 --> 00:38:35,870
+going to be doing well.
+
+771
+00:38:35,870 --> 00:38:40,120
+Or take something that will be friendly
+to the optimizer, that after
+
+772
+00:38:40,120 --> 00:38:42,740
+I do it and pass it to the optimizer,
+the optimizer will easy time
+
+773
+00:38:42,740 --> 00:38:43,760
+minimizing it.
+
+774
+00:38:43,760 --> 00:38:47,110
+Well, it turns out that in this case,
+the error measure that I'm going to
+
+775
+00:38:47,110 --> 00:38:48,820
+describe has both properties.
+
+776
+00:38:48,820 --> 00:38:50,990
+It's plausible, and friendly.
+
+777
+00:38:50,990 --> 00:38:53,140
+So it's a very popular error measure.
+
+778
+00:38:53,140 --> 00:38:55,960
+So let's construct it.
+
+779
+00:38:55,960 --> 00:38:59,930
+For each point x and y-- and remember
+that y is binary, +1 or -1,
+
+780
+00:38:59,930 --> 00:39:02,380
+that is generated by the
+target function f.
+
+781
+00:39:02,380 --> 00:39:05,040
+
+
+782
+00:39:05,040 --> 00:39:05,900
+
+
+783
+00:39:05,900 --> 00:39:07,450
+
+
+784
+00:39:07,450 --> 00:39:09,800
+We have the following plausible
+error measure.
+
+785
+00:39:09,800 --> 00:39:12,500
+Here is the argument.
+
+786
+00:39:12,500 --> 00:39:15,340
+It is based on likelihood.
+
+787
+00:39:15,340 --> 00:39:19,620
+Likelihood is a very established
+notion in statistics, not without
+
+788
+00:39:19,620 --> 00:39:20,230
+controversy.
+
+789
+00:39:20,230 --> 00:39:23,960
+But nonetheless, it's
+very widely applied.
+
+790
+00:39:23,960 --> 00:39:27,570
+And the idea of it is that I'm going
+to grade different hypotheses
+
+791
+00:39:27,570 --> 00:39:31,360
+according to the likelihood that they
+are actually the target that
+
+792
+00:39:31,360 --> 00:39:33,120
+generated the data.
+
+793
+00:39:33,120 --> 00:39:36,010
+So let's be specific.
+
+794
+00:39:36,010 --> 00:39:39,510
+We assume that, at your current
+hypothesis, let's say that this was
+
+795
+00:39:39,510 --> 00:39:43,460
+actually the target function,
+just for the moment.
+
+796
+00:39:43,460 --> 00:39:44,950
+You have the data, right?
+
+797
+00:39:44,950 --> 00:39:47,310
+The data was generated by
+the target function.
+
+798
+00:39:47,310 --> 00:39:50,870
+So you can ask: what is the probability
+of generating this data if
+
+799
+00:39:50,870 --> 00:39:52,980
+your assumption is true?
+
+800
+00:39:52,980 --> 00:39:57,700
+If that probability is very small, then
+your assumption must be poor.
+
+801
+00:39:57,700 --> 00:40:01,870
+And if that probability is high, then
+your assumption has more plausibility.
+
+802
+00:40:01,870 --> 00:40:06,030
+So I can use this to build a comparative
+way to saying that this is more
+
+803
+00:40:06,030 --> 00:40:09,340
+plausible hypothesis than another,
+because the data becomes more likely
+
+804
+00:40:09,340 --> 00:40:13,340
+under a scenario of this hypothesis,
+rather than this hypothesis, being the
+
+805
+00:40:13,340 --> 00:40:15,640
+actual target function.
+
+806
+00:40:15,640 --> 00:40:17,650
+This is the idea.
+
+807
+00:40:17,650 --> 00:40:18,870
+You ask yourself, how likely?
+
+808
+00:40:18,870 --> 00:40:19,530
+And the difference--
+
+809
+00:40:19,530 --> 00:40:20,950
+So I said about controversy.
+
+810
+00:40:20,950 --> 00:40:24,120
+The controversy is a bit subtle, related
+to the controversy that I raised
+
+811
+00:40:24,120 --> 00:40:26,210
+early on in the course.
+
+812
+00:40:26,210 --> 00:40:30,000
+The thing you are really trying to
+find, if you decided to use
+
+813
+00:40:30,000 --> 00:40:34,630
+a probabilistic approach, which is your
+thing, for choosing the hypothesis.
+
+814
+00:40:34,630 --> 00:40:38,030
+What you're trying to find is, what
+is the most probable hypothesis
+
+815
+00:40:38,030 --> 00:40:39,810
+given the data?
+
+816
+00:40:39,810 --> 00:40:42,350
+That would be completely clean.
+
+817
+00:40:42,350 --> 00:40:47,830
+Now here, you are asking, what is the
+probability of the data given the
+
+818
+00:40:47,830 --> 00:40:50,420
+hypothesis, which is backwards.
+
+819
+00:40:50,420 --> 00:40:52,940
+It has plausibility. That's
+why it's called likelihood.
+
+820
+00:40:52,940 --> 00:40:54,750
+It's not exactly the probability
+we want.
+
+821
+00:40:54,750 --> 00:40:59,650
+And the people who don't like likelihood
+would add a prior and use
+
+822
+00:40:59,650 --> 00:41:02,700
+a Bayesian approach, which looks
+principled, but then there's a big
+
+823
+00:41:02,700 --> 00:41:03,370
+assumption in it.
+
+824
+00:41:03,370 --> 00:41:06,520
+So this is never a completely
+clean thing.
+
+825
+00:41:06,520 --> 00:41:09,560
+It could be clean in terms of
+derivation, but conceptually,
+
+826
+00:41:09,560 --> 00:41:12,050
+there's always a funny aspect to it.
+
+827
+00:41:12,050 --> 00:41:15,190
+But we will swallow that, because
+it looks very reasonable that
+
+828
+00:41:15,190 --> 00:41:19,050
+if I choose a hypothesis under which having
+that data is very plausible, it
+
+829
+00:41:19,050 --> 00:41:23,270
+looks like this hypothesis is likely,
+hence the likelihood name.
+
+830
+00:41:23,270 --> 00:41:29,330
+So this is the probability
+distribution we have, right?
+
+831
+00:41:29,330 --> 00:41:32,910
+This is the genuine probability
+distribution for generating the y.
+
+832
+00:41:32,910 --> 00:41:38,560
+So under the assumption that h is f,
+that probability would be-- if I used
+
+833
+00:41:38,560 --> 00:41:42,170
+h to generate it, that would be my
+measure of the probability of the data
+
+834
+00:41:42,170 --> 00:41:43,770
+under this assumption.
+
+835
+00:41:43,770 --> 00:41:49,350
+This will be the way for you
+to define the likelihood.
+
+836
+00:41:49,350 --> 00:41:54,010
+Assume it was generated by h, compute
+this probability, and that will be the
+
+837
+00:41:54,010 --> 00:41:58,620
+likelihood of the hypothesis given
+one data point x,y.
+
+838
+00:41:58,620 --> 00:42:02,960
+Now let's use this in order to derive
+a full-fledged error measure.
+
+839
+00:42:02,960 --> 00:42:04,560
+What are you going to do?
+
+840
+00:42:04,560 --> 00:42:08,740
+
+
+841
+00:42:08,740 --> 00:42:10,610
+You are going to take the
+formula for likelihood--
+
+842
+00:42:10,610 --> 00:42:11,590
+this.
+
+843
+00:42:11,590 --> 00:42:14,140
+That is for one point.
+
+844
+00:42:14,140 --> 00:42:18,560
+And then you have a formula
+for h of x.
+
+845
+00:42:18,560 --> 00:42:20,170
+You're using logistic regression.
+
+846
+00:42:20,170 --> 00:42:24,810
+So in this case, this thing happens
+to be that formula.
+
+847
+00:42:24,810 --> 00:42:27,220
+It does depend on x, as
+you expect it to.
+
+848
+00:42:27,220 --> 00:42:30,540
+And it does the dependency through
+the choice of parameters w, and
+
+849
+00:42:30,540 --> 00:42:33,280
+passing through a nonlinearity theta.
+
+850
+00:42:33,280 --> 00:42:36,540
+Now I don't like the fact that
+these are cases, because I
+
+851
+00:42:36,540 --> 00:42:37,560
+want something analytic.
+
+852
+00:42:37,560 --> 00:42:40,390
+This is a number that I'm going to take
+and multiply, and take logarithms
+
+853
+00:42:40,390 --> 00:42:43,440
+of, and I don't want to keep
+worrying about cases.
+
+854
+00:42:43,440 --> 00:42:48,600
+So now something comes handy here, which
+is the following observation.
+
+855
+00:42:48,600 --> 00:42:53,350
+The sigmoid-- the logistic function--
+happens to satisfy that theta of minus
+
+856
+00:42:53,350 --> 00:42:55,900
+s equals 1 minus theta of s.
+
+857
+00:42:55,900 --> 00:42:58,300
+Let's first look at it
+pictorially, and then
+
+858
+00:42:58,300 --> 00:42:59,770
+see why this is useful.
+
+859
+00:42:59,770 --> 00:43:00,630
+Can you verify that?
+
+860
+00:43:00,630 --> 00:43:01,250
+Yeah.
+
+861
+00:43:01,250 --> 00:43:03,080
+We said that this is odd around half.
+
+862
+00:43:03,080 --> 00:43:05,590
+If you go theta of minus s, this
+would be 1 minus this guy.
+
+863
+00:43:05,590 --> 00:43:07,700
+Very easy to verify, and you can
+verify it from the formula,
+
+864
+00:43:07,700 --> 00:43:08,960
+straightforward.
+
+865
+00:43:08,960 --> 00:43:13,690
+The good thing about it is that 1 minus
+theta looks like this fellow.
+
+866
+00:43:13,690 --> 00:43:17,650
+And I only add a minus sign in this
+case, but the minus sign is readily
+
+867
+00:43:17,650 --> 00:43:20,570
+available, because this case
+goes for y equals -1.
+
+868
+00:43:20,570 --> 00:43:23,910
+So it's already crying for a simplification,
+and the simplification
+
+869
+00:43:23,910 --> 00:43:30,520
+would be that P of y given x, in
+general, equals this.
+
+870
+00:43:30,520 --> 00:43:31,050
+What did I do?
+
+871
+00:43:31,050 --> 00:43:34,990
+For the case +1, I have it
+straightforward, because this is +1.
+
+872
+00:43:34,990 --> 00:43:35,860
+Nothing changes.
+
+873
+00:43:35,860 --> 00:43:39,660
+And in the case -1, I have minus this,
+which is 1 minus, and that gives
+
+874
+00:43:39,660 --> 00:43:40,540
+me this formula.
+
+875
+00:43:40,540 --> 00:43:42,970
+So it's summarized by this
+very simply case.
+
+876
+00:43:42,970 --> 00:43:47,050
+So I have one example x and y, and I
+want to get the likelihood of this w,
+
+877
+00:43:47,050 --> 00:43:48,520
+given a single example.
+
+878
+00:43:48,520 --> 00:43:51,430
+This would be the measure
+for that likelihood.
+
+879
+00:43:51,430 --> 00:43:53,560
+That's good.
+
+880
+00:43:53,560 --> 00:43:56,960
+Now we have the likelihood
+of the entire data set.
+
+881
+00:43:56,960 --> 00:44:00,210
+Someone gives you a bunch of
+patients, and whether they had a heart
+
+882
+00:44:00,210 --> 00:44:02,570
+attack within 12 months
+of the measurements--
+
+883
+00:44:02,570 --> 00:44:04,380
+and quite a number of them.
+
+884
+00:44:04,380 --> 00:44:06,260
+And now I would like to say,
+what is the likelihood of
+
+885
+00:44:06,260 --> 00:44:08,030
+this entire data set?
+
+886
+00:44:08,030 --> 00:44:10,050
+The assumption, as always,
+is the independence from
+
+887
+00:44:10,050 --> 00:44:11,560
+one example to another.
+
+888
+00:44:11,560 --> 00:44:15,330
+And therefore, if I want to get the
+likelihood of the data set, I'm going
+
+889
+00:44:15,330 --> 00:44:16,515
+to simply--
+
+890
+00:44:16,515 --> 00:44:20,005
+let me magnify this--
+
+891
+00:44:20,005 --> 00:44:23,690
+this would be: I'm multiplying the
+likelihood of individual ones from n
+
+892
+00:44:23,690 --> 00:44:25,980
+equals 1 to N, covering
+the data set.
+
+893
+00:44:25,980 --> 00:44:28,760
+
+
+894
+00:44:28,760 --> 00:44:32,410
+Now I need a formula for that. Well,
+it's ready because I already have
+
+895
+00:44:32,410 --> 00:44:34,230
+a formula for P of y given x.
+
+896
+00:44:34,230 --> 00:44:35,370
+All I need to do is plug it.
+
+897
+00:44:35,370 --> 00:44:38,480
+And when I plug it, I end
+up with this thing.
+
+898
+00:44:38,480 --> 00:44:39,050
+
+
+899
+00:44:39,050 --> 00:44:41,370
+That's a very nice formula because
+now you realize, I
+
+900
+00:44:41,370 --> 00:44:42,410
+have a bunch of examples.
+
+901
+00:44:42,410 --> 00:44:46,540
+They have different +1 or -1's that
+come in here, different x_n's. The
+
+902
+00:44:46,540 --> 00:44:51,400
+same w of my hypothesis contributes
+to all of these terms.
+
+903
+00:44:51,400 --> 00:44:53,590
+So now you can find that there
+will be a compromise.
+
+904
+00:44:53,590 --> 00:44:56,470
+If I choose w to favor one example,
+I'm messing up the others,
+
+905
+00:44:56,470 --> 00:44:57,800
+so I have to find a compromise.
+
+906
+00:44:57,800 --> 00:45:01,310
+And the compromise is likely to reflect
+that I am catching something
+
+907
+00:45:01,310 --> 00:45:05,120
+for the underlying probability
+distribution that generated these
+
+908
+00:45:05,120 --> 00:45:07,320
+examples in the first place.
+
+909
+00:45:07,320 --> 00:45:13,520
+Now let's go for what happens when
+we maximize this likelihood.
+
+910
+00:45:13,520 --> 00:45:17,250
+We'll write it down, and then we'll
+take it, and the maximizing of
+
+911
+00:45:17,250 --> 00:45:20,690
+likelihood will translate to the
+minimizing of an error measure as we
+
+912
+00:45:20,690 --> 00:45:23,230
+know it, or as we have
+been familiar with.
+
+913
+00:45:23,230 --> 00:45:26,700
+First thing, we're maximizing.
+
+914
+00:45:26,700 --> 00:45:28,220
+Remember, in the error measure,
+we are minimizing.
+
+915
+00:45:28,220 --> 00:45:31,880
+So something will happen through this
+slide that will make maximization go
+
+916
+00:45:31,880 --> 00:45:32,860
+into minimization.
+
+917
+00:45:32,860 --> 00:45:34,600
+That shouldn't be too difficult.
+
+918
+00:45:34,600 --> 00:45:37,570
+But let's look at what
+we are maximizing.
+
+919
+00:45:37,570 --> 00:45:43,940
+We are maximizing the likelihood of
+this hypothesis, under the data set
+
+920
+00:45:43,940 --> 00:45:44,480
+that we were given.
+
+921
+00:45:44,480 --> 00:45:47,280
+Given the data set, how likely
+is this hypothesis?
+
+922
+00:45:47,280 --> 00:45:50,880
+Which means, what is the probability of
+that data set under the assumption
+
+923
+00:45:50,880 --> 00:45:53,560
+that this hypothesis is
+indeed the target?
+
+924
+00:45:53,560 --> 00:45:56,300
+And maximizing with respect to what?
+
+925
+00:45:56,300 --> 00:45:58,970
+To something that will turn purple.
+
+926
+00:45:58,970 --> 00:46:00,120
+That is our parameter.
+
+927
+00:46:00,120 --> 00:46:03,950
+We are maximizing this function
+with respect to w.
+
+928
+00:46:03,950 --> 00:46:05,040
+Now I'm going to play with this.
+
+929
+00:46:05,040 --> 00:46:07,140
+We are maximizing this, right?
+
+930
+00:46:07,140 --> 00:46:08,720
+
+
+931
+00:46:08,720 --> 00:46:09,990
+Can I maximize this instead?
+
+932
+00:46:09,990 --> 00:46:12,570
+
+
+933
+00:46:12,570 --> 00:46:13,350
+Yeah.
+
+934
+00:46:13,350 --> 00:46:14,940
+First, it's legitimate to do.
+
+935
+00:46:14,940 --> 00:46:16,390
+This is the natural logarithm.
+
+936
+00:46:16,390 --> 00:46:18,870
+First, it's legitimate to take it,
+because the quantity here is
+
+937
+00:46:18,870 --> 00:46:20,820
+non-negative, right?
+
+938
+00:46:20,820 --> 00:46:23,460
+theta, by nature, is positive.
+
+939
+00:46:23,460 --> 00:46:27,800
+So I'm not taking logarithm of
+0, or logarithm of negatives--
+
+940
+00:46:27,800 --> 00:46:30,370
+things that are not allowed, so
+first, I am allowed to take it.
+
+941
+00:46:30,370 --> 00:46:34,150
+Second part is that the logarithm happens
+to be monotonically increasing of
+
+942
+00:46:34,150 --> 00:46:34,820
+its argument.
+
+943
+00:46:34,820 --> 00:46:37,910
+If you maximize it, you maximize
+its argument, or vice versa.
+
+944
+00:46:37,910 --> 00:46:39,740
+So I am allowed to do that.
+
+945
+00:46:39,740 --> 00:46:43,570
+I like that, so let
+me play it further.
+
+946
+00:46:43,570 --> 00:46:45,820
+Can I do this?
+
+947
+00:46:45,820 --> 00:46:46,680
+Yes.
+
+948
+00:46:46,680 --> 00:46:47,590
+That's just proportional.
+
+949
+00:46:47,590 --> 00:46:48,710
+The monotonicity
+
+950
+00:46:48,710 --> 00:46:49,830
+still goes.
+
+951
+00:46:49,830 --> 00:46:52,146
+But you can see where this
+is going, right?
+
+952
+00:46:52,146 --> 00:46:54,970
+I'm trying to get an error measure,
+error measure in the training set.
+
+953
+00:46:54,970 --> 00:46:55,910
+That used to be what?
+
+954
+00:46:55,910 --> 00:47:00,050
+1 over N summation of errors
+on individual guys.
+
+955
+00:47:00,050 --> 00:47:01,900
+So you can see that this is shaping.
+
+956
+00:47:01,900 --> 00:47:03,410
+One final thing.
+
+957
+00:47:03,410 --> 00:47:04,660
+Can I do this?
+
+958
+00:47:04,660 --> 00:47:07,810
+
+
+959
+00:47:07,810 --> 00:47:10,040
+No.
+
+960
+00:47:10,040 --> 00:47:11,140
+You are maximizing.
+
+961
+00:47:11,140 --> 00:47:12,420
+This is not--
+
+962
+00:47:12,420 --> 00:47:18,800
+but then all you need to do is, instead
+of maximizing, you minimize.
+
+963
+00:47:18,800 --> 00:47:19,640
+
+
+964
+00:47:19,640 --> 00:47:20,760
+We are cool.
+
+965
+00:47:20,760 --> 00:47:22,190
+So this is the problem.
+
+966
+00:47:22,190 --> 00:47:26,650
+Now let's see what it's--
+
+967
+00:47:26,650 --> 00:47:29,940
+Miraculously, the logarithm-- the product
+becomes a sum of the logarithms.
+
+968
+00:47:29,940 --> 00:47:33,220
+and I do this, the minus takes
+the guy, and the logarithm
+
+969
+00:47:33,220 --> 00:47:34,330
+puts it in the denominator.
+
+970
+00:47:34,330 --> 00:47:38,020
+And after all of this very sophisticated
+algebra, we end up with
+
+971
+00:47:38,020 --> 00:47:40,990
+something that looks very
+suspiciously familiar--
+
+972
+00:47:40,990 --> 00:47:44,940
+1 over N, summation from n
+equals 1 to N.
+
+973
+00:47:44,940 --> 00:47:50,540
+Something that involves the value of the
+example, and the parameters that
+
+974
+00:47:50,540 --> 00:47:53,160
+I'm trying to learn.
+
+975
+00:47:53,160 --> 00:47:54,530
+Anybody has seen something
+like that before?
+
+976
+00:47:54,530 --> 00:47:56,600
+We're going to give it the proper
+name in a moment, but
+
+977
+00:47:56,600 --> 00:47:57,990
+this is what we have.
+
+978
+00:47:57,990 --> 00:48:02,390
+Now I'd like to reduce this further,
+so I'm going to remember what theta
+
+979
+00:48:02,390 --> 00:48:06,710
+was, because theta is a mysterious
+quantity. I want to put it in terms
+
+980
+00:48:06,710 --> 00:48:08,640
+that I am completely familiar with.
+
+981
+00:48:08,640 --> 00:48:12,880
+So theta was this guy, which was e to
+the s divided by e to the s plus 1.
+
+982
+00:48:12,880 --> 00:48:16,770
+Now I can reduce this by dividing both
+the numerator and denominator by e to the
+
+983
+00:48:16,770 --> 00:48:20,940
+s, in which case this
+will become this.
+
+984
+00:48:20,940 --> 00:48:22,570
+No surprise.
+
+985
+00:48:22,570 --> 00:48:23,670
+Why is this good?
+
+986
+00:48:23,670 --> 00:48:28,120
+Well, this is good because I have theta
+here, so if I substitute it here, the
+
+987
+00:48:28,120 --> 00:48:30,190
+1 plus will go in the numerator.
+
+988
+00:48:30,190 --> 00:48:31,060
+Good things will happen.
+
+989
+00:48:31,060 --> 00:48:33,720
+So let me substitute and
+see what happens.
+
+990
+00:48:33,720 --> 00:48:36,690
+Now because what I'm going to get is
+very clean, and very close to the
+
+991
+00:48:36,690 --> 00:48:41,410
+formula, I'm going to officially declare
+it the in-sample error of
+
+992
+00:48:41,410 --> 00:48:43,590
+logistic regression.
+
+993
+00:48:43,590 --> 00:48:48,870
+I am minimizing it, so it's legitimate,
+and it looks like this.
+
+994
+00:48:48,870 --> 00:48:49,950
+This is simply substituting
+
+995
+00:48:49,950 --> 00:48:53,190
+in the above formula, I get this.
+
+996
+00:48:53,190 --> 00:48:54,750
+Now this is very nice.
+
+997
+00:48:54,750 --> 00:48:57,660
+I have this term, depending
+on this example.
+
+998
+00:48:57,660 --> 00:49:01,600
+I'm summing them up, so I'm completely
+within my rights, since I'm minimizing
+
+999
+00:49:01,600 --> 00:49:05,242
+this as my in-sample error,
+to call this fellow what?
+
+1000
+00:49:05,242 --> 00:49:07,090
+To call it the error measure.
+
+1001
+00:49:07,090 --> 00:49:09,410
+Let me magnify it.
+
+1002
+00:49:09,410 --> 00:49:10,380
+
+
+1003
+00:49:10,380 --> 00:49:15,610
+This is something that depends
+on the particular example.
+
+1004
+00:49:15,610 --> 00:49:21,030
+I'm going to call it the error measure
+between my hypothesis, which depends
+
+1005
+00:49:21,030 --> 00:49:27,510
+on w, applied to x_n, and the value you
+gave me as a label for that example,
+
+1006
+00:49:27,510 --> 00:49:28,260
+which is y_n.
+
+1007
+00:49:28,260 --> 00:49:31,020
+That is the way we define error
+measures on points.
+
+1008
+00:49:31,020 --> 00:49:35,030
+So this is my formula for the error
+measure, and under that, maximizing
+
+1009
+00:49:35,030 --> 00:49:39,330
+the likelihood would be like minimizing
+the in-sample error.
+
+1010
+00:49:39,330 --> 00:49:40,840
+
+
+1011
+00:49:40,840 --> 00:49:44,690
+Now let me leave this for a moment,
+just to mention a point.
+
+1012
+00:49:44,690 --> 00:49:47,400
+There is an interesting
+interpretation here.
+
+1013
+00:49:47,400 --> 00:49:54,810
+If you look at w transposed x_n, this
+is what we call the risk score.
+
+1014
+00:49:54,810 --> 00:49:58,630
+If this is very positive, the guy
+is likely to get a heart attack.
+
+1015
+00:49:58,630 --> 00:50:02,780
+If it's very negative, the guy is very
+unlikely to get a heart attack.
+
+1016
+00:50:02,780 --> 00:50:06,460
+Now this one is whether that particular
+person, that supplied the
+
+1017
+00:50:06,460 --> 00:50:09,570
+data, ended up with a heart
+attack or not.
+
+1018
+00:50:09,570 --> 00:50:12,500
+Let's see agreement/disagreement,
+and how they affect the
+
+1019
+00:50:12,500 --> 00:50:14,840
+error measure.
+
+1020
+00:50:14,840 --> 00:50:20,850
+If this signal is very positive,
+and this guy is +1-- so the guy
+
+1021
+00:50:20,850 --> 00:50:23,000
+actually, unfortunately,
+got a heart attack--
+
+1022
+00:50:23,000 --> 00:50:26,390
+then the result is that
+this is minus a lot.
+
+1023
+00:50:26,390 --> 00:50:29,680
+And therefore, this is a very small
+number, and the contribution to the error
+
+1024
+00:50:29,680 --> 00:50:30,710
+is small.
+
+1025
+00:50:30,710 --> 00:50:31,750
+I'm already in good shape.
+
+1026
+00:50:31,750 --> 00:50:33,900
+My predictions are right.
+
+1027
+00:50:33,900 --> 00:50:37,240
+However, if the sign is different-- if
+I say this is very positive, and this
+
+1028
+00:50:37,240 --> 00:50:40,740
+ends up being -1, or if this is very
+negative and this ends up
+
+1029
+00:50:40,740 --> 00:50:41,540
+being +1,
+
+1030
+00:50:41,540 --> 00:50:45,200
+the end result is this will be
+a positive exponential, and the error
+
+1031
+00:50:45,200 --> 00:50:46,080
+will be huge.
+
+1032
+00:50:46,080 --> 00:50:48,480
+And I need to do something, in
+order to knock it down.
+
+1033
+00:50:48,480 --> 00:50:49,880
+So indeed, this is very intuitive
+
+1034
+00:50:49,880 --> 00:50:52,500
+under that interpretation, that
+this would be an error measure
+
+1035
+00:50:52,500 --> 00:50:54,780
+that I would be trying to minimize.
+
+1036
+00:50:54,780 --> 00:50:58,690
+What is this error measure called?
+
+1037
+00:50:58,690 --> 00:51:00,540
+It is called the cross-entropy error.
+
+1038
+00:51:00,540 --> 00:51:03,850
+And I am putting it between quotation,
+because the way to get it strictly to
+
+1039
+00:51:03,850 --> 00:51:06,660
+be cross-entropy is to interpret
+a binary event as if it was
+
+1040
+00:51:06,660 --> 00:51:09,855
+a probability, but we will accept that.
+It's universally referred to as
+
+1041
+00:51:09,855 --> 00:51:10,480
+cross-entropy.
+
+1042
+00:51:10,480 --> 00:51:14,260
+And we will call this the cross-entropy,
+basically between
+
+1043
+00:51:14,260 --> 00:51:15,690
+supposedly h and f.
+
+1044
+00:51:15,690 --> 00:51:19,400
+Not really h and f, but h and
+a particular realization of f.
+
+1045
+00:51:19,400 --> 00:51:21,700
+So this is what we want to do.
+
+1046
+00:51:21,700 --> 00:51:27,800
+Now we have defined the model,
+and we have defined the error measure.
+
+1047
+00:51:27,800 --> 00:51:30,650
+The remaining order is to do
+the learning algorithm.
+
+1048
+00:51:30,650 --> 00:51:31,715
+I know the error measure.
+
+1049
+00:51:31,715 --> 00:51:33,170
+I just want to minimize it.
+
+1050
+00:51:33,170 --> 00:51:34,290
+How can I do that?
+
+1051
+00:51:34,290 --> 00:51:39,900
+It's an easy question.
+
+1052
+00:51:39,900 --> 00:51:42,500
+If you look at logistic regression,
+we have just developed the
+
+1053
+00:51:42,500 --> 00:51:44,220
+error measure for it.
+
+1054
+00:51:44,220 --> 00:51:47,150
+So now I have this function,
+and I want to minimize it with
+
+1055
+00:51:47,150 --> 00:51:48,850
+respect to w.
+
+1056
+00:51:48,850 --> 00:51:53,220
+Let's look at a previously tackled case,
+in order to see how we went about that.
+
+1057
+00:51:53,220 --> 00:51:55,990
+Remember linear regression?
+
+1058
+00:51:55,990 --> 00:51:58,620
+We also had an error function that
+was derived directly. We just said
+
+1059
+00:51:58,620 --> 00:51:59,510
+mean squared, and wrote it down.
+
+1060
+00:51:59,510 --> 00:52:02,520
+We didn't have to go through
+this long derivation.
+
+1061
+00:52:02,520 --> 00:52:05,570
+But then the in-sample error
+ended up being this.
+
+1062
+00:52:05,570 --> 00:52:09,420
+Very similar to this, except here we
+penalize the difference, squared.
+
+1063
+00:52:09,420 --> 00:52:12,870
+Here, we penalize it according
+to this cross-entropy thing.
+
+1064
+00:52:12,870 --> 00:52:15,570
+Now in the case of linear regression, if
+we want to minimize this, we found
+
+1065
+00:52:15,570 --> 00:52:19,240
+a very simple way to do it, because we
+found a closed-form solution for the
+
+1066
+00:52:19,240 --> 00:52:23,630
+minimum, that was the pseudo-inverse,
+the one-step learning.
+
+1067
+00:52:23,630 --> 00:52:26,300
+Unfortunately here, we're
+out of luck.
+
+1068
+00:52:26,300 --> 00:52:28,940
+If you use the derivative here and you
+try to solve it, it is exponential
+
+1069
+00:52:28,940 --> 00:52:31,820
+and things will come out, and you
+sum it up, and you cannot find
+
+1070
+00:52:31,820 --> 00:52:33,580
+a closed-form solution.
+
+1071
+00:52:33,580 --> 00:52:36,850
+Well, in the absence of a closed-form
+solution, we usually go for
+
+1072
+00:52:36,850 --> 00:52:38,970
+an iterative solution.
+
+1073
+00:52:38,970 --> 00:52:40,870
+We're not going to go for
+the solution directly.
+
+1074
+00:52:40,870 --> 00:52:42,990
+We're going to improve, improve,
+improve, improve.
+
+1075
+00:52:42,990 --> 00:52:44,810
+Finally, we'll get the good solution.
+
+1076
+00:52:44,810 --> 00:52:46,350
+This is not a foreign concept to us.
+
+1077
+00:52:46,350 --> 00:52:49,560
+This is what we did with perceptions,
+although we didn't explicitly do it at
+
+1078
+00:52:49,560 --> 00:52:52,570
+the time in terms of a declared
+error function.
+
+1079
+00:52:52,570 --> 00:52:55,750
+We went and tried to improve one example
+at a time, and kept repeating
+
+1080
+00:52:55,750 --> 00:52:57,060
+until we got what we want.
+
+1081
+00:52:57,060 --> 00:52:58,540
+So that's what we're
+going to do here.
+
+1082
+00:52:58,540 --> 00:53:02,070
+But here, we are going to do it based on
+calculus, and the method that will
+
+1083
+00:53:02,070 --> 00:53:07,200
+be used for minimization can be applied
+to any error measure, even
+
+1084
+00:53:07,200 --> 00:53:10,210
+nonlinear and so on, as long as
+there's some smoothness constraint.
+
+1085
+00:53:10,210 --> 00:53:12,910
+And it will be the one that will be
+applied to neural networks next time.
+
+1086
+00:53:12,910 --> 00:53:13,910
+Very famous one.
+
+1087
+00:53:13,910 --> 00:53:14,950
+It's a very simplistic one.
+
+1088
+00:53:14,950 --> 00:53:17,350
+And there are more sophisticated
+versions of it.
+
+1089
+00:53:17,350 --> 00:53:19,210
+It's called gradient descent.
+
+1090
+00:53:19,210 --> 00:53:21,270
+Let's see what is there.
+
+1091
+00:53:21,270 --> 00:53:25,340
+First, let me show you what the
+error measure for logistic
+
+1092
+00:53:25,340 --> 00:53:26,120
+regression looks like.
+
+1093
+00:53:26,120 --> 00:53:30,480
+As you vary the weight, the value of
+the error differs, but it has this
+
+1094
+00:53:30,480 --> 00:53:34,140
+great property that it
+has one minimum.
+
+1095
+00:53:34,140 --> 00:53:36,240
+And otherwise, it goes like that.
+
+1096
+00:53:36,240 --> 00:53:40,450
+A function that goes like that--
+it's called convex.
+
+1097
+00:53:40,450 --> 00:53:43,890
+And it goes with convex optimization,
+which is very easy, because obviously
+
+1098
+00:53:43,890 --> 00:53:47,300
+wherever you start, you will go to
+the same valley.
+
+1099
+00:53:47,300 --> 00:53:50,250
+You can imagine a more
+sophisticated nonlinear surface,
+
+1100
+00:53:50,250 --> 00:53:51,600
+where you do this and that.
+
+1101
+00:53:51,600 --> 00:53:54,660
+And then depending on where you start,
+if you're sliding down, you will end
+
+1102
+00:53:54,660 --> 00:53:55,910
+up in one minimum or another.
+
+1103
+00:53:55,910 --> 00:53:59,130
+There are other issues that arise, and
+we will only tackle them when we need
+
+1104
+00:53:59,130 --> 00:54:01,630
+them, when we talk about the error
+measure for neural networks.
+
+1105
+00:54:01,630 --> 00:54:04,230
+Right now, we have a very friendly
+guy, so we're going to describe
+
+1106
+00:54:04,230 --> 00:54:07,300
+gradient descent in terms
+of this friendly guy.
+
+1107
+00:54:07,300 --> 00:54:09,190
+So what do you do with
+gradient descent?
+
+1108
+00:54:09,190 --> 00:54:13,900
+First, we admit that it's a general
+method for nonlinear optimization.
+
+1109
+00:54:13,900 --> 00:54:16,610
+And what you do, you
+start at a point--
+
+1110
+00:54:16,610 --> 00:54:19,420
+initialization, pretty much
+like you initialize the perception.
+
+1111
+00:54:19,420 --> 00:54:22,430
+And then you take a step, and you
+try to make an improvement
+
+1112
+00:54:22,430 --> 00:54:24,280
+using that step.
+
+1113
+00:54:24,280 --> 00:54:30,790
+The step is to take the step
+along the steepest slope.
+
+1114
+00:54:30,790 --> 00:54:33,880
+The steepest slope is not an easy
+notion to see in two dimensions,
+
+1115
+00:54:33,880 --> 00:54:35,640
+because I either go right or left.
+
+1116
+00:54:35,640 --> 00:54:37,060
+There aren't too many directions.
+
+1117
+00:54:37,060 --> 00:54:39,110
+So let's do the following.
+
+1118
+00:54:39,110 --> 00:54:40,960
+Let's say that I'm in
+three dimensions.
+
+1119
+00:54:40,960 --> 00:54:44,920
+And in this room, I have a very
+nonlinear surface, going up and down,
+
+1120
+00:54:44,920 --> 00:54:45,680
+up and down.
+
+1121
+00:54:45,680 --> 00:54:48,600
+I'm going to assume one thing, that
+it's twice differentiable.
+
+1122
+00:54:48,600 --> 00:54:51,390
+That's what you need to invoke
+gradient descent.
+
+1123
+00:54:51,390 --> 00:54:53,960
+You can think of hills
+and this and that.
+
+1124
+00:54:53,960 --> 00:54:57,220
+Now I'm trying to get to the
+minimum of that surface.
+
+1125
+00:54:57,220 --> 00:55:01,210
+First thing to remember in optimization,
+you don't get to see the
+
+1126
+00:55:01,210 --> 00:55:02,690
+surface.
+
+1127
+00:55:02,690 --> 00:55:05,430
+You don't have a bird's eye
+view and you look at it--
+
+1128
+00:55:05,430 --> 00:55:06,730
+That region looks good.
+
+1129
+00:55:06,730 --> 00:55:07,700
+Let's go there.
+
+1130
+00:55:07,700 --> 00:55:08,990
+That doesn't happen.
+
+1131
+00:55:08,990 --> 00:55:13,200
+You only have local information
+at the point you evaluated.
+
+1132
+00:55:13,200 --> 00:55:17,170
+So the best thing to imagine is that
+you are sitting on the surface, and
+
+1133
+00:55:17,170 --> 00:55:19,230
+then you close your eyes.
+
+1134
+00:55:19,230 --> 00:55:24,110
+And all you do is feel around you, and
+then decide this is a more promising
+
+1135
+00:55:24,110 --> 00:55:26,100
+direction than this.
+
+1136
+00:55:26,100 --> 00:55:27,930
+That's all you do at one step.
+
+1137
+00:55:27,930 --> 00:55:31,380
+And then when you go to the new point,
+repeat, repeat, repeat until
+
+1138
+00:55:31,380 --> 00:55:32,700
+you get to the minimum.
+
+1139
+00:55:32,700 --> 00:55:37,720
+These are all the iterative method
+that you're going to use.
+
+1140
+00:55:37,720 --> 00:55:41,760
+So we go back, and we start at w(0).
+
+1141
+00:55:41,760 --> 00:55:45,310
+And then we look at
+a fixed step size.
+
+1142
+00:55:45,310 --> 00:55:46,340
+I am at a point.
+
+1143
+00:55:46,340 --> 00:55:50,650
+I am going to move in w space, by
+a certain amount, and I'm going to take
+
+1144
+00:55:50,650 --> 00:55:52,660
+it to be fixed and small.
+
+1145
+00:55:52,660 --> 00:55:57,880
+The reason I'm doing that is because I
+am going to apply local approximations
+
+1146
+00:55:57,880 --> 00:55:59,900
+based on calculus, Taylor series.
+
+1147
+00:55:59,900 --> 00:55:59,950
+
+
+1148
+00:55:59,950 --> 00:56:04,830
+And I know that this will apply well
+if the move is not that big.
+
+1149
+00:56:04,830 --> 00:56:08,650
+If I go very far, the higher-order terms
+kick in, and I'm not sure that
+
+1150
+00:56:08,650 --> 00:56:12,280
+the conclusion that I got locally will
+apply if I just get a 1st order, or
+
+1151
+00:56:12,280 --> 00:56:14,830
+a 2nd order as in the other methods.
+
+1152
+00:56:14,830 --> 00:56:19,000
+So for the fixed step size, I'm going to
+say, I'm moving in the w space.
+
+1153
+00:56:19,000 --> 00:56:23,700
+I'm moving by a unit vector v.
+v hat is a unit vector.
+
+1154
+00:56:23,700 --> 00:56:25,140
+So this tells me just the direction.
+
+1155
+00:56:25,140 --> 00:56:26,490
+Should I go this way, that way?
+
+1156
+00:56:26,490 --> 00:56:27,610
+If I'm doing the sensing--
+
+1157
+00:56:27,610 --> 00:56:29,570
+oh, this is steep, so I'm
+going to go this way.
+
+1158
+00:56:29,570 --> 00:56:34,000
+The unit vector in this direction
+would be my v hat.
+
+1159
+00:56:34,000 --> 00:56:40,010
+And I'm going to modulate the amount
+of move by a step size, which I'm
+
+1160
+00:56:40,010 --> 00:56:42,180
+going to call eta.
+
+1161
+00:56:42,180 --> 00:56:43,380
+So this is the amount of move.
+
+1162
+00:56:43,380 --> 00:56:47,770
+The only unknown I have is what is v.
+I already decided on the size, but
+
+1163
+00:56:47,770 --> 00:56:50,310
+I want to know which direction
+to go.
+
+1164
+00:56:50,310 --> 00:56:56,170
+And the formula would be: the next
+weight, which is w(1), will be the
+
+1165
+00:56:56,170 --> 00:56:58,390
+current weight plus the move.
+
+1166
+00:56:58,390 --> 00:57:00,740
+And I already decided on the move.
+
+1167
+00:57:00,740 --> 00:57:06,500
+So now under this condition, you're
+trying to derive what is v hat?
+
+1168
+00:57:06,500 --> 00:57:07,690
+That's the direction.
+
+1169
+00:57:07,690 --> 00:57:10,060
+If you solve for it with one method
+or another, that gives
+
+1170
+00:57:10,060 --> 00:57:11,150
+you gradient descent.
+
+1171
+00:57:11,150 --> 00:57:13,280
+In another method, it will give you
+conjugate gradient, which has
+
+1172
+00:57:13,280 --> 00:57:14,960
+2nd-order stuff in it, and so on.
+
+1173
+00:57:14,960 --> 00:57:16,790
+So that is always the question.
+
+1174
+00:57:16,790 --> 00:57:20,350
+Let's actually try to solve for it.
+
+1175
+00:57:20,350 --> 00:57:26,260
+We said that we are going to go
+into the direction of the steepest
+
+1176
+00:57:26,260 --> 00:57:30,190
+descent, so we are really talking
+about change in the
+
+1177
+00:57:30,190 --> 00:57:31,570
+value of the error.
+
+1178
+00:57:31,570 --> 00:57:35,780
+The change of the value of the error,
+if I move from w(0) to w(1) would
+
+1179
+00:57:35,780 --> 00:57:40,130
+be E_in at some point minus
+E_in at another point.
+
+1180
+00:57:40,130 --> 00:57:41,090
+Which two points?
+
+1181
+00:57:41,090 --> 00:57:44,430
+It's w(0) and w(1).
+
+1182
+00:57:44,430 --> 00:57:44,850
+That is OK.
+
+1183
+00:57:44,850 --> 00:57:47,550
+If I decide to move to this guy,
+this is the amount.
+
+1184
+00:57:47,550 --> 00:57:50,420
+What I want to do, I want
+this guy to be negative--
+
+1185
+00:57:50,420 --> 00:57:53,250
+as negative as possible because
+I want to go down,
+
+1186
+00:57:53,250 --> 00:57:54,550
+by the proper choice of w(1).
+
+1187
+00:57:54,550 --> 00:57:55,850
+But w(1) is not free.
+
+1188
+00:57:55,850 --> 00:57:59,910
+It's dictated by the method, and it has
+the very specific form that it is
+
+1189
+00:57:59,910 --> 00:58:02,140
+the original guy plus the move I made.
+
+1190
+00:58:02,140 --> 00:58:03,600
+So this is what I would like to make.
+
+1191
+00:58:03,600 --> 00:58:05,990
+I would like to make this
+as small as possible.
+
+1192
+00:58:05,990 --> 00:58:12,020
+Now if I can write this down using
+the Taylor series expansion with one
+
+1193
+00:58:12,020 --> 00:58:17,220
+term, this is E of the original point
+plus a move, minus the original point.
+
+1194
+00:58:17,220 --> 00:58:20,030
+That will also be the derivative
+times the difference, right?
+
+1195
+00:58:20,030 --> 00:58:23,470
+So the derivative times the difference
+here will be the gradient transposed
+
+1196
+00:58:23,470 --> 00:58:25,525
+times the vector times eta.
+
+1197
+00:58:25,525 --> 00:58:28,250
+And I just took eta outside
+here, to make it here.
+
+1198
+00:58:28,250 --> 00:58:30,930
+So this would be the move
+according to the 1st-order
+
+1199
+00:58:30,930 --> 00:58:32,340
+approximation of the surface.
+
+1200
+00:58:32,340 --> 00:58:34,990
+If the surface was linear, this
+would be exact, but the
+
+1201
+00:58:34,990 --> 00:58:36,440
+surface is not linear.
+
+1202
+00:58:36,440 --> 00:58:39,900
+And therefore, I have other terms
+which are of the order
+
+1203
+00:58:39,900 --> 00:58:41,090
+eta squared and up.
+
+1204
+00:58:41,090 --> 00:58:44,420
+And the assumption for gradient descent
+is that I'm going to neglect
+
+1205
+00:58:44,420 --> 00:58:46,830
+this fellow, as if it
+didn't exist.
+
+1206
+00:58:46,830 --> 00:58:50,505
+When you go to conjugate gradient, you
+will have the second guy, and you
+
+1207
+00:58:50,505 --> 00:58:53,110
+will neglect the third.
+
+1208
+00:58:53,110 --> 00:58:55,350
+And you can see the idea.
+
+1209
+00:58:55,350 --> 00:59:00,290
+So now, how do I chose the direction
+in order to make this
+
+1210
+00:59:00,290 --> 00:59:02,120
+as negative as possible?
+
+1211
+00:59:02,120 --> 00:59:08,390
+By simple observation, I realize
+that this quantity, for any
+
+1212
+00:59:08,390 --> 00:59:14,380
+choice of v hat, will be greater than
+or equal to this fellow.
+
+1213
+00:59:14,380 --> 00:59:15,670
+This guy is gone, right?
+
+1214
+00:59:15,670 --> 00:59:17,060
+I'm only dealing with this guy.
+
+1215
+00:59:17,060 --> 00:59:20,090
+So I'm taking the inner product
+between a vector and
+
+1216
+00:59:20,090 --> 00:59:23,130
+a unit vector.
+
+1217
+00:59:23,130 --> 00:59:26,100
+The unit vector could be aligned with
+that vector, or could be opposed
+
+1218
+00:59:26,100 --> 00:59:28,570
+to that vector, or could be orthogonal
+to that vector, but it doesn't
+
+1219
+00:59:28,570 --> 00:59:29,560
+contribute magnitude.
+
+1220
+00:59:29,560 --> 00:59:31,710
+Its magnitude is 1.
+
+1221
+00:59:31,710 --> 00:59:36,850
+The most I can get is the norm of
+this, and the least I can get is
+
+1222
+00:59:36,850 --> 00:59:39,740
+negative the norm of this,
+if they are opposed.
+
+1223
+00:59:39,740 --> 00:59:43,800
+So this would be the least I can get,
+and I inherit eta from here.
+
+1224
+00:59:43,800 --> 00:59:46,980
+This will be true for
+any choice of v hat.
+
+1225
+00:59:46,980 --> 00:59:51,800
+Knowing that, if I choose the v hat
+that achieves this, this will be my v hat,
+
+1226
+00:59:51,800 --> 00:59:56,230
+because it gives me the most negative
+value that I can get.
+
+1227
+00:59:56,230 --> 01:00:00,230
+Not that difficult to do, because
+this is a unit vector, so I'm
+
+1228
+01:00:00,230 --> 01:00:00,760
+trying to get it.
+
+1229
+01:00:00,760 --> 01:00:04,180
+Clearly what I want is a unit vector
+opposed to the original guy.
+
+1230
+01:00:04,180 --> 01:00:06,860
+So I end up with this fellow,
+the formula for it.
+
+1231
+01:00:06,860 --> 01:00:11,060
+The formula for it, I am getting
+minus the gradient.
+
+1232
+01:00:11,060 --> 01:00:14,060
+But this is a unit vector, and therefore
+I have to normalize by that
+
+1233
+01:00:14,060 --> 01:00:15,530
+in order to make it a unit vector.
+
+1234
+01:00:15,530 --> 01:00:17,350
+So that's the solution.
+
+1235
+01:00:17,350 --> 01:00:20,770
+And you can see now why it's called
+gradient descent, because you descend
+
+1236
+01:00:20,770 --> 01:00:25,690
+along the gradient of your error.
+
+1237
+01:00:25,690 --> 01:00:32,700
+Now we have said it's a fixed
+size, and that was a way for us to
+
+1238
+01:00:32,700 --> 01:00:35,520
+make sure that the linear
+approximation holds.
+
+1239
+01:00:35,520 --> 01:00:38,050
+We're going to modulate
+eta.
+
+1240
+01:00:38,050 --> 01:00:39,690
+But you can see that there's
+a compromise.
+
+1241
+01:00:39,690 --> 01:00:46,280
+I can get close-to-perfect
+approximation for linear, by taking the
+
+1242
+01:00:46,280 --> 01:00:48,600
+size to be very small, but then
+it will take me forever
+
+1243
+01:00:48,600 --> 01:00:49,310
+to get to the minimum.
+
+1244
+01:00:49,310 --> 01:00:51,120
+I will be moving [MAKING NOISES]
+
+1245
+01:00:51,120 --> 01:00:55,180
+et cetera, or I could be taking bigger
+step, which looks very promising.
+
+1246
+01:00:55,180 --> 01:00:57,680
+But then, the linear approximation
+may not apply.
+
+1247
+01:00:57,680 --> 01:00:58,720
+So there is a compromise.
+
+1248
+01:00:58,720 --> 01:01:04,580
+Let's look at how eta
+affects the algorithm.
+
+1249
+01:01:04,580 --> 01:01:06,020
+This is the case I talked about.
+
+1250
+01:01:06,020 --> 01:01:10,300
+If eta is very small, you will get
+there, but it will take you forever.
+
+1251
+01:01:10,300 --> 01:01:13,000
+And in optimization, it's
+a very simple game.
+
+1252
+01:01:13,000 --> 01:01:14,830
+I charge you for two things:
+
+1253
+01:01:14,830 --> 01:01:18,990
+the value you arrived at, and how
+long it took you to get there.
+
+1254
+01:01:18,990 --> 01:01:20,100
+I don't care how you do it.
+
+1255
+01:01:20,100 --> 01:01:21,220
+Don't bother me.
+
+1256
+01:01:21,220 --> 01:01:24,660
+If you gave me a beautiful thing-- I'm
+computing the Hessian and taking the
+
+1257
+01:01:24,660 --> 01:01:25,480
+inverse of it--
+
+1258
+01:01:25,480 --> 01:01:26,330
+that's your business.
+
+1259
+01:01:26,330 --> 01:01:29,450
+All I care about is how long it took you
+to do that, and what is the value
+
+1260
+01:01:29,450 --> 01:01:30,980
+you're going to deliver.
+
+1261
+01:01:30,980 --> 01:01:35,230
+So just by this, this is not good,
+because it took me forever.
+
+1262
+01:01:35,230 --> 01:01:38,790
+Now I go to the other extreme and make
+eta large, and all of sudden, I am
+
+1263
+01:01:38,790 --> 01:01:39,820
+really doing this.
+
+1264
+01:01:39,820 --> 01:01:40,610
+You can even do worse.
+
+1265
+01:01:40,610 --> 01:01:42,110
+Let's say that eta is really large.
+
+1266
+01:01:42,110 --> 01:01:45,260
+You start here, and our
+next step is here.
+
+1267
+01:01:45,260 --> 01:01:47,330
+You end up with the error
+surface being up there.
+
+1268
+01:01:47,330 --> 01:01:50,650
+So you went up instead of down,
+obviously because the 2nd order and
+
+1269
+01:01:50,650 --> 01:01:53,140
+3rd order dominate that.
+
+1270
+01:01:53,140 --> 01:01:55,450
+So that is not good.
+
+1271
+01:01:55,450 --> 01:02:05,000
+
+
+1272
+01:02:05,000 --> 01:02:06,990
+Pointer? OK.
+
+1273
+01:02:06,990 --> 01:02:10,540
+If you look at it, you realize that,
+the best compromise is to
+
+1274
+01:02:10,540 --> 01:02:14,760
+have initially a large eta, because the
+thing is very steep, and I want to
+
+1275
+01:02:14,760 --> 01:02:18,440
+take advantage of it, and just become
+more careful when I'm closer to the
+
+1276
+01:02:18,440 --> 01:02:21,350
+minimum so that I don't bounce.
+
+1277
+01:02:21,350 --> 01:02:22,480
+So a rule of thumb--
+
+1278
+01:02:22,480 --> 01:02:24,550
+it's not like a mathematically
+proved thing, it's
+
+1279
+01:02:24,550 --> 01:02:26,400
+an observation in surfaces.
+
+1280
+01:02:26,400 --> 01:02:30,090
+It looks like a very good idea,
+instead of having a fixed step, to have
+
+1281
+01:02:30,090 --> 01:02:32,040
+eta increase with the slope.
+
+1282
+01:02:32,040 --> 01:02:35,500
+If I'm in a very high slope, I just go
+a lot because I'm doing that.
+
+1283
+01:02:35,500 --> 01:02:38,440
+And then, if I'm now close to the
+minimum, I'd better be careful in order
+
+1284
+01:02:38,440 --> 01:02:40,760
+not to miss the minimum and overshoot.
+
+1285
+01:02:40,760 --> 01:02:45,740
+And because of this, here is an easy
+implementation of this idea.
+
+1286
+01:02:45,740 --> 01:02:51,812
+Instead of taking the direction,
+which will not change--
+
+1287
+01:02:51,812 --> 01:02:55,350
+here's the direction, and we're
+going to eta, and this is
+
+1288
+01:02:55,350 --> 01:02:56,320
+the formula for it.
+
+1289
+01:02:56,320 --> 01:02:58,080
+This is what we have for fixed size.
+
+1290
+01:02:58,080 --> 01:03:00,990
+Now, I'm going to try to make eta
+proportional to the size of the
+
+1291
+01:03:00,990 --> 01:03:04,000
+gradient, so it's bigger when
+the slope is bigger.
+
+1292
+01:03:04,000 --> 01:03:06,540
+That's very convenient, because
+I have here the size of the
+
+1293
+01:03:06,540 --> 01:03:08,180
+gradient sitting there.
+
+1294
+01:03:08,180 --> 01:03:10,700
+So if I make eta proportional to the
+size of our gradient, something
+
+1295
+01:03:10,700 --> 01:03:16,100
+will nicely cancel out, and then
+I will get another eta--
+
+1296
+01:03:16,100 --> 01:03:18,430
+purple eta, which is the new constant.
+
+1297
+01:03:18,430 --> 01:03:22,580
+And this guy completely canceled out,
+and I have a very simple formula.
+
+1298
+01:03:22,580 --> 01:03:27,630
+Now it's not a fixed step anymore, but
+a fixed learning rate, eta now being
+
+1299
+01:03:27,630 --> 01:03:28,640
+the learning rate.
+
+1300
+01:03:28,640 --> 01:03:31,760
+You just compute the gradient, and use
+that learning rate, and that will
+
+1301
+01:03:31,760 --> 01:03:34,910
+take care of the previous
+observation.
+
+1302
+01:03:34,910 --> 01:03:36,320
+So that's what we have.
+
+1303
+01:03:36,320 --> 01:03:40,550
+That's all I'm going to say about
+gradient descent for this case.
+
+1304
+01:03:40,550 --> 01:03:43,960
+And then we're going to go to the more
+complicated issues of it, when we talk
+
+1305
+01:03:43,960 --> 01:03:46,290
+about neural networks next time.
+
+1306
+01:03:46,290 --> 01:03:47,960
+So this is how to minimize.
+
+1307
+01:03:47,960 --> 01:03:50,200
+And now we have the logistic regression
+
+1308
+01:03:50,200 --> 01:03:54,840
+algorithm, written in language.
+
+1309
+01:03:54,840 --> 01:03:58,780
+You iterate, you start
+by initializing at w(0).
+
+1310
+01:03:58,780 --> 01:04:00,280
+You iterate for every step.
+
+1311
+01:04:00,280 --> 01:04:00,880
+What do you do?
+
+1312
+01:04:00,880 --> 01:04:01,900
+You compute the gradient.
+
+1313
+01:04:01,900 --> 01:04:02,640
+How do I do that?
+
+1314
+01:04:02,640 --> 01:04:04,965
+Oh, I have a formula for
+the in-sample error.
+
+1315
+01:04:04,965 --> 01:04:06,880
+All I need to do is to
+differentiate it.
+
+1316
+01:04:06,880 --> 01:04:08,380
+Differentiating it will not be difficult.
+
+1317
+01:04:08,380 --> 01:04:10,060
+You're going to get this--
+
+1318
+01:04:10,060 --> 01:04:11,030
+you can verify it.
+
+1319
+01:04:11,030 --> 01:04:15,860
+And now, you are going to take the next
+weight to be the current weight
+
+1320
+01:04:15,860 --> 01:04:18,530
+minus your learning rate
+times the gradient.
+
+1321
+01:04:18,530 --> 01:04:20,380
+That's the formula we had.
+
+1322
+01:04:20,380 --> 01:04:23,440
+And then, you go to the next iteration,
+next iteration, until it's
+
+1323
+01:04:23,440 --> 01:04:24,440
+time to stop.
+
+1324
+01:04:24,440 --> 01:04:26,820
+And then we return
+the final weight.
+
+1325
+01:04:26,820 --> 01:04:28,260
+That is the algorithm.
+
+1326
+01:04:28,260 --> 01:04:34,290
+Now let me spend two minutes
+summarizing all the linear models in
+
+1327
+01:04:34,290 --> 01:04:40,750
+one slide, and then we will be done
+completely with that model.
+
+1328
+01:04:40,750 --> 01:04:42,850
+We had three models, right?
+
+1329
+01:04:42,850 --> 01:04:48,230
+We had the perceptron--
+linear classification.
+
+1330
+01:04:48,230 --> 01:04:50,540
+We had linear regression.
+
+1331
+01:04:50,540 --> 01:04:53,680
+And we today added logistic
+regression.
+
+1332
+01:04:53,680 --> 01:04:58,260
+Let's take one application domain, which
+is credit, and see how each of
+
+1333
+01:04:58,260 --> 01:05:00,500
+them contributes.
+
+1334
+01:05:00,500 --> 01:05:01,980
+We have credit analysis.
+
+1335
+01:05:01,980 --> 01:05:05,640
+If you apply each of these to credit
+analysis, what type of thing do
+
+1336
+01:05:05,640 --> 01:05:07,860
+you implement?
+
+1337
+01:05:07,860 --> 01:05:11,465
+For the linear classification, the
+perceptron, you accept or deny. That
+
+1338
+01:05:11,465 --> 01:05:15,620
+was our very first example, right?
+
+1339
+01:05:15,620 --> 01:05:19,580
+If you use linear regression, you are
+trying to decide the credit line.
+
+1340
+01:05:19,580 --> 01:05:22,870
+We have seen that example as well.
+
+1341
+01:05:22,870 --> 01:05:26,140
+If you're applying logistic regression,
+you are computing the
+
+1342
+01:05:26,140 --> 01:05:29,490
+probability of default-- just the
+reliability, and then let the bank
+
+1343
+01:05:29,490 --> 01:05:31,480
+decide what to do with it.
+
+1344
+01:05:31,480 --> 01:05:34,070
+So this is from an application domain.
+
+1345
+01:05:34,070 --> 01:05:36,730
+Let's look from tools point of view.
+
+1346
+01:05:36,730 --> 01:05:41,550
+They had different error measures.
+
+1347
+01:05:41,550 --> 01:05:47,100
+The perceptron had the binary
+classification error, right?
+
+1348
+01:05:47,100 --> 01:05:50,380
+Linear regression has squared error.
+
+1349
+01:05:50,380 --> 01:05:54,930
+And finally, logistic regression
+had cross-entropy error.
+
+1350
+01:05:54,930 --> 01:06:00,080
+Different errors that had different
+plausibility motivations to them.
+
+1351
+01:06:00,080 --> 01:06:02,720
+And we have tackled all three of them.
+
+1352
+01:06:02,720 --> 01:06:05,120
+And then there was the learning
+algorithm that goes with them, that is
+
+1353
+01:06:05,120 --> 01:06:07,780
+very dependent on the error
+measure you choose.
+
+1354
+01:06:07,780 --> 01:06:10,850
+For the case of the classification
+error, which was a combinatorial
+
+1355
+01:06:10,850 --> 01:06:14,240
+quantity, and we went for something like
+the perceptron learning algorithm,
+
+1356
+01:06:14,240 --> 01:06:16,540
+or the pocket version if the
+thing is non-separable.
+
+1357
+01:06:16,540 --> 01:06:20,810
+And there are other, more sophisticated
+methods to do that.
+
+1358
+01:06:20,810 --> 01:06:22,330
+How about squared error?
+
+1359
+01:06:22,330 --> 01:06:23,470
+That was the easiest.
+
+1360
+01:06:23,470 --> 01:06:26,880
+That was the one-step learning, where we
+had the pseudo-inverse and you have
+
+1361
+01:06:26,880 --> 01:06:28,200
+your solution.
+
+1362
+01:06:28,200 --> 01:06:32,770
+And finally with the cross-entropy, we
+had the gradient descent, which is
+
+1363
+01:06:32,770 --> 01:06:34,190
+a very general method.
+
+1364
+01:06:34,190 --> 01:06:37,670
+All we needed to do is that it's
+a twice differentiable surface, and we
+
+1365
+01:06:37,670 --> 01:06:38,770
+are ready to go with that.
+
+1366
+01:06:38,770 --> 01:06:41,810
+And this was particularly friendly
+because it happens to be convex, so it
+
+1367
+01:06:41,810 --> 01:06:44,600
+avoids a lot of the traps that we will
+see next time when we talk about
+
+1368
+01:06:44,600 --> 01:06:45,760
+neural networks.
+
+1369
+01:06:45,760 --> 01:06:47,020
+I'll stop here.
+
+1370
+01:06:47,020 --> 01:06:49,940
+And then we will continue
+after the short break.
+
+1371
+01:06:49,940 --> 01:06:58,040
+
+
+1372
+01:06:58,040 --> 01:07:02,020
+Let's start the Q&amp;A.
+
+1373
+01:07:02,020 --> 01:07:06,690
+MODERATOR: The first question is,
+for the algorithm, the termination
+
+1374
+01:07:06,690 --> 01:07:12,580
+time means the error does not change, or
+what criterion do you usually use?
+
+1375
+01:07:12,580 --> 01:07:15,830
+
+
+1376
+01:07:15,830 --> 01:07:19,570
+PROFESSOR: When I discuss
+gradient descent, there are several
+
+1377
+01:07:19,570 --> 01:07:23,320
+aspects to the algorithm that
+need to be discussed.
+
+1378
+01:07:23,320 --> 01:07:26,920
+There is the question of
+the learning rate.
+
+1379
+01:07:26,920 --> 01:07:30,930
+And this is what I focused on today,
+because it's the most relevant to the
+
+1380
+01:07:30,930 --> 01:07:33,340
+particular application, which
+is logistic regression.
+
+1381
+01:07:33,340 --> 01:07:35,820
+That has a very good-behaving one.
+
+1382
+01:07:35,820 --> 01:07:37,110
+There are other questions.
+
+1383
+01:07:37,110 --> 01:07:38,960
+One of them is the initialization.
+
+1384
+01:07:38,960 --> 01:07:46,350
+For example, if you look at the top
+here, I said set it to w(0).
+
+1385
+01:07:46,350 --> 01:07:47,430
+What is w(0)?
+
+1386
+01:07:47,430 --> 01:07:48,390
+How do I initialize?
+
+1387
+01:07:48,390 --> 01:07:49,440
+That's a question.
+
+1388
+01:07:49,440 --> 01:07:52,110
+It's not critical in logistic
+regression.
+
+1389
+01:07:52,110 --> 01:07:54,740
+If you initialize it to 0,
+this will be fine.
+
+1390
+01:07:54,740 --> 01:07:57,930
+And if you think, initializing it to 0
+means that you initialize the probability
+
+1391
+01:07:57,930 --> 01:08:02,020
+to a half, the most uncertainty about
+any example before you learn anything.
+
+1392
+01:08:02,020 --> 01:08:04,540
+So it looks like a reasonable
+thing to start.
+
+1393
+01:08:04,540 --> 01:08:07,220
+Then also, there is a question
+of termination.
+
+1394
+01:08:07,220 --> 01:08:10,750
+And termination is an issue here, but
+it's less of an issue here than in
+
+1395
+01:08:10,750 --> 01:08:14,370
+other cases, because of a reason
+that I'm going to explain.
+
+1396
+01:08:14,370 --> 01:08:19,200
+But in general, the termination
+is tricky, and you have
+
+1397
+01:08:19,200 --> 01:08:21,420
+a combination of criteria.
+
+1398
+01:08:21,420 --> 01:08:22,200
+So what do I want?
+
+1399
+01:08:22,200 --> 01:08:24,430
+I want to minimize the error.
+
+1400
+01:08:24,430 --> 01:08:29,640
+So one of them is to say, if the
+thing gets flat and flat to
+
+1401
+01:08:29,640 --> 01:08:32,929
+the level where, when I move from one point
+to another, I'm not really making
+
+1402
+01:08:32,929 --> 01:08:35,710
+a lot of improvement, then I must
+be close to the minimum and
+
+1403
+01:08:35,710 --> 01:08:38,080
+should stop.
+
+1404
+01:08:38,080 --> 01:08:40,729
+That turns out to be OK,
+may be reasonable.
+
+1405
+01:08:40,729 --> 01:08:41,430
+But sometimes--
+
+1406
+01:08:41,430 --> 01:08:45,529
+not in the convex case-- but sometimes
+you have a surface like this-- it goes
+
+1407
+01:08:45,529 --> 01:08:50,109
+down, and then flattens,
+and then goes down.
+
+1408
+01:08:50,109 --> 01:08:54,040
+So if you do this criterion by itself,
+you may stop prematurely.
+
+1409
+01:08:54,040 --> 01:08:56,240
+And you may think this
+is pathological.
+
+1410
+01:08:56,240 --> 01:08:59,350
+It happens more often than you think.
+
+1411
+01:08:59,350 --> 01:09:03,350
+So now you say, let me set a target
+error. That is, not only that the
+
+1412
+01:09:03,350 --> 01:09:06,743
+changes are small, but also if I didn't
+get to the target error that I
+
+1413
+01:09:06,743 --> 01:09:08,380
+want, I'm not going to stop.
+
+1414
+01:09:08,380 --> 01:09:10,870
+Now that will get you over this hump,
+until you get to the other guy,
+
+1415
+01:09:10,870 --> 01:09:13,370
+and maybe that will achieve
+your target error.
+
+1416
+01:09:13,370 --> 01:09:16,240
+That's very nice, except for the problem
+that if your target error
+
+1417
+01:09:16,240 --> 01:09:19,200
+is not achievable, you will
+continue forever.
+
+1418
+01:09:19,200 --> 01:09:22,470
+So you patch this up and say, I'm
+going to have a limit on the number of
+
+1419
+01:09:22,470 --> 01:09:23,450
+iterations anyway.
+
+1420
+01:09:23,450 --> 01:09:26,319
+I'm going to do this for
+10,000 epochs,
+
+1421
+01:09:26,319 --> 01:09:29,370
+regardless of what happens, and
+then I'm going to stop.
+
+1422
+01:09:29,370 --> 01:09:33,160
+In practice, some combination
+of the above works.
+
+1423
+01:09:33,160 --> 01:09:42,020
+But the main thing here is that termination,
+as a properly analyzed thing, is a bit
+
+1424
+01:09:42,020 --> 01:09:45,250
+tricky because of so many unknowns
+in the error surface that
+
+1425
+01:09:45,250 --> 01:09:46,620
+we are dealing with.
+
+1426
+01:09:46,620 --> 01:09:49,850
+But it is something that will become
+more of an issue in neural networks
+
+1427
+01:09:49,850 --> 01:09:51,510
+than it is here.
+
+1428
+01:09:51,510 --> 01:09:54,084
+And then another issue in gradient
+descent, that I didn't talk about, is
+
+1429
+01:09:54,084 --> 01:09:57,160
+the question of local minima
+versus global minima.
+
+1430
+01:09:57,160 --> 01:10:00,670
+When you do gradient descent, I said
+you close your eyes, and you
+
+1431
+01:10:00,670 --> 01:10:01,800
+roll down the surface.
+
+1432
+01:10:01,800 --> 01:10:04,830
+And then when you get to the minimum,
+you know you are at a minimum.
+
+1433
+01:10:04,830 --> 01:10:10,360
+If you have a surface that goes like
+this, then goes up, and then goes down
+
+1434
+01:10:10,360 --> 01:10:12,070
+to a better minimum.
+
+1435
+01:10:12,070 --> 01:10:14,920
+If you start at the original
+one, you can go, go, go.
+
+1436
+01:10:14,920 --> 01:10:17,890
+Once you get to that minimum, you have
+absolutely no reason to leave,
+
+1437
+01:10:17,890 --> 01:10:21,250
+according to the prescription of the
+gradient descent, because you will be
+
+1438
+01:10:21,250 --> 01:10:24,540
+going up a hill, and that looks
+like a bad idea.
+
+1439
+01:10:24,540 --> 01:10:27,990
+So you will be in a local minimum,
+rather than a global minimum.
+
+1440
+01:10:27,990 --> 01:10:30,900
+I didn't mention it this time, again
+because I have a convex function,
+
+1441
+01:10:30,900 --> 01:10:31,610
+so there's only one.
+
+1442
+01:10:31,610 --> 01:10:33,400
+You will get there, and
+everybody is happy.
+
+1443
+01:10:33,400 --> 01:10:35,960
+When we get to neural networks,
+this is an issue, and this should be
+
+1444
+01:10:35,960 --> 01:10:36,440
+addressed.
+
+1445
+01:10:36,440 --> 01:10:41,200
+So the short answer to the question:
+termination is tricky.
+
+1446
+01:10:41,200 --> 01:10:44,440
+A combination of criteria
+is the best way.
+
+1447
+01:10:44,440 --> 01:10:50,190
+And my coverage of gradient descent,
+this one, only covers a part of it that
+
+1448
+01:10:50,190 --> 01:10:52,920
+is most relevant to logistic
+regression.
+
+1449
+01:10:52,920 --> 01:10:55,840
+And the rest of the story will come up
+when we talk about neural networks.
+
+1450
+01:10:55,840 --> 01:11:01,360
+
+
+1451
+01:11:01,360 --> 01:11:04,030
+MODERATOR: There are questions about
+why was gradient descent
+
+1452
+01:11:04,030 --> 01:11:10,840
+picked? Isn't it usually very slow--
+a slow method for convergence?
+
+1453
+01:11:10,840 --> 01:11:13,980
+PROFESSOR: Think of it this way.
+
+1454
+01:11:13,980 --> 01:11:18,270
+If I can see the surface, I obviously
+can go for the minimum directly.
+
+1455
+01:11:18,270 --> 01:11:21,180
+But I'm doing something here that
+depends on 1st order.
+
+1456
+01:11:21,180 --> 01:11:22,960
+Let's say that you're playing golf.
+
+1457
+01:11:22,960 --> 01:11:23,840
+You want to get to the hole.
+
+1458
+01:11:23,840 --> 01:11:25,530
+That's your minimum.
+
+1459
+01:11:25,530 --> 01:11:27,580
+Gradient descent would be doing this--
+
+1460
+01:11:27,580 --> 01:11:29,100
+take this, and just this one--
+
+1461
+01:11:29,100 --> 01:11:31,830
+
+
+1462
+01:11:31,830 --> 01:11:34,660
+Nobody in their right
+mind would do that.
+
+1463
+01:11:34,660 --> 01:11:38,910
+When you go to the 2nd-order thing,
+what you are doing actually-- your
+
+1464
+01:11:38,910 --> 01:11:41,550
+first guy is a swing.
+
+1465
+01:11:41,550 --> 01:11:44,550
+You may not land exactly at the
+hole, but you will land close.
+
+1466
+01:11:44,550 --> 01:11:48,110
+You have a 2nd-order approximation of
+the surface, and you get close.
+
+1467
+01:11:48,110 --> 01:11:50,610
+And then you try to get there.
+
+1468
+01:11:50,610 --> 01:11:55,682
+Having said that, it is a remarkably
+efficient algorithm to use, especially
+
+1469
+01:11:55,682 --> 01:11:58,450
+the stochastic version of it--
+gradient descent, that is.
+
+1470
+01:11:58,450 --> 01:12:02,860
+That is, in many applications, you just
+apply gradient descent in a very
+
+1471
+01:12:02,860 --> 01:12:07,410
+simple way, and you often get
+very, very good result.
+
+1472
+01:12:07,410 --> 01:12:12,390
+And conjugate gradient, which is
+the king of the derivative
+
+1473
+01:12:12,390 --> 01:12:14,860
+based methods, is a very
+attractive one.
+
+1474
+01:12:14,860 --> 01:12:20,400
+And in some optimizations, it completely
+trumps the alternatives.
+
+1475
+01:12:20,400 --> 01:12:24,000
+On the other hand, in many ways, the
+stochastic version of this, and the
+
+1476
+01:12:24,000 --> 01:12:29,000
+simplicity of it, makes it the
+algorithm of choice in many
+
+1477
+01:12:29,000 --> 01:12:30,250
+applications.
+
+1478
+01:12:30,250 --> 01:12:34,060
+
+
+1479
+01:12:34,060 --> 01:12:39,240
+MODERATOR: Although it's not the case for
+this error function, what happens
+
+1480
+01:12:39,240 --> 01:12:44,200
+for gradient descent if there
+are local minima?
+
+1481
+01:12:44,200 --> 01:12:49,070
+PROFESSOR: If there are local
+minima, and you're applying the
+
+1482
+01:12:49,070 --> 01:12:52,310
+algorithm faithfully, you are going to
+get to the nearest local minimum to
+
+1483
+01:12:52,310 --> 01:12:54,390
+where you started.
+
+1484
+01:12:54,390 --> 01:12:57,965
+There is a huge amount of research
+in optimization about local minima,
+
+1485
+01:12:57,965 --> 01:13:02,060
+and how to do it, and there are
+algorithms right and left.
+
+1486
+01:13:02,060 --> 01:13:05,370
+From a practical point of view,
+here is my experience.
+
+1487
+01:13:05,370 --> 01:13:10,630
+Let's say I'm using neural networks, and
+the local minima are abundant in
+
+1488
+01:13:10,630 --> 01:13:13,240
+neural networks, and therefore
+it looks, on face value,
+
+1489
+01:13:13,240 --> 01:13:16,350
+like a serious problem.
+
+1490
+01:13:16,350 --> 01:13:22,440
+If all you do is, do the learning
+a number of times starting from
+
+1491
+01:13:22,440 --> 01:13:24,740
+different initial conditions--
+
+1492
+01:13:24,740 --> 01:13:28,060
+that is, do a session starting from
+this point, do another session
+
+1493
+01:13:28,060 --> 01:13:29,900
+starting for this point, et cetera.
+
+1494
+01:13:29,900 --> 01:13:34,930
+So each of them will go to its
+nearest local minimum.
+
+1495
+01:13:34,930 --> 01:13:36,540
+If you do this enough times--
+
+1496
+01:13:36,540 --> 01:13:39,770
+I'm not talking a million times.
+Even a hundred times.
+
+1497
+01:13:39,770 --> 01:13:42,810
+And then after all of these sessions,
+you pick the one that gave you the
+
+1498
+01:13:42,810 --> 01:13:46,405
+best minimum, and you know the best
+minimum by evaluating the error which
+
+1499
+01:13:46,405 --> 01:13:48,550
+is accessible to you.
+
+1500
+01:13:48,550 --> 01:13:51,190
+That usually gets you what you want.
+
+1501
+01:13:51,190 --> 01:13:52,750
+It will not get you the
+global minimum.
+
+1502
+01:13:52,750 --> 01:13:55,060
+Formally, you can prove that
+getting to the global
+
+1503
+01:13:55,060 --> 01:13:57,170
+minimum is NP-hard.
+
+1504
+01:13:57,170 --> 01:14:01,690
+If you insist on getting to it in
+every case, this is simply not
+
+1505
+01:14:01,690 --> 01:14:03,850
+tractable in terms of
+computational time.
+
+1506
+01:14:03,850 --> 01:14:08,410
+But some very simple heuristic, as just
+repeating from different points and
+
+1507
+01:14:08,410 --> 01:14:12,010
+then picking the best, works actually
+pretty good in most of the cases that
+
+1508
+01:14:12,010 --> 01:14:13,150
+I've seen.
+
+1509
+01:14:13,150 --> 01:14:17,540
+And if this becomes a real issue in your
+application, there is no shortage of
+
+1510
+01:14:17,540 --> 01:14:22,590
+methods in optimization that explicitly
+deal with local minima.
+
+1511
+01:14:22,590 --> 01:14:26,690
+The only thing to remember is that
+avoiding local minima, versus not
+
+1512
+01:14:26,690 --> 01:14:31,330
+avoiding them, has almost
+nothing to do with the
+
+1513
+01:14:31,330 --> 01:14:32,250
+order of your algorithm.
+
+1514
+01:14:32,250 --> 01:14:36,030
+I could be using 1st order, 2nd order,
+et cetera, and all of them will
+
+1515
+01:14:36,030 --> 01:14:38,730
+be very happy when you get to the
+minimum, even if it's local.
+
+1516
+01:14:38,730 --> 01:14:42,690
+So this is an added layer that will make
+you, in spite of the fact that
+
+1517
+01:14:42,690 --> 01:14:43,590
+you are at the minimum,
+
+1518
+01:14:43,590 --> 01:14:44,910
+you explore further.
+
+1519
+01:14:44,910 --> 01:14:48,090
+Sometimes you have a temperature, and
+you escape the local minimum to
+
+1520
+01:14:48,090 --> 01:14:50,250
+a better one if it's a shallow
+local minimum.
+
+1521
+01:14:50,250 --> 01:14:52,770
+And there are others that
+deliberately look for that.
+
+1522
+01:14:52,770 --> 01:14:57,530
+So if your application calls for it,
+there will be methods to help.
+
+1523
+01:14:57,530 --> 01:15:00,550
+But there will be no method to actually
+solve your problem, because
+
+1524
+01:15:00,550 --> 01:15:03,220
+the problem is NP-hard.
+
+1525
+01:15:03,220 --> 01:15:07,010
+MODERATOR: Can you quickly explain what
+the stochastic gradient descent is?
+
+1526
+01:15:07,010 --> 01:15:09,370
+PROFESSOR: I will do that at
+the beginning of the next lecture.
+
+1527
+01:15:09,370 --> 01:15:12,170
+It's basically, instead of taking the
+whole training set at once, you take
+
+1528
+01:15:12,170 --> 01:15:13,140
+one example at a time.
+
+1529
+01:15:13,140 --> 01:15:17,260
+But I'll do that, because that will be
+the part that is applicable to neural
+
+1530
+01:15:17,260 --> 01:15:19,570
+networks in general.
+
+1531
+01:15:19,570 --> 01:15:26,380
+MODERATOR: Can you explain a little
+bit more the notion of cross-entropy?
+
+1532
+01:15:26,380 --> 01:15:29,320
+PROFESSOR: The formal
+definition of cross-entropy--
+
+1533
+01:15:29,320 --> 01:15:34,540
+so entropy, you get a function based on
+a probability, and it's basically
+
+1534
+01:15:34,540 --> 01:15:36,950
+the expected value of logarithm
+1 over the probability.
+
+1535
+01:15:36,950 --> 01:15:39,890
+That will be your classical
+definition of an entropy.
+
+1536
+01:15:39,890 --> 01:15:43,830
+When you have two different
+probabilities, you can get
+
+1537
+01:15:43,830 --> 01:15:49,690
+a cross-entropy between them, by getting
+the expected value with one-- the
+
+1538
+01:15:49,690 --> 01:15:53,170
+expected value of, and you take a ratio
+of them one way or the other.
+
+1539
+01:15:53,170 --> 01:15:58,200
+And there are a number of them in the
+literature, that have different
+
+1540
+01:15:58,200 --> 01:16:00,650
+definitions and different scopes.
+
+1541
+01:16:00,650 --> 01:16:04,240
+But basically, you are getting
+a relationship between two probability
+
+1542
+01:16:04,240 --> 01:16:08,030
+distributions, using a logarithmic,
+and expected values.
+
+1543
+01:16:08,030 --> 01:16:09,660
+That's the common thread.
+
+1544
+01:16:09,660 --> 01:16:15,270
+The reason why I put this between
+quotation is that, you really are
+
+1545
+01:16:15,270 --> 01:16:20,830
+getting the cross-entropy between the
+h that you're trying to learn, and
+
+1546
+01:16:20,830 --> 01:16:24,420
+a binary event, so something like
+a probability 1 or 0 at a time.
+
+1547
+01:16:24,420 --> 01:16:27,320
+So it's a little bit of a loose thing,
+because that's the way it's defined.
+
+1548
+01:16:27,320 --> 01:16:28,980
+But again, it is referred
+to as cross-entropy.
+
+1549
+01:16:28,980 --> 01:16:34,930
+
+
+1550
+01:16:34,930 --> 01:16:39,500
+MODERATOR: A question is, why
+a method like binary search wouldn't
+
+1551
+01:16:39,500 --> 01:16:42,460
+work to find minima quickly?
+
+1552
+01:16:42,460 --> 01:16:44,160
+PROFESSOR: OK.
+
+1553
+01:16:44,160 --> 01:16:47,730
+Binary search works well once you
+decide on the direction.
+
+1554
+01:16:47,730 --> 01:16:52,180
+I am in a space, and you think of
+binary search, that's very nice.
+
+1555
+01:16:52,180 --> 01:16:55,440
+Let's talk about 1000 dimensional
+space.
+
+1556
+01:16:55,440 --> 01:16:57,700
+Where do I move?
+
+1557
+01:16:57,700 --> 01:17:03,080
+If you decide on a direction, and
+you say that it's very good to go
+
+1558
+01:17:03,080 --> 01:17:06,250
+along this direction, then it
+becomes a legitimate question.
+
+1559
+01:17:06,250 --> 01:17:08,680
+That's the direction.
+How far should I go?
+
+1560
+01:17:08,680 --> 01:17:12,570
+We used very crude method, like
+using a fixed step, or maybe by
+
+1561
+01:17:12,570 --> 01:17:13,430
+looking at it closely,
+
+1562
+01:17:13,430 --> 01:17:14,500
+maybe it shouldn't really be fixed.
+
+1563
+01:17:14,500 --> 01:17:16,500
+It should be proportional to
+the gradient, so we had the
+
+1564
+01:17:16,500 --> 01:17:17,920
+fixed learning rate.
+
+1565
+01:17:17,920 --> 01:17:20,710
+But one can become more sophisticated
+and say, let me explore that
+
+1566
+01:17:20,710 --> 01:17:24,640
+direction until I get to the minimum
+along this direction.
+
+1567
+01:17:24,640 --> 01:17:28,300
+And then there are binary search
+methods for doing that.
+
+1568
+01:17:28,300 --> 01:17:33,430
+Again, when you judge one method versus
+the other in optimization, don't
+
+1569
+01:17:33,430 --> 01:17:37,540
+be excited about the sophisticated
+method, because you will be charged
+
+1570
+01:17:37,540 --> 01:17:38,850
+for it.
+
+1571
+01:17:38,850 --> 01:17:44,340
+If I have to evaluate a lot of
+stuff, I have to show for it that I
+
+1572
+01:17:44,340 --> 01:17:46,170
+got to a much better value.
+
+1573
+01:17:46,170 --> 01:17:50,510
+If I evaluate many more values, and get
+that much of a difference, then I
+
+1574
+01:17:50,510 --> 01:17:54,270
+lose in the optimization game, because
+I used CPU cycles, and I didn't
+
+1575
+01:17:54,270 --> 01:17:57,430
+improve the error as much.
+
+1576
+01:17:57,430 --> 01:18:01,360
+So whenever you are looking at a method,
+it's a very practical question
+
+1577
+01:18:01,360 --> 01:18:02,620
+whether it will work or not.
+
+1578
+01:18:02,620 --> 01:18:05,470
+For example, 2nd-order methods.
+
+1579
+01:18:05,470 --> 01:18:08,890
+Hands down, approximating the surface
+as a 2nd order is better than the
+
+1580
+01:18:08,890 --> 01:18:10,630
+1st order.
+
+1581
+01:18:10,630 --> 01:18:12,040
+And the problem, why don't we do this?
+
+1582
+01:18:12,040 --> 01:18:15,280
+Because if you approximate it as
+2nd order, you have to compute the
+
+1583
+01:18:15,280 --> 01:18:17,510
+2nd-order derivatives.
+
+1584
+01:18:17,510 --> 01:18:20,560
+And that's a full matrix
+called Hessian.
+
+1585
+01:18:20,560 --> 01:18:26,200
+If I do that outright, I will get
+a better minimum, and I will get it
+
+1586
+01:18:26,200 --> 01:18:28,270
+quickly in terms of the number
+of steps, but each step
+
+1587
+01:18:28,270 --> 01:18:29,880
+becomes very expensive.
+
+1588
+01:18:29,880 --> 01:18:33,460
+And conjugate gradient, that I mentioned
+very quickly, is a way to do
+
+1589
+01:18:33,460 --> 01:18:35,960
+the 2nd order without actually
+explicitly computing the
+
+1590
+01:18:35,960 --> 01:18:38,940
+Hessian, which is effective and
+that's why it's a famous method.
+
+1591
+01:18:38,940 --> 01:18:42,540
+So it is used, but be careful
+where to use it.
+
+1592
+01:18:42,540 --> 01:18:45,930
+
+
+1593
+01:18:45,930 --> 01:18:49,900
+MODERATOR: Can logistic regression be
+applied for a multi-class setting?
+
+1594
+01:18:49,900 --> 01:18:51,150
+PROFESSOR: Yeah.
+
+1595
+01:18:51,150 --> 01:18:56,600
+
+
+1596
+01:18:56,600 --> 01:18:57,850
+Let's look at the full--
+
+1597
+01:18:57,850 --> 01:19:00,470
+
+
+1598
+01:19:00,470 --> 01:19:04,410
+Now this is the linear model
+as we covered it.
+
+1599
+01:19:04,410 --> 01:19:05,685
+On the other hand, if you see
+
+1600
+01:19:05,685 --> 01:19:07,550
+what type of functions
+am I getting?
+
+1601
+01:19:07,550 --> 01:19:12,870
+I seem to be getting either binary,
+real-valued, or bounded real-valued,
+
+1602
+01:19:12,870 --> 01:19:14,310
+specifically probability.
+
+1603
+01:19:14,310 --> 01:19:18,010
+There are obviously other classes, but
+in many cases, the other classes can be
+
+1604
+01:19:18,010 --> 01:19:19,110
+derived in terms of those.
+
+1605
+01:19:19,110 --> 01:19:21,650
+Let's look at, for example,
+the multi-class, the thing
+
+1606
+01:19:21,650 --> 01:19:23,360
+being asked about.
+
+1607
+01:19:23,360 --> 01:19:26,120
+Remember recognizing the
+digits, that we talked about.
+
+1608
+01:19:26,120 --> 01:19:27,350
+How many digits did we have?
+
+1609
+01:19:27,350 --> 01:19:28,210
+We had 10 digits--
+
+1610
+01:19:28,210 --> 01:19:30,750
+0, 1, 2, up to 9 in the ZIP codes.
+
+1611
+01:19:30,750 --> 01:19:33,710
+And we wanted to be able
+to classify them.
+
+1612
+01:19:33,710 --> 01:19:34,980
+What did we do for that?
+
+1613
+01:19:34,980 --> 01:19:36,160
+We used perceptron.
+
+1614
+01:19:36,160 --> 01:19:38,020
+Wait a minute, perceptron
+does a binary thing.
+
+1615
+01:19:38,020 --> 01:19:39,350
+How did we do that?
+
+1616
+01:19:39,350 --> 01:19:43,770
+We did what we usually do for
+multi-class problems.
+
+1617
+01:19:43,770 --> 01:19:49,940
+Instead of taking 1 versus 2 versus 3
+versus 4, et cetera, we either take
+
+1618
+01:19:49,940 --> 01:19:51,190
+one versus one--
+
+1619
+01:19:51,190 --> 01:19:53,520
+one class versus another class.
+
+1620
+01:19:53,520 --> 01:19:56,590
+Like the 1 versus 5, and
+2 versus 3, et cetera, and
+
+1621
+01:19:56,590 --> 01:19:58,300
+then combine the decisions.
+
+1622
+01:19:58,300 --> 01:20:00,970
+Or sometimes, you do one versus all.
+
+1623
+01:20:00,970 --> 01:20:04,865
+So I want to recognize 1 from the rest,
+2 from the rest, 3 from the
+
+1624
+01:20:04,865 --> 01:20:05,910
+rest, et cetera.
+
+1625
+01:20:05,910 --> 01:20:07,080
+And there are other methods.
+
+1626
+01:20:07,080 --> 01:20:14,730
+So many of the multi-class approaches
+deal with a tree, based on binary
+
+1627
+01:20:14,730 --> 01:20:16,920
+decisions, and that is the
+way it is applied.
+
+1628
+01:20:16,920 --> 01:20:20,380
+But there are some others which--
+ordinal regression, for example, where
+
+1629
+01:20:20,380 --> 01:20:23,930
+there is a specific order to them,
+it is dealt with differently.
+
+1630
+01:20:23,930 --> 01:20:27,740
+So there are modifications to these guys
+that accommodate other methods,
+
+1631
+01:20:27,740 --> 01:20:30,670
+the easiest of which is multi-class,
+because it's ready for us, and we have
+
+1632
+01:20:30,670 --> 01:20:33,540
+seen an example of it.
+
+1633
+01:20:33,540 --> 01:20:39,670
+MODERATOR: What other sigmoid functions
+that can be used instead of that?
+
+1634
+01:20:39,670 --> 01:20:40,840
+PROFESSOR: We will
+use one next time.
+
+1635
+01:20:40,840 --> 01:20:41,640
+I'm glad you asked.
+
+1636
+01:20:41,640 --> 01:20:44,070
+So the logistic function
+is between 0 and 1.
+
+1637
+01:20:44,070 --> 01:20:45,810
+We are going to use the tanh
+which will be between
+
+1638
+01:20:45,810 --> 01:20:47,310
+-1 and +1.
+
+1639
+01:20:47,310 --> 01:20:52,490
+And that will be the neuronal function
+in neural networks next time.
+
+1640
+01:20:52,490 --> 01:20:56,540
+And at that time, I will discuss it
+a little bit, so you get a feel for it.
+
+1641
+01:20:56,540 --> 01:20:59,445
+But it's also based on exponential-- the
+tanh has an exponential in it.
+
+1642
+01:20:59,445 --> 01:21:01,290
+It's very close to the sigmoid.
+
+1643
+01:21:01,290 --> 01:21:03,870
+There is a scale and shift.
+
+1644
+01:21:03,870 --> 01:21:07,740
+On the other hand, you can
+use other functions.
+
+1645
+01:21:07,740 --> 01:21:11,830
+It turns out that, from an analytic
+point of view, using the exponential
+
+1646
+01:21:11,830 --> 01:21:15,100
+based soft thresholds has
+advantages, as we see.
+
+1647
+01:21:15,100 --> 01:21:18,180
+So we got a number
+of advantages here--
+
+1648
+01:21:18,180 --> 01:21:19,820
+a simple formula for the error.
+
+1649
+01:21:19,820 --> 01:21:25,250
+And also, the error measure that
+resulted from it was convex.
+
+1650
+01:21:25,250 --> 01:21:28,450
+That may not be guaranteed in every
+choice, so therefore, there is
+
+1651
+01:21:28,450 --> 01:21:29,860
+a criterion for choice.
+
+1652
+01:21:29,860 --> 01:21:32,610
+It's not just a good-looking formula.
+
+1653
+01:21:32,610 --> 01:21:38,080
+It's a formula that will go through
+the chain of the processes that we go
+
+1654
+01:21:38,080 --> 01:21:39,431
+through when we do the learning.
+
+1655
+01:21:39,431 --> 01:21:45,203
+
+
+1656
+01:21:45,203 --> 01:21:48,010
+MODERATOR: There's a conceptual
+question about how is eta derived?
+
+1657
+01:21:48,010 --> 01:21:51,262
+It's not really derived.
+
+1658
+01:21:51,262 --> 01:21:52,440
+PROFESSOR: The learning rate?
+
+1659
+01:21:52,440 --> 01:21:52,860
+MODERATOR: Yeah.
+
+1660
+01:21:52,860 --> 01:21:59,730
+PROFESSOR: The way I described it, I got the
+zeroth order, which is fixed eta-- fixed step.
+
+1661
+01:21:59,730 --> 01:22:05,590
+And then I got the 1st order, which
+is to make the step proportional to
+
+1662
+01:22:05,590 --> 01:22:06,110
+the gradient.
+
+1663
+01:22:06,110 --> 01:22:08,170
+And then you got the fixed
+the learning rate.
+
+1664
+01:22:08,170 --> 01:22:10,350
+You can take that and make it more
+sophisticated, and you have
+
+1665
+01:22:10,350 --> 01:22:12,410
+an adaptive learning grade.
+
+1666
+01:22:12,410 --> 01:22:16,170
+It's a very simple heuristic, that
+you take a learning rate and
+
+1667
+01:22:16,170 --> 01:22:18,230
+you do a step.
+
+1668
+01:22:18,230 --> 01:22:20,820
+And if the step is successful, you
+say maybe I can afford a bigger
+
+1669
+01:22:20,820 --> 01:22:23,180
+learning rate, so you increase
+the learning rate.
+
+1670
+01:22:23,180 --> 01:22:26,990
+And you keep doing that until you hit
+a point where-- oh, I actually used too
+
+1671
+01:22:26,990 --> 01:22:30,880
+big a learning rate, because after
+doing my minimization in one step, I
+
+1672
+01:22:30,880 --> 01:22:33,290
+ended up with a bigger value,
+so obviously I went too far.
+
+1673
+01:22:33,290 --> 01:22:35,650
+And in that case, you shrink
+the learning rate.
+
+1674
+01:22:35,650 --> 01:22:37,150
+So you can do this adaptively.
+
+1675
+01:22:37,150 --> 01:22:38,590
+And it does buy you time.
+
+1676
+01:22:38,590 --> 01:22:42,650
+There are lots of heuristics that are
+add-on's to the plain-vanilla gradient
+
+1677
+01:22:42,650 --> 01:22:45,600
+descent, and one of them has to
+do with the learning rate.
+
+1678
+01:22:45,600 --> 01:22:49,970
+When you go to conjugate gradient,
+which is a 2nd-order one, because
+
+1679
+01:22:49,970 --> 01:22:53,330
+there is a 2nd-order thing, you can
+look at it eventually, and interpret
+
+1680
+01:22:53,330 --> 01:22:56,830
+it as if it was having a principled
+direction, and
+
+1681
+01:22:56,830 --> 01:22:57,980
+a principled learning rate.
+
+1682
+01:22:57,980 --> 01:22:59,400
+This is one way to look at it.
+
+1683
+01:22:59,400 --> 01:23:02,610
+But for the gradient descent, it's
+really a heuristic that will choose
+
+1684
+01:23:02,610 --> 01:23:03,940
+the learning rate.
+
+1685
+01:23:03,940 --> 01:23:05,420
+I have a rule for it.
+
+1686
+01:23:05,420 --> 01:23:07,150
+I'll mention it as a rule of thumb.
+
+1687
+01:23:07,150 --> 01:23:09,540
+There are certain values that
+work in many cases.
+
+1688
+01:23:09,540 --> 01:23:12,340
+And in the case of eta, there is
+a particular value that works.
+
+1689
+01:23:12,340 --> 01:23:13,320
+I'm going to mention it.
+
+1690
+01:23:13,320 --> 01:23:18,650
+But again, this is just a practical
+observation, and other people may have
+
+1691
+01:23:18,650 --> 01:23:20,831
+different experience.
+
+1692
+01:23:20,831 --> 01:23:25,180
+MODERATOR: Going back to the first
+part of the lecture, and a few
+
+1693
+01:23:25,180 --> 01:23:31,680
+lectures back, you made the example of
+character recognition, and you chose
+
+1694
+01:23:31,680 --> 01:23:37,230
+features like symmetry and I don't
+remember something else.
+
+1695
+01:23:37,230 --> 01:23:43,816
+But how much are you charged in terms
+of d_VC for getting those features?
+
+1696
+01:23:43,816 --> 01:23:45,680
+PROFESSOR: I'm glad
+this question was asked.
+
+1697
+01:23:45,680 --> 01:23:45,685
+
+
+1698
+01:23:45,685 --> 01:23:47,520
+This was the nonlinear transformation.
+
+1699
+01:23:47,520 --> 01:23:53,000
+And we called the space Z the feature
+space, and these guys are features.
+
+1700
+01:23:53,000 --> 01:23:55,540
+And there are basically
+two types of features.
+
+1701
+01:23:55,540 --> 01:24:00,170
+Here, I'm trying to find just
+generically more sophisticated
+
+1702
+01:24:00,170 --> 01:24:03,230
+surface, because I realize that the
+points will not be linearly separable.
+
+1703
+01:24:03,230 --> 01:24:04,750
+so I cannot do it here.
+
+1704
+01:24:04,750 --> 01:24:08,960
+And the other one is along the lines we
+started with, which are meaningful
+
+1705
+01:24:08,960 --> 01:24:14,220
+features, like symmetry in the case
+of the digits, and in the
+
+1706
+01:24:14,220 --> 01:24:16,430
+case of, let's say, years
+in residence--
+
+1707
+01:24:16,430 --> 01:24:19,100
+if you want this as an input to the
+credit, you may not want it as
+
+1708
+01:24:19,100 --> 01:24:21,700
+a linear thing, but you say: am
+I bigger than five years or
+
+1709
+01:24:21,700 --> 01:24:22,210
+less than five years?
+
+1710
+01:24:22,210 --> 01:24:23,830
+So those are meaningful features.
+
+1711
+01:24:23,830 --> 01:24:30,630
+The key distinction you need to
+make in your mind is that, did I
+
+1712
+01:24:30,630 --> 01:24:34,490
+choose the feature by understanding
+the problem, or did I choose the
+
+1713
+01:24:34,490 --> 01:24:38,960
+feature by looking at the specific
+data set that was given to me?
+
+1714
+01:24:38,960 --> 01:24:41,390
+The latter is the problem.
+
+1715
+01:24:41,390 --> 01:24:45,850
+If I look at the data and then choose
+features, then I am doing the learning
+
+1716
+01:24:45,850 --> 01:24:49,030
+myself-- at least the first stage of it--
+and therefore, I have a bigger
+
+1717
+01:24:49,030 --> 01:24:51,670
+hypothesis set than what I'm
+going to end up with.
+
+1718
+01:24:51,670 --> 01:24:56,460
+And therefore, as I said, the VC
+warranty is forfeited in this case.
+
+1719
+01:24:56,460 --> 01:25:00,350
+If you look at the problem, and then
+derive features that are meaningful,
+
+1720
+01:25:00,350 --> 01:25:03,190
+but that's not depending on the data set
+that you're going to learn from--
+
+1721
+01:25:03,190 --> 01:25:06,840
+depending on general understanding.
+We look at the credit.
+
+1722
+01:25:06,840 --> 01:25:09,840
+Looks like years in residence are fine,
+but I don't think it's just
+
+1723
+01:25:09,840 --> 01:25:12,420
+proportional to these guys,
+without looking at data.
+
+1724
+01:25:12,420 --> 01:25:16,350
+I think the thresholds are five years
+for stability, less than one year for
+
+1725
+01:25:16,350 --> 01:25:18,310
+not so much stability, and so on.
+
+1726
+01:25:18,310 --> 01:25:19,440
+So I'm going to derive those.
+
+1727
+01:25:19,440 --> 01:25:22,220
+You're absolutely charged
+nothing for doing that.
+
+1728
+01:25:22,220 --> 01:25:23,195
+More power to you.
+
+1729
+01:25:23,195 --> 01:25:26,800
+You may have helped the learning
+algorithm by taking properties of the
+
+1730
+01:25:26,800 --> 01:25:30,790
+learning problem that you're working
+on, and got a better representation
+
+1731
+01:25:30,790 --> 01:25:33,930
+for it. And this is an art-- purely
+an art, and it depends on
+
+1732
+01:25:33,930 --> 01:25:35,330
+the application domain.
+
+1733
+01:25:35,330 --> 01:25:38,620
+The thing I warned about, very explicitly,
+is to try to derive
+
+1734
+01:25:38,620 --> 01:25:41,300
+features from looking at the data.
+
+1735
+01:25:41,300 --> 01:25:43,630
+And the warning is not absolute.
+
+1736
+01:25:43,630 --> 01:25:47,650
+Try do derive features based on the
+data, and still think that the final
+
+1737
+01:25:47,650 --> 01:25:50,880
+hypothesis set you ended up with
+is what will dictate the
+
+1738
+01:25:50,880 --> 01:25:51,770
+generalization behavior.
+
+1739
+01:25:51,770 --> 01:25:54,800
+That is where the fallacy lies.
+
+1740
+01:25:54,800 --> 01:26:01,590
+
+
+1741
+01:26:01,590 --> 01:26:02,580
+MODERATOR: There's a question.
+
+1742
+01:26:02,580 --> 01:26:06,390
+Is it possible to choose parameters
+automatically?
+
+1743
+01:26:06,390 --> 01:26:10,500
+I'm guessing they're referring
+to the learning rate.
+
+1744
+01:26:10,500 --> 01:26:13,331
+PROFESSOR: OK--
+
+1745
+01:26:13,331 --> 01:26:14,790
+MODERATOR: Oh, no wait, sorry.
+
+1746
+01:26:14,790 --> 01:26:15,410
+They corrected it.
+
+1747
+01:26:15,410 --> 01:26:20,220
+How to select the features
+automatically, so it's back to--
+
+1748
+01:26:20,220 --> 01:26:21,470
+PROFESSOR: It's selected
+
+1749
+01:26:21,470 --> 01:26:24,360
+automatically, that's what
+we are in business for.
+
+1750
+01:26:24,360 --> 01:26:25,090
+It's machine learning.
+
+1751
+01:26:25,090 --> 01:26:26,600
+Things are automatic.
+
+1752
+01:26:26,600 --> 01:26:29,660
+But then, this becomes
+part of learning.
+
+1753
+01:26:29,660 --> 01:26:33,830
+Now here, we had an explicit
+nonlinear transformation.
+
+1754
+01:26:33,830 --> 01:26:38,380
+When we go to neural networks, we'll
+find out that they choose
+
+1755
+01:26:38,380 --> 01:26:39,820
+features automatically.
+
+1756
+01:26:39,820 --> 01:26:41,940
+But that is part of learning,
+and you are charged for it
+
+1757
+01:26:41,940 --> 01:26:43,330
+in terms of VC dimension.
+
+1758
+01:26:43,330 --> 01:26:47,440
+So probably, the question will be
+better answered and understood in the
+
+1759
+01:26:47,440 --> 01:26:50,330
+context when I talk about neural networks
+and hidden layers, and then
+
+1760
+01:26:50,330 --> 01:26:51,580
+we'll see what that means.
+
+1761
+01:26:51,580 --> 01:26:54,190
+
+
+1762
+01:26:54,190 --> 01:26:55,300
+MODERATOR: I think that's it.
+
+1763
+01:26:55,300 --> 01:26:55,310
+
+
+1764
+01:26:55,310 --> 01:26:56,220
+PROFESSOR: Very good.
+
+1765
+01:26:56,220 --> 01:26:56,230
+
+
+1766
+01:26:56,230 --> 01:26:57,480
+Then we'll see you on Thursday.
+
+1767
+01:26:57,480 --> 01:27:13,367
+
